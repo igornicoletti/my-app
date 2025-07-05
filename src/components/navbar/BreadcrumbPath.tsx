@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components'
 import { useCrumbs } from '@/hooks'
 
-export const BreadcrumbNavbar = () => {
+export const BreadcrumbPath = () => {
   const crumbs = useCrumbs()
 
   return (

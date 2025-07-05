@@ -1,8 +1,10 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom'
 
 import { ROUTE } from '@/configs'
-import { getProtectedRoutes } from '@/routers/protected.routes'
-import { getPublicRoutes } from '@/routers/public.routes'
+import { getProtectedRoutes, getPublicRoutes } from '@/routers'
+
+export { getProtectedRoutes } from '@/routers/protected.routes'
+export { getPublicRoutes } from '@/routers/public.routes'
 
 const allRoutes: RouteObject[] = [
   ...getPublicRoutes(),

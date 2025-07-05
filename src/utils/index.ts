@@ -1,1 +1,1 @@
-export { mapRoutesToSidebar, type SidebarValues } from './mapRoutesToSidebar'
+export { getNavigationTree, type NavigationValues } from './getNavigationTree'

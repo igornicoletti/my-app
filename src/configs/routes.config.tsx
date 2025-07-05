@@ -1,6 +1,8 @@
 import { lazy } from 'react'
 
 export const ROUTE = {
+  Analytics: lazy(() => import('@/pages/app/Analytics')
+    .then(m => ({ default: m.Analytics }))),
   Dashboard: lazy(() => import('@/pages/app/Dashboard')
     .then(m => ({ default: m.Dashboard }))),
   Profile: lazy(() => import('@/pages/app/Profile')

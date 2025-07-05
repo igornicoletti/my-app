@@ -1,5 +1,4 @@
-export { BreadcrumbNavbar } from './BreadcrumbNavbar'
-export { DynamicNavigation } from './DynamicNavigation'
+export { NavigationTree } from './NavigationTree'
 export { UserMenu } from './UserMenu'
 export { WorkspaceSwitcher } from './WorkspaceSwitcher'
 

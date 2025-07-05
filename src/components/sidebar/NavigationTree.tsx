@@ -6,22 +6,22 @@ import {
   Collapsible, CollapsibleContent, CollapsibleTrigger,
   SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem
 } from '@/components'
-import type { SidebarValues } from '@/utils'
+import type { NavigationValues } from '@/utils'
 
-export const DynamicNavigation = ({ items }: { items: SidebarValues[] }) => (
+export const NavigationTree = ({ items }: { items: NavigationValues[] }) => (
   <SidebarGroup>
-    <SidebarGroupLabel>Main</SidebarGroupLabel>
+    <SidebarGroupLabel>App</SidebarGroupLabel>
     <SidebarMenu>
       {items.map((item) => (
-        <Collapsible key={item.title} asChild defaultOpen={item.isActive || item.items?.some(subItem => subItem.isActive)}>
+        <Collapsible key={item.title} asChild defaultOpen={item.isActive || item.subItems?.some(subItem => subItem.isActive)}>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive || item.items?.some(subItem => subItem.isActive)}>
+            <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive || item.subItems?.some(subItem => subItem.isActive)}>
               <Link to={item.url}>
-                <item.icon />
+                {item.Icon && <item.Icon />}
                 {item.title}
               </Link>
             </SidebarMenuButton>
-            {item.items && item.items.length > 0 ? (
+            {item.subItems && item.subItems.length > 0 ? (
               <>
                 <CollapsibleTrigger asChild>
                   <SidebarMenuAction className='data-[state=open]:rotate-90'>
@@ -31,7 +31,7 @@ export const DynamicNavigation = ({ items }: { items: SidebarValues[] }) => (
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.items.map((subItem) => (
+                    {item.subItems.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton asChild>
                           <Link to={subItem.url}>{subItem.title}</Link>

@@ -1,5 +1,6 @@
-import { Button } from '@/components'
 import { BellIcon } from '@phosphor-icons/react'
+
+import { Button } from '@/components'
 
 export const BadgeNotification = ({ ...props }) => (
   <div className='flex items-center gap-2'>

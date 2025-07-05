@@ -1,10 +1,9 @@
 import { Link, Outlet } from 'react-router-dom'
 
 import { Button } from '@/components'
-import { useHero, useMeta } from '@/hooks'
+import { useHero } from '@/hooks'
 
 export const AuthLayout = () => {
-  useMeta()
   const data = useHero()
 
   return (

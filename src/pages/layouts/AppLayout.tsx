@@ -1,12 +1,14 @@
-import React from 'react'
+import { isValidElement } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
-import { BreadcrumbNavbar, DynamicNavigation, Separator, Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarProvider, SidebarTrigger, ThemeSwitcher, UserMenu, WorkspaceSwitcher } from '@/components'
+import {
+  BreadcrumbPath, CommandMenu, NavigationTree, Separator,
+  Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarProvider, SidebarTrigger,
+  ThemeSwitcher, UserMenu, WorkspaceSwitcher
+} from '@/components'
 import { ROUTE } from '@/configs'
-import { useMeta } from '@/hooks'
-import { mapRoutesToSidebar } from '@/utils'
-
-import { getProtectedRoutes } from '@/routers/protected.routes'
+import { getProtectedRoutes } from '@/routers'
+import { getNavigationTree } from '@/utils'
 
 const user = {
   name: 'Igor Nicoletti',
@@ -15,18 +17,15 @@ const user = {
 }
 
 const workspaces = [{
-  name: 'Wad LTDA.',
-  createdBy: 'Enterprise',
-}, {
-  name: 'Asdf ME.',
-  createdBy: 'Startup',
+  name: '2Ti Technology',
+  createdBy: 'Business',
 }]
 
 export const AppLayout = () => {
-  useMeta()
   const { pathname } = useLocation()
-  const appLayoutRoute = getProtectedRoutes().find(route => React.isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
-  const dynamicItems = mapRoutesToSidebar(appLayoutRoute?.children || [], pathname)
+
+  const appLayoutRoute = getProtectedRoutes().find((route) => isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
+  const navigationItems = getNavigationTree(appLayoutRoute?.children || [], pathname)
 
   return (
     <SidebarProvider>
@@ -35,7 +34,7 @@ export const AppLayout = () => {
           <WorkspaceSwitcher workspaces={workspaces} />
         </SidebarHeader>
         <SidebarContent>
-          <DynamicNavigation items={dynamicItems} />
+          <NavigationTree items={navigationItems} />
         </SidebarContent>
         <SidebarFooter>
           <UserMenu user={user} />
@@ -46,9 +45,10 @@ export const AppLayout = () => {
           <div className='flex items-center gap-2'>
             <SidebarTrigger />
             <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-4' />
-            <BreadcrumbNavbar />
+            <BreadcrumbPath />
           </div>
           <div className='flex items-center gap-2'>
+            <CommandMenu />
             <ThemeSwitcher variant='ghost' />
           </div>
         </header>

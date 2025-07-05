@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
-import { Button, FormControl, FormField, FormItem, FormMessage, Input } from '@/components'
 import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react'
+
+import { Button, FormControl, FormField, FormItem, FormMessage, Input } from '@/components'
 
 interface FieldControlValues<T extends FieldValues> {
   name: FieldPath<T>

@@ -1,11 +1,13 @@
+import { useNavigate } from 'react-router-dom'
+
+import { CaretUpDownIcon, GearIcon, RocketLaunchIcon, SignOutIcon, SlidersHorizontalIcon, UserIcon } from '@phosphor-icons/react'
+
 import {
   Avatar, AvatarFallback, AvatarImage,
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar
 } from '@/components'
 import { authService } from '@/services'
-import { CaretUpDownIcon, GearIcon, RocketLaunchIcon, SignOutIcon, SlidersHorizontalIcon, UserIcon } from '@phosphor-icons/react'
-import { useNavigate } from 'react-router-dom'
 
 type UserValues = {
   name: string
@@ -19,8 +21,8 @@ const UserAvatar = ({ name, email, avatar }: UserValues) => (
       <AvatarImage src={avatar} alt={name} />
       <AvatarFallback>{name[0]}</AvatarFallback>
     </Avatar>
-    <div className='grid flex-1 text-left leading-tight'>
-      <span className='truncate text-sm font-medium'>{name}</span>
+    <div className='grid flex-1 text-left text-sm leading-tight'>
+      <span className='truncate font-medium'>{name}</span>
       <span className='truncate text-xs text-muted-foreground'>{email}</span>
     </div>
   </div>
@@ -45,12 +47,14 @@ export const UserMenu = ({ user }: { user: UserValues }) => {
               <UserAvatar {...user} />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <RocketLaunchIcon />
-              <div className='grid flex-1 text-left leading-tight'>
+            <DropdownMenuItem className="flex-col items-start">
+              <div className="flex items-center gap-1">
+                <RocketLaunchIcon />
                 <span className='truncate text-sm font-medium'>Upgrade</span>
-                <span className='truncate text-xs text-muted-foreground'>You&apos;re on a free version.</span>
               </div>
+              <span className='truncate text-xs text-muted-foreground'>
+                You&apos;re on a free version of App.
+              </span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>

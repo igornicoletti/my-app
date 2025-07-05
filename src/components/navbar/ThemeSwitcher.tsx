@@ -1,6 +1,7 @@
+import { MoonIcon, SunIcon } from '@phosphor-icons/react'
+
 import { Button } from '@/components'
 import { useTheme } from '@/contexts'
-import { MoonIcon, SunIcon } from '@phosphor-icons/react'
 
 export const ThemeSwitcher = ({ ...props }) => {
   const { toggleTheme } = useTheme()
