@@ -5,6 +5,7 @@ import { ROUTE } from '@/configs'
 export const getPublicRoutes = (): RouteObject[] => [
   {
     element: <ROUTE.AuthLayout />,
+    errorElement: <ROUTE.ErrorFallback />,
     children: [
       {
         path: 'login',

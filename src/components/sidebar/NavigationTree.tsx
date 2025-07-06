@@ -13,9 +13,9 @@ export const NavigationTree = ({ items }: { items: NavigationValues[] }) => (
     <SidebarGroupLabel>App</SidebarGroupLabel>
     <SidebarMenu>
       {items.map((item) => (
-        <Collapsible key={item.title} asChild defaultOpen={item.isActive || item.subItems?.some(subItem => subItem.isActive)}>
+        <Collapsible key={item.title} asChild defaultOpen={item.isGroupActive}>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive || item.subItems?.some(subItem => subItem.isActive)}>
+            <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive}>
               <Link to={item.url}>
                 {item.Icon && <item.Icon />}
                 {item.title}
@@ -33,7 +33,7 @@ export const NavigationTree = ({ items }: { items: NavigationValues[] }) => (
                   <SidebarMenuSub>
                     {item.subItems.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton asChild isActive={subItem.isActive}>
                           <Link to={subItem.url}>{subItem.title}</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

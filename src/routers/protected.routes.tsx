@@ -11,6 +11,13 @@ export const getProtectedRoutes = (): RouteObject[] => [
         path: 'dashboard',
         element: <ROUTE.Dashboard />,
         handle: { crumb: 'Dashboard' },
+        children: [
+          {
+            path: 'analytics',
+            element: <ROUTE.Analytics />,
+            handle: { crumb: 'Analytics' },
+          }
+        ]
       },
       {
         path: 'analytics',

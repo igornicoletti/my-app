@@ -17,6 +17,7 @@ export type NavigationValues = {
   url: string
   Icon?: Icon
   isActive?: boolean
+  isGroupActive?: boolean
   subItems?: SubItemValues[]
 }
 
@@ -31,38 +32,38 @@ const normalizePath = (...paths: string[]): string => {
 
 const createSubItems = (childRoutes: RouteObject[], parentUrl: string, currentPath: string): SubItemValues[] => {
   return childRoutes.filter((child): child is RouteObject & { handle: AppRouteHandle; path: string } =>
-    child.path && !child.path.includes(':') && child.handle && typeof (child.handle as AppRouteHandle).crumb === 'string'
-  ).map((child) => {
-    const subItemUrl = normalizePath(parentUrl, child.path)
-    return {
-      title: (child.handle as AppRouteHandle).crumb,
-      url: subItemUrl,
-      isActive: currentPath === subItemUrl
-    }
-  })
+    child.path && !child.path.includes(':') && child.handle && typeof (child.handle as AppRouteHandle).crumb === 'string').map((child) => {
+      const subItemUrl = normalizePath(parentUrl, child.path)
+
+      return {
+        title: (child.handle as AppRouteHandle).crumb,
+        url: subItemUrl,
+        isActive: currentPath === subItemUrl
+      }
+    })
 }
 
 export const getNavigationTree = (routes: RouteObject[], currentPath: string, parentUrl: string = ''): NavigationValues[] => {
   return routes.reduce<NavigationValues[]>((accumulator, route) => {
     const { path, handle, children } = route
+
     const routeHandle = handle as AppRouteHandle | undefined
-    if (!path || !routeHandle?.crumb) return accumulator
+
+    if (!path || !routeHandle?.crumb) {
+      return accumulator
+    }
 
     const itemUrl = normalizePath(parentUrl, path)
-    const IconComponent = iconRegistry[path] ?? iconRegistry.dashboard
-
-    const subItems = children ? createSubItems(children, itemUrl, currentPath) : []
-
-    const isDirectlyActive = currentPath === itemUrl || currentPath.startsWith(`${itemUrl}/`)
-
-    const hasActiveSubItem = subItems.some((s) => s.isActive)
 
     const navigationItem: NavigationValues = {
       title: routeHandle.crumb,
       url: itemUrl,
-      Icon: IconComponent,
-      isActive: isDirectlyActive || hasActiveSubItem
+      Icon: iconRegistry[path] ?? iconRegistry.dashboard,
+      isActive: currentPath === itemUrl,
+      isGroupActive: currentPath === itemUrl || currentPath.startsWith(`${itemUrl}/`)
     }
+
+    const subItems = children ? createSubItems(children, itemUrl, currentPath) : []
 
     if (subItems.length) {
       navigationItem.subItems = subItems
