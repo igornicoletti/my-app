@@ -3,13 +3,12 @@ import { MoonIcon, SunIcon } from '@phosphor-icons/react'
 import { Button } from '@/components'
 import { useTheme } from '@/contexts'
 
-export const ThemeSwitcher = ({ ...props }) => {
-  const { toggleTheme } = useTheme()
+export const ThemeSwitcher = () => {
+  const { isDark, toggleTheme } = useTheme()
 
   return (
-    <Button onClick={toggleTheme} size='icon' variant='ghost' {...props}>
-      <MoonIcon className='scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
-      <SunIcon className='absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
+    <Button onClick={toggleTheme} size='icon' variant='ghost'>
+      {!isDark ? <MoonIcon /> : <SunIcon />}
       <span className='sr-only'>Toggle theme</span>
     </Button>
   )

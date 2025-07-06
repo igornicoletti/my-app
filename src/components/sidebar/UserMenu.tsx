@@ -17,9 +17,9 @@ type UserValues = {
 
 const UserAvatar = ({ name, email, avatar }: UserValues) => (
   <div className='flex items-center gap-2'>
-    <Avatar className='bg-sidebar-primary'>
+    <Avatar className='rounded-lg text-sidebar-primary-foreground'>
       <AvatarImage src={avatar} alt={name} />
-      <AvatarFallback className='bg-sidebar-primary'>{name[0]}</AvatarFallback>
+      <AvatarFallback className='rounded-lg bg-sidebar-primary'>{name[0]}</AvatarFallback>
     </Avatar>
     <div className='grid flex-1 text-left text-sm leading-tight'>
       <span className='truncate font-medium'>{name}</span>
@@ -47,8 +47,8 @@ export const UserMenu = ({ user }: { user: UserValues }) => {
               <UserAvatar {...user} />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex-col items-start">
-              <div className="flex items-center gap-1">
+            <DropdownMenuItem className='flex-col items-start'>
+              <div className='flex items-center gap-1'>
                 <RocketLaunchIcon />
                 <span className='truncate text-sm font-medium'>Upgrade</span>
               </div>

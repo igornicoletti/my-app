@@ -1,6 +1,5 @@
-import type { RouteObject } from 'react-router-dom'
-
 import { ROUTE } from '@/configs'
+import type { RouteObject } from 'react-router-dom'
 
 export const getProtectedRoutes = (): RouteObject[] => [
   {
@@ -10,19 +9,20 @@ export const getProtectedRoutes = (): RouteObject[] => [
       {
         path: 'dashboard',
         element: <ROUTE.Dashboard />,
-        handle: { crumb: 'Dashboard' },
-        children: [
-          {
-            path: 'analytics',
-            element: <ROUTE.Analytics />,
-            handle: { crumb: 'Analytics' },
-          }
-        ]
+        handle: {
+          crumb: 'Dashboard',
+          title: 'Dashboard',
+          description: 'Overview of your activity, performance, and quick access to key features.'
+        }
       },
       {
         path: 'analytics',
         element: <ROUTE.Analytics />,
-        handle: { crumb: 'Analytics' },
+        handle: {
+          crumb: 'Analytics',
+          title: 'Analytics',
+          description: 'Detailed insights and data visualizations to help you make informed decisions.'
+        }
       }
     ]
   }

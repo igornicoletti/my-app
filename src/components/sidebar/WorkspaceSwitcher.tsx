@@ -4,8 +4,9 @@ import { CaretUpDownIcon, CheckIcon } from '@phosphor-icons/react'
 
 import {
   Avatar, AvatarFallback,
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger,
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuTrigger,
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem
 } from '@/components'
 
 type WorkspacesValues = {
@@ -13,8 +14,19 @@ type WorkspacesValues = {
   createdBy: string
 }
 
+const UserAvatar = ({ name, createdBy }: WorkspacesValues) => (
+  <div className='flex items-center gap-2'>
+    <Avatar className='rounded-lg text-sidebar-primary-foreground'>
+      <AvatarFallback className='rounded-lg bg-sidebar-primary'>{name[0]}</AvatarFallback>
+    </Avatar>
+    <div className='grid flex-1 text-left text-sm leading-tight'>
+      <span className='truncate font-medium'>{name}</span>
+      <span className='truncate text-xs text-muted-foreground'>{createdBy}</span>
+    </div>
+  </div>
+)
+
 export const WorkspaceSwitcher = ({ workspaces }: { workspaces: WorkspacesValues[] }) => {
-  const { isMobile } = useSidebar()
   const [isActive, setIsActive] = useState(workspaces[0])
 
   if (!isActive) return null
@@ -24,38 +36,17 @@ export const WorkspaceSwitcher = ({ workspaces }: { workspaces: WorkspacesValues
       <SidebarMenuItem>
         {workspaces.length === 1 ? (
           <SidebarMenuButton size='lg'>
-            <div className='flex flex-1 items-center gap-2'>
-              <Avatar className='rounded-sm'>
-                <AvatarFallback className='rounded-sm bg-sidebar-primary text-sidebar-primary-foreground'>
-                  {isActive.name[0]}
-                </AvatarFallback>
-              </Avatar>
-              <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate text-sm font-medium'>{isActive.name}</span>
-                <span className='truncate text-xs text-muted-foreground'>{isActive.createdBy}</span>
-              </div>
-            </div>
+            <UserAvatar {...isActive} />
           </SidebarMenuButton>
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent'>
-                <div className='flex flex-1 items-center gap-2'>
-                  <Avatar className='rounded-sm'>
-                    <AvatarFallback className='rounded-sm bg-sidebar-primary text-sidebar-primary-foreground'>
-                      {isActive.name[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className='grid flex-1 text-left text-sm leading-tight'>
-                    <span className='truncate text-sm font-medium'>{isActive.name}</span>
-                    <span className='truncate text-xs text-muted-foreground'>{isActive.createdBy}</span>
-                  </div>
-                </div>
-                <CaretUpDownIcon />
+                <UserAvatar {...isActive} />
+                <CaretUpDownIcon className='ml-auto' />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='start' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
-              <DropdownMenuLabel className="text-muted-foreground text-xs">Workspaces</DropdownMenuLabel>
+            <DropdownMenuContent side='bottom' align='start' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
               {workspaces.map((workspace) => (
                 <DropdownMenuItem key={workspace.name} onClick={() => setIsActive(workspace)}>
                   <div className='flex flex-1 items-center gap-2'>

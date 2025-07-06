@@ -1,14 +1,12 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { LoadingSpinner, ProgressBar } from '@/components'
-import { useMeta } from '@/hooks'
+import { HelmetMetadata, LoadingSpinner, ProgressBar } from '@/components'
 
 export const RootLayout = () => {
-  useMeta()
-
   return (
     <Suspense fallback={<LoadingSpinner />}>
+      <HelmetMetadata />
       <ProgressBar />
       <Outlet />
     </Suspense>

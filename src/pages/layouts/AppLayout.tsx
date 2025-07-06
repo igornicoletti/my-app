@@ -1,10 +1,9 @@
-// src/layouts/AppLayout.tsx
-import { isValidElement } from 'react' // Adicionado useEffect
-import { Outlet, useLocation } from 'react-router-dom' // Adicionado useNavigate
+import { isValidElement } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 
 import {
   BreadcrumbPath, CommandMenu, NavigationTree, Separator,
-  Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarProvider, SidebarTrigger,
+  Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger,
   ThemeSwitcher, UserMenu, WorkspaceSwitcher
 } from '@/components'
 import { ROUTE } from '@/configs'
@@ -13,16 +12,23 @@ import { getProtectedRoutes } from '@/routers/protected.routes'
 import { getNavigationTree } from '@/utils'
 
 const workspaces = [{
-  name: '2Ti Technology',
-  createdBy: 'Business',
+  name: '2Ti Corp.',
+  createdBy: 'Enterprise',
+}, {
+  name: 'i.Go Inc.',
+  createdBy: 'Enterprise',
 }]
 
 export const AppLayout = () => {
   const { user, isLoading } = useAuth()
-
   const { pathname } = useLocation()
 
   if (isLoading || !user) return null
+
+  const appLayoutRoute = getProtectedRoutes().find((route) =>
+    isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
+
+  const navigationItems = getNavigationTree(appLayoutRoute?.children || [], pathname)
 
   const userData = {
     name: user.displayName!,
@@ -30,12 +36,9 @@ export const AppLayout = () => {
     avatar: user?.photoURL ?? ''
   }
 
-  const appLayoutRoute = getProtectedRoutes().find((route) => isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
-  const navigationItems = getNavigationTree(appLayoutRoute?.children || [], pathname)
-
   return (
     <SidebarProvider>
-      <Sidebar collapsible='icon'>
+      <Sidebar variant='sidebar' collapsible='icon'>
         <SidebarHeader>
           <WorkspaceSwitcher workspaces={workspaces} />
         </SidebarHeader>
@@ -45,23 +48,23 @@ export const AppLayout = () => {
         <SidebarFooter>
           <UserMenu user={userData} />
         </SidebarFooter>
+        <SidebarRail />
       </Sidebar>
+
       <SidebarInset>
-        <header className='flex h-16 shrink-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
-          <div className="w-full flex items-center justify-between px-4">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger />
-              <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-6' />
-              <BreadcrumbPath />
-            </div>
-            <div className="flex items-center gap-2">
-              <CommandMenu />
-              <Separator orientation='vertical' className='data-[orientation=vertical]:h-6' />
-              <ThemeSwitcher />
-            </div>
+        <header className='flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
+          <div className='flex flex-1 items-center gap-2 px-4'>
+            <SidebarTrigger />
+            <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-4' />
+            <BreadcrumbPath />
+          </div>
+          <div className='ml-auto flex items-center gap-2 px-4'>
+            <CommandMenu />
+            <Separator orientation='vertical' className='ml-2 data-[orientation=vertical]:h-4' />
+            <ThemeSwitcher />
           </div>
         </header>
-        <div className='flex flex-1 flex-col gap-4 p-4'>
+        <div className='flex flex-1 flex-col gap-4 px-6 py-4'>
           <Outlet />
         </div>
       </SidebarInset>

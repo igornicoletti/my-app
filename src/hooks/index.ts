@@ -1,5 +1,5 @@
 export { useCrumbs } from './useCrumbs'
 export { useHero } from './useHero'
-export { useMeta } from './useMeta'
+export { useMetadata } from './useMetadata'
 export { useSubmit } from './useSubmit'
 
