@@ -1,6 +1,6 @@
 // src/layouts/AppLayout.tsx
-import { isValidElement, useEffect } from 'react' // Adicionado useEffect
-import { Outlet, useLocation, useNavigate } from 'react-router-dom' // Adicionado useNavigate
+import { isValidElement } from 'react' // Adicionado useEffect
+import { Outlet, useLocation } from 'react-router-dom' // Adicionado useNavigate
 
 import {
   BreadcrumbPath, CommandMenu, NavigationTree, Separator,
@@ -20,14 +20,7 @@ const workspaces = [{
 export const AppLayout = () => {
   const { user, isLoading } = useAuth()
 
-  const navigate = useNavigate()
   const { pathname } = useLocation()
-
-  useEffect(() => {
-    if (!isLoading && (!user || !user.emailVerified)) {
-      navigate('/login', { replace: true })
-    }
-  }, [user, isLoading, navigate])
 
   if (isLoading || !user) return null
 
