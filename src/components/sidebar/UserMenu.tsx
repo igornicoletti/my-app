@@ -17,9 +17,9 @@ type UserValues = {
 
 const UserAvatar = ({ name, email, avatar }: UserValues) => (
   <div className='flex items-center gap-2'>
-    <Avatar>
+    <Avatar className='bg-sidebar-primary'>
       <AvatarImage src={avatar} alt={name} />
-      <AvatarFallback>{name[0]}</AvatarFallback>
+      <AvatarFallback className='bg-sidebar-primary'>{name[0]}</AvatarFallback>
     </Avatar>
     <div className='grid flex-1 text-left text-sm leading-tight'>
       <span className='truncate font-medium'>{name}</span>

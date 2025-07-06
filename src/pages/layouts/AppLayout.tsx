@@ -1,5 +1,6 @@
-import { isValidElement } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+// src/layouts/AppLayout.tsx
+import { isValidElement, useEffect } from 'react' // Adicionado useEffect
+import { Outlet, useLocation, useNavigate } from 'react-router-dom' // Adicionado useNavigate
 
 import {
   BreadcrumbPath, CommandMenu, NavigationTree, Separator,
@@ -7,14 +8,9 @@ import {
   ThemeSwitcher, UserMenu, WorkspaceSwitcher
 } from '@/components'
 import { ROUTE } from '@/configs'
-import { getProtectedRoutes } from '@/routers'
+import { useAuth } from '@/contexts'
+import { getProtectedRoutes } from '@/routers/protected.routes'
 import { getNavigationTree } from '@/utils'
-
-const user = {
-  name: 'Igor Nicoletti',
-  email: 'example@example.com',
-  avatar: '/unnamed.jpg',
-}
 
 const workspaces = [{
   name: '2Ti Technology',
@@ -22,7 +18,24 @@ const workspaces = [{
 }]
 
 export const AppLayout = () => {
+  const { user, isLoading } = useAuth()
+
+  const navigate = useNavigate()
   const { pathname } = useLocation()
+
+  useEffect(() => {
+    if (!isLoading && (!user || !user.emailVerified)) {
+      navigate('/login', { replace: true })
+    }
+  }, [user, isLoading, navigate])
+
+  if (isLoading || !user) return null
+
+  const userData = {
+    name: user.displayName!,
+    email: user.email!,
+    avatar: user?.photoURL ?? ''
+  }
 
   const appLayoutRoute = getProtectedRoutes().find((route) => isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
   const navigationItems = getNavigationTree(appLayoutRoute?.children || [], pathname)
@@ -37,19 +50,22 @@ export const AppLayout = () => {
           <NavigationTree items={navigationItems} />
         </SidebarContent>
         <SidebarFooter>
-          <UserMenu user={user} />
+          <UserMenu user={userData} />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className='flex w-full h-16 shrink-0 items-center justify-between px-2 gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
-          <div className='flex items-center gap-2'>
-            <SidebarTrigger />
-            <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-4' />
-            <BreadcrumbPath />
-          </div>
-          <div className='flex items-center gap-2'>
-            <CommandMenu />
-            <ThemeSwitcher variant='ghost' />
+        <header className='flex h-16 shrink-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
+          <div className="w-full flex items-center justify-between px-4">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger />
+              <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-6' />
+              <BreadcrumbPath />
+            </div>
+            <div className="flex items-center gap-2">
+              <CommandMenu />
+              <Separator orientation='vertical' className='data-[orientation=vertical]:h-6' />
+              <ThemeSwitcher />
+            </div>
           </div>
         </header>
         <div className='flex flex-1 flex-col gap-4 p-4'>

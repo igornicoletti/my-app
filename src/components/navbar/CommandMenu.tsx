@@ -1,9 +1,9 @@
 import React, { isValidElement, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Button, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components'
+import { Button, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut, } from '@/components'
 import { ROUTE } from '@/configs'
-import { getProtectedRoutes } from '@/routers'
+import { getProtectedRoutes } from '@/routers/protected.routes'
 import { getNavigationTree } from '@/utils'
 
 export const CommandMenu = () => {
@@ -12,7 +12,9 @@ export const CommandMenu = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  const appLayoutRoute = getProtectedRoutes().find((route) => isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
+  const appLayoutRoute = getProtectedRoutes().find((route) =>
+    isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
+
   const navigationItems = getNavigationTree(appLayoutRoute?.children || [], pathname)
 
   useEffect(() => {
@@ -33,11 +35,9 @@ export const CommandMenu = () => {
 
   return (
     <>
-      <Button onClick={() => setIsOpen((prev) => !prev)} variant='ghost' className='text-muted-foreground'>
-        Search{' '}
-        <kbd className="pointer-events-none flex h-5 items-center justify-center px-1 rounded border text-xs font-sans">
-          ⌘J
-        </kbd>
+      <Button onClick={() => setIsOpen((prev) => !prev)} variant='ghost' className='text-xs text-muted-foreground'>
+        Quick command
+        <CommandShortcut>⌘J</CommandShortcut>
       </Button>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput placeholder='Type a command or search...' />
@@ -45,13 +45,13 @@ export const CommandMenu = () => {
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading='App'>
             {navigationItems.map((item) => (
-              <React.Fragment key={item.title}>
+              <React.Fragment key={item.url}>
                 <CommandItem onSelect={() => handleSelect(item.url)}>
                   {item.Icon && <item.Icon />}
                   {item.title}
                 </CommandItem>
-                {item.subItems && item.subItems.map((subItem) => (
-                  <CommandItem key={subItem.title} onSelect={() => handleSelect(subItem.url)}>
+                {item.subItems?.map((subItem) => (
+                  <CommandItem key={subItem.url} onSelect={() => handleSelect(subItem.url)}>
                     {subItem.title}
                   </CommandItem>
                 ))}
