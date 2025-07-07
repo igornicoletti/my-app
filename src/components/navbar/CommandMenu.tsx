@@ -35,8 +35,8 @@ export const CommandMenu = () => {
   }
 
   return (
-    <>
-      <Button onClick={() => setIsOpen((prev) => !prev)} variant='secondary' size='sm' className='text-muted-foreground bg-sidebar gap-16'>
+    <div className='hidden md:flex'>
+      <Button onClick={() => setIsOpen((prev) => !prev)} variant='ghost'>
         Quick command{' '}
         <CommandShortcut className='rounded border px-1.5 py-0.5'>⌘J</CommandShortcut>
       </Button>
@@ -61,6 +61,6 @@ export const CommandMenu = () => {
           </CommandGroup>
         </CommandList>
       </CommandDialog>
-    </>
+    </div>
   )
 }

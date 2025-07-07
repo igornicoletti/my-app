@@ -1,8 +1,15 @@
 import { createContext } from 'react'
 
+export type Theme = 'dark' | 'light'
+
 type ThemeProviderState = {
-  isDark: boolean
-  toggleTheme: () => void
+  theme: Theme
+  setTheme: (theme: Theme) => void
 }
 
-export const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined)
+const initialState: ThemeProviderState = {
+  theme: 'dark',
+  setTheme: () => null
+}
+
+export const ThemeProviderContext = createContext<ThemeProviderState>(initialState)

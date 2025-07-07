@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 
-import { ThemeProviderContext } from '@/contexts'
+import { ThemeProviderContext, type Theme } from '@/contexts'
 
 type ThemeProviderProps = {
   children: ReactNode
@@ -8,25 +8,20 @@ type ThemeProviderProps = {
 }
 
 export const ThemeProvider = ({ children, storageKey = 'vite-ui-theme' }: ThemeProviderProps) => {
-  const [isDark, setIsDark] = useState<boolean>(() => localStorage.getItem(storageKey) === 'dark')
+  const [theme, setTheme] = useState<Theme>(() =>
+    (localStorage.getItem(storageKey) as Theme | null) ?? 'dark')
 
   useEffect(() => {
-    const root = window.document.documentElement
-    root.classList.toggle('dark', isDark)
-  }, [isDark])
+    const root = document.documentElement
+    root.classList.remove('light', 'dark')
+    root.classList.add(theme)
+  }, [theme])
 
   const value = {
-    isDark,
-    toggleTheme: () => {
-      setIsDark((currentIsDark) => {
-        const newIsDark = !currentIsDark
-        if (newIsDark) {
-          localStorage.setItem(storageKey, 'dark')
-        } else {
-          localStorage.removeItem(storageKey)
-        }
-        return newIsDark
-      })
+    theme,
+    setTheme: (newTheme: Theme) => {
+      localStorage.setItem(storageKey, newTheme)
+      setTheme(newTheme)
     }
   }
 

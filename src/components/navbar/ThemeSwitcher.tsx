@@ -4,11 +4,12 @@ import { Button } from '@/components'
 import { useTheme } from '@/contexts'
 
 export const ThemeSwitcher = () => {
-  const { isDark, toggleTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const nextTheme = theme === 'dark' ? 'light' : 'dark'
 
   return (
-    <Button onClick={toggleTheme} size='icon' variant='ghost'>
-      {!isDark ? <MoonIcon /> : <SunIcon />}
+    <Button onClick={() => setTheme(nextTheme)} size='icon' variant='ghost'>
+      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
       <span className='sr-only'>Toggle theme</span>
     </Button>
   )
