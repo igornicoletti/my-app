@@ -1,6 +1,5 @@
-import { Helmet } from 'react-helmet-async'
-
 import { useMetadata } from '@/hooks'
+import { Helmet } from 'react-helmet-async'
 
 export const HelmetMetadata = () => {
   const { title, description } = useMetadata()

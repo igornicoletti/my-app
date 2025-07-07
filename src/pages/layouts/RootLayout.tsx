@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { HelmetMetadata, LoadingSpinner, ProgressBar } from '@/components'
+import { HelmetMetadata, LoadingSpinner, ProgressBar, Toaster } from '@/components'
 
 export const RootLayout = () => {
   return (
@@ -9,6 +9,7 @@ export const RootLayout = () => {
       <HelmetMetadata />
       <ProgressBar />
       <Outlet />
+      <Toaster />
     </Suspense>
   )
 }

@@ -33,5 +33,3 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     </AuthProviderContext.Provider>
   )
 }
-
-
