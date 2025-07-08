@@ -5,11 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { GoogleLogoIcon, SignInIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 
 import { Button, EffectHighlight, FieldControl, Form, Separator } from '@/components'
-import { useSubmit } from '@/hooks'
+import { useSubmit, useToast } from '@/hooks'
 import { loginSchema, type LoginSchema } from '@/schemas'
 import { authService } from '@/services'
 
 export const Login = () => {
+  const { successToast } = useToast()
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' }
@@ -17,10 +19,12 @@ export const Login = () => {
 
   const { onSubmit, isLoading } = useSubmit(async (data: LoginSchema) => {
     await authService.signInWithEmail(data.email, data.password)
+    successToast('auth/login-success')
   }, `/dashboard`)
 
   const { onSubmit: handleSocialLogin, isLoading: isSocialLoading } = useSubmit(async () => {
     await authService.signInWithGoogle()
+    successToast('auth/login-success')
   }, `/dashboard`)
 
   return (

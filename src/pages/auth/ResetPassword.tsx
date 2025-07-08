@@ -5,11 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ShieldStarIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 
 import { Button, FieldControl, Form } from '@/components'
-import { useSubmit } from '@/hooks'
+import { useSubmit, useToast } from '@/hooks'
 import { resetPasswordSchema, type ResetPasswordSchema } from '@/schemas'
 import { authService } from '@/services'
 
 export const ResetPassword = () => {
+  const { successToast } = useToast()
+
   const [searchParams] = useSearchParams()
   const oobCode = searchParams.get('oobCode')
 
@@ -20,6 +22,7 @@ export const ResetPassword = () => {
 
   const { onSubmit, isLoading } = useSubmit(async (data: ResetPasswordSchema) => {
     await authService.confirmUserPasswordReset(oobCode!, data.password)
+    successToast('auth/password-reset-success')
   }, `/login`, () => !!oobCode)
 
   return (

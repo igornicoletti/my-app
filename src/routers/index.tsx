@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import { ROUTE } from '@/configs'
-import { AuthGuardRoute, GuestGuardRoute, HomeRouteHandler } from '@/pages'
+import { AuthGuardRoute, Callback, GuestGuardRoute, HomeRouteHandler } from '@/pages'
 
 import { getProtectedRoutes } from '@/routers/protected.routes'
 import { getPublicRoutes } from '@/routers/public.routes'
@@ -14,6 +14,10 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <HomeRouteHandler />
+      },
+      {
+        path: 'callback',
+        element: <Callback />
       },
       {
         element: <GuestGuardRoute />,

@@ -10,7 +10,7 @@ import type { NavigationValues } from '@/utils'
 
 export const NavigationTree = ({ items }: { items: NavigationValues[] }) => (
   <SidebarGroup>
-    <SidebarGroupLabel>App</SidebarGroupLabel>
+    <SidebarGroupLabel>Main</SidebarGroupLabel>
     <SidebarMenu>
       {items.map((item) => (
         <Collapsible key={item.title} asChild defaultOpen={item.isGroupActive}>

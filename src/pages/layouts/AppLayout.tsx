@@ -12,11 +12,13 @@ import { getProtectedRoutes } from '@/routers/protected.routes'
 import { getNavigationTree } from '@/utils'
 
 const workspaces = [{
-  name: '2Ti Corp.',
-  createdBy: 'Enterprise',
+  title: '2Ti Corp.',
+  description: 'Enterprise',
+  avatar: '',
 }, {
-  name: 'i.Go Inc.',
-  createdBy: 'Enterprise',
+  title: 'i.Go Inc.',
+  description: 'Enterprise',
+  avatar: '',
 }]
 
 export const AppLayout = () => {
@@ -31,8 +33,8 @@ export const AppLayout = () => {
   const navigationItems = getNavigationTree(appLayoutRoute?.children || [], pathname)
 
   const userData = {
-    name: user.displayName!,
-    email: user.email!,
+    title: user.displayName!,
+    description: user.email!,
     avatar: user?.photoURL ?? ''
   }
 
@@ -50,7 +52,6 @@ export const AppLayout = () => {
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>
-
       <SidebarInset>
         <header className='flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
           <div className="flex w-full items-center gap-2 px-4">

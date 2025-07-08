@@ -36,9 +36,9 @@ export const CommandMenu = () => {
 
   return (
     <div className='hidden md:flex'>
-      <Button onClick={() => setIsOpen((prev) => !prev)} variant='ghost'>
+      <Button onClick={() => setIsOpen((prev) => !prev)} variant='ghost' className='gap-6'>
         Quick command{' '}
-        <CommandShortcut className='rounded border px-1.5 py-0.5'>⌘J</CommandShortcut>
+        <CommandShortcut>⌘J</CommandShortcut>
       </Button>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput placeholder='Type a command or search...' />

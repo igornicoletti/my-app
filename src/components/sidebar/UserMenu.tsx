@@ -3,32 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import { CaretUpDownIcon, GearIcon, RocketLaunchIcon, SignOutIcon, SlidersHorizontalIcon, UserIcon } from '@phosphor-icons/react'
 
 import {
-  Avatar, AvatarFallback, AvatarImage,
+  AvatarContent,
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,
+  type AvatarValues
 } from '@/components'
 import { authService } from '@/services'
 
-type UserValues = {
-  name: string
-  email: string
-  avatar: string
-}
 
-const UserAvatar = ({ name, email, avatar }: UserValues) => (
-  <div className='flex items-center gap-2'>
-    <Avatar className='rounded-lg text-sidebar-primary-foreground'>
-      <AvatarImage src={avatar} alt={name} />
-      <AvatarFallback className='rounded-lg bg-sidebar-primary'>{name[0]}</AvatarFallback>
-    </Avatar>
-    <div className='grid flex-1 text-left text-sm leading-tight'>
-      <span className='truncate font-medium'>{name}</span>
-      <span className='truncate text-xs text-muted-foreground'>{email}</span>
-    </div>
-  </div>
-)
-
-export const UserMenu = ({ user }: { user: UserValues }) => {
+export const UserMenu = ({ user }: { user: AvatarValues }) => {
   const { isMobile } = useSidebar()
   const navigate = useNavigate()
 
@@ -38,13 +21,13 @@ export const UserMenu = ({ user }: { user: UserValues }) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent'>
-              <UserAvatar {...user} />
+              <AvatarContent {...user} />
               <CaretUpDownIcon className='ml-auto' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='end' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
             <DropdownMenuLabel>
-              <UserAvatar {...user} />
+              <AvatarContent {...user} />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='flex-col items-start'>

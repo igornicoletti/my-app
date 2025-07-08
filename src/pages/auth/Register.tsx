@@ -4,11 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon, UserPlusIcon } from '@phosphor-icons/react'
 
 import { Button, FieldControl, Form } from '@/components'
-import { useSubmit } from '@/hooks'
+import { useSubmit, useToast } from '@/hooks'
 import { registerSchema, type RegisterSchema } from '@/schemas'
 import { authService } from '@/services'
 
 export const Register = () => {
+  const { successToast } = useToast()
+
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: { email: '', password: '', confirmPassword: '', displayName: '' }
@@ -16,6 +18,7 @@ export const Register = () => {
 
   const { onSubmit, isLoading } = useSubmit(async (data: RegisterSchema) => {
     await authService.createUserWithEmail(data.email, data.password, data.displayName)
+    successToast('auth/account-created')
   }, `/login`)
 
   return (

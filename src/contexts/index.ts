@@ -1,3 +1,2 @@
-export * from './auth/_index'
-export * from './theme/_index'
-
+export * from './auth'
+export * from './theme'
