@@ -11,23 +11,24 @@ export const useSubmit = <T>(
   extraCheck?: () => boolean | Promise<boolean>) => {
   const [isLoading, setIsLoading] = useState(false)
   const { errorToast } = useToast()
+
   const navigate = useNavigate()
 
-  const onSubmit = useCallback(
-    async (data: T) => {
-      setIsLoading(true)
+  const onSubmit = useCallback(async (data: T) => {
+    setIsLoading(true)
 
-      try {
-        if (extraCheck && !(await extraCheck())) return
-        await submitFn(data)
-        navigate(redirectPath, { replace: true })
-      } catch (error) {
-        errorToast(error)
-      } finally {
-        setIsLoading(false)
-      }
-    }, [submitFn, redirectPath, extraCheck, navigate, errorToast]
-  )
+    try {
+      if (extraCheck && !(await extraCheck())) return
+      await submitFn(data)
+      navigate(redirectPath, { replace: true })
+    }
+    catch (error) {
+      errorToast(error)
+    }
+    finally {
+      setIsLoading(false)
+    }
+  }, [submitFn, redirectPath, extraCheck, navigate, errorToast])
 
   return { onSubmit, isLoading }
 }

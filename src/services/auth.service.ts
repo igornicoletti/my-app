@@ -1,14 +1,23 @@
 import {
-  applyActionCode, confirmPasswordReset, createUserWithEmailAndPassword, EmailAuthProvider,
-  GoogleAuthProvider, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail,
-  signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile,
-  type ActionCodeSettings, type User
+  applyActionCode,
+  confirmPasswordReset,
+  createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  GoogleAuthProvider,
+  reauthenticateWithCredential,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+  type ActionCodeSettings,
+  type User
 } from 'firebase/auth'
 
 import { AUTH } from '@/configs'
 
 const APP_ORIGIN = import.meta.env.VITE_APP_ORIGIN
-
 const ACTION_CODE_SETTINGS: ActionCodeSettings = {
   url: `${APP_ORIGIN}/callback`,
   handleCodeInApp: true

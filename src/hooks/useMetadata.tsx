@@ -10,10 +10,15 @@ export const useMetadata = (): Metadata => {
 
   return matches.reduce((acc, match) => {
     const handle = match.handle as Metadata | undefined
+
     if (!handle) return acc
 
-    const validEntries = Object.entries(handle).filter(([, value]) => value !== undefined)
-    const filteredHandle = Object.fromEntries(validEntries) as Partial<Metadata>
+    const validEntries = Object
+      .entries(handle)
+      .filter(([, value]) => value !== undefined)
+
+    const filteredHandle = Object
+      .fromEntries(validEntries) as Partial<Metadata>
 
     return { ...acc, ...filteredHandle }
   }, {} as Metadata)

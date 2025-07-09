@@ -1,7 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
+} from '@/components'
 import { useCrumbs } from '@/hooks'
 
 export const BreadcrumbPath = () => {

@@ -1,6 +1,10 @@
 import { useLocation } from 'react-router-dom'
 
-import { HERO, type HeroKey, type HeroValues } from '@/configs'
+import {
+  HERO,
+  type HeroKey,
+  type HeroValues
+} from '@/configs'
 
 export const useHero = (): HeroValues => {
   const { pathname } = useLocation()

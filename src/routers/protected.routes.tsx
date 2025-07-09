@@ -1,5 +1,6 @@
-import { ROUTE } from '@/configs'
 import type { RouteObject } from 'react-router-dom'
+
+import { ROUTE } from '@/configs'
 
 export const getProtectedRoutes = (): RouteObject[] => [
   {

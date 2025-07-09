@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { LoadingSpinner } from '@/components'
 import { useAuth } from '@/contexts'
 
-export const HomeRouteHandler = () => {
+export const RedirectRoute = () => {
   const { user, isLoading } = useAuth()
   const navigate = useNavigate()
 
@@ -18,9 +18,7 @@ export const HomeRouteHandler = () => {
     }
   }, [user, isLoading, navigate])
 
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
+  if (isLoading) return <LoadingSpinner />
 
   return null
 }

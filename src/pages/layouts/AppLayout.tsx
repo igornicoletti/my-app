@@ -1,15 +1,25 @@
-import { isValidElement } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 import {
-  BreadcrumbPath, CommandMenu, NavigationTree, Separator,
-  Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger,
-  ThemeSwitcher, UserMenu, WorkspaceSwitcher
+  BreadcrumbPath,
+  CommandMenu,
+  LoadingSpinner,
+  NavigationTree,
+  Separator,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarInset,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+  ThemeSwitcher,
+  UserMenu,
+  WorkspaceSwitcher
 } from '@/components'
-import { ROUTE } from '@/configs'
 import { useAuth } from '@/contexts'
-import { getProtectedRoutes } from '@/routers/protected.routes'
-import { getNavigationTree } from '@/utils'
+import { useNavigation } from '@/hooks'
 
 const workspaces = [{
   title: '2Ti Corp.',
@@ -23,19 +33,16 @@ const workspaces = [{
 
 export const AppLayout = () => {
   const { user, isLoading } = useAuth()
-  const { pathname } = useLocation()
+  const navigation = useNavigation()
 
-  if (isLoading || !user) return null
+  if (isLoading) return <LoadingSpinner />
+  if (!user) return null
 
-  const appLayoutRoute = getProtectedRoutes().find((route) =>
-    isValidElement(route.element) && route.element.type === ROUTE.AppLayout)
-
-  const navigationItems = getNavigationTree(appLayoutRoute?.children || [], pathname)
-
+  const { displayName, email, photoURL } = user
   const userData = {
-    title: user.displayName!,
-    description: user.email!,
-    avatar: user?.photoURL ?? ''
+    title: displayName ?? '',
+    description: email ?? '',
+    avatar: photoURL ?? '',
   }
 
   return (
@@ -45,7 +52,7 @@ export const AppLayout = () => {
           <WorkspaceSwitcher workspaces={workspaces} />
         </SidebarHeader>
         <SidebarContent>
-          <NavigationTree items={navigationItems} />
+          <NavigationTree items={navigation} />
         </SidebarContent>
         <SidebarFooter>
           <UserMenu user={userData} />

@@ -10,11 +10,14 @@ const isFirebaseError = (error: unknown): error is { code: string } =>
 
 export const useToast = () => {
   const errorToast = (error: unknown) => {
-    const errorCode = isFirebaseError(error) ? error.code : 'default'
+    const errorCode = isFirebaseError(error)
+      ? error.code
+      : 'default'
+
     const { title, description } = ERROR[errorCode as MessageKey] ?? ERROR.default
+
     toast.message(title, {
-      description,
-      classNames: {
+      description, classNames: {
         title: '!text-destructive',
         description: '!text-foreground'
       }
@@ -23,10 +26,10 @@ export const useToast = () => {
 
   const successToast = (key: MessageKey) => {
     const { title, description } = SUCCESS[key] ?? SUCCESS.default
+
     toast.message(title, {
-      description,
-      classNames: {
-        title: '!text-primary',
+      description, classNames: {
+        title: '!text-success',
         description: '!text-foreground'
       }
     })

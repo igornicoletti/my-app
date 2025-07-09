@@ -1,19 +1,28 @@
 import { Link } from 'react-router-dom'
 
-import { CaretRightIcon } from '@phosphor-icons/react'
-
 import {
-  Collapsible, CollapsibleContent, CollapsibleTrigger,
-  SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem
 } from '@/components'
 import type { NavigationValues } from '@/utils'
+import { CaretRightIcon } from '@phosphor-icons/react'
 
 export const NavigationTree = ({ items }: { items: NavigationValues[] }) => (
   <SidebarGroup>
-    <SidebarGroupLabel>Main</SidebarGroupLabel>
+    <SidebarGroupLabel>General</SidebarGroupLabel>
     <SidebarMenu>
       {items.map((item) => (
-        <Collapsible key={item.title} asChild defaultOpen={item.isGroupActive}>
+        <Collapsible asChild key={item.title} defaultOpen={item.isGroupActive}>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive}>
               <Link to={item.url}>

@@ -13,18 +13,15 @@ type Crumbs = {
 export const useCrumbs = (): Crumbs[] => {
   const matches = useMatches() as Array<UIMatch & { handle?: Handle }>
 
-  return matches
-    .map((match, index, arr) => {
-      const crumb = match.handle?.crumb
-      if (!crumb) return null
+  return matches.map((match, index, arr) => {
+    const crumb = match.handle?.crumb
 
-      const name = typeof crumb === 'function' ? crumb(match.params) : crumb
+    if (!crumb) return null
 
-      return {
-        name,
-        path: match.pathname,
-        isCurrent: index === arr.length - 1
-      } satisfies Crumbs
-    })
-    .filter(Boolean) as Crumbs[]
+    return {
+      name: typeof crumb === 'function' ? crumb(match.params) : crumb,
+      path: match.pathname,
+      isCurrent: index === arr.length - 1
+    } satisfies Crumbs
+  }).filter(Boolean) as Crumbs[]
 }

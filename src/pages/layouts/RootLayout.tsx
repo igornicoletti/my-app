@@ -1,7 +1,12 @@
 import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { HelmetMetadata, LoadingSpinner, ProgressBar, Toaster } from '@/components'
+import {
+  HelmetMetadata,
+  LoadingSpinner,
+  ProgressBar,
+  Toaster
+} from '@/components'
 
 export const RootLayout = () => {
   return (

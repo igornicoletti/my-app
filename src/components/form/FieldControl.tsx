@@ -22,7 +22,7 @@ export const FieldControl = <T extends FieldValues>({ control, name, type, autoC
   const inputType = isPassword && visible ? 'text' : type
 
   return (
-    <FormField name={name} control={control} render={({ field }) => (
+    <FormField name={name} control={control} render={({ field, fieldState }) => (
       <FormItem>
         <FormControl>
           <div className='relative'>
@@ -32,7 +32,8 @@ export const FieldControl = <T extends FieldValues>({ control, name, type, autoC
               disabled={disabled}
               placeholder={placeholder}
               autoComplete={autoComplete}
-              autoFocus={autoFocus} />
+              autoFocus={autoFocus}
+              aria-invalid={!!fieldState.error} />
             {isPassword && (
               <Button onClick={() => setVisible((prev) => !prev)}
                 aria-label={visible ? 'Hide password' : 'Show password'}

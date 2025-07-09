@@ -1,8 +1,11 @@
+import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider } from 'react-router-dom'
 
-import { AuthProvider, ThemeProvider } from '@/contexts'
+import {
+  AuthProvider,
+  ThemeProvider
+} from '@/contexts'
 import { router } from '@/routers'
-import { HelmetProvider } from 'react-helmet-async'
 
 export const App = () => (
   <HelmetProvider>
