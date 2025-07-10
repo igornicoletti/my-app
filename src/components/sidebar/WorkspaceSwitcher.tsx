@@ -6,20 +6,27 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
-  SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
 } from '@/components'
 
-type Workspace = {
+type WorkspaceItem = {
   title: string
   description?: string | undefined
   avatar?: string | undefined
 }
 
-export const WorkspaceSwitcher = ({ workspaces }: { workspaces: Workspace[] }) => {
+export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] }) => {
+  const [isActive, setIsActive] = useState(workspace[0])
   const { isMobile } = useSidebar()
-  const [isActive, setIsActive] = useState(workspaces[0])
 
   if (!isActive) return null
 
@@ -44,13 +51,13 @@ export const WorkspaceSwitcher = ({ workspaces }: { workspaces: Workspace[] }) =
           </DropdownMenuTrigger>
           <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='start' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
             <DropdownMenuLabel className='text-muted-foreground text-xs'>Workspaces</DropdownMenuLabel>
-            {workspaces.map((workspace) => (
-              <DropdownMenuItem key={workspace.title} onClick={() => setIsActive(workspace)}>
+            {workspace.map((item, index) => (
+              <DropdownMenuItem key={index} onClick={() => setIsActive(item)}>
                 <Avatar className='rounded-sm size-6'>
-                  <AvatarFallback className='rounded-sm bg-transparent'>{workspace.title[0]}</AvatarFallback>
+                  <AvatarFallback className='rounded-sm bg-transparent'>{item.title[0]}</AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-medium'>{workspace.title}</span>
+                  <span className='truncate font-medium'>{item.title}</span>
                 </div>
               </DropdownMenuItem>
             ))}

@@ -19,6 +19,7 @@ export const CommandMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const navigation = useNavigation()
 
+
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {

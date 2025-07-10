@@ -65,7 +65,6 @@ export const UserMenu = ({ user }: { user: User }) => {
               <CaretUpDownIcon className='ml-auto' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-
           <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='end' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
             <DropdownMenuLabel>
               <div className='grid flex-1 text-left text-sm leading-tight'>

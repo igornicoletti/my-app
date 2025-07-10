@@ -1,37 +1,43 @@
 import { toast } from 'sonner'
 
-import { ERROR, SUCCESS } from '@/configs'
+import {
+  ERROR,
+  SUCCESS,
+  type ErrorMessageKey,
+  type SuccessMessageKey,
+} from '@/configs'
 
-type MessageKey = keyof typeof ERROR | keyof typeof SUCCESS
+type FirebaseErrorLike = { code: string }
 
-const isFirebaseError = (error: unknown): error is { code: string } =>
-  typeof error === 'object' && error !== null && 'code' in error &&
-  typeof (error as { code: string }).code === 'string'
+const isFirebaseError = (error: unknown): error is FirebaseErrorLike =>
+  typeof error === 'object' &&
+  error !== null &&
+  'code' in error &&
+  typeof (error as FirebaseErrorLike).code === 'string'
 
 export const useToast = () => {
   const errorToast = (error: unknown) => {
-    const errorCode = isFirebaseError(error)
-      ? error.code
-      : 'default'
-
-    const { title, description } = ERROR[errorCode as MessageKey] ?? ERROR.default
+    const code = isFirebaseError(error) ? error.code : 'default'
+    const { title, description } = ERROR[code as ErrorMessageKey] ?? ERROR.default
 
     toast.message(title, {
-      description, classNames: {
+      description,
+      classNames: {
         title: '!text-destructive',
-        description: '!text-foreground'
-      }
+        description: '!text-foreground',
+      },
     })
   }
 
-  const successToast = (key: MessageKey) => {
-    const { title, description } = SUCCESS[key] ?? SUCCESS.default
+  const successToast = (key: SuccessMessageKey | string) => {
+    const { title, description } = SUCCESS[key as SuccessMessageKey] ?? SUCCESS.default
 
     toast.message(title, {
-      description, classNames: {
+      description,
+      classNames: {
         title: '!text-success',
-        description: '!text-foreground'
-      }
+        description: '!text-foreground',
+      },
     })
   }
 

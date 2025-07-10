@@ -5,6 +5,7 @@ import { useTheme } from '@/contexts'
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme()
+
   const nextTheme = theme === 'dark' ? 'light' : 'dark'
 
   return (

@@ -10,9 +10,13 @@ type ThemeProviderProps = {
   storageKey?: string
 }
 
-export const ThemeProvider = ({ children, storageKey = 'vite-ui-theme' }: ThemeProviderProps) => {
+export const ThemeProvider = ({
+  children,
+  storageKey = 'vite-ui-theme',
+}: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(() =>
-    (localStorage.getItem(storageKey) as Theme | null) ?? 'dark')
+    (localStorage.getItem(storageKey) as Theme | null) ?? 'dark'
+  )
 
   useEffect(() => {
     const root = document.documentElement
@@ -25,7 +29,7 @@ export const ThemeProvider = ({ children, storageKey = 'vite-ui-theme' }: ThemeP
     setTheme: (newTheme: Theme) => {
       localStorage.setItem(storageKey, newTheme)
       setTheme(newTheme)
-    }
+    },
   }
 
   return (

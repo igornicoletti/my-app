@@ -1,7 +1,7 @@
 import type { User } from 'firebase/auth'
 import { createContext } from 'react'
 
-type AuthProviderState = {
+export type AuthProviderState = {
   user: User | null
   isLoading: boolean
 }

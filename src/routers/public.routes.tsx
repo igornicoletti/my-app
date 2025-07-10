@@ -1,44 +1,37 @@
 import type { RouteObject } from 'react-router-dom'
 
-import { ROUTE } from '@/configs'
+import {
+  ROUTE_ELEMENTS,
+  ROUTE_HANDLES,
+  type RouteHandle
+} from '@/configs'
 
+// ----- Public (unauthenticated) routes -----
 export const getPublicRoutes = (): RouteObject[] => [
   {
-    element: <ROUTE.AuthLayout />,
-    errorElement: <ROUTE.ErrorFallback />,
+    element: <ROUTE_ELEMENTS.AuthLayout />,
+    errorElement: <ROUTE_ELEMENTS.ErrorFallback />,
     children: [
       {
         path: 'login',
-        element: <ROUTE.Login />,
-        handle: {
-          title: 'Login',
-          description: 'Access your account securely with your email and password.'
-        }
+        element: <ROUTE_ELEMENTS.Login />,
+        handle: ROUTE_HANDLES.login satisfies RouteHandle,
       },
       {
         path: 'register',
-        element: <ROUTE.Register />,
-        handle: {
-          title: 'Create Account',
-          description: 'Sign up to create your account and start using the platform.'
-        }
+        element: <ROUTE_ELEMENTS.Register />,
+        handle: ROUTE_HANDLES.register satisfies RouteHandle,
       },
       {
         path: 'forgot-password',
-        element: <ROUTE.ForgotPassword />,
-        handle: {
-          title: 'Recover Password',
-          description: 'Enter your email to receive a password reset link.'
-        }
+        element: <ROUTE_ELEMENTS.ForgotPassword />,
+        handle: ROUTE_HANDLES.forgotPassword satisfies RouteHandle,
       },
       {
         path: 'reset-password',
-        element: <ROUTE.ResetPassword />,
-        handle: {
-          title: 'Set New Password',
-          description: 'Choose a new password to access your account.'
-        }
-      }
-    ]
-  }
+        element: <ROUTE_ELEMENTS.ResetPassword />,
+        handle: ROUTE_HANDLES.resetPassword satisfies RouteHandle,
+      },
+    ],
+  },
 ]

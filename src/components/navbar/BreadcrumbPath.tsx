@@ -24,7 +24,9 @@ export const BreadcrumbPath = () => {
                 <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
               ) : (
                 <BreadcrumbLink asChild>
-                  <Link to={crumb.path}>{crumb.name}</Link>
+                  <Link to={crumb.path}>
+                    {crumb.name}
+                  </Link>
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>

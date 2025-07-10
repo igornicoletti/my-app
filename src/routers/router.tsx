@@ -1,42 +1,48 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { ROUTE } from '@/configs'
+import { ROUTE_ELEMENTS } from '@/configs'
 import {
   AuthGuardRoute,
   Callback,
   GuestGuardRoute,
-  RedirectRoute
+  RedirectRoute,
 } from '@/pages'
 import {
   getProtectedRoutes,
-  getPublicRoutes
+  getPublicRoutes,
 } from '@/routers'
 
+// ----- Router definition -----
 export const router = createBrowserRouter([
   {
-    element: <ROUTE.RootLayout />,
-    errorElement: <ROUTE.ErrorFallback />,
+    element: <ROUTE_ELEMENTS.RootLayout />,
+    errorElement: <ROUTE_ELEMENTS.ErrorFallback />,
     children: [
+      // Root redirect
       {
         path: '/',
-        element: <RedirectRoute />
+        element: <RedirectRoute />,
       },
+      // Firebase callback handler (email verification / password reset)
       {
         path: 'callback',
-        element: <Callback />
+        element: <Callback />,
       },
+      // Public-only pages (e.g. login, register)
       {
         element: <GuestGuardRoute />,
-        children: getPublicRoutes()
+        children: getPublicRoutes(),
       },
+      // Auth-protected pages (e.g. dashboard, settings)
       {
         element: <AuthGuardRoute />,
-        children: getProtectedRoutes()
+        children: getProtectedRoutes(),
       },
+      // Fallback for unknown routes
       {
         path: '*',
-        element: <ROUTE.NotFound />
-      }
-    ]
-  }
+        element: <ROUTE_ELEMENTS.NotFound />,
+      },
+    ],
+  },
 ])

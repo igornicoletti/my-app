@@ -6,72 +6,79 @@ import {
   type Icon,
 } from '@phosphor-icons/react'
 
+// ----- Types -----
 type AppRouteHandle = {
   crumb: string
 }
 
-type SubItemValues = {
+type SubItem = {
   title: string
   url: string
   isActive?: boolean
 }
 
-export type NavigationValues = {
+export type NavigationItem = {
   title: string
   url: string
   Icon?: Icon
   isActive?: boolean
   isGroupActive?: boolean
-  subItems?: SubItemValues[]
+  subItems?: SubItem[]
 }
 
+// ----- Icon registry -----
 const iconRegistry: Record<string, Icon> = {
   dashboard: HouseSimpleIcon,
   analytics: ChartBarIcon,
 }
 
+// ----- Utils -----
 const normalizePath = (...paths: string[]): string =>
   paths.join('/').replace(/\/+/g, '/')
 
+// ----- Sub-item generator -----
 const createSubItems = (
   childRoutes: RouteObject[],
   parentUrl: string,
   currentPath: string
-): SubItemValues[] => {
+): SubItem[] => {
   return childRoutes
-    .filter((child): child is RouteObject & {
-      handle: AppRouteHandle
-      path: string
-    } =>
-      !!child.path &&
-      !child.path.includes(':') &&
-      !!child.handle &&
-      typeof (child.handle as AppRouteHandle).crumb === 'string'
+    .filter(
+      (child): child is RouteObject & {
+        handle: AppRouteHandle
+        path: string
+      } =>
+        !!child.path &&
+        !child.path.includes(':') &&
+        !!child.handle &&
+        typeof (child.handle as AppRouteHandle).crumb === 'string'
     )
     .map((child) => {
       const subItemUrl = normalizePath(parentUrl, child.path!)
       return {
         title: (child.handle as AppRouteHandle).crumb,
         url: subItemUrl,
-        isActive: currentPath === subItemUrl,
+        isActive: currentPath === subItemUrl
       }
     })
 }
 
-export const getNavigationTree = (
+// ----- Navigation tree builder -----
+export const buildNavigationTree = (
   routes: RouteObject[],
   currentPath: string,
   parentUrl: string = ''
-): NavigationValues[] => {
-  return routes.reduce<NavigationValues[]>((acc, route) => {
+): NavigationItem[] => {
+  return routes.reduce<NavigationItem[]>((acc, route) => {
     const { path, handle, children } = route
+
     const routeHandle = handle as AppRouteHandle | undefined
 
     if (!path || !routeHandle?.crumb) return acc
 
     const itemUrl = normalizePath(parentUrl, path)
 
-    const navigationItem: NavigationValues = {
+    const navigationItem: NavigationItem = {
       title: routeHandle.crumb,
       url: itemUrl,
       Icon: iconRegistry[path] ?? iconRegistry.dashboard,

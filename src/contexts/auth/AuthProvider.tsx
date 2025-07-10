@@ -1,6 +1,7 @@
 import type { User } from 'firebase/auth'
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 
+import { LoadingSpinner } from '@/components'
 import { AuthProviderContext } from '@/contexts'
 import { authService } from '@/services'
 
@@ -21,11 +22,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return unsubscribe
   }, [])
 
-  const value = useMemo(() => ({
-    user, isLoading
-  }), [user, isLoading])
+  const value = useMemo(() => ({ user, isLoading }), [user, isLoading])
 
-  if (isLoading) return null
+  if (isLoading) return <LoadingSpinner />
 
   return (
     <AuthProviderContext.Provider value={value}>

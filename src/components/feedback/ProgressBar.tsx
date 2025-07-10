@@ -15,16 +15,18 @@ export const ProgressBar = () => {
 
     if (isLoading) {
       setProgress(10)
+
       interval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 90) {
             clearInterval(interval)
             return prev
           }
-          return prev + 10
+          return prev + 1
         })
       }, 200)
-    } else {
+    }
+    else {
       setProgress(100)
       timeout = setTimeout(() => setProgress(0), 500)
     }
@@ -37,9 +39,5 @@ export const ProgressBar = () => {
 
   if (progress === 0) return null
 
-  return (
-    <Progress
-      value={progress}
-      className='fixed top-0 left-0 w-full h-1 z-50' />
-  )
+  return <Progress value={progress} />
 }

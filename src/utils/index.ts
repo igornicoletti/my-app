@@ -1,1 +1,4 @@
-export { getNavigationTree, type NavigationValues } from './getNavigationTree'
+export {
+  buildNavigationTree,
+  type NavigationItem
+} from './navigation-tree.utils'

@@ -1,30 +1,27 @@
 import type { RouteObject } from 'react-router-dom'
 
-import { ROUTE } from '@/configs'
+import {
+  ROUTE_ELEMENTS,
+  ROUTE_HANDLES,
+  type RouteHandle
+} from '@/configs'
 
+// ----- Protected (authenticated) routes -----
 export const getProtectedRoutes = (): RouteObject[] => [
   {
-    element: <ROUTE.AppLayout />,
-    errorElement: <ROUTE.ErrorFallback />,
+    element: <ROUTE_ELEMENTS.AppLayout />,
+    errorElement: <ROUTE_ELEMENTS.ErrorFallback />,
     children: [
       {
         path: 'dashboard',
-        element: <ROUTE.Dashboard />,
-        handle: {
-          crumb: 'Dashboard',
-          title: 'Dashboard',
-          description: 'Overview of your activity, performance, and quick access to key features.'
-        }
+        element: <ROUTE_ELEMENTS.Dashboard />,
+        handle: ROUTE_HANDLES.dashboard satisfies RouteHandle,
       },
       {
         path: 'analytics',
-        element: <ROUTE.Analytics />,
-        handle: {
-          crumb: 'Analytics',
-          title: 'Analytics',
-          description: 'Detailed insights and data visualizations to help you make informed decisions.'
-        }
-      }
-    ]
-  }
+        element: <ROUTE_ELEMENTS.Analytics />,
+        handle: ROUTE_HANDLES.analytics satisfies RouteHandle,
+      },
+    ],
+  },
 ]

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import { CaretRightIcon } from '@phosphor-icons/react'
+
 import {
   Collapsible,
   CollapsibleContent,
@@ -14,15 +16,14 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem
 } from '@/components'
-import type { NavigationValues } from '@/utils'
-import { CaretRightIcon } from '@phosphor-icons/react'
+import type { NavigationItem } from '@/utils'
 
-export const NavigationTree = ({ items }: { items: NavigationValues[] }) => (
+export const NavigationTree = ({ navigation }: { navigation: NavigationItem[] }) => (
   <SidebarGroup>
-    <SidebarGroupLabel>General</SidebarGroupLabel>
+    <SidebarGroupLabel>Main</SidebarGroupLabel>
     <SidebarMenu>
-      {items.map((item) => (
-        <Collapsible asChild key={item.title} defaultOpen={item.isGroupActive}>
+      {navigation.map((item, index) => (
+        <Collapsible asChild key={index} defaultOpen={item.isGroupActive}>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive}>
               <Link to={item.url}>
@@ -40,10 +41,12 @@ export const NavigationTree = ({ items }: { items: NavigationValues[] }) => (
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.subItems.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
+                    {item.subItems.map((subItem, subIndex) => (
+                      <SidebarMenuSubItem key={subIndex}>
                         <SidebarMenuSubButton asChild isActive={subItem.isActive}>
-                          <Link to={subItem.url}>{subItem.title}</Link>
+                          <Link to={subItem.url}>
+                            {subItem.title}
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}

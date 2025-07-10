@@ -3,7 +3,14 @@ import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react'
 
-import { Button, FormControl, FormField, FormItem, FormMessage, Input } from '@/components'
+import {
+  Button,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Input
+} from '@/components'
 
 interface FieldControlValues<T extends FieldValues> {
   name: FieldPath<T>
@@ -15,7 +22,15 @@ interface FieldControlValues<T extends FieldValues> {
   placeholder?: string
 }
 
-export const FieldControl = <T extends FieldValues>({ control, name, type, autoComplete, autoFocus, disabled, placeholder }: FieldControlValues<T>) => {
+export const FieldControl = <T extends FieldValues>({
+  autoComplete,
+  autoFocus,
+  control,
+  disabled,
+  name,
+  placeholder,
+  type,
+}: FieldControlValues<T>) => {
   const [visible, setVisible] = useState(false)
 
   const isPassword = type === 'password'
@@ -30,14 +45,12 @@ export const FieldControl = <T extends FieldValues>({ control, name, type, autoC
               {...field}
               type={inputType}
               disabled={disabled}
+              autoFocus={autoFocus}
               placeholder={placeholder}
               autoComplete={autoComplete}
-              autoFocus={autoFocus}
               aria-invalid={!!fieldState.error} />
             {isPassword && (
-              <Button onClick={() => setVisible((prev) => !prev)}
-                aria-label={visible ? 'Hide password' : 'Show password'}
-                size='icon' type='button' variant='ghost' className='absolute top-0 right-0'>
+              <Button onClick={() => setVisible((prev) => !prev)} size='icon' type='button' variant='ghost' className='absolute top-0 right-0'>
                 {visible ? <EyeSlashIcon /> : <EyeIcon />}
               </Button>
             )}
