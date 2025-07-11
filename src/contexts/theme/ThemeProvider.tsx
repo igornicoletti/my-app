@@ -14,7 +14,7 @@ export const ThemeProvider = ({
   children,
   storageKey = 'vite-ui-theme',
 }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<Theme>(() =>
+  const [theme, setThemeState] = useState<Theme>(() =>
     (localStorage.getItem(storageKey) as Theme | null) ?? 'dark'
   )
 
@@ -24,16 +24,17 @@ export const ThemeProvider = ({
     root.classList.add(theme)
   }, [theme])
 
-  const value = {
-    theme,
-    setTheme: (newTheme: Theme) => {
-      localStorage.setItem(storageKey, newTheme)
-      setTheme(newTheme)
-    },
+  const setTheme = (newTheme: Theme) => {
+    localStorage.setItem(storageKey, newTheme)
+    setThemeState(newTheme)
+  }
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
   return (
-    <ThemeProviderContext.Provider value={value}>
+    <ThemeProviderContext.Provider value={{ theme, setTheme, toggleTheme }}>
       {children}
     </ThemeProviderContext.Provider>
   )

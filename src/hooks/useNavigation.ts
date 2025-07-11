@@ -16,8 +16,7 @@ export const useNavigation = (): NavigationItem[] => {
 
     const appLayoutRoute = protectedRoutes.find((route) =>
       isValidElement(route.element) &&
-      route.element.type === ROUTE_ELEMENTS.AppLayout
-    )
+      route.element.type === ROUTE_ELEMENTS.AppLayout)
 
     const childRoutes = appLayoutRoute?.children ?? []
 

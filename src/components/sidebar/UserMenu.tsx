@@ -1,11 +1,12 @@
-import { useNavigate } from 'react-router-dom'
 
 import {
   CaretUpDownIcon,
   ListMagnifyingGlassIcon,
+  MoonIcon,
   RocketLaunchIcon,
   SignOutIcon,
   SlidersHorizontalIcon,
+  SunIcon,
   UserIcon
 } from '@phosphor-icons/react'
 
@@ -26,8 +27,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem, useSidebar
 } from '@/components'
-
-import { useToast } from '@/hooks'
+import { useTheme } from '@/contexts'
+import { useShortcut } from '@/hooks'
 import { authService } from '@/services'
 
 type User = {
@@ -38,15 +39,9 @@ type User = {
 
 export const UserMenu = ({ user }: { user: User }) => {
   const { isMobile } = useSidebar()
-  const { successToast } = useToast()
+  const { theme, toggleTheme } = useTheme()
 
-  const navigate = useNavigate()
-
-  const handleSignOut = async () => {
-    await authService.signOut()
-    successToast('auth/logout-success')
-    navigate('/login')
-  }
+  const handleLogout = useShortcut(['meta+q', 'ctrl+q'], () => authService.signOut())
 
   return (
     <SidebarMenu>
@@ -84,6 +79,11 @@ export const UserMenu = ({ user }: { user: User }) => {
                 <SlidersHorizontalIcon />
                 Preferences
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={toggleTheme}>
+                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+                Toggle theme
+                <DropdownMenuShortcut>⌘T</DropdownMenuShortcut>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <ListMagnifyingGlassIcon />
                 Command Menu
@@ -91,9 +91,10 @@ export const UserMenu = ({ user }: { user: User }) => {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuGroup className='my-2'>
-              <DropdownMenuItem onClick={handleSignOut}>
+              <DropdownMenuItem onClick={handleLogout}>
                 <SignOutIcon />
                 Log Out
+                <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

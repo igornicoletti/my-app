@@ -15,9 +15,7 @@ export const AuthLayout = () => {
             <h2 className='text-xl font-medium'>{hero.heading}</h2>
             <p className='text-sm text-muted-foreground'>{hero.subheading}</p>
           </header>
-
           <Outlet />
-
           <footer className='text-center'>
             <p className='text-sm text-muted-foreground'>
               {hero.question}{' '}

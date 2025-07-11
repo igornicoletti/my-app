@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeftIcon } from '@phosphor-icons/react'
 
 import {
-  Button,
-  EffectHighlight,
-  Separator
+  Button
 } from '@/components'
 
 export const NotFound = () => {
@@ -19,18 +17,15 @@ export const NotFound = () => {
   return (
     <div className='relative flex min-h-svh flex-col'>
       <div className='flex flex-1 flex-col items-center justify-center py-12'>
-        <div className='w-full max-w-sm grid gap-6 px-6'>
+        <div className='w-full max-w-md grid gap-6 px-6'>
 
-          <div className='flex items-center justify-center gap-2'>
+          <header className='grid gap-2 text-center'>
             <h2 className='text-xl font-medium'>404</h2>
-            <Separator orientation='vertical' className='data-[orientation=vertical]:h-4' />
             <p className='text-sm text-muted-foreground'>This page could not be found.</p>
-          </div>
-
-          <Button onClick={handleBack} variant='secondary'>
+          </header>
+          <Button onClick={handleBack} variant='link'>
             <ArrowLeftIcon />
             Go back
-            <EffectHighlight />
           </Button>
 
         </div>

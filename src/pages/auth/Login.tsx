@@ -19,10 +19,17 @@ export const Login = () => {
 
   const { onSubmit, isLoading } = useSubmit(async (data: LoginSchema) => {
     await authService.signInWithEmail(data.email, data.password)
+    await authService.getCurrentUser()?.reload()
+
+    const user = authService.getCurrentUser()
+    if (!user?.emailVerified) {
+      throw new Error('auth/unverified-email')
+    }
+
     successToast('auth/login-success')
   }, `/dashboard`)
 
-  const { onSubmit: handleSocialLogin, isLoading: isSocialLoading } = useSubmit(async () => {
+  const { onSubmit: onSocialSubmit, isLoading: isSocialLoading } = useSubmit(async () => {
     await authService.signInWithGoogle()
     successToast('auth/login-success')
   }, `/dashboard`)
@@ -30,14 +37,14 @@ export const Login = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
-        <Button onClick={handleSocialLogin} disabled={isSocialLoading} type='button' variant='secondary'>
+        <Button onClick={onSocialSubmit} disabled={isSocialLoading} type='button' variant='secondary'>
           {isSocialLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<GoogleLogoIcon />)}
           {isSocialLoading ? 'Signing in...' : 'Login with Google'}
           <EffectHighlight />
         </Button>
-        <div className='w-full flex items-center justify-center overflow-hidden'>
+        <div className='w-full flex items-center justify-center gap-2 overflow-hidden'>
           <Separator />
-          <span className='text-sm text-muted-foreground px-2'>OR</span>
+          <span className='text-sm text-muted-foreground'>OR</span>
           <Separator />
         </div>
         <FieldControl control={form.control} disabled={isLoading} type='email' name='email' placeholder='Email' autoComplete='username' />
