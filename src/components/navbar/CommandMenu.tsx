@@ -9,33 +9,29 @@ import {
   CommandItem,
   CommandList
 } from '@/components'
+import { useCommand } from '@/contexts'
 import { useNavigation } from '@/hooks'
 
-type CommandMenuProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
-
-export const CommandMenu = ({ open, onOpenChange }: CommandMenuProps) => {
+export const CommandMenu = () => {
   const navigation = useNavigation()
-  const handleSelect = () => onOpenChange(false)
+  const { open, setOpen } = useCommand()
 
   return (
-    <CommandDialog open={open} onOpenChange={onOpenChange}>
+    <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder='Type a command or search...' />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading='Main'>
           {navigation.map((item) => (
             <React.Fragment key={item.url}>
-              <CommandItem asChild onSelect={handleSelect}>
+              <CommandItem asChild onSelect={() => setOpen(false)}>
                 <Link to={item.url}>
                   {item.Icon && <item.Icon />}
                   {item.title}
                 </Link>
               </CommandItem>
               {item.subItems?.map((subItem) => (
-                <CommandItem asChild key={subItem.url} onSelect={handleSelect}>
+                <CommandItem asChild key={subItem.url} onSelect={() => setOpen(false)}>
                   <Link to={subItem.url}>
                     <span className='ml-6'>{subItem.title}</span>
                   </Link>

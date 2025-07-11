@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import {
+  CommandMenu,
   HelmetMetadata,
   LoadingSpinner,
   ProgressBar,
@@ -13,6 +14,7 @@ export const RootLayout = () => {
     <Suspense fallback={<LoadingSpinner />}>
       <HelmetMetadata />
       <ProgressBar />
+      <CommandMenu />
       <Outlet />
       <Toaster />
     </Suspense>

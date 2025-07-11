@@ -27,7 +27,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem, useSidebar
 } from '@/components'
-import { useTheme } from '@/contexts'
+import { useCommand, useTheme } from '@/contexts'
 import { useShortcut } from '@/hooks'
 import { authService } from '@/services'
 
@@ -39,8 +39,10 @@ type User = {
 
 export const UserMenu = ({ user }: { user: User }) => {
   const { isMobile } = useSidebar()
+  const { setOpen } = useCommand()
   const { theme, toggleTheme } = useTheme()
 
+  const handleCommand = useShortcut(['meta+k', 'ctrl+k'], () => setOpen(true))
   const handleLogout = useShortcut(['meta+q', 'ctrl+q'], () => authService.signOut())
 
   return (
@@ -84,7 +86,7 @@ export const UserMenu = ({ user }: { user: User }) => {
                 Toggle theme
                 <DropdownMenuShortcut>⌘T</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleCommand}>
                 <ListMagnifyingGlassIcon />
                 Command Menu
                 <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>

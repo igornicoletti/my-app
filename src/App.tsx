@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom'
 
 import {
   AuthProvider,
+  CommandProvider,
   ThemeProvider
 } from '@/contexts'
 import { router } from '@/routers'
@@ -11,7 +12,9 @@ export const App = () => (
   <HelmetProvider>
     <ThemeProvider>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <CommandProvider>
+          <RouterProvider router={router} />
+        </CommandProvider>
       </AuthProvider>
     </ThemeProvider>
   </HelmetProvider>
