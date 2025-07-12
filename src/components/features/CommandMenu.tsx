@@ -21,7 +21,7 @@ export const CommandMenu = () => {
       <CommandInput placeholder='Type a command or search...' />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading='Main'>
+        <CommandGroup heading='Navigation'>
           {navigation.map((item) => (
             <React.Fragment key={item.url}>
               <CommandItem asChild onSelect={() => setOpen(false)}>

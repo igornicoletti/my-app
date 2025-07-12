@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { ROUTE_ELEMENTS } from '@/configs'
+import { ELEMENTS } from '@/configs'
 import {
   AuthGuardRoute,
   Callback,
@@ -15,8 +15,8 @@ import {
 // ----- Router definition -----
 export const router = createBrowserRouter([
   {
-    element: <ROUTE_ELEMENTS.RootLayout />,
-    errorElement: <ROUTE_ELEMENTS.ErrorFallback />,
+    element: <ELEMENTS.RootLayout />,
+    errorElement: <ELEMENTS.ErrorFallback />,
     children: [
       // Root redirect
       {
@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
       // Fallback for unknown routes
       {
         path: '*',
-        element: <ROUTE_ELEMENTS.NotFound />,
+        element: <ELEMENTS.NotFound />,
       },
     ],
   },

@@ -9,8 +9,10 @@ type CommandProviderProps = {
 export const CommandProvider = ({ children }: CommandProviderProps) => {
   const [open, setOpen] = useState(false)
 
+  const openCommand = () => setOpen((open) => !open)
+
   return (
-    <CommandProviderContext.Provider value={{ open, setOpen }}>
+    <CommandProviderContext.Provider value={{ open, setOpen, openCommand }}>
       {children}
     </CommandProviderContext.Provider>
   )

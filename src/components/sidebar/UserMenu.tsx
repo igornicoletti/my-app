@@ -25,7 +25,8 @@ import {
   DropdownMenuTrigger,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem, useSidebar
+  SidebarMenuItem,
+  useSidebar
 } from '@/components'
 import { useCommand, useTheme } from '@/contexts'
 import { useShortcut } from '@/hooks'
@@ -39,10 +40,11 @@ type User = {
 
 export const UserMenu = ({ user }: { user: User }) => {
   const { isMobile } = useSidebar()
-  const { setOpen } = useCommand()
+  const { openCommand } = useCommand()
   const { theme, toggleTheme } = useTheme()
 
-  const handleCommand = useShortcut(['meta+k', 'ctrl+k'], () => setOpen(true))
+  const handleTheme = useShortcut(['meta+J', 'ctrl+J'], toggleTheme)
+  const handleCommand = useShortcut(['meta+k', 'ctrl+k'], openCommand)
   const handleLogout = useShortcut(['meta+q', 'ctrl+q'], () => authService.signOut())
 
   return (
@@ -81,10 +83,10 @@ export const UserMenu = ({ user }: { user: User }) => {
                 <SlidersHorizontalIcon />
                 Preferences
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={toggleTheme}>
+              <DropdownMenuItem onClick={handleTheme}>
                 {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-                Toggle theme
-                <DropdownMenuShortcut>⌘T</DropdownMenuShortcut>
+                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                <DropdownMenuShortcut>⌘J</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleCommand}>
                 <ListMagnifyingGlassIcon />

@@ -39,7 +39,7 @@ export const Login = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
         <Button onClick={onSocialSubmit} disabled={isSocialLoading} type='button' variant='secondary'>
           {isSocialLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<GoogleLogoIcon />)}
-          {isSocialLoading ? 'Signing in...' : 'Login with Google'}
+          {isSocialLoading ? '' : 'Continue with Google'}
           <EffectHighlight />
         </Button>
         <div className='w-full flex items-center justify-center gap-2 overflow-hidden'>
@@ -54,7 +54,7 @@ export const Login = () => {
         <FieldControl control={form.control} disabled={isLoading} type='password' name='password' placeholder='Password' autoComplete='current-password' />
         <Button disabled={isLoading} type='submit'>
           {isLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<SignInIcon />)}
-          {isLoading ? 'Signing in...' : 'Login'}
+          {isLoading ? '' : 'Login to account'}
         </Button>
       </form>
     </Form>

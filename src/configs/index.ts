@@ -1,4 +1,10 @@
+export { ELEMENTS } from './elements.config'
 export { APP, AUTH } from './firebase.config'
+export {
+  HANDLES,
+  type RouteHandle,
+  type RouteHandleKey
+} from './handles.config'
 export {
   HERO,
   type HeroContent,
@@ -11,9 +17,3 @@ export {
   type MessageContent,
   type SuccessMessageKey
 } from './messages.config'
-export { ROUTE_ELEMENTS } from './route-elements.config'
-export {
-  ROUTE_HANDLES,
-  type RouteHandle,
-  type RouteHandleKey
-} from './route-handles.config'

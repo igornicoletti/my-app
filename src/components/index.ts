@@ -1,5 +1,5 @@
+export * from './features'
 export * from './feedback'
 export * from './form'
-export * from './navbar'
 export * from './shadcn'
 export * from './sidebar'

@@ -1,26 +1,26 @@
 import type { RouteObject } from 'react-router-dom'
 
 import {
-  ROUTE_ELEMENTS,
-  ROUTE_HANDLES,
+  ELEMENTS,
+  HANDLES,
   type RouteHandle
 } from '@/configs'
 
 // ----- Protected (authenticated) routes -----
 export const getProtectedRoutes = (): RouteObject[] => [
   {
-    element: <ROUTE_ELEMENTS.AppLayout />,
-    errorElement: <ROUTE_ELEMENTS.ErrorFallback />,
+    element: <ELEMENTS.AppLayout />,
+    errorElement: <ELEMENTS.ErrorFallback />,
     children: [
       {
         path: 'dashboard',
-        element: <ROUTE_ELEMENTS.Dashboard />,
-        handle: ROUTE_HANDLES.dashboard satisfies RouteHandle,
+        element: <ELEMENTS.Dashboard />,
+        handle: HANDLES.dashboard satisfies RouteHandle,
       },
       {
         path: 'analytics',
-        element: <ROUTE_ELEMENTS.Analytics />,
-        handle: ROUTE_HANDLES.analytics satisfies RouteHandle,
+        element: <ELEMENTS.Analytics />,
+        handle: HANDLES.analytics satisfies RouteHandle,
       },
     ],
   },

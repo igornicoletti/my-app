@@ -1,4 +1,4 @@
-export const ROUTE_HANDLES = {
+export const HANDLES = {
   // Public routes
   login: {
     title: 'Login',
@@ -16,7 +16,6 @@ export const ROUTE_HANDLES = {
     title: 'Set New Password',
     description: 'Choose a new password to access your account.',
   },
-
   // Protected routes
   dashboard: {
     crumb: 'Dashboard',
@@ -30,6 +29,6 @@ export const ROUTE_HANDLES = {
   },
 } as const
 
-export type RouteHandleKey = keyof typeof ROUTE_HANDLES
+export type RouteHandleKey = keyof typeof HANDLES
 
-export type RouteHandle = (typeof ROUTE_HANDLES)[RouteHandleKey]
+export type RouteHandle = (typeof HANDLES)[RouteHandleKey]

@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 import {
   BreadcrumbPath,
+  Button,
   LoadingSpinner,
   NavigationTree,
   Separator,
@@ -13,11 +14,13 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
+  ThemeSwitcher,
   UserMenu,
   WorkspaceSwitcher
 } from '@/components'
-import { useAuth } from '@/contexts'
+import { useAuth, useCommand } from '@/contexts'
 import { useNavigation } from '@/hooks'
+import { MagnifyingGlassIcon } from '@phosphor-icons/react'
 
 const workspaceData = [{
   title: '2Ti Corp.',
@@ -28,6 +31,7 @@ const workspaceData = [{
 export const AppLayout = () => {
   const { user, isLoading } = useAuth()
   const navigationData = useNavigation()
+  const { openCommand } = useCommand()
 
   if (isLoading) return <LoadingSpinner />
   if (!user) return null
@@ -55,10 +59,16 @@ export const AppLayout = () => {
       </Sidebar>
       <SidebarInset>
         <header className='flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
-          <div className="flex w-full items-center gap-4 px-4">
+          <div className="flex items-center gap-4 px-4">
             <SidebarTrigger />
             <Separator orientation='vertical' />
             <BreadcrumbPath />
+          </div>
+          <div className="ml-auto flex items-center gap-4 px-4">
+            <Button onClick={openCommand} size='icon' variant='ghost'>
+              <MagnifyingGlassIcon />
+            </Button>
+            <ThemeSwitcher />
           </div>
         </header>
         <div className='flex flex-1 flex-col gap-4 px-6 py-4'>

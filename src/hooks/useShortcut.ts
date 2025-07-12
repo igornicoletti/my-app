@@ -36,7 +36,6 @@ export const useShortcut = (
 
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-
   }, [combos, action])
 
   return action

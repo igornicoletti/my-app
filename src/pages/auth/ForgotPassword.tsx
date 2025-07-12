@@ -27,7 +27,7 @@ export const ForgotPassword = () => {
         <FieldControl control={form.control} disabled={isLoading} type='email' name='email' placeholder='Email' autoComplete='email' autoFocus />
         <Button disabled={isLoading} type='submit'>
           {isLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<PaperPlaneTiltIcon />)}
-          {isLoading ? 'Sending...' : 'Send reset email'}
+          {isLoading ? '' : 'Send reset email'}
         </Button>
       </form>
     </Form>

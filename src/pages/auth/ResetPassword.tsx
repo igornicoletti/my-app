@@ -32,7 +32,7 @@ export const ResetPassword = () => {
         <FieldControl control={form.control} disabled={isLoading} type='password' name='confirmPassword' placeholder='Confirm new password' autoComplete='new-password' />
         <Button disabled={isLoading} type='submit'>
           {isLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<ShieldStarIcon />)}
-          {isLoading ? 'Resetting...' : 'Reset password'}
+          {isLoading ? '' : 'Reset password'}
         </Button>
       </form>
     </Form>

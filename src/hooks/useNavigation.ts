@@ -1,7 +1,7 @@
 import { isValidElement, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { ROUTE_ELEMENTS } from '@/configs'
+import { ELEMENTS } from '@/configs'
 import { getProtectedRoutes } from '@/routers'
 import {
   buildNavigationTree,
@@ -16,7 +16,7 @@ export const useNavigation = (): NavigationItem[] => {
 
     const appLayoutRoute = protectedRoutes.find((route) =>
       isValidElement(route.element) &&
-      route.element.type === ROUTE_ELEMENTS.AppLayout)
+      route.element.type === ELEMENTS.AppLayout)
 
     const childRoutes = appLayoutRoute?.children ?? []
 
