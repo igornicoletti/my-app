@@ -1,5 +1,4 @@
-import type { ComponentType, LazyExoticComponent } from 'react'
-import { lazy } from 'react'
+import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 
 type LazyComponent<T = unknown> = LazyExoticComponent<ComponentType<T>>
 
@@ -10,8 +9,8 @@ export const ELEMENTS: Record<string, LazyComponent> = {
     .then((m) => ({ default: m.AppLayout }))),
   AuthLayout: lazy(() => import('@/pages/layouts/AuthLayout')
     .then((m) => ({ default: m.AuthLayout }))),
-  Callback: lazy(() => import('@/pages/auth/Callback')
-    .then((m) => ({ default: m.Callback }))),
+  CallbackRoute: lazy(() => import('@/pages/elements/CallbackRoute')
+    .then((m) => ({ default: m.CallbackRoute }))),
   Dashboard: lazy(() => import('@/pages/app/Dashboard')
     .then((m) => ({ default: m.Dashboard }))),
   ErrorFallback: lazy(() => import('@/pages/errors/ErrorFallback')

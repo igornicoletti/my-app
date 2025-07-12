@@ -7,7 +7,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
@@ -20,7 +19,6 @@ import type { NavigationItem } from '@/utils'
 
 export const NavigationTree = ({ navigation }: { navigation: NavigationItem[] }) => (
   <SidebarGroup>
-    <SidebarGroupLabel>Navigation</SidebarGroupLabel>
     <SidebarMenu>
       {navigation.map((item, index) => (
         <Collapsible asChild key={index} defaultOpen={item.isGroupActive}>

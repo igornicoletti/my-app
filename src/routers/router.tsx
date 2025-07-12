@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { ELEMENTS } from '@/configs'
 import {
   AuthGuardRoute,
-  Callback,
+  CallbackRoute,
   GuestGuardRoute,
   RedirectRoute,
 } from '@/pages'
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
       // Firebase callback handler (email verification / password reset)
       {
         path: 'callback',
-        element: <Callback />,
+        element: <CallbackRoute />,
       },
       // Public-only pages (e.g. login, register)
       {

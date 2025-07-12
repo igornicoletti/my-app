@@ -76,6 +76,7 @@ export const UserMenu = ({ user }: { user: User }) => {
               <DropdownMenuItem>
                 <UserIcon />
                 Account Settings
+                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuGroup className='my-2'>

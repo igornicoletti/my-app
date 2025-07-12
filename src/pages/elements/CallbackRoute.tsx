@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts'
 import { authService } from '@/services'
 
-export const Callback = () => {
+export const CallbackRoute = () => {
   const { user, isLoading } = useAuth()
 
   const [searchParams] = useSearchParams()
@@ -44,7 +44,7 @@ export const Callback = () => {
           }
         }
       } catch (error) {
-        console.error('Callback error:', error)
+        console.error('CallbackRoute error:', error)
         navigate('/login', { replace: true })
       }
     }
