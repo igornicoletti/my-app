@@ -27,4 +27,6 @@ export const ELEMENTS: Record<string, LazyComponent> = {
     .then((m) => ({ default: m.ResetPassword }))),
   RootLayout: lazy(() => import('@/pages/layouts/RootLayout')
     .then((m) => ({ default: m.RootLayout }))),
+  Users: lazy(() => import('@/pages/app/Users')
+    .then((m) => ({ default: m.Users }))),
 }

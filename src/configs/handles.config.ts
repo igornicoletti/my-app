@@ -27,6 +27,11 @@ export const HANDLES = {
     title: 'Analytics',
     description: 'Detailed insights and data visualizations to help you make informed decisions.',
   },
+  users: {
+    crumb: 'Users',
+    title: 'Users',
+    description: 'Lorem ipsum dolor sit amet.',
+  },
 } as const
 
 export type RouteHandleKey = keyof typeof HANDLES

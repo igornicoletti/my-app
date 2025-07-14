@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom'
 import {
   ChartBarIcon,
   HouseSimpleIcon,
+  UserIcon,
   type Icon,
 } from '@phosphor-icons/react'
 
@@ -30,6 +31,7 @@ export type NavigationItem = {
 const iconRegistry: Record<string, Icon> = {
   dashboard: HouseSimpleIcon,
   analytics: ChartBarIcon,
+  users: UserIcon,
 }
 
 // ----- Utils -----

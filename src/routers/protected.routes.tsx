@@ -22,6 +22,11 @@ export const getProtectedRoutes = (): RouteObject[] => [
         element: <ELEMENTS.Analytics />,
         handle: HANDLES.analytics satisfies RouteHandle,
       },
+      {
+        path: 'users',
+        element: <ELEMENTS.Users />,
+        handle: HANDLES.users satisfies RouteHandle,
+      },
     ],
   },
 ]

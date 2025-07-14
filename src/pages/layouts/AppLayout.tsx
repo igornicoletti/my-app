@@ -22,7 +22,7 @@ export const AppLayout = () => {
       <AppSidebar variant='floating' collapsible='icon' />
       <SidebarInset>
         <header className='flex h-22 shrink-0 items-center gap-2 ease-linear transition-[width,height] group-has-data-[collapsible=icon]/sidebar-wrapper:h-16'>
-          <div className='flex w-full items-center gap-4 px-4'>
+          <div className='flex w-full items-center gap-4 px-2'>
             <SidebarTrigger />
             <Separator orientation='vertical' />
             <BreadcrumbPath />
@@ -34,7 +34,7 @@ export const AppLayout = () => {
             </div>
           </div>
         </header>
-        <div className='flex flex-1 flex-col p-6 pt-0'>
+        <div className='flex flex-1 flex-col p-4 pt-0'>
           <Outlet />
         </div>
       </SidebarInset>
