@@ -10,13 +10,9 @@ type ThemeProviderProps = {
   storageKey?: string
 }
 
-export const ThemeProvider = ({
-  children,
-  storageKey = 'vite-ui-theme',
-}: ThemeProviderProps) => {
+export const ThemeProvider = ({ children, storageKey = 'vite-ui-theme' }: ThemeProviderProps) => {
   const [theme, setThemeState] = useState<Theme>(() =>
-    (localStorage.getItem(storageKey) as Theme | null) ?? 'dark'
-  )
+    localStorage.getItem(storageKey) as Theme | null ?? 'dark')
 
   useEffect(() => {
     const root = document.documentElement
@@ -29,9 +25,7 @@ export const ThemeProvider = ({
     setThemeState(newTheme)
   }
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-  }
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark')
 
   return (
     <ThemeProviderContext.Provider value={{ theme, setTheme, toggleTheme }}>

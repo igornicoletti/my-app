@@ -1,7 +1,6 @@
 export { ThemeProvider } from './ThemeProvider'
 export {
   ThemeProviderContext,
-  type Theme,
-  type ThemeProviderState
+  type Theme
 } from './ThemeProviderContext'
 export { useTheme } from './useTheme'

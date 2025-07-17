@@ -2,6 +2,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider } from 'react-router-dom'
 
 import {
+  AlertProvider,
   AuthProvider,
   CommandProvider,
   ThemeProvider
@@ -13,7 +14,9 @@ export const App = () => (
     <ThemeProvider>
       <AuthProvider>
         <CommandProvider>
-          <RouterProvider router={router} />
+          <AlertProvider>
+            <RouterProvider router={router} />
+          </AlertProvider>
         </CommandProvider>
       </AuthProvider>
     </ThemeProvider>

@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 import {
   CommandMenu,
+  ConfirmDialog,
   HelmetMetadata,
   LoadingSpinner,
   ProgressBar,
@@ -14,8 +15,9 @@ export const RootLayout = () => {
     <Suspense fallback={<LoadingSpinner />}>
       <HelmetMetadata />
       <ProgressBar />
-      <CommandMenu />
       <Outlet />
+      <CommandMenu />
+      <ConfirmDialog />
       <Toaster />
     </Suspense>
   )

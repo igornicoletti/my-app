@@ -20,12 +20,10 @@ export const Login = () => {
   const { onSubmit, isLoading } = useSubmit(async (data: LoginSchema) => {
     await authService.signInWithEmail(data.email, data.password)
     await authService.getCurrentUser()?.reload()
-
     const user = authService.getCurrentUser()
     if (!user?.emailVerified) {
       throw new Error('auth/unverified-email')
     }
-
     successToast('auth/login-success')
   }, `/dashboard`)
 

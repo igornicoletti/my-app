@@ -5,6 +5,7 @@ import {
   HANDLES,
   type RouteHandle
 } from '@/configs'
+import { usersLoader } from '@/pages'
 
 // ----- Protected (authenticated) routes -----
 export const getProtectedRoutes = (): RouteObject[] => [
@@ -24,6 +25,7 @@ export const getProtectedRoutes = (): RouteObject[] => [
       },
       {
         path: 'users',
+        loader: usersLoader,
         element: <ELEMENTS.Users />,
         handle: HANDLES.users satisfies RouteHandle,
       },

@@ -5,11 +5,7 @@ import { LoadingSpinner } from '@/components'
 import { AuthProviderContext } from '@/contexts'
 import { authService } from '@/services'
 
-type AuthProviderProps = {
-  children: ReactNode
-}
-
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => authService.getCurrentUser())
   const [isLoading, setIsLoading] = useState(true)
 
