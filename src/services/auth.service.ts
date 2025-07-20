@@ -14,8 +14,13 @@ import {
   type ActionCodeSettings,
   type User
 } from 'firebase/auth'
+import {
+  doc,
+  serverTimestamp,
+  setDoc
+} from 'firebase/firestore'
 
-import { AUTH } from '@/configs'
+import { AUTH, DB } from '@/configs'
 
 const APP_ORIGIN = import.meta.env.VITE_APP_ORIGIN
 const ACTION_CODE_SETTINGS: ActionCodeSettings = {
@@ -35,13 +40,18 @@ export const authService = {
     (await signInWithEmailAndPassword(AUTH, email, password)).user,
 
   // Sign up
-  createUserWithEmail: async (
-    email: string,
-    password: string,
-    displayName?: string
-  ): Promise<User> => {
+  createUserWithEmail: async (email: string, password: string, displayName?: string): Promise<User> => {
     const { user } = await createUserWithEmailAndPassword(AUTH, email, password)
     if (displayName) await updateProfile(user, { displayName })
+    const userRef = doc(DB, 'users', user.uid)
+    await setDoc(userRef, {
+      uid: user.uid,
+      name: displayName,
+      email: user.email,
+      role: 'viewer',
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    })
     await sendEmailVerification(user, ACTION_CODE_SETTINGS)
     return user
   },

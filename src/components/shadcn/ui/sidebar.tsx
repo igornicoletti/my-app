@@ -22,6 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/shadcn/ui/tooltip"
+import { useLocation } from 'react-router-dom'
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -162,6 +163,26 @@ function Sidebar({
   collapsible?: "offcanvas" | "icon" | "none"
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const location = useLocation()
+  const prevPathRef = React.useRef(location.pathname)
+
+  React.useEffect(() => {
+    const prevPath = prevPathRef.current
+    const currentPath = location.pathname
+
+    if (prevPath !== currentPath && isMobile && openMobile) {
+      setOpenMobile(false)
+    }
+
+    prevPathRef.current = currentPath
+  }, [location.pathname, isMobile, openMobile, setOpenMobile])
+
+  React.useEffect(() => {
+    if (!isMobile) return
+    return () => {
+      document.body.style.pointerEvents = "auto"
+    }
+  }, [isMobile])
 
   if (collapsible === "none") {
     return (
@@ -212,7 +233,6 @@ function Sidebar({
       data-side={side}
       data-slot="sidebar"
     >
-      {/* This is what handles the sidebar gap on desktop */}
       <div
         data-slot="sidebar-gap"
         className={cn(
@@ -231,7 +251,6 @@ function Sidebar({
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
-          // Adjust the padding for floating and inset variants.
           variant === "floating" || variant === "inset"
             ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
             : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",

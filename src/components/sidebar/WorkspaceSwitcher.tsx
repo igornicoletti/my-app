@@ -41,7 +41,7 @@ export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] })
                 <AvatarFallback className='rounded-sm'>{isActive.title[0]}</AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-medium'>{isActive.title}</span>
+                <span className='truncate font-semibold'>{isActive.title}</span>
                 <span className='truncate text-xs text-muted-foreground'>
                   {isActive.description}
                 </span>
@@ -57,7 +57,7 @@ export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] })
                   <AvatarFallback className='rounded-sm bg-transparent'>{item.title[0]}</AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-medium'>{item.title}</span>
+                  <span className='truncate font-semibold'>{item.title}</span>
                 </div>
               </DropdownMenuItem>
             ))}
@@ -69,7 +69,7 @@ export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] })
                 </AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-medium'>Create Workspace</span>
+                <span className='truncate font-semibold'>Create Workspace</span>
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>

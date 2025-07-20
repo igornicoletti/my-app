@@ -94,8 +94,8 @@ export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={visibleColumnsCount || 1} className='h-24 text-center' aria-live='polite'>
-                  No results.
+                <TableCell colSpan={visibleColumnsCount || 1} className='h-16 text-center' aria-live='polite'>
+                  No results found.
                 </TableCell>
               </TableRow>
             )}

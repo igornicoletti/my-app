@@ -56,7 +56,7 @@ export const FieldControl = <T extends FieldValues>({
             )}
           </div>
         </FormControl>
-        <FormMessage className='text-xs text-right font-medium' />
+        <FormMessage className='text-xs text-right' />
       </FormItem>
     )} />
   )

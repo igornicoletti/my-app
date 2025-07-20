@@ -45,15 +45,14 @@ const createSubItems = (
   currentPath: string
 ): SubItem[] => {
   return childRoutes
-    .filter(
-      (child): child is RouteObject & {
-        handle: AppRouteHandle
-        path: string
-      } =>
-        !!child.path &&
-        !child.path.includes(':') &&
-        !!child.handle &&
-        typeof (child.handle as AppRouteHandle).crumb === 'string'
+    .filter((child): child is RouteObject & {
+      handle: AppRouteHandle
+      path: string
+    } =>
+      !!child.path &&
+      !child.path.includes(':') &&
+      !!child.handle &&
+      typeof (child.handle as AppRouteHandle).crumb === 'string'
     )
     .map((child) => {
       const subItemUrl = normalizePath(parentUrl, child.path!)

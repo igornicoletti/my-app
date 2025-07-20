@@ -1,5 +1,6 @@
 export { columns } from './columns'
 export { labels, priorities, statuses, taskSchema, type Task } from './data'
+
 export { DataTable } from './DataTable'
 export { DataTableColumnHeader } from './DataTableColumnHeader'
 export { DataTableFacetedFilter } from './DataTableFacetedFilter'

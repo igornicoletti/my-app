@@ -49,7 +49,7 @@ export const ERROR = {
     description: 'For security reasons, please log in again to complete this action.',
   },
   'auth/cancelled-popup-request': {
-    title: 'Popup Request Canceled',
+    title: 'Popup Request Failed',
     description: 'Another popup interrupted the login process. Please try again.',
   },
   default: {

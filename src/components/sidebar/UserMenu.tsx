@@ -57,7 +57,7 @@ export const UserMenu = ({ user }: { user: User }) => {
                 <AvatarFallback>{user.title[0]}</AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-medium'>{user.title}</span>
+                <span className='truncate font-semibold'>{user.title}</span>
                 <span className='truncate text-xs text-muted-foreground'>{user.description}</span>
               </div>
               <CaretUpDownIcon className='ml-auto' />
@@ -66,7 +66,7 @@ export const UserMenu = ({ user }: { user: User }) => {
           <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='end' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
             <DropdownMenuLabel>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-medium'>{user.title}</span>
+                <span className='truncate font-semibold'>{user.title}</span>
                 <span className='truncate text-xs text-muted-foreground'>{user.description}</span>
               </div>
             </DropdownMenuLabel>
@@ -83,19 +83,19 @@ export const UserMenu = ({ user }: { user: User }) => {
                 <SlidersHorizontalIcon />
                 Preferences
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleTheme}>
+              <DropdownMenuItem onSelect={handleTheme}>
                 {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
                 {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 <DropdownMenuShortcut>⌘J</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleCommand}>
+              <DropdownMenuItem onSelect={handleCommand}>
                 <ListMagnifyingGlassIcon />
                 Command Menu
                 <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuGroup className='my-2'>
-              <DropdownMenuItem onClick={handleLogout}>
+              <DropdownMenuItem onSelect={handleLogout}>
                 <SignOutIcon />
                 Log Out
                 <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>

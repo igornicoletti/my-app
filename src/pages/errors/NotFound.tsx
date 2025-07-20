@@ -6,7 +6,7 @@ export const NotFound = () => (
       <div className='w-full max-w-md grid gap-6 px-6'>
 
         <div className='flex items-center justify-center gap-2'>
-          <h2 className='text-xl font-medium'>404</h2>
+          <h2 className='text-xl font-bold'>404</h2>
           <Separator orientation='vertical' />
           <p className='text-sm text-muted-foreground'>This page could not be found.</p>
         </div>

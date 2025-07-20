@@ -1,5 +1,6 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app'
 import { getAuth, type Auth } from 'firebase/auth'
+import { getFirestore, type Firestore } from 'firebase/firestore'
 
 const FIREBASE = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,5 +14,6 @@ const FIREBASE = {
 
 const APP: FirebaseApp = initializeApp(FIREBASE)
 const AUTH: Auth = getAuth(APP)
+const DB: Firestore = getFirestore(APP)
 
-export { APP, AUTH }
+export { APP, AUTH, DB }

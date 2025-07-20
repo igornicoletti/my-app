@@ -20,14 +20,14 @@ export const taskSchema = z.object({
 export type Task = z.infer<typeof taskSchema>
 
 export const labels = [
-  { value: 'bug', label: 'Bug' },
-  { value: 'feature', label: 'Feature' },
-  { value: 'documentation', label: 'Documentation' }]
+  { value: 'manager', label: 'Manager' },
+  { value: 'viewer', label: 'Viewer' },
+  { value: 'admin', label: 'Admin' }]
 
 export const statuses = [
-  { value: 'in progress', label: 'In Progress', icon: TimerIcon, },
-  { value: 'done', label: 'Done', icon: CheckCircleIcon, },
-  { value: 'canceled', label: 'Canceled', icon: ProhibitIcon, },
+  { value: 'processing', label: 'Processing', icon: TimerIcon, },
+  { value: 'success', label: 'Success', icon: CheckCircleIcon, },
+  { value: 'failed', label: 'Failed', icon: ProhibitIcon, },
 ]
 
 export const priorities = [

@@ -46,7 +46,7 @@ export const Login = () => {
           <Separator />
         </div>
         <FieldControl control={form.control} disabled={isLoading} type='email' name='email' placeholder='Email' autoComplete='username' />
-        <Button asChild variant='link' className='h-auto ml-auto -mb-2 p-0 text-xs font-medium'>
+        <Button asChild variant='link' className='h-auto ml-auto -mb-2 p-0 text-xs font-semibold'>
           <Link to='/forgot-password'>Forgot password?</Link>
         </Button>
         <FieldControl control={form.control} disabled={isLoading} type='password' name='password' placeholder='Password' autoComplete='current-password' />
