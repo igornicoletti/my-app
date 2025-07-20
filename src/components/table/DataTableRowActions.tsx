@@ -12,7 +12,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   taskSchema
 } from '@/components'
@@ -45,8 +44,7 @@ export const DataTableRowActions = <TData,>({ row }: { row: Row<TData> }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-48'>
-        <DropdownMenuLabel className='text-muted-foreground text-xs'>Actions</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuLabel className='text-muted-foreground'>Actions Menu</DropdownMenuLabel>
         <DropdownMenuItem onSelect={handleEdit}>
           <PencilSimpleIcon />
           Edit
@@ -55,7 +53,7 @@ export const DataTableRowActions = <TData,>({ row }: { row: Row<TData> }) => {
           <CopySimpleIcon />
           Copy
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={handleDelete} variant='destructive'>
+        <DropdownMenuItem onSelect={handleDelete}>
           <TrashSimpleIcon />
           Delete
         </DropdownMenuItem>

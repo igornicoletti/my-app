@@ -19,6 +19,8 @@ import {
 import {
   DataTablePagination,
   DataTableToolbar,
+  ScrollArea,
+  ScrollBar,
   Table,
   TableBody,
   TableCell,
@@ -41,13 +43,8 @@ export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData
   const table = useReactTable({
     data,
     columns,
-    state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
-    },
     enableRowSelection: true,
+    state: { sorting, columnVisibility, rowSelection, columnFilters },
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -66,7 +63,7 @@ export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData
   return (
     <div className='flex flex-col gap-4'>
       <DataTableToolbar table={table} />
-      <div className="rounded-md border overflow-auto">
+      <ScrollArea className="grid w-full border rounded-lg">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -94,14 +91,15 @@ export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={visibleColumnsCount || 1} className='h-16 text-center' aria-live='polite'>
+                <TableCell colSpan={visibleColumnsCount || 1} className='py-2 text-center'>
                   No results found.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
       <DataTablePagination table={table} />
     </div>
   )

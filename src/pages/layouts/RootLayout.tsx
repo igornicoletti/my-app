@@ -5,6 +5,7 @@ import {
   CommandMenu,
   ConfirmDialog,
   HelmetMetadata,
+  KeyboardShortcut,
   LoadingSpinner,
   ProgressBar,
   Toaster
@@ -14,6 +15,7 @@ export const RootLayout = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <HelmetMetadata />
+      <KeyboardShortcut />
       <ProgressBar />
       <Outlet />
       <CommandMenu />

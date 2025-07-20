@@ -4,7 +4,6 @@ import {
   MoonIcon,
   RocketLaunchIcon,
   SignOutIcon,
-  SlidersHorizontalIcon,
   SunIcon,
   UserIcon
 } from '@phosphor-icons/react'
@@ -28,7 +27,6 @@ import {
   useSidebar
 } from '@/components'
 import { useCommand, useTheme } from '@/contexts'
-import { useShortcut } from '@/hooks'
 import { authService } from '@/services'
 
 type User = {
@@ -41,10 +39,6 @@ export const UserMenu = ({ user }: { user: User }) => {
   const { isMobile } = useSidebar()
   const { openCommand } = useCommand()
   const { theme, toggleTheme } = useTheme()
-
-  const handleTheme = useShortcut(['meta+J', 'ctrl+J'], toggleTheme)
-  const handleCommand = useShortcut(['meta+k', 'ctrl+k'], openCommand)
-  const handleLogout = useShortcut(['meta+q', 'ctrl+q'], () => authService.signOut())
 
   return (
     <SidebarMenu>
@@ -75,27 +69,23 @@ export const UserMenu = ({ user }: { user: User }) => {
               <DropdownMenuItem>
                 <UserIcon />
                 Account Settings
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                {/* <DropdownMenuShortcut>⌘S</DropdownMenuShortcut> */}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuGroup className='my-2'>
-              <DropdownMenuItem>
-                <SlidersHorizontalIcon />
-                Preferences
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={handleTheme}>
+              <DropdownMenuItem onSelect={toggleTheme}>
                 {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
                 {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 <DropdownMenuShortcut>⌘J</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={handleCommand}>
+              <DropdownMenuItem onSelect={openCommand}>
                 <ListMagnifyingGlassIcon />
                 Command Menu
                 <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuGroup className='my-2'>
-              <DropdownMenuItem onSelect={handleLogout}>
+              <DropdownMenuItem onSelect={() => authService.signOut()}>
                 <SignOutIcon />
                 Log Out
                 <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>

@@ -14,15 +14,14 @@ import {
 export const columns: ColumnDef<Task>[] = [
   {
     id: 'select',
-    header: ({ table }) => <Checkbox checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')} onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)} aria-label='Select all rows' />,
-    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label='Select row' />,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'id',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='ID' />,
-    cell: ({ row }) => <span>{row.getValue('id')}</span>,
+    header: ({ table }) => <Checkbox
+      checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+      onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      aria-label='Select all rows' />,
+    cell: ({ row }) => <Checkbox
+      checked={row.getIsSelected()}
+      onCheckedChange={(value) => row.toggleSelected(!!value)}
+      aria-label='Select row' />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -35,12 +34,11 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className='flex gap-2'>
           {label && <Badge variant='outline'>{label.label}</Badge>}
-          <span title={row.getValue('title')} className='max-w-md truncate'>
-            {row.getValue('title')}
-          </span>
+          <span>{row.getValue('title')}</span>
         </div>
       )
     },
+    enableHiding: false,
   },
   {
     accessorKey: 'status',
@@ -48,11 +46,10 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const status = statuses.find((status) => status.value === row.getValue('status'))
       if (!status) return null
-      const Icon = status.icon
 
       return (
         <div className='flex items-center gap-2'>
-          {Icon && <Icon className='text-muted-foreground' />}
+          {status.icon && <status.icon />}
           <span>{status.label}</span>
         </div>
       )
@@ -61,6 +58,7 @@ export const columns: ColumnDef<Task>[] = [
       if (!Array.isArray(value)) return false
       return value.includes(row.getValue(id))
     },
+    enableSorting: false,
   },
   {
     accessorKey: 'priority',
@@ -68,11 +66,10 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const priority = priorities.find((priority) => priority.value === row.getValue('priority'))
       if (!priority) return null
-      const Icon = priority.icon
 
       return (
         <div className='flex items-center gap-2'>
-          {Icon && <Icon className='text-muted-foreground' />}
+          {priority.icon && <priority.icon />}
           <span>{priority.label}</span>
         </div>
       )
@@ -81,6 +78,7 @@ export const columns: ColumnDef<Task>[] = [
       if (!Array.isArray(value)) return false
       return value.includes(row.getValue(id))
     },
+    enableSorting: false,
   },
   {
     id: 'actions',

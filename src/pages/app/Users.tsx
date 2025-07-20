@@ -7,9 +7,9 @@ import {
 } from '@/components'
 
 export const Users = () => {
-  const loaderData = useLoaderData() as Task[]
+  const data = useLoaderData() as Task[]
 
   return (
-    <DataTable columns={columns} data={loaderData} />
+    <DataTable data={data} columns={columns} />
   )
 }

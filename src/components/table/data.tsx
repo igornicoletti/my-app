@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
 import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
+  CaretDownIcon,
+  CaretUpIcon,
   CheckCircleIcon,
-  ProhibitIcon,
+  EmptyIcon,
+  EqualsIcon,
   TimerIcon
 } from '@phosphor-icons/react'
 
@@ -27,11 +27,11 @@ export const labels = [
 export const statuses = [
   { value: 'processing', label: 'Processing', icon: TimerIcon, },
   { value: 'success', label: 'Success', icon: CheckCircleIcon, },
-  { value: 'failed', label: 'Failed', icon: ProhibitIcon, },
+  { value: 'failed', label: 'Failed', icon: EmptyIcon, },
 ]
 
 export const priorities = [
-  { label: 'Low', value: 'low', icon: ArrowDownIcon },
-  { label: 'Medium', value: 'medium', icon: ArrowRightIcon },
-  { label: 'High', value: 'high', icon: ArrowUpIcon },
+  { label: 'Low', value: 'low', icon: CaretDownIcon },
+  { label: 'Medium', value: 'medium', icon: EqualsIcon },
+  { label: 'High', value: 'high', icon: CaretUpIcon },
 ]

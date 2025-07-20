@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 
-import { MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { MagnifyingGlassIcon, SignOutIcon } from '@phosphor-icons/react'
 
 import {
   AppSidebar,
@@ -13,6 +13,7 @@ import {
   ThemeSwitcher
 } from '@/components'
 import { useCommand } from '@/contexts'
+import { authService } from '@/services'
 
 export const AppLayout = () => {
   const { openCommand } = useCommand()
@@ -26,11 +27,14 @@ export const AppLayout = () => {
             <SidebarTrigger />
             <Separator orientation='vertical' />
             <BreadcrumbPath />
-            <div className='ml-auto flex items-center gap-4'>
+            <div className='ml-auto'>
               <Button onClick={openCommand} size='icon' variant='ghost'>
                 <MagnifyingGlassIcon />
               </Button>
               <ThemeSwitcher />
+              <Button onClick={() => authService.signOut()} size='icon' variant='ghost'>
+                <SignOutIcon />
+              </Button>
             </div>
           </div>
         </header>

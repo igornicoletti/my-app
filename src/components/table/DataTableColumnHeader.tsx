@@ -1,18 +1,12 @@
 import {
-  CaretUpDownIcon,
-  EyeSlashIcon,
-  SortAscendingIcon,
-  SortDescendingIcon
+  ArrowDownIcon,
+  ArrowsDownUpIcon,
+  ArrowUpIcon
 } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  Button
 } from '@/components'
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,38 +14,26 @@ interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes
   title: string
 }
 
-export const DataTableColumnHeader = <TData, TValue>({ column, title }: DataTableColumnHeaderProps<TData, TValue>) => {
+export const DataTableColumnHeader = <TData, TValue>({
+  column,
+  title,
+}: DataTableColumnHeaderProps<TData, TValue>) => {
+  const sorted = column.getIsSorted()
+
   if (!column.getCanSort()) {
     return <div className='text-sm font-semibold'>{title}</div>
   }
 
-  const sortIcon = column.getIsSorted() === 'desc'
-    ? <SortDescendingIcon /> : column.getIsSorted() === 'asc'
-      ? <SortAscendingIcon /> : <CaretUpDownIcon />
+  const sortIcon = sorted === 'desc'
+    ? <ArrowDownIcon className='text-muted-foreground' />
+    : sorted === 'asc'
+      ? <ArrowUpIcon className='text-muted-foreground' />
+      : <ArrowsDownUpIcon className='text-muted-foreground' />
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='-ml-3'>
-          {title}
-          {sortIcon}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='start' className='w-48'>
-        <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-          <SortAscendingIcon />
-          Ascending
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-          <SortDescendingIcon />
-          Descending
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-          <EyeSlashIcon />
-          Hide
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button onClick={() => column.toggleSorting()} variant='none' className='-ml-3'>
+      {title}
+      {sortIcon}
+    </Button>
   )
 }

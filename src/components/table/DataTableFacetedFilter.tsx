@@ -28,7 +28,11 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   }[]
 }
 
-export const DataTableFacetedFilter = <TData, TValue>({ column, title = 'Filter', options }: DataTableFacetedFilterProps<TData, TValue>) => {
+export const DataTableFacetedFilter = <TData, TValue>({
+  column,
+  title,
+  options
+}: DataTableFacetedFilterProps<TData, TValue>) => {
   const facets = column?.getFacetedUniqueValues()
   const filterValue = column?.getFilterValue()
   const selectedValues = new Set(filterValue as string[])
@@ -81,23 +85,22 @@ export const DataTableFacetedFilter = <TData, TValue>({ column, title = 'Filter'
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.length === 0 && <CommandItem disabled>No option available.</CommandItem>}
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option.value)
-                const Icon = option.icon
-                return (
-                  <CommandItem key={option.value} aria-checked={isSelected} onSelect={() => handleSelect(option.value)} className='flex items-center gap-2'>
-                    <Checkbox checked={isSelected} />
-                    {Icon && <Icon />}
-                    {option.label}
-                    {facets?.get(option.value) && (
-                      <span className='ml-auto text-xs text-muted-foreground'>
-                        {facets.get(option.value)}
-                      </span>
-                    )}
-                  </CommandItem>
-                )
-              })}
+              {options.map((option) => (
+                <CommandItem
+                  key={option.value}
+                  onSelect={() => handleSelect(option.value)}
+                  aria-checked={selectedValues.has(option.value)}
+                  className='flex items-center gap-2'>
+                  <Checkbox checked={selectedValues.has(option.value)} />
+                  {option.icon && <option.icon />}
+                  <span className='capitalize truncate'>{option.label}</span>
+                  {facets?.get(option.value) && (
+                    <span className='ml-auto text-xs text-muted-foreground'>
+                      {facets.get(option.value)}
+                    </span>
+                  )}
+                </CommandItem>
+              ))}
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>

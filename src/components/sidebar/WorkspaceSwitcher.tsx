@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
-import { CaretUpDownIcon, PlusIcon } from '@phosphor-icons/react'
+import { CaretUpDownIcon } from '@phosphor-icons/react'
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -49,29 +50,21 @@ export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] })
               <CaretUpDownIcon className='ml-auto' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='start' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
-            <DropdownMenuLabel className='text-muted-foreground text-xs'>Workspaces</DropdownMenuLabel>
+          <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='start' className='w-(--radix-dropdown-menu-trigger-width) rounded-lg'>
+            <DropdownMenuLabel className='text-muted-foreground'>Workspaces</DropdownMenuLabel>
             {workspace.map((item, index) => (
               <DropdownMenuItem key={index} onClick={() => setIsActive(item)}>
                 <Avatar className='rounded-sm size-6'>
+                  <AvatarImage src={item.avatar} alt={item.title} />
                   <AvatarFallback className='rounded-sm bg-transparent'>{item.title[0]}</AvatarFallback>
                 </Avatar>
-                <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-semibold'>{item.title}</span>
-                </div>
+                <span className='capitalize truncate'>{item.title}</span>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Avatar className='size-6 rounded-sm'>
-                <AvatarFallback className='rounded-sm bg-transparent'>
-                  <PlusIcon />
-                </AvatarFallback>
-              </Avatar>
-              <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-semibold'>Create Workspace</span>
-              </div>
-            </DropdownMenuItem>
+            <Button variant='ghost' className='w-full'>
+              Create Workspace
+            </Button>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
