@@ -1,8 +1,9 @@
 import { Link, Outlet } from 'react-router-dom'
 
+import { FireIcon } from '@phosphor-icons/react'
+
 import { Button } from '@/components'
 import { useHero } from '@/hooks'
-import { StrategyIcon } from '@phosphor-icons/react'
 
 export const AuthLayout = () => {
   const hero = useHero()
@@ -13,7 +14,7 @@ export const AuthLayout = () => {
         <div className='w-full max-w-md grid gap-6 px-6'>
 
           <header className='grid gap-2 text-center'>
-            <StrategyIcon className='mx-auto size-8 text-primary' />
+            <FireIcon className='mx-auto size-8 text-primary' />
             <h2 className='text-xl font-bold'>{hero.heading}</h2>
             <p className='text-sm text-muted-foreground'>{hero.subheading}</p>
           </header>
