@@ -5,27 +5,36 @@ import {
   Button,
   DataTableFacetedFilter,
   DataTableViewOptions,
-  Input,
-  priorities,
-  statuses
+  Input
 } from '@/components'
 
+const statuses = [
+  { label: 'Active', value: 'active' },
+  { label: 'Inactive', value: 'inactive' },
+  { label: 'Suspended', value: 'suspended' }
+]
+
 export const DataTableToolbar = <TData,>({ table }: { table: Table<TData> }) => {
-  const titleColumn = table.getColumn('title')
+  const nameColumn = table.getColumn('name')
   const statusColumn = table.getColumn('status')
-  const priorityColumn = table.getColumn('priority')
   const isFiltered = table.getState().columnFilters.length > 0
 
   return (
     <div className='flex flex-1 items-center gap-2'>
-      {titleColumn && (
-        <Input onChange={(event) => titleColumn.setFilterValue(event.target.value)} value={(titleColumn.getFilterValue() as string) ?? ''} placeholder='Filter...' className='max-w-xs' />
+      {nameColumn && (
+        <Input
+          onChange={(event) => nameColumn.setFilterValue(event.target.value)}
+          value={(nameColumn.getFilterValue() as string) ?? ''}
+          placeholder='Filter...'
+          className='max-w-xs'
+        />
       )}
       {statusColumn && (
-        <DataTableFacetedFilter options={statuses} column={statusColumn} title='Status' />
-      )}
-      {priorityColumn && (
-        <DataTableFacetedFilter options={priorities} column={priorityColumn} title='Priority' />
+        <DataTableFacetedFilter
+          options={statuses}
+          column={statusColumn}
+          title='Status'
+        />
       )}
       {isFiltered && (
         <Button onClick={() => table.resetColumnFilters()} variant='ghost'>

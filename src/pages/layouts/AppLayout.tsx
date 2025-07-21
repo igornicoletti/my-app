@@ -20,7 +20,7 @@ export const AppLayout = () => {
 
   return (
     <SidebarProvider>
-      <AppSidebar variant='floating' collapsible='icon' />
+      <AppSidebar variant='floating' />
       <SidebarInset>
         <header className='flex h-16 md:h-22 shrink-0 items-center gap-2 ease-linear transition-[width,height] group-has-data-[collapsible=icon]/sidebar-wrapper:h-16'>
           <div className='flex w-full items-center gap-4 px-2'>
@@ -38,10 +38,8 @@ export const AppLayout = () => {
             </div>
           </div>
         </header>
-        <div className='flex flex-1 flex-col overflow-hidden'>
-          <div className='flex-1 overflow-auto p-4 pt-0'>
-            <Outlet />
-          </div>
+        <div className="flex flex-1 flex-col p-4 pt-0">
+          <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>

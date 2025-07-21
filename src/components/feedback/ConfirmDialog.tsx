@@ -9,6 +9,7 @@ import {
   AlertDialogTitle
 } from '@/components'
 import { useAlert } from '@/contexts'
+import { WarningCircleIcon } from '@phosphor-icons/react'
 
 export const ConfirmDialog = () => {
   const { isOpen, onOpenChange, options, onConfirm, onCancel } = useAlert()
@@ -16,10 +17,13 @@ export const ConfirmDialog = () => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
+        <WarningCircleIcon />
         <AlertDialogHeader>
-          <AlertDialogTitle>{options?.title || 'Are you absolutely sure?'}</AlertDialogTitle>
+          <AlertDialogTitle>
+            {options?.title || 'Are you absolutely sure?'}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            {options?.description || 'This action cannot be undone.'}
+            {options?.description || 'This action cannot be undone. It will permanently remove the data from our servers'}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -27,7 +31,7 @@ export const ConfirmDialog = () => {
             {options?.cancelText || 'Cancel'}
           </AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm}>
-            {options?.confirmText || 'Confirm'}
+            {options?.confirmText || 'Continue'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

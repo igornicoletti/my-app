@@ -58,7 +58,7 @@ export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] })
                   <AvatarImage src={item.avatar} alt={item.title} />
                   <AvatarFallback className='rounded-sm bg-transparent'>{item.title[0]}</AvatarFallback>
                 </Avatar>
-                <span className='capitalize truncate'>{item.title}</span>
+                <span className='truncate'>{item.title}</span>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />

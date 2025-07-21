@@ -5,74 +5,72 @@ import {
   Checkbox,
   DataTableColumnHeader,
   DataTableRowActions,
-  labels,
-  priorities,
-  statuses,
-  type Task
 } from '@/components'
+import type { UserSchema } from '@/schemas'
 
-export const columns: ColumnDef<Task>[] = [
+const statuses = [
+  { label: 'Active', value: 'active' },
+  { label: 'Blocked', value: 'Blocked' },
+  { label: 'In Progress', value: 'In Progress' }
+]
+
+const roles = [
+  { label: 'Admin', value: 'admin' },
+  { label: 'Owner', value: 'owner' },
+  { label: 'Viewer', value: 'viewer' }
+]
+
+export const columns: ColumnDef<UserSchema>[] = [
   {
     id: 'select',
-    header: ({ table }) => <Checkbox
-      checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
-      onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-      aria-label='Select all rows' />,
-    cell: ({ row }) => <Checkbox
-      checked={row.getIsSelected()}
-      onCheckedChange={(value) => row.toggleSelected(!!value)}
-      aria-label='Select row' />,
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all rows"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'title',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Title' />,
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label)
+      const role = roles.find((role) => role.value === row.original.roles)
 
       return (
         <div className='flex gap-2'>
-          {label && <Badge variant='outline'>{label.label}</Badge>}
-          <span>{row.getValue('title')}</span>
+          {role && <Badge variant='outline'>{role.label}</Badge>}
+          <span>{row.getValue('name')}</span>
         </div>
       )
     },
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
-    cell: ({ row }) => {
-      const status = statuses.find((status) => status.value === row.getValue('status'))
-      if (!status) return null
-
-      return (
-        <div className='flex items-center gap-2'>
-          {status.icon && <status.icon />}
-          <span>{status.label}</span>
-        </div>
-      )
-    },
-    filterFn: (row, id, value) => {
-      if (!Array.isArray(value)) return false
-      return value.includes(row.getValue(id))
-    },
+    accessorKey: 'email',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+    cell: ({ row }) => <span>{row.getValue('email')}</span>,
     enableSorting: false,
   },
   {
-    accessorKey: 'priority',
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Priority' />,
+    accessorKey: 'status',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
-      const priority = priorities.find((priority) => priority.value === row.getValue('priority'))
-      if (!priority) return null
-
-      return (
-        <div className='flex items-center gap-2'>
-          {priority.icon && <priority.icon />}
-          <span>{priority.label}</span>
-        </div>
-      )
+      const data = statuses.find((data) => data.value === row.getValue('status'))
+      if (!data) return null
+      return <span>{data.label}</span>
     },
     filterFn: (row, id, value) => {
       if (!Array.isArray(value)) return false

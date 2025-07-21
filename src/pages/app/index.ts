@@ -1,4 +1,4 @@
 export { Analytics } from './Analytics'
 export { Dashboard } from './Dashboard'
-export * from './data'
+export * from './users'
 export { Users } from './Users'

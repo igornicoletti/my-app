@@ -93,7 +93,7 @@ export const DataTableFacetedFilter = <TData, TValue>({
                   className='flex items-center gap-2'>
                   <Checkbox checked={selectedValues.has(option.value)} />
                   {option.icon && <option.icon />}
-                  <span className='capitalize truncate'>{option.label}</span>
+                  <span className='truncate'>{option.label}</span>
                   {facets?.get(option.value) && (
                     <span className='ml-auto text-xs text-muted-foreground'>
                       {facets.get(option.value)}

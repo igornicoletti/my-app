@@ -13,25 +13,25 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-  taskSchema
 } from '@/components'
 import { useAlert } from '@/contexts'
+import { userSchema } from '@/schemas'
 
 export const DataTableRowActions = <TData,>({ row }: { row: Row<TData> }) => {
   const { openDialog } = useAlert()
 
-  const parsed = taskSchema.safeParse(row.original)
+  const parsed = userSchema.safeParse(row.original)
   if (!parsed.success) return null
 
-  const task = parsed.data
+  const user = parsed.data
 
   const handleEdit = () => {
-    console.log('Edit task:', task)
+    console.log('Edit user:', user)
   }
 
   const handleDelete = () => {
     openDialog({
-      onConfirm: () => console.log('Delete task:', task)
+      onConfirm: () => console.log('Delete user:', user)
     })
   }
 
@@ -49,7 +49,7 @@ export const DataTableRowActions = <TData,>({ row }: { row: Row<TData> }) => {
           <PencilSimpleIcon />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => navigator.clipboard.writeText(task.id)}>
+        <DropdownMenuItem onSelect={() => navigator.clipboard.writeText(user.id)}>
           <CopySimpleIcon />
           Copy
         </DropdownMenuItem>

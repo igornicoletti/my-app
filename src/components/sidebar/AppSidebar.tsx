@@ -32,7 +32,7 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
     avatar: photoURL ?? '',
   }
   return (
-    <Sidebar {...props}>
+    <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>
         <WorkspaceSwitcher workspace={workspaceData} />
       </SidebarHeader>
