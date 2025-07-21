@@ -13,7 +13,7 @@ import {
 const formatColumnLabel = (id: string) =>
   id.replace(/([A-Z])/g, ' $1').replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim()
 
-export const DataTableViewOptions = <TData,>({ table }: { table: Table<TData> }) => (
+export const CustomizeColumns = <TData,>({ table }: { table: Table<TData> }) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <Button variant='outline' className='ml-auto'>
@@ -22,7 +22,7 @@ export const DataTableViewOptions = <TData,>({ table }: { table: Table<TData> })
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align='end' className='w-48'>
-      <DropdownMenuLabel className='text-muted-foreground'>Toggle Columns</DropdownMenuLabel>
+      <DropdownMenuLabel className='text-muted-foreground'>Toggle Visibility</DropdownMenuLabel>
       {table.getAllColumns().filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide()).map((column) => (
         <DropdownMenuCheckboxItem
           key={column.id}

@@ -17,7 +17,7 @@ import {
 import { useAlert } from '@/contexts'
 import { userSchema } from '@/schemas'
 
-export const DataTableRowActions = <TData,>({ row }: { row: Row<TData> }) => {
+export const RowActions = <TData,>({ row }: { row: Row<TData> }) => {
   const { openDialog } = useAlert()
 
   const parsed = userSchema.safeParse(row.original)

@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@/components'
 
-export const DataTablePagination = <TData,>({ table }: { table: Table<TData> }) => (
+export const PaginationControls = <TData,>({ table }: { table: Table<TData> }) => (
   <div className='flex flex-col lg:flex-row items-center justify-between gap-4'>
     <div className="flex-1 items-center text-sm text-muted-foreground">
       {table.getFilteredSelectedRowModel().rows.length} of{' '}

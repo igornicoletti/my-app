@@ -7,7 +7,7 @@ import {
 
 const generateUser = (): UserSchema => {
   const roles: UserSchema['roles'][] = ['admin', 'owner', 'viewer']
-  const statuses: UserSchema['status'][] = ['active', 'inactive', 'suspended']
+  const statuses: UserSchema['status'][] = ['done', 'blocked', 'in-progress']
 
   const createdAt = faker.date.past({ years: 1 })
   const updatedAt = faker.date.between({ from: createdAt, to: new Date() })

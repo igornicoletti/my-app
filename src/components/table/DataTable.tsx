@@ -17,8 +17,8 @@ import {
 } from '@tanstack/react-table'
 
 import {
-  DataTablePagination,
   DataTableToolbar,
+  PaginationControls,
   ScrollArea,
   ScrollBar,
   Table,
@@ -28,12 +28,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components'
-
+import {
+  ClockCountdownIcon,
+  ProhibitIcon,
+  UserCircleCheckIcon
+} from '@phosphor-icons/react'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
-
+const statusOptions = [
+  { label: 'Done', value: 'done', icon: UserCircleCheckIcon },
+  { label: 'Blocked', value: 'blocked', icon: ProhibitIcon },
+  { label: 'In Progress', value: 'in-progress', icon: ClockCountdownIcon }
+]
 export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -62,7 +70,19 @@ export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div className='flex flex-col gap-4'>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar
+        table={table}
+        globalFilterColumnId="name"
+        filters={[
+          {
+            id: 'status',
+            title: 'Status',
+            options: statusOptions
+          }
+        ]}
+      />
+
+
       <ScrollArea className="grid w-full border rounded-lg">
         <Table>
           <TableHeader>
@@ -100,7 +120,9 @@ export const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData
         </Table>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <DataTablePagination table={table} />
+
+
+      <PaginationControls table={table} />
     </div>
   )
 }

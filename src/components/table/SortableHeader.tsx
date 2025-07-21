@@ -5,19 +5,14 @@ import {
 } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 
-import {
-  Button
-} from '@/components'
+import { Button } from '@/components'
 
-interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
+interface SortableHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
   title: string
 }
 
-export const DataTableColumnHeader = <TData, TValue>({
-  column,
-  title,
-}: DataTableColumnHeaderProps<TData, TValue>) => {
+export const SortableHeader = <TData, TValue>({ column, title }: SortableHeaderProps<TData, TValue>) => {
   const sorted = column.getIsSorted()
 
   if (!column.getCanSort()) {

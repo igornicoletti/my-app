@@ -1,17 +1,22 @@
+import {
+  ClockCountdownIcon,
+  ProhibitIcon,
+  UserCircleCheckIcon
+} from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 
 import {
   Badge,
   Checkbox,
-  DataTableColumnHeader,
-  DataTableRowActions,
+  RowActions,
+  SortableHeader,
 } from '@/components'
 import type { UserSchema } from '@/schemas'
 
 const statuses = [
-  { label: 'Active', value: 'active' },
-  { label: 'Blocked', value: 'Blocked' },
-  { label: 'In Progress', value: 'In Progress' }
+  { label: 'Done', value: 'done', icon: UserCircleCheckIcon },
+  { label: 'Blocked', value: 'blocked', icon: ProhibitIcon },
+  { label: 'In Progress', value: 'in-progress', icon: ClockCountdownIcon }
 ]
 
 const roles = [
@@ -45,7 +50,7 @@ export const columns: ColumnDef<UserSchema>[] = [
   },
   {
     accessorKey: 'name',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    header: ({ column }) => <SortableHeader column={column} title="Name" />,
     cell: ({ row }) => {
       const role = roles.find((role) => role.value === row.original.roles)
 
@@ -60,17 +65,22 @@ export const columns: ColumnDef<UserSchema>[] = [
   },
   {
     accessorKey: 'email',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+    header: ({ column }) => <SortableHeader column={column} title="Email" />,
     cell: ({ row }) => <span>{row.getValue('email')}</span>,
     enableSorting: false,
   },
   {
     accessorKey: 'status',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+    header: ({ column }) => <SortableHeader column={column} title="Status" />,
     cell: ({ row }) => {
       const data = statuses.find((data) => data.value === row.getValue('status'))
       if (!data) return null
-      return <span>{data.label}</span>
+      return (
+        <div className='flex items-center gap-2'>
+          {data.icon && <data.icon />}
+          <span>{data.label}</span>
+        </div>
+      )
     },
     filterFn: (row, id, value) => {
       if (!Array.isArray(value)) return false
@@ -80,6 +90,6 @@ export const columns: ColumnDef<UserSchema>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => <RowActions row={row} />,
   },
 ]
