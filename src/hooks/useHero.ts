@@ -11,7 +11,6 @@ export const useHero = (): HeroContent => {
   const segment = pathname.split('/').filter(Boolean).pop()
 
   if (!segment || !(segment in HERO)) {
-    console.warn(`[useHero] Unknown auth segment: ${segment}`)
     return HERO.login
   }
 

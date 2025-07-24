@@ -23,13 +23,7 @@ interface FieldControlValues<T extends FieldValues> {
 }
 
 export const FieldControl = <T extends FieldValues>({
-  autoComplete,
-  autoFocus,
-  control,
-  disabled,
-  name,
-  placeholder,
-  type,
+  autoComplete, autoFocus, control, disabled, name, placeholder, type
 }: FieldControlValues<T>) => {
   const [visible, setVisible] = useState(false)
 
@@ -50,7 +44,7 @@ export const FieldControl = <T extends FieldValues>({
               autoComplete={autoComplete}
               aria-invalid={!!fieldState.error} />
             {isPassword && (
-              <Button onClick={() => setVisible((prev) => !prev)} size='icon' type='button' variant='ghost' className='absolute top-0 right-0'>
+              <Button onClick={() => setVisible((prev) => !prev)} size='icon' variant='ghost' type='button' className='absolute top-0 right-0'>
                 {visible ? <EyeSlashIcon /> : <EyeIcon />}
               </Button>
             )}

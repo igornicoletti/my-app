@@ -17,6 +17,8 @@ export const useShortcut = (
     const comboList = Array.isArray(combos) ? combos : [combos]
 
     const handler = (event: KeyboardEvent) => {
+      if (typeof event.key !== 'string') return
+
       for (const combo of comboList) {
         const { key, modifiers } = parseCombo(combo)
         const pressedKey = event.key.toLowerCase()

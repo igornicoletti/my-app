@@ -11,22 +11,11 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
-  type ActionCodeSettings,
   type User
 } from 'firebase/auth'
-import {
-  doc,
-  serverTimestamp,
-  setDoc
-} from 'firebase/firestore'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 
-import { AUTH, DB } from '@/configs'
-
-const APP_ORIGIN = import.meta.env.VITE_APP_ORIGIN
-const ACTION_CODE_SETTINGS: ActionCodeSettings = {
-  url: `${APP_ORIGIN}/callback`,
-  handleCodeInApp: true,
-}
+import { AUTH, CODE, DB } from '@/configs'
 
 export const authService = {
   // Sign in
@@ -43,7 +32,7 @@ export const authService = {
   createUserWithEmail: async (email: string, password: string, displayName?: string): Promise<User> => {
     const { user } = await createUserWithEmailAndPassword(AUTH, email, password)
     if (displayName) await updateProfile(user, { displayName })
-    const userRef = doc(DB, 'users', user.uid)
+    const userRef = doc(DB, 'user', user.uid)
     await setDoc(userRef, {
       uid: user.uid,
       name: displayName,
@@ -52,18 +41,18 @@ export const authService = {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     })
-    await sendEmailVerification(user, ACTION_CODE_SETTINGS)
+    await sendEmailVerification(user, CODE)
     return user
   },
 
   // Password reset & email verification
   sendPasswordReset: async (email: string): Promise<void> =>
-    sendPasswordResetEmail(AUTH, email, ACTION_CODE_SETTINGS),
+    sendPasswordResetEmail(AUTH, email, CODE),
 
   sendEmailVerificationToCurrentUser: async (): Promise<void> => {
     const user = AUTH.currentUser
     if (!user) throw new Error('User not authenticated')
-    await sendEmailVerification(user, ACTION_CODE_SETTINGS)
+    await sendEmailVerification(user, CODE)
   },
 
   confirmUserPasswordReset: async (oobCode: string, newPassword: string): Promise<void> =>

@@ -6,7 +6,7 @@ import {
   CallbackRoute,
   GuestGuardRoute,
   RedirectRoute,
-} from '@/pages'
+} from '@/features'
 import {
   getProtectedRoutes,
   getPublicRoutes,

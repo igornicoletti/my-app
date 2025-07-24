@@ -36,9 +36,9 @@ type User = {
 }
 
 export const UserMenu = ({ user }: { user: User }) => {
-  const { isMobile } = useSidebar()
-  const { openCommand } = useCommand()
   const { theme, toggleTheme } = useTheme()
+  const { openCommand } = useCommand()
+  const { isMobile } = useSidebar()
 
   return (
     <SidebarMenu>

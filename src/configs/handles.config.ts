@@ -22,14 +22,9 @@ export const HANDLES = {
     title: 'Dashboard',
     description: 'Overview of your activity, performance, and quick access to key features.',
   },
-  analytics: {
-    crumb: 'Analytics',
-    title: 'Analytics',
-    description: 'Detailed insights and data visualizations to help you make informed decisions.',
-  },
-  users: {
-    crumb: 'Users',
-    title: 'Users',
+  user: {
+    crumb: 'User',
+    title: 'User',
     description: 'Lorem ipsum dolor sit amet.',
   },
 } as const

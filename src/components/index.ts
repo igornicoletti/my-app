@@ -1,4 +1,4 @@
-export * from './features'
+export * from './common'
 export * from './feedback'
 export * from './form'
 export * from './shadcn'

@@ -29,26 +29,25 @@ interface FacetedFilterProps<TData, TValue> {
 }
 
 export const FacetedFilter = <TData, TValue>({
-  column, title, options
+  column,
+  title,
+  options
 }: FacetedFilterProps<TData, TValue>) => {
   const facets = column?.getFacetedUniqueValues()
   const filterValue = column?.getFilterValue()
   const selectedValues = new Set(filterValue as string[])
 
-  const handleSelect = (value: string) => {
-    const newSelectedValues = new Set(selectedValues)
-
-    if (newSelectedValues.has(value)) {
-      newSelectedValues.delete(value)
+  const toggleValue = (value: string) => {
+    const updated = new Set(selectedValues)
+    if (updated.has(value)) {
+      updated.delete(value)
     } else {
-      newSelectedValues.add(value)
+      updated.add(value)
     }
-
-    const valuesArray = Array.from(newSelectedValues)
-    column?.setFilterValue(valuesArray.length ? valuesArray : undefined)
+    column?.setFilterValue(updated.size ? Array.from(updated) : undefined)
   }
 
-  const renderSelectedBadges = () => {
+  const renderBadges = () => {
     if (selectedValues.size === 0) return null
 
     return (
@@ -59,9 +58,11 @@ export const FacetedFilter = <TData, TValue>({
           {selectedValues.size > 2 ? (
             <Badge variant='secondary'>{selectedValues.size} selected</Badge>
           ) : (
-            options.filter((option) => selectedValues.has(option.value)).map((option) => (
-              <Badge key={option.value} variant='secondary'>{option.label}</Badge>
-            ))
+            options
+              .filter((o) => selectedValues.has(o.value))
+              .map((o) => (
+                <Badge key={o.value} variant='secondary'>{o.label}</Badge>
+              ))
           )}
         </div>
       </>
@@ -74,7 +75,7 @@ export const FacetedFilter = <TData, TValue>({
         <Button variant='outline' className='hidden lg:flex border-dashed'>
           <FunnelSimpleIcon />
           {title}
-          {renderSelectedBadges()}
+          {renderBadges()}
         </Button>
       </PopoverTrigger>
       <PopoverContent align='start' className='w-48 p-0'>
@@ -83,28 +84,31 @@ export const FacetedFilter = <TData, TValue>({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
+              {options.map(({ value, label, icon: Icon }) => (
                 <CommandItem
-                  key={option.value}
-                  onSelect={() => handleSelect(option.value)}
-                  aria-checked={selectedValues.has(option.value)}
+                  key={value}
+                  onSelect={() => toggleValue(value)}
+                  aria-checked={selectedValues.has(value)}
                   className='flex items-center gap-2'>
-                  <Checkbox checked={selectedValues.has(option.value)} />
-                  {option.icon && <option.icon />}
-                  <span className='truncate'>{option.label}</span>
-                  {facets?.get(option.value) && (
+                  <Checkbox checked={selectedValues.has(value)} />
+                  {Icon && <Icon />}
+                  <span className='truncate'>{label}</span>
+                  {facets?.get(value) && (
                     <span className='ml-auto text-xs text-muted-foreground'>
-                      {facets.get(option.value)}
+                      {facets.get(value)}
                     </span>
                   )}
                 </CommandItem>
               ))}
             </CommandGroup>
+
             {selectedValues.size > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <CommandItem onSelect={() => column?.setFilterValue(undefined)} className='justify-center text-center'>
+                  <CommandItem
+                    onSelect={() => column?.setFilterValue(undefined)}
+                    className='justify-center text-center'>
                     Clear Filters
                   </CommandItem>
                 </CommandGroup>

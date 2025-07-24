@@ -26,8 +26,8 @@ type WorkspaceItem = {
 }
 
 export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] }) => {
-  const [isActive, setIsActive] = useState(workspace[0])
   const { isMobile } = useSidebar()
+  const [isActive, setIsActive] = useState(workspace[0])
 
   if (!isActive) return null
 

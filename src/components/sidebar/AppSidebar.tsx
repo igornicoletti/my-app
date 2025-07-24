@@ -19,8 +19,8 @@ const workspaceData = [{
 }]
 
 export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
-  const { user, isLoading } = useAuth()
   const navigationData = useNavigation()
+  const { user, isLoading } = useAuth()
 
   if (isLoading) return <LoadingSpinner />
   if (!user) return null
@@ -31,6 +31,7 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
     description: email ?? '',
     avatar: photoURL ?? '',
   }
+
   return (
     <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>

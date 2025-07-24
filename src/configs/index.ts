@@ -1,5 +1,5 @@
 export { ELEMENTS } from './elements.config'
-export { APP, AUTH, DB } from './firebase.config'
+export { APP, AUTH, CODE, DB } from './firebase.config'
 export {
   HANDLES,
   type RouteHandle,

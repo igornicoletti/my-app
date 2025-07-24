@@ -1,3 +1,5 @@
+import { WarningCircleIcon } from '@phosphor-icons/react'
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +11,6 @@ import {
   AlertDialogTitle
 } from '@/components'
 import { useAlert } from '@/contexts'
-import { WarningCircleIcon } from '@phosphor-icons/react'
 
 export const ConfirmDialog = () => {
   const { isOpen, onOpenChange, options, onConfirm, onCancel } = useAlert()
