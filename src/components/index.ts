@@ -1,6 +1,6 @@
 export * from './common'
 export * from './feedback'
 export * from './form'
-export * from './shadcn'
 export * from './sidebar'
 export * from './table'
+export * from './ui'

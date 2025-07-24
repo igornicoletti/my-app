@@ -1,115 +1,121 @@
-import { FunnelSimpleIcon } from '@phosphor-icons/react'
+import { useCallback, useState } from 'react'
+
+import { CheckIcon, PlusCircleIcon, XCircleIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 
-import {
-  Badge,
-  Button,
-  Checkbox,
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Separator
-} from '@/components'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
+
+interface Option {
+  label: string
+  value: string
+  count: string
+  icon?: React.ComponentType<{ className?: string }>
+}
 
 interface FacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
-  options: {
-    label: string
-    value: string
-    icon?: React.ComponentType<{ className?: string }>
-  }[]
+  options: Option[]
 }
 
 export const FacetedFilter = <TData, TValue>({
-  column,
-  title,
-  options
+  column, title, options
 }: FacetedFilterProps<TData, TValue>) => {
-  const facets = column?.getFacetedUniqueValues()
-  const filterValue = column?.getFilterValue()
-  const selectedValues = new Set(filterValue as string[])
+  const [open, setOpen] = useState(false)
 
-  const toggleValue = (value: string) => {
-    const updated = new Set(selectedValues)
-    if (updated.has(value)) {
-      updated.delete(value)
+  const columnFilterValue = column?.getFilterValue()
+  const selectedValues = new Set(Array.isArray(columnFilterValue) ? columnFilterValue : [])
+
+  const onItemSelect = useCallback((option: Option, isSelected: boolean) => {
+    if (!column) return
+
+    const currentValue = column.getFilterValue()
+    const currentSet = new Set(Array.isArray(currentValue) ? currentValue : [])
+
+    if (isSelected) {
+      currentSet.delete(option.value)
     } else {
-      updated.add(value)
+      currentSet.add(option.value)
     }
-    column?.setFilterValue(updated.size ? Array.from(updated) : undefined)
-  }
 
-  const renderBadges = () => {
-    if (selectedValues.size === 0) return null
+    const filterValues = Array.from(currentSet)
+    column.setFilterValue(filterValues.length ? filterValues : undefined)
+  }, [column])
 
-    return (
-      <>
-        <Separator orientation='vertical' />
-        <Badge variant='secondary' className='lg:hidden'>{selectedValues.size}</Badge>
-        <div className='hidden gap-1 lg:flex'>
-          {selectedValues.size > 2 ? (
-            <Badge variant='secondary'>{selectedValues.size} selected</Badge>
-          ) : (
-            options
-              .filter((o) => selectedValues.has(o.value))
-              .map((o) => (
-                <Badge key={o.value} variant='secondary'>{o.label}</Badge>
-              ))
-          )}
-        </div>
-      </>
-    )
-  }
+  const onReset = useCallback((event?: React.MouseEvent) => {
+    event?.stopPropagation()
+    column?.setFilterValue(undefined)
+  }, [column])
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant='outline' className='hidden lg:flex border-dashed'>
-          <FunnelSimpleIcon />
+        <Button variant='outline' size='sm' className='border-dashed'>
+          {selectedValues.size > 0 ? (
+            <div tabIndex={0} onClick={onReset} aria-label={`Clear ${title} filter`} role='button' className='rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'>
+              <XCircleIcon />
+            </div>
+          ) : (
+            <PlusCircleIcon />
+          )}
           {title}
-          {renderBadges()}
+          {selectedValues.size > 0 && (
+            <>
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
+                {selectedValues.size}
+              </Badge>
+              <div className='hidden items-center gap-1 lg:flex'>
+                {selectedValues.size > 2 ? (
+                  <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+                    {selectedValues.size} selected
+                  </Badge>
+                ) : (
+                  options.filter((option) => selectedValues.has(option.value)).map((option) => (
+                    <Badge key={option.value} variant='secondary' className='rounded-sm px-1 font-normal'>
+                      {option.label}
+                    </Badge>
+                  ))
+                )}
+              </div>
+            </>
+          )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align='start' className='w-48 p-0'>
+      <PopoverContent className='w-[12.5rem] p-0' align='start'>
         <Command>
           <CommandInput placeholder={title} />
-          <CommandList>
+          <CommandList className='max-h-full'>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-              {options.map(({ value, label, icon: Icon }) => (
-                <CommandItem
-                  key={value}
-                  onSelect={() => toggleValue(value)}
-                  aria-checked={selectedValues.has(value)}
-                  className='flex items-center gap-2'>
-                  <Checkbox checked={selectedValues.has(value)} />
-                  {Icon && <Icon />}
-                  <span className='truncate'>{label}</span>
-                  {facets?.get(value) && (
-                    <span className='ml-auto text-xs text-muted-foreground'>
-                      {facets.get(value)}
-                    </span>
-                  )}
-                </CommandItem>
-              ))}
+            <CommandGroup className='max-h-[18.75rem] overflow-y-auto overflow-x-hidden'>
+              {options.map((option) => {
+                const isSelected = selectedValues.has(option.value)
+                return (
+                  <CommandItem key={option.value} onSelect={() => onItemSelect(option, isSelected)}>
+                    <div className={`flex size-4 items-center justify-center rounded-sm border border-primary ${isSelected ? 'bg-primary' : 'opacity-50 [&_svg]:invisible'}`}>
+                      <CheckIcon />
+                    </div>
+                    {option.icon && <option.icon />}
+                    <span className='truncate'>{option.label}</span>
+                    {option.count && (
+                      <span className='ml-auto font-mono text-xs'>
+                        {option.count}
+                      </span>
+                    )}
+                  </CommandItem>
+                )
+              })}
             </CommandGroup>
-
             {selectedValues.size > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
-                    className='justify-center text-center'>
-                    Clear Filters
+                  <CommandItem onSelect={() => onReset()} className='justify-center text-center'>
+                    Clear filters
                   </CommandItem>
                 </CommandGroup>
               </>
