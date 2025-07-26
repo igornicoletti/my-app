@@ -1,17 +1,15 @@
-export { authConfig } from './auth.config'
-
+export { authData } from './auth.config'
 export {
   forgotPasswordSchema,
   loginSchema,
   registerSchema,
   resetPasswordSchema
 } from './auth.schema'
-
 export type {
-  Auth,
   AuthKey,
-  ForgotPasswordSchema,
-  LoginSchema,
-  RegisterSchema,
-  ResetPasswordSchema
+  AuthProps,
+  ForgotPasswordProps,
+  LoginProps,
+  RegisterProps,
+  ResetPasswordProps
 } from './auth.type'

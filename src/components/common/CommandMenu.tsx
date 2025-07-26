@@ -13,15 +13,15 @@ import { useCommand } from '@/contexts'
 import { useNavigation } from '@/hooks'
 
 export const CommandMenu = () => {
-  const navigation = useNavigation()
   const { open, setOpen } = useCommand()
+  const navigation = useNavigation()
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder='Type a command or search...' />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading='Navigation'>
+        <CommandGroup heading='Go to...'>
           {navigation.map((item) => (
             <React.Fragment key={item.url}>
               <CommandItem asChild onSelect={() => setOpen(false)}>
@@ -33,7 +33,8 @@ export const CommandMenu = () => {
               {item.subItems?.map((subItem) => (
                 <CommandItem asChild key={subItem.url} onSelect={() => setOpen(false)}>
                   <Link to={subItem.url}>
-                    <span className='ml-6'>{subItem.title}</span>
+                    {subItem.Icon && <subItem.Icon />}
+                    {subItem.title}
                   </Link>
                 </CommandItem>
               ))}

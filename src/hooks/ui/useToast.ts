@@ -1,13 +1,11 @@
-import { toast } from 'sonner'
-
 import {
   ERROR,
   SUCCESS,
-  type ErrorMessageKey,
-  type SuccessMessageKey,
-} from '@/configs'
+  type ErrorKey,
+  type SuccessKey,
+} from '@/constants'
+import { toast } from 'sonner'
 
-// Firebase Error-like check
 type FirebaseErrorLike = { code: string }
 
 const isFirebaseError = (error: unknown): error is FirebaseErrorLike =>
@@ -16,17 +14,19 @@ const isFirebaseError = (error: unknown): error is FirebaseErrorLike =>
   'code' in error &&
   typeof (error as FirebaseErrorLike).code === 'string'
 
-// Extract error code from various error types
 const getErrorCode = (error: unknown): string => {
   if (isFirebaseError(error)) return error.code
   if (error instanceof Error && error.message) return error.message
   return 'default'
 }
 
+const isErrorKey = (key: string): key is ErrorKey => key in ERROR
+const isSuccessKey = (key: string): key is SuccessKey => key in SUCCESS
+
 export const useToast = () => {
   const errorToast = (error: unknown) => {
     const code = getErrorCode(error)
-    const { title, description } = ERROR[code as ErrorMessageKey] ?? ERROR.default
+    const { title, description } = isErrorKey(code) ? ERROR[code] : ERROR.default
 
     toast.message(title, {
       description,
@@ -37,8 +37,8 @@ export const useToast = () => {
     })
   }
 
-  const successToast = (key: SuccessMessageKey | string) => {
-    const { title, description } = SUCCESS[key as SuccessMessageKey] ?? SUCCESS.default
+  const successToast = (key: string) => {
+    const { title, description } = isSuccessKey(key) ? SUCCESS[key] : SUCCESS.default
 
     toast.message(title, {
       description,

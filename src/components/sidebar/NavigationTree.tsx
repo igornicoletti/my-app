@@ -1,7 +1,3 @@
-import { Link } from 'react-router-dom'
-
-import { CaretRightIcon } from '@phosphor-icons/react'
-
 import {
   Collapsible,
   CollapsibleContent,
@@ -13,11 +9,13 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
-  SidebarMenuSubItem
+  SidebarMenuSubItem,
 } from '@/components'
-import type { NavigationItem } from '@/utils'
+import type { NavigationProps } from '@/utils'
+import { CaretRightIcon } from '@phosphor-icons/react'
+import { Link } from 'react-router-dom'
 
-export const NavigationTree = ({ navigation }: { navigation: NavigationItem[] }) => (
+export const NavigationTree = ({ navigation }: { navigation: NavigationProps[] }) => (
   <SidebarGroup>
     <SidebarMenu>
       {navigation.map((item, index) => (
@@ -29,29 +27,27 @@ export const NavigationTree = ({ navigation }: { navigation: NavigationItem[] })
                 {item.title}
               </Link>
             </SidebarMenuButton>
-            {item.subItems && item.subItems.length > 0 ? (
+            {item.subItems && item.subItems?.length > 0 && (
               <>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuAction className='data-[state=open]:rotate-90'>
+                  <SidebarMenuAction className="data-[state=open]:rotate-90">
                     <CaretRightIcon />
-                    <span className='sr-only'>Toggle</span>
+                    <span className="sr-only">Toggle</span>
                   </SidebarMenuAction>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.subItems.map((subItem, subIndex) => (
+                    {item.subItems.map((sub, subIndex) => (
                       <SidebarMenuSubItem key={subIndex}>
-                        <SidebarMenuSubButton asChild isActive={subItem.isActive}>
-                          <Link to={subItem.url}>
-                            {subItem.title}
-                          </Link>
+                        <SidebarMenuSubButton asChild isActive={sub.isActive}>
+                          <Link to={sub.url}>{sub.title}</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </>
-            ) : null}
+            )}
           </SidebarMenuItem>
         </Collapsible>
       ))}

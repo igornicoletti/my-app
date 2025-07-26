@@ -1,5 +1,4 @@
 import {
-  LoadingSpinner,
   NavigationTree,
   Sidebar,
   SidebarContent,
@@ -20,9 +19,8 @@ const workspaceData = [{
 
 export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const navigationData = useNavigation()
-  const { user, isLoading } = useAuth()
+  const { user } = useAuth()
 
-  if (isLoading) return <LoadingSpinner />
   if (!user) return null
 
   const { displayName, email, photoURL } = user

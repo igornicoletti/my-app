@@ -1,19 +1,19 @@
 import type { z } from 'zod'
 
 import type {
-  authConfig,
+  authData,
   forgotPasswordSchema,
   loginSchema,
   registerSchema,
   resetPasswordSchema
-} from '@/features/auth/data'
+} from '@/features/auth'
 
-export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
-export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>
-export type RegisterSchema = z.infer<typeof registerSchema>
-export type LoginSchema = z.infer<typeof loginSchema>
-export type AuthKey = keyof typeof authConfig
-export type Auth = {
+export type ForgotPasswordProps = z.infer<typeof forgotPasswordSchema>
+export type ResetPasswordProps = z.infer<typeof resetPasswordSchema>
+export type RegisterProps = z.infer<typeof registerSchema>
+export type LoginProps = z.infer<typeof loginSchema>
+export type AuthKey = keyof typeof authData
+export type AuthProps = {
   heading: string
   subheading: string
   question: string

@@ -3,10 +3,10 @@ import { Link, Outlet } from 'react-router-dom'
 import { FireIcon } from '@phosphor-icons/react'
 
 import { Button } from '@/components'
-import { useHero } from '@/hooks'
+import { useAuth } from '@/hooks'
 
 export const AuthLayout = () => {
-  const hero = useHero()
+  const auth = useAuth()
 
   return (
     <div className='relative flex min-h-svh flex-col'>
@@ -15,15 +15,15 @@ export const AuthLayout = () => {
 
           <header className='grid gap-2 text-center'>
             <FireIcon className='mx-auto size-8 text-primary' />
-            <h2 className='text-xl font-bold'>{hero.heading}</h2>
-            <p className='text-sm text-muted-foreground'>{hero.subheading}</p>
+            <h2 className='text-xl font-bold'>{auth.heading}</h2>
+            <p className='text-sm text-muted-foreground'>{auth.subheading}</p>
           </header>
           <Outlet />
           <footer className='text-center'>
             <p className='text-sm text-muted-foreground'>
-              {hero.question}{' '}
+              {auth.question}{' '}
               <Button asChild variant='link' className='p-0 font-semibold'>
-                <Link to={hero.linkTo}>{hero.linkLabel}</Link>
+                <Link to={auth.linkTo}>{auth.linkLabel}</Link>
               </Button>
             </p>
           </footer>

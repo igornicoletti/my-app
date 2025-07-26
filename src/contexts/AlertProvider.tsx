@@ -6,7 +6,6 @@ type AlertDialog = {
   description?: string
   confirmText?: string
   cancelText?: string
-  onConfirm: () => void
 }
 
 type AlertProviderState = {
@@ -35,7 +34,6 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const onConfirm = () => {
-    options?.onConfirm?.()
     setIsOpen(false)
   }
 

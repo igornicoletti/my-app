@@ -1,25 +1,23 @@
 import { isValidElement, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { ELEMENTS } from '@/configs'
+import { LAZY } from '@/constants'
 import { getProtectedRoutes } from '@/routers'
 import {
-  buildNavigationTree,
-  type NavigationItem
+  buildNavigation,
+  type NavigationProps
 } from '@/utils'
 
-export const useNavigation = (): NavigationItem[] => {
+export const useNavigation = (): NavigationProps[] => {
   const { pathname } = useLocation()
 
   return useMemo(() => {
     const protectedRoutes = getProtectedRoutes()
 
     const appLayoutRoute = protectedRoutes.find((route) =>
-      isValidElement(route.element) &&
-      route.element.type === ELEMENTS.AppLayout)
+      isValidElement(route.element) && route.element.type === LAZY.AppLayout)
 
     const childRoutes = appLayoutRoute?.children ?? []
-
-    return buildNavigationTree(childRoutes, pathname)
+    return buildNavigation(childRoutes, pathname)
   }, [pathname])
 }

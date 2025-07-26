@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { GoogleLogoIcon, SignInIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 
-import { loginSchema, type LoginSchema } from '@/features/auth'
+import { loginSchema, type LoginProps } from '@/features/auth'
 
 import { Button, EffectHighlight, FieldControl, Form, Separator } from '@/components'
 import { useSubmit, useToast } from '@/hooks'
@@ -13,12 +13,12 @@ import { authService } from '@/services'
 export const Login = () => {
   const { successToast } = useToast()
 
-  const form = useForm<LoginSchema>({
+  const form = useForm<LoginProps>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' }
   })
 
-  const { onSubmit, isLoading } = useSubmit(async (data: LoginSchema) => {
+  const { onSubmit, isLoading } = useSubmit(async (data: LoginProps) => {
     await authService.signInWithEmail(data.email, data.password)
     await authService.getCurrentUser()?.reload()
     const user = authService.getCurrentUser()

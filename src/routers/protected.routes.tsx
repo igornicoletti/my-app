@@ -1,28 +1,27 @@
 import type { RouteObject } from 'react-router-dom'
 
-import {
-  ELEMENTS,
-  HANDLES,
-  type RouteHandle
-} from '@/configs'
-import { userLoader } from '@/features'
+import { HANDLE, LAZY } from '@/constants'
 
 // ----- Protected (authenticated) routes -----
 export const getProtectedRoutes = (): RouteObject[] => [
   {
-    element: <ELEMENTS.AppLayout />,
-    errorElement: <ELEMENTS.ErrorFallback />,
+    element: <LAZY.AppLayout />,
+    errorElement: <LAZY.ErrorFallback />,
     children: [
       {
         path: 'dashboard',
-        element: <ELEMENTS.Dashboard />,
-        handle: HANDLES.dashboard satisfies RouteHandle,
+        element: <LAZY.Dashboard />,
+        handle: HANDLE.dashboard,
+      },
+      {
+        path: 'tasks',
+        element: <LAZY.Tasks />,
+        handle: HANDLE.tasks,
       },
       {
         path: 'user',
-        loader: userLoader,
-        element: <ELEMENTS.User />,
-        handle: HANDLES.user satisfies RouteHandle,
+        element: <LAZY.User />,
+        handle: HANDLE.user,
       },
     ],
   },

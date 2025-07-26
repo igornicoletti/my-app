@@ -1,36 +1,32 @@
 import type { RouteObject } from 'react-router-dom'
 
-import {
-  ELEMENTS,
-  HANDLES,
-  type RouteHandle
-} from '@/configs'
+import { HANDLE, LAZY, } from '@/constants'
 
 // ----- Public (unauthenticated) routes -----
 export const getPublicRoutes = (): RouteObject[] => [
   {
-    element: <ELEMENTS.AuthLayout />,
-    errorElement: <ELEMENTS.ErrorFallback />,
+    element: <LAZY.AuthLayout />,
+    errorElement: <LAZY.ErrorFallback />,
     children: [
       {
         path: 'login',
-        element: <ELEMENTS.Login />,
-        handle: HANDLES.login satisfies RouteHandle,
+        element: <LAZY.Login />,
+        handle: HANDLE.login,
       },
       {
         path: 'register',
-        element: <ELEMENTS.Register />,
-        handle: HANDLES.register satisfies RouteHandle,
+        element: <LAZY.Register />,
+        handle: HANDLE.register,
       },
       {
         path: 'forgot-password',
-        element: <ELEMENTS.ForgotPassword />,
-        handle: HANDLES.forgotPassword satisfies RouteHandle,
+        element: <LAZY.ForgotPassword />,
+        handle: HANDLE.forgotPassword,
       },
       {
         path: 'reset-password',
-        element: <ELEMENTS.ResetPassword />,
-        handle: HANDLES.resetPassword satisfies RouteHandle,
+        element: <LAZY.ResetPassword />,
+        handle: HANDLE.resetPassword,
       },
     ],
   },

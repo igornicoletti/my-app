@@ -25,9 +25,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return unsubscribe
   }, [])
 
-  const value = useMemo(() => ({ user, isLoading }), [user, isLoading])
+  const value = useMemo(() => ({
+    user, isLoading
+  }), [user, isLoading])
 
-  if (isLoading) return <LoadingSpinner />
+  if (isLoading) return <LoadingSpinner message='Checking authentication...' />
 
   return (
     <AuthProviderContext.Provider value={value}>

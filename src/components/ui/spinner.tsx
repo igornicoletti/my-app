@@ -33,7 +33,7 @@ export const SwirlingSpinner = () => (
       role='img'
       aria-label='Loading'
       viewBox='0 0 800 800'
-      className='size-12'
+      className='size-12 mx-auto'
       xmlns='http://www.w3.org/2000/svg'>
       <circle className='spin2 stroke-primary' cx='400' cy='400' fill='none' r='200' strokeWidth='50' strokeDasharray='700 1400' strokeLinecap='round' />
     </svg>

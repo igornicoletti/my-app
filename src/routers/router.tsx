@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { ELEMENTS } from '@/configs'
+import { LAZY } from '@/constants'
 import {
   AuthGuardRoute,
   CallbackRoute,
@@ -15,8 +15,8 @@ import {
 // ----- Router definition -----
 export const router = createBrowserRouter([
   {
-    element: <ELEMENTS.RootLayout />,
-    errorElement: <ELEMENTS.ErrorFallback />,
+    element: <LAZY.RootLayout />,
+    errorElement: <LAZY.ErrorFallback />,
     children: [
       // Root redirect
       {
@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
       // Fallback for unknown routes
       {
         path: '*',
-        element: <ELEMENTS.NotFound />,
+        element: <LAZY.NotFound />,
       },
     ],
   },

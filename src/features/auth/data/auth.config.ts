@@ -1,4 +1,6 @@
-export const authConfig = {
+import type { AuthProps } from '@/features/auth'
+
+export const authData = {
   'login': {
     heading: 'Sign in to your account',
     subheading: 'Welcome back! Please sign in to continue.',
@@ -27,4 +29,4 @@ export const authConfig = {
     linkLabel: 'Sign in',
     linkTo: '/login',
   },
-} as const
+} satisfies Record<string, AuthProps>

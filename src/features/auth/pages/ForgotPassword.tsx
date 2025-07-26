@@ -3,21 +3,23 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PaperPlaneTiltIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 
-import { forgotPasswordSchema, type ForgotPasswordSchema, } from '@/features/auth'
-
 import { Button, FieldControl, Form } from '@/components'
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordProps
+} from '@/features/auth'
 import { useSubmit, useToast } from '@/hooks'
 import { authService } from '@/services'
 
 export const ForgotPassword = () => {
   const { successToast } = useToast()
 
-  const form = useForm<ForgotPasswordSchema>({
+  const form = useForm<ForgotPasswordProps>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: '' }
   })
 
-  const { onSubmit, isLoading } = useSubmit(async (data: ForgotPasswordSchema) => {
+  const { onSubmit, isLoading } = useSubmit(async (data: ForgotPasswordProps) => {
     await authService.sendPasswordReset(data.email)
     successToast('auth/password-reset-email-sent')
   }, `/login`)

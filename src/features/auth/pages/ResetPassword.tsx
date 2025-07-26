@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ShieldStarIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 
-import { resetPasswordSchema, type ResetPasswordSchema } from '@/features/auth'
+import { resetPasswordSchema, type ResetPasswordProps } from '@/features/auth'
 
 import { Button, FieldControl, Form } from '@/components'
 import { useSubmit, useToast } from '@/hooks'
@@ -16,12 +16,12 @@ export const ResetPassword = () => {
   const [searchParams] = useSearchParams()
   const oobCode = searchParams.get('oobCode')
 
-  const form = useForm<ResetPasswordSchema>({
+  const form = useForm<ResetPasswordProps>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: { password: '', confirmPassword: '' }
   })
 
-  const { onSubmit, isLoading } = useSubmit(async (data: ResetPasswordSchema) => {
+  const { onSubmit, isLoading } = useSubmit(async (data: ResetPasswordProps) => {
     await authService.confirmUserPasswordReset(oobCode!, data.password)
     successToast('auth/password-reset-success')
   }, `/login`, () => !!oobCode)

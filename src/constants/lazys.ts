@@ -1,8 +1,8 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 
-type LazyComponent<T = unknown> = LazyExoticComponent<ComponentType<T>>
+type LazyProps<T = unknown> = LazyExoticComponent<ComponentType<T>>
 
-export const ELEMENTS: Record<string, LazyComponent> = {
+export const LAZY: Record<string, LazyProps> = {
   AppLayout: lazy(() => import('@/features/layouts/AppLayout')
     .then((m) => ({ default: m.AppLayout }))),
   AuthLayout: lazy(() => import('@/features/layouts/AuthLayout')
@@ -25,6 +25,8 @@ export const ELEMENTS: Record<string, LazyComponent> = {
     .then((m) => ({ default: m.ResetPassword }))),
   RootLayout: lazy(() => import('@/features/layouts/RootLayout')
     .then((m) => ({ default: m.RootLayout }))),
+  Tasks: lazy(() => import('@/features/app/tasks/Tasks')
+    .then((m) => ({ default: m.Tasks }))),
   User: lazy(() => import('@/features/app/user/User')
     .then((m) => ({ default: m.User }))),
 }

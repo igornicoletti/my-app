@@ -37,7 +37,7 @@ export const ErrorFallback = () => {
           }
         default:
           return {
-            title: `${status} - ${statusText || 'Unexpected Error'}`,
+            title: `${status} - ${statusText || 'Something Went Wrong'}`,
             message: data?.message || 'An error occurred during navigation.'
           }
       }
@@ -45,20 +45,20 @@ export const ErrorFallback = () => {
 
     if (error instanceof Error) {
       return {
-        title: 'Unexpected Error',
+        title: 'Something Went Wrong',
         message: error.message
       }
     }
 
     if (typeof error === 'string') {
       return {
-        title: 'Unexpected Error',
+        title: 'Something Went Wrong',
         message: error
       }
     }
 
     return {
-      title: 'Unexpected Error',
+      title: 'Something Went Wrong',
       message: 'Sorry, an unexpected error occurred. Please try again later.'
     }
   }

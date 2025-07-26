@@ -1,7 +1,6 @@
 
 
-export const User = () => {
-
+export const Tasks = () => {
   return (
     <></>
   )

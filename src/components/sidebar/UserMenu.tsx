@@ -29,13 +29,13 @@ import {
 import { useCommand, useTheme } from '@/contexts'
 import { authService } from '@/services'
 
-type User = {
+type UserMenuProps = {
   title: string
   description?: string
   avatar?: string
 }
 
-export const UserMenu = ({ user }: { user: User }) => {
+export const UserMenu = ({ user }: { user: UserMenuProps }) => {
   const { theme, toggleTheme } = useTheme()
   const { openCommand } = useCommand()
   const { isMobile } = useSidebar()
@@ -69,7 +69,7 @@ export const UserMenu = ({ user }: { user: User }) => {
               <DropdownMenuItem>
                 <UserIcon />
                 Account Settings
-                {/* <DropdownMenuShortcut>⌘S</DropdownMenuShortcut> */}
+                <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuGroup className='my-2'>

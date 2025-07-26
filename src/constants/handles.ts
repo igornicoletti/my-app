@@ -1,5 +1,10 @@
-export const HANDLES = {
-  // Public routes
+type HandleProps = {
+  title: string
+  description: string
+  crumb?: string
+}
+
+export const HANDLE = {
   login: {
     title: 'Login',
     description: 'Access your account securely with your email and password.',
@@ -16,7 +21,6 @@ export const HANDLES = {
     title: 'Set New Password',
     description: 'Choose a new password to access your account.',
   },
-  // Protected routes
   dashboard: {
     crumb: 'Dashboard',
     title: 'Dashboard',
@@ -27,8 +31,9 @@ export const HANDLES = {
     title: 'User',
     description: 'Lorem ipsum dolor sit amet.',
   },
-} as const
-
-export type RouteHandleKey = keyof typeof HANDLES
-
-export type RouteHandle = (typeof HANDLES)[RouteHandleKey]
+  tasks: {
+    crumb: 'Tasks',
+    title: 'Tasks',
+    description: 'Lorem ipsum dolor sit amet.',
+  },
+} satisfies Record<string, HandleProps>

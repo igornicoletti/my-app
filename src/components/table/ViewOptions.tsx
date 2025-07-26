@@ -12,11 +12,9 @@ interface ViewOptionsProps<TData> {
 }
 
 export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
-  const columns = useMemo(() =>
-    table.getAllColumns().filter((column) =>
-      typeof column.accessorFn !== 'undefined' && column.getCanHide()
-    ), [table]
-  )
+  const columns = useMemo(() => table.getAllColumns().filter((column) =>
+    typeof column.accessorFn !== 'undefined' && column.getCanHide()
+  ), [table])
 
   return (
     <Popover>

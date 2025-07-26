@@ -1,4 +1,4 @@
-export type MessageContent = {
+type MessagesProps = {
   title: string
   description: string
 }
@@ -54,11 +54,11 @@ export const ERROR = {
   },
   default: {
     title: 'Authentication Error',
-    description: 'An unexpected error occurred. Please try again or contact support if the problem persists.',
+    description: 'An error occurred while processing your request. Contact support if the problem persists.',
   },
-} as const
+} satisfies Record<string, MessagesProps>
 
-export type ErrorMessageKey = keyof typeof ERROR
+export type ErrorKey = keyof typeof ERROR
 
 export const SUCCESS = {
   'auth/account-created': {
@@ -93,6 +93,6 @@ export const SUCCESS = {
     title: 'Authentication Success',
     description: 'The action was completed successfully.',
   },
-} as const
+} satisfies Record<string, MessagesProps>
 
-export type SuccessMessageKey = keyof typeof SUCCESS
+export type SuccessKey = keyof typeof SUCCESS

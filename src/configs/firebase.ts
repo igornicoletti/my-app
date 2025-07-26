@@ -2,7 +2,7 @@ import { initializeApp, type FirebaseApp } from 'firebase/app'
 import { getAuth, type ActionCodeSettings, type Auth } from 'firebase/auth'
 import { getFirestore, type Firestore } from 'firebase/firestore'
 
-const firebaseConfig = {
+const firebase = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -13,11 +13,11 @@ const firebaseConfig = {
   appOrigin: import.meta.env.VITE_APP_ORIGIN,
 }
 
-const APP: FirebaseApp = initializeApp(firebaseConfig)
+const APP: FirebaseApp = initializeApp(firebase)
 const AUTH: Auth = getAuth(APP)
 const DB: Firestore = getFirestore(APP)
 const CODE: ActionCodeSettings = {
-  url: `${firebaseConfig.appOrigin}/callback`,
+  url: `${firebase.appOrigin}/callback`,
   handleCodeInApp: true,
 }
 

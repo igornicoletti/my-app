@@ -11,16 +11,14 @@ import {
   Toaster
 } from '@/components'
 
-export const RootLayout = () => {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <HelmetMetadata />
-      <KeyboardShortcut />
-      <ProgressBar />
-      <Outlet />
-      <CommandMenu />
-      <ConfirmDialog />
-      <Toaster />
-    </Suspense>
-  )
-}
+export const RootLayout = () => (
+  <Suspense fallback={<LoadingSpinner />}>
+    <HelmetMetadata />
+    <KeyboardShortcut />
+    <ProgressBar />
+    <Outlet />
+    <CommandMenu />
+    <ConfirmDialog />
+    <Toaster />
+  </Suspense>
+)

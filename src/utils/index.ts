@@ -1,4 +1,4 @@
 export {
-  buildNavigationTree,
-  type NavigationItem
-} from './navigation-tree.utils'
+  buildNavigation,
+  type NavigationProps
+} from './navigation-builder'

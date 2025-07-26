@@ -1,5 +1,3 @@
-import { WarningCircleIcon } from '@phosphor-icons/react'
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +16,6 @@ export const ConfirmDialog = () => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
-        <WarningCircleIcon />
         <AlertDialogHeader>
           <AlertDialogTitle>
             {options?.title || 'Are you absolutely sure?'}
@@ -31,7 +28,7 @@ export const ConfirmDialog = () => {
           <AlertDialogCancel onClick={onCancel}>
             {options?.cancelText || 'Cancel'}
           </AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>
+          <AlertDialogAction onClick={onConfirm} >
             {options?.confirmText || 'Continue'}
           </AlertDialogAction>
         </AlertDialogFooter>

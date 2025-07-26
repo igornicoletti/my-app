@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { LoadingSpinner } from '@/components'
 import { useAuth } from '@/contexts'
 
 export const RedirectRoute = () => {
@@ -17,8 +16,6 @@ export const RedirectRoute = () => {
       }
     }
   }, [user, isLoading, navigate])
-
-  if (isLoading) return <LoadingSpinner />
 
   return null
 }
