@@ -54,20 +54,15 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
 
   if (meta.variant === 'text' || meta.variant === 'number') {
     return (
-      <div className='relative'>
-        <Input
-          type={meta.variant === 'number' ? 'number' : 'text'}
-          inputMode={meta.variant === 'number' ? 'numeric' : undefined}
-          placeholder={meta.placeholder ?? meta.label}
-          value={(column.getFilterValue() as string) ?? ''}
-          onChange={(e) => column.setFilterValue(e.target.value)}
-          className='min-w-xs' />
-        {meta.variant === 'number' && meta.unit && (
-          <span className='absolute right-0 top-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-sm text-muted-foreground'>
-            {meta.unit}
-          </span>
-        )}
-      </div>
+      <Input
+        id={column.id}
+        name={column.id}
+        className='min-w-xs'
+        type={meta.variant === 'number' ? 'number' : 'text'}
+        inputMode={meta.variant === 'number' ? 'numeric' : undefined}
+        placeholder={meta.placeholder ?? meta.label}
+        value={(column.getFilterValue() as string) ?? ''}
+        onChange={(e) => column.setFilterValue(e.target.value)} />
     )
   }
 

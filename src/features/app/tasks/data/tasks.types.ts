@@ -26,6 +26,5 @@ export interface ColumnMeta {
   label?: string
   placeholder?: string
   options?: ColumnOption[]
-  unit?: string
   icon?: React.FC<React.SVGProps<SVGSVGElement>>
 }
