@@ -1,43 +1,44 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useAuth } from '@/contexts'
 import { authService } from '@/services'
 
 export const CallbackRoute = () => {
-  const { user, isLoading } = useAuth()
-
+  const { isLoading } = useAuth()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const hasHandled = useRef(false)
 
   const mode = searchParams.get('mode')
   const oobCode = searchParams.get('oobCode')
 
   useEffect(() => {
-    if (!mode || !oobCode) {
-      navigate('/login', { replace: true })
-      return
-    }
-
-    if (isLoading) return
+    if (hasHandled.current) return
+    if (!mode || !oobCode || isLoading) return
 
     const handleAction = async () => {
+      hasHandled.current = true
       try {
         switch (mode) {
           case 'verifyEmail': {
             await authService.applyUserActionCode(oobCode)
-            const isVerified = user?.emailVerified
-            if (isVerified) {
+            await authService.getCurrentUser()?.reload()
+
+            const updatedUser = authService.getCurrentUser()
+            if (updatedUser?.emailVerified) {
               navigate('/dashboard', { replace: true })
             } else {
               navigate('/login', { replace: true })
             }
             break
           }
+
           case 'resetPassword': {
             navigate(`/reset-password?oobCode=${oobCode}`, { replace: true })
             break
           }
+
           default: {
             navigate('/login', { replace: true })
             break
@@ -50,7 +51,7 @@ export const CallbackRoute = () => {
     }
 
     handleAction()
-  }, [mode, oobCode, navigate, user, isLoading])
+  }, [mode, oobCode, isLoading, navigate])
 
   return null
 }

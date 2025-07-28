@@ -1,82 +1,99 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
-import { CheckIcon, PlusCircleIcon, XCircleIcon } from '@phosphor-icons/react'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Separator } from '@/components/ui/separator'
+import {
+  Badge,
+  Button,
+  Checkbox,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Separator,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '@/components/ui'
+import type { ColumnOption } from '@/features/app/tasks/data/tasks.types'
 
-interface Option {
-  label: string
-  value: string
-  count: string
-  icon?: React.ComponentType<{ className?: string }>
-}
 
 interface FacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
-  options: Option[]
+  options: ColumnOption[]
 }
 
 export const FacetedFilter = <TData, TValue>({
   column, title, options
 }: FacetedFilterProps<TData, TValue>) => {
-  const [open, setOpen] = useState(false)
-
   const columnFilterValue = column?.getFilterValue()
-  const selectedValues = new Set(Array.isArray(columnFilterValue) ? columnFilterValue : [])
+  const selectedValues = new Set<string>(Array.isArray(columnFilterValue) ? columnFilterValue : [])
 
-  const onItemSelect = useCallback((option: Option, isSelected: boolean) => {
+  const selectedOptions = options.filter((option) =>
+    selectedValues.has(option.value))
+
+  const handleSelect = useCallback((option: ColumnOption, isSelected: boolean) => {
     if (!column) return
 
-    const currentValue = column.getFilterValue()
-    const currentSet = new Set(Array.isArray(currentValue) ? currentValue : [])
+    const current = column.getFilterValue()
+    const valueSet = new Set<string>(
+      Array.isArray(current) ? current : []
+    )
 
     if (isSelected) {
-      currentSet.delete(option.value)
+      valueSet.delete(option.value)
     } else {
-      currentSet.add(option.value)
+      valueSet.add(option.value)
     }
 
-    const filterValues = Array.from(currentSet)
-    column.setFilterValue(filterValues.length ? filterValues : undefined)
+    const next = Array.from(valueSet)
+    column.setFilterValue(next.length ? next : undefined)
   }, [column])
 
-  const onReset = useCallback((event?: React.MouseEvent) => {
+  const handleReset = useCallback((event?: React.MouseEvent) => {
     event?.stopPropagation()
     column?.setFilterValue(undefined)
   }, [column])
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='border-dashed'>
+        <Button variant='outline' className='border-dashed'>
           {selectedValues.size > 0 ? (
-            <div tabIndex={0} onClick={onReset} aria-label={`Clear ${title} filter`} role='button' className='rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'>
-              <XCircleIcon />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div tabIndex={0} onClick={handleReset} aria-label={`Clear ${title} filter`} role='button'>
+                  <XIcon />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Clear filter</TooltipContent>
+            </Tooltip>
           ) : (
-            <PlusCircleIcon />
+            <FunnelSimpleIcon />
           )}
           {title}
           {selectedValues.size > 0 && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
+              <Badge variant='secondary' className='lg:hidden'>
                 {selectedValues.size}
               </Badge>
-              <div className='hidden items-center gap-1 lg:flex'>
+              <div className='-mr-2 hidden items-center gap-1 lg:flex'>
                 {selectedValues.size > 2 ? (
-                  <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+                  <Badge variant='secondary' className='text-muted-foreground'>
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
-                  options.filter((option) => selectedValues.has(option.value)).map((option) => (
-                    <Badge key={option.value} variant='secondary' className='rounded-sm px-1 font-normal'>
+                  selectedOptions.map((option) => (
+                    <Badge key={option.value} variant='secondary' className='text-muted-foreground'>
                       {option.label}
                     </Badge>
                   ))
@@ -86,23 +103,23 @@ export const FacetedFilter = <TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[12.5rem] p-0' align='start'>
+      <PopoverContent className='w-48 p-0' align='start'>
         <Command>
           <CommandInput placeholder={title} />
-          <CommandList className='max-h-full'>
+          <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup className='max-h-[18.75rem] overflow-y-auto overflow-x-hidden'>
+            <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)
                 return (
-                  <CommandItem key={option.value} onSelect={() => onItemSelect(option, isSelected)}>
-                    <div className={`flex size-4 items-center justify-center rounded-sm border border-primary ${isSelected ? 'bg-primary' : 'opacity-50 [&_svg]:invisible'}`}>
-                      <CheckIcon />
-                    </div>
+                  <CommandItem
+                    key={option.value}
+                    onSelect={() => handleSelect(option, isSelected)}>
+                    <Checkbox checked={isSelected} />
                     {option.icon && <option.icon />}
-                    <span className='truncate'>{option.label}</span>
+                    <span className='truncate capitalize'>{option.label}</span>
                     {option.count && (
-                      <span className='ml-auto font-mono text-xs'>
+                      <span className='ml-auto text-xs text-muted-foreground'>
                         {option.count}
                       </span>
                     )}
@@ -114,7 +131,7 @@ export const FacetedFilter = <TData, TValue>({
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <CommandItem onSelect={() => onReset()} className='justify-center text-center'>
+                  <CommandItem onSelect={() => handleReset()} className='justify-center text-center'>
                     Clear filters
                   </CommandItem>
                 </CommandGroup>

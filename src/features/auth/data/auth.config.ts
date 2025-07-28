@@ -1,6 +1,6 @@
-import type { AuthProps } from '@/features/auth'
+import type { HeroProps } from '@/features/auth'
 
-export const authData = {
+export const heroData = {
   'login': {
     heading: 'Sign in to your account',
     subheading: 'Welcome back! Please sign in to continue.',
@@ -29,4 +29,4 @@ export const authData = {
     linkLabel: 'Sign in',
     linkTo: '/login',
   },
-} satisfies Record<string, AuthProps>
+} satisfies Record<string, HeroProps>

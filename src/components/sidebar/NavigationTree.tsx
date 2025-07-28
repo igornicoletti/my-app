@@ -1,3 +1,7 @@
+import { Link } from 'react-router-dom'
+
+import { CaretRightIcon } from '@phosphor-icons/react'
+
 import {
   Collapsible,
   CollapsibleContent,
@@ -12,8 +16,6 @@ import {
   SidebarMenuSubItem,
 } from '@/components'
 import type { NavigationProps } from '@/utils'
-import { CaretRightIcon } from '@phosphor-icons/react'
-import { Link } from 'react-router-dom'
 
 export const NavigationTree = ({ navigation }: { navigation: NavigationProps[] }) => (
   <SidebarGroup>
@@ -30,9 +32,9 @@ export const NavigationTree = ({ navigation }: { navigation: NavigationProps[] }
             {item.subItems && item.subItems?.length > 0 && (
               <>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuAction className="data-[state=open]:rotate-90">
+                  <SidebarMenuAction className='data-[state=open]:rotate-90'>
                     <CaretRightIcon />
-                    <span className="sr-only">Toggle</span>
+                    <span className='sr-only'>Toggle</span>
                   </SidebarMenuAction>
                 </CollapsibleTrigger>
                 <CollapsibleContent>

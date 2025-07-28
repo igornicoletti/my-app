@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode
+} from 'react'
 
 type Theme = 'dark' | 'light'
 
@@ -20,7 +26,7 @@ const initialState: ThemeProviderState = {
   toggleTheme: () => null
 }
 
-export const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export const ThemeProvider = ({ children, storageKey = 'vite-ui-theme' }: ThemeProviderProps) => {
   const [theme, setThemeState] = useState<Theme>(() =>

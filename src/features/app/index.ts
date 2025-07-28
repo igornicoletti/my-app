@@ -1,3 +1,3 @@
 export * from './dashboard'
 export * from './tasks'
-export * from './user'
+export * from './users'

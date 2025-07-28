@@ -1,26 +1,32 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  type ReactNode
+} from 'react'
 
-type AlertDialog = {
+type AlertDialogOptions = {
   title?: string
   description?: string
   confirmText?: string
   cancelText?: string
+  onConfirm?: () => void
+  onCancel?: () => void
 }
 
 type AlertProviderState = {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
-  options: AlertDialog | null
-  onConfirm: () => void
-  onCancel: () => void
-  openDialog: (options: AlertDialog) => void
+  options: AlertDialogOptions | null
+  openDialog: (options: AlertDialogOptions) => void
 }
 
-export const AlertProviderContext = createContext<AlertProviderState | undefined>(undefined)
+const AlertProviderContext = createContext<AlertProviderState | undefined>(undefined)
 
 export const AlertProvider = ({ children }: { children: ReactNode }) => {
-  const [options, setOptions] = useState<AlertDialog | null>(null)
+  const [options, setOptions] = useState<AlertDialogOptions | null>(null)
   const [isOpen, setIsOpen] = useState(false)
 
   const onOpenChange = useCallback((open: boolean) => {
@@ -28,21 +34,13 @@ export const AlertProvider = ({ children }: { children: ReactNode }) => {
     if (!open) setOptions(null)
   }, [])
 
-  const openDialog = useCallback((newOptions: AlertDialog) => {
-    setOptions(newOptions)
+  const openDialog = useCallback((dialogOptions: AlertDialogOptions) => {
+    setOptions(dialogOptions)
     setIsOpen(true)
   }, [])
 
-  const onConfirm = () => {
-    setIsOpen(false)
-  }
-
-  const onCancel = () => {
-    setIsOpen(false)
-  }
-
   return (
-    <AlertProviderContext.Provider value={{ isOpen, onOpenChange, options, onConfirm, onCancel, openDialog }}>
+    <AlertProviderContext.Provider value={{ isOpen, onOpenChange, options, openDialog }}>
       {children}
     </AlertProviderContext.Provider>
   )

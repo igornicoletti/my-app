@@ -26,8 +26,7 @@ export const useSubmit = <T>(
     } finally {
       setIsLoading(false)
     }
-  }, [submitFn, redirectPath, extraCheck, navigate, errorToast]
-  )
+  }, [submitFn, redirectPath, extraCheck, navigate, errorToast])
 
   return { onSubmit, isLoading }
 }

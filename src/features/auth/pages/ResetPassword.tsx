@@ -4,9 +4,8 @@ import { useSearchParams } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ShieldStarIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 
-import { resetPasswordSchema, type ResetPasswordProps } from '@/features/auth'
-
 import { Button, FieldControl, Form } from '@/components'
+import { resetPasswordSchema, type ResetPasswordProps } from '@/features/auth'
 import { useSubmit, useToast } from '@/hooks'
 import { authService } from '@/services'
 
@@ -18,7 +17,10 @@ export const ResetPassword = () => {
 
   const form = useForm<ResetPasswordProps>({
     resolver: zodResolver(resetPasswordSchema),
-    defaultValues: { password: '', confirmPassword: '' }
+    defaultValues: {
+      password: '',
+      confirmPassword: ''
+    }
   })
 
   const { onSubmit, isLoading } = useSubmit(async (data: ResetPasswordProps) => {
@@ -29,10 +31,27 @@ export const ResetPassword = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
-        <FieldControl control={form.control} disabled={isLoading} type='password' name='password' placeholder='New password' autoComplete='new-password' autoFocus />
-        <FieldControl control={form.control} disabled={isLoading} type='password' name='confirmPassword' placeholder='Confirm new password' autoComplete='new-password' />
+        <FieldControl
+          control={form.control}
+          disabled={isLoading}
+          type='password'
+          name='password'
+          placeholder='New password'
+          autoComplete='new-password'
+          autoFocus />
+        <FieldControl
+          control={form.control}
+          disabled={isLoading}
+          type='password'
+          name='confirmPassword'
+          placeholder='Confirm new password'
+          autoComplete='new-password' />
         <Button disabled={isLoading} type='submit'>
-          {isLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<ShieldStarIcon />)}
+          {isLoading ? (
+            <SpinnerGapIcon className='animate-spin' />
+          ) : (
+            <ShieldStarIcon />
+          )}
           {isLoading ? '' : 'Reset password'}
         </Button>
       </form>

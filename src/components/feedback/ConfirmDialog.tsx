@@ -11,7 +11,7 @@ import {
 import { useAlert } from '@/contexts'
 
 export const ConfirmDialog = () => {
-  const { isOpen, onOpenChange, options, onConfirm, onCancel } = useAlert()
+  const { isOpen, onOpenChange, options } = useAlert()
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
@@ -25,10 +25,10 @@ export const ConfirmDialog = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onCancel}>
+          <AlertDialogCancel onClick={options?.onCancel}>
             {options?.cancelText || 'Cancel'}
           </AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} >
+          <AlertDialogAction onClick={options?.onConfirm} >
             {options?.confirmText || 'Continue'}
           </AlertDialogAction>
         </AlertDialogFooter>

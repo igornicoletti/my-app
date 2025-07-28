@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { userSchema } from './user.schema'
-import type { UserSchema } from './user.type'
+import { userSchema } from './users.schemas'
+import type { UserSchema } from './users.types'
 
 const generateUser = (): UserSchema => {
   const roles: UserSchema['roles'][] = ['admin', 'owner', 'viewer']

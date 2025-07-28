@@ -1,4 +1,1 @@
-export {
-  buildNavigation,
-  type NavigationProps
-} from './navigation-builder'
+export { buildNavigation, type NavigationProps } from './navigation'

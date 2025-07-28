@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { GoogleLogoIcon, SignInIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 
+import { FieldControl } from '@/components/form'
+import { Button, EffectHighlight, Form, Separator } from '@/components/ui'
 import { loginSchema, type LoginProps } from '@/features/auth'
-
-import { Button, EffectHighlight, FieldControl, Form, Separator } from '@/components'
 import { useSubmit, useToast } from '@/hooks'
 import { authService } from '@/services'
 
@@ -15,20 +15,28 @@ export const Login = () => {
 
   const form = useForm<LoginProps>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' }
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   })
 
   const { onSubmit, isLoading } = useSubmit(async (data: LoginProps) => {
     await authService.signInWithEmail(data.email, data.password)
     await authService.getCurrentUser()?.reload()
-    const user = authService.getCurrentUser()
-    if (!user?.emailVerified) {
+
+    const updatedUser = authService.getCurrentUser()
+    if (!updatedUser?.emailVerified) {
       throw new Error('auth/unverified-email')
     }
+
     successToast('auth/login-success')
   }, `/dashboard`)
 
-  const { onSubmit: onSocialSubmit, isLoading: isSocialLoading } = useSubmit(async () => {
+  const {
+    onSubmit: onSocialSubmit,
+    isLoading: isSocialLoading
+  } = useSubmit(async () => {
     await authService.signInWithGoogle()
     successToast('auth/login-success')
   }, `/dashboard`)
@@ -36,8 +44,16 @@ export const Login = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
-        <Button onClick={onSocialSubmit} disabled={isSocialLoading} type='button' variant='secondary'>
-          {isSocialLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<GoogleLogoIcon />)}
+        <Button
+          onClick={onSocialSubmit}
+          disabled={isSocialLoading}
+          type='button'
+          variant='secondary'>
+          {isSocialLoading ? (
+            <SpinnerGapIcon className='animate-spin' />
+          ) : (
+            <GoogleLogoIcon />
+          )}
           {isSocialLoading ? '' : 'Continue with Google'}
           <EffectHighlight />
         </Button>
@@ -46,13 +62,29 @@ export const Login = () => {
           <span className='text-sm text-muted-foreground'>OR</span>
           <Separator />
         </div>
-        <FieldControl control={form.control} disabled={isLoading} type='email' name='email' placeholder='Email' autoComplete='username' />
+        <FieldControl
+          control={form.control}
+          disabled={isLoading}
+          type='email'
+          name='email'
+          placeholder='Email'
+          autoComplete='username' />
         <Button asChild variant='link' className='h-auto ml-auto -mb-2 p-0 text-xs font-semibold'>
           <Link to='/forgot-password'>Forgot password?</Link>
         </Button>
-        <FieldControl control={form.control} disabled={isLoading} type='password' name='password' placeholder='Password' autoComplete='current-password' />
+        <FieldControl
+          control={form.control}
+          disabled={isLoading}
+          type='password'
+          name='password'
+          placeholder='Password'
+          autoComplete='current-password' />
         <Button disabled={isLoading} type='submit'>
-          {isLoading ? (<SpinnerGapIcon className='animate-spin' />) : (<SignInIcon />)}
+          {isLoading ? (
+            <SpinnerGapIcon className='animate-spin' />
+          ) : (
+            <SignInIcon />
+          )}
           {isLoading ? '' : 'Login to account'}
         </Button>
       </form>

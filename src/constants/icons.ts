@@ -7,6 +7,6 @@ import {
 
 export const ICON: Record<string, Icon> = {
   dashboard: HouseSimpleIcon,
-  user: UserIcon,
+  users: UserIcon,
   tasks: NotepadIcon,
 }

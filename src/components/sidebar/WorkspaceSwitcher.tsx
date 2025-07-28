@@ -43,14 +43,12 @@ export const WorkspaceSwitcher = ({ workspace }: { workspace: WorkspaceItem[] })
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-semibold'>{isActive.title}</span>
-                <span className='truncate text-xs text-muted-foreground'>
-                  {isActive.description}
-                </span>
+                <span className='truncate text-xs text-muted-foreground'>{isActive.description}</span>
               </div>
               <CaretUpDownIcon className='ml-auto' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='start' className='w-(--radix-dropdown-menu-trigger-width) rounded-lg'>
+          <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='start' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
             <DropdownMenuLabel className='text-muted-foreground'>Workspaces</DropdownMenuLabel>
             {workspace.map((item, index) => (
               <DropdownMenuItem key={index} onClick={() => setIsActive(item)}>

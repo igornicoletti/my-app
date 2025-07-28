@@ -1,4 +1,4 @@
-export { authData } from './auth.config'
+export { heroData } from './auth.config'
 export {
   forgotPasswordSchema,
   loginSchema,
@@ -6,10 +6,8 @@ export {
   resetPasswordSchema
 } from './auth.schema'
 export type {
-  AuthKey,
-  AuthProps,
-  ForgotPasswordProps,
-  LoginProps,
+  ForgotPasswordProps, HeroKey,
+  HeroProps, LoginProps,
   RegisterProps,
   ResetPasswordProps
 } from './auth.type'

@@ -1,6 +1,6 @@
 export { useSubmit } from './form/useSubmit'
-export { useAuth } from './router/useAuth'
 export { useCrumbs } from './router/useCrumb'
+export { useHero } from './router/useHero'
 export { useMetadata } from './router/useMetadata'
 export { useNavigation } from './router/useNavigation'
 export { useShortcut } from './ui/useShortcut'

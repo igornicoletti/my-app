@@ -1,7 +1,14 @@
 import { flexRender, type Table as TanstackTable } from '@tanstack/react-table'
 
 import { Pagination } from '@/components/table/Pagination'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui'
 
 interface DataTableProps<TData> extends React.ComponentProps<'div'> {
   table: TanstackTable<TData>
@@ -11,7 +18,7 @@ interface DataTableProps<TData> extends React.ComponentProps<'div'> {
 export const DataTable = <TData,>({
   table, actionBar, children
 }: DataTableProps<TData>) => (
-  <div className={'flex w-full flex-col gap-2.5 overflow-auto'}>
+  <div className={'flex w-full flex-col gap-2 overflow-auto'}>
     {children}
     <div className='overflow-hidden rounded-md border'>
       <Table>
@@ -40,7 +47,7 @@ export const DataTable = <TData,>({
           ) : (
             <TableRow>
               <TableCell colSpan={table.getAllColumns().length} className='h-24 text-center'>
-                No results.
+                No results found.
               </TableCell>
             </TableRow>
           )}

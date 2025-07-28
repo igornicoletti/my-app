@@ -32,27 +32,22 @@ const generateSubItems = (
   parentUrl: string,
   currentPath: string
 ): SubItemProps[] =>
-  routes
-    .filter((route): route is RouteObject & { path: string; handle: HandleProps } =>
-      Boolean(route.path) &&
-      !route.path!.includes(':') &&
-      typeof (route.handle as HandleProps)?.crumb === 'string'
-    )
-    .map((route) => {
+  routes.filter((route): route is RouteObject & {
+    path: string; handle: HandleProps
+  } =>
+    Boolean(route.path) &&
+    !route.path!.includes(':') &&
+    typeof (route.handle as HandleProps)?.crumb === 'string').map((route) => {
       const subUrl = normalizePath(parentUrl, route.path!)
       return {
         title: route.handle!.crumb,
         url: subUrl,
         Icon: ICON[route.path!] || undefined,
-        isActive: currentPath === subUrl,
+        isActive: currentPath === subUrl
       }
     })
 
-export const buildNavigation = (
-  routes: RouteObject[],
-  currentPath: string,
-  parentUrl: string = ''
-): NavigationProps[] =>
+export const buildNavigation = (routes: RouteObject[], currentPath: string, parentUrl: string = ''): NavigationProps[] =>
   routes.reduce<NavigationProps[]>((items, route) => {
     const { path, handle, children } = route
     const routeHandle = handle as HandleProps
@@ -68,7 +63,7 @@ export const buildNavigation = (
       Icon: ICON[path] ?? ICON.dashboard,
       isActive,
       isGroupActive,
-      subItems: children ? generateSubItems(children, itemUrl, currentPath) : undefined,
+      subItems: children ? generateSubItems(children, itemUrl, currentPath) : undefined
     }
 
     items.push(navItem)

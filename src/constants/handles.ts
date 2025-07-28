@@ -26,9 +26,9 @@ export const HANDLE = {
     title: 'Dashboard',
     description: 'Overview of your activity, performance, and quick access to key features.',
   },
-  user: {
-    crumb: 'User',
-    title: 'User',
+  users: {
+    crumb: 'Users',
+    title: 'Users',
     description: 'Lorem ipsum dolor sit amet.',
   },
   tasks: {

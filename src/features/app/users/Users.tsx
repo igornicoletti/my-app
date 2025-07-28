@@ -1,6 +1,6 @@
 
 
-export const User = () => {
+export const Users = () => {
 
   return (
     <></>

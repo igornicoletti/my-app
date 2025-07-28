@@ -1,5 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode
+} from 'react'
 
 type CommandProviderState = {
   open: boolean
@@ -7,7 +12,7 @@ type CommandProviderState = {
   openCommand: () => void
 }
 
-export const CommandProviderContext = createContext<CommandProviderState | null>(null)
+const CommandProviderContext = createContext<CommandProviderState | null>(null)
 
 export const CommandProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false)

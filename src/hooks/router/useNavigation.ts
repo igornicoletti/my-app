@@ -3,10 +3,7 @@ import { useLocation } from 'react-router-dom'
 
 import { LAZY } from '@/constants'
 import { getProtectedRoutes } from '@/routers'
-import {
-  buildNavigation,
-  type NavigationProps
-} from '@/utils'
+import { buildNavigation, type NavigationProps } from '@/utils'
 
 export const useNavigation = (): NavigationProps[] => {
   const { pathname } = useLocation()

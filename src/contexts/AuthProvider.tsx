@@ -1,6 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { User } from 'firebase/auth'
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode
+} from 'react'
 
 import { LoadingSpinner } from '@/components'
 import { authService } from '@/services'
@@ -10,10 +17,10 @@ type AuthProviderState = {
   isLoading: boolean
 }
 
-export const AuthProviderContext = createContext<AuthProviderState | undefined>(undefined)
+const AuthProviderContext = createContext<AuthProviderState | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => authService.getCurrentUser())
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {

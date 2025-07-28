@@ -19,9 +19,9 @@ export const getProtectedRoutes = (): RouteObject[] => [
         handle: HANDLE.tasks,
       },
       {
-        path: 'user',
-        element: <LAZY.User />,
-        handle: HANDLE.user,
+        path: 'users',
+        element: <LAZY.Users />,
+        handle: HANDLE.users,
       },
     ],
   },
