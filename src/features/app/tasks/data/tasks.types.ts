@@ -1,16 +1,21 @@
+import { ACTIONS, LABELS, PRIORITIES, STATUSES } from '@/features/app/tasks'
+
+export type TTaskStatus = (typeof STATUSES)[number]
+export type TTaskPriority = (typeof PRIORITIES)[number]
+export type TTaskLabel = (typeof LABELS)[number]
+export type TTaskAction = (typeof ACTIONS)[number]
+
 export interface TTaskProps {
   id: string
   code: string
   title: string
-  status: 'todo' | 'in-progress' | 'done' | 'canceled'
-  priority: 'low' | 'medium' | 'high'
-  label: 'bug' | 'documentation' | 'feature' | 'enhancement'
+  status: TTaskStatus
+  priority: TTaskPriority
+  label: TTaskLabel
   createdAt: string
 }
 
 export interface TTasksColumnsProps {
-  statusCounts: Record<TTaskProps['status'], number>
-  priorityCounts: Record<TTaskProps['priority'], number>
+  statusCounts: Record<TTaskStatus, number>
+  priorityCounts: Record<TTaskPriority, number>
 }
-
-export type TTaskAction = 'edit' | 'delete' | 'label'

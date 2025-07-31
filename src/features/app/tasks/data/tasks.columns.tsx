@@ -137,18 +137,17 @@ export const tasksColumns = ({
       }
     },
     {
-      accessorKey: "createdAt",
-      header: ({ column }) => <ColumnHeader column={column} title="Created At" />,
+      accessorKey: 'createdAt',
+      header: ({ column }) => <ColumnHeader column={column} title='Created At' />,
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
       enableColumnFilter: true,
       meta: {
-        label: "Created At",
-        variant: "date",
+        label: 'Created At',
+        variant: 'date',
         multiple: true,
       },
       filterFn: (row, columnId, filterValue) => {
         const rowDate = new Date(row.getValue<string | Date>(columnId))
-
         if (isNaN(rowDate.getTime())) return false
 
         const [from, to] = filterValue as [number, number]

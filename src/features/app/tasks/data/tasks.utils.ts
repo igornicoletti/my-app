@@ -11,9 +11,13 @@ import {
   XCircleIcon
 } from '@phosphor-icons/react'
 
-import type { TTaskAction, TTaskProps } from '@/features/app/tasks'
+import type {
+  TTaskAction,
+  TTaskPriority,
+  TTaskStatus
+} from '@/features/app/tasks'
 
-export const getStatusIcon = (status: TTaskProps['status']) => {
+export const getStatusIcon = (status: TTaskStatus) => {
   const statusIcons = {
     canceled: XCircleIcon,
     done: CheckCircleIcon,
@@ -24,11 +28,11 @@ export const getStatusIcon = (status: TTaskProps['status']) => {
   return statusIcons[status]
 }
 
-export const getPriorityIcon = (priority: TTaskProps['priority']) => {
+export const getPriorityIcon = (priority: TTaskPriority) => {
   const priorityIcons = {
     high: ArrowUpIcon,
-    low: ArrowDownIcon,
     medium: ArrowRightIcon,
+    low: ArrowDownIcon,
   } as const
 
   return priorityIcons[priority]
