@@ -47,7 +47,11 @@ const generateSubItems = (
       }
     })
 
-export const buildNavigation = (routes: RouteObject[], currentPath: string, parentUrl: string = ''): NavigationProps[] =>
+export const buildNavigation = (
+  routes: RouteObject[],
+  currentPath: string,
+  parentUrl: string = ''
+): NavigationProps[] =>
   routes.reduce<NavigationProps[]>((items, route) => {
     const { path, handle, children } = route
     const routeHandle = handle as HandleProps

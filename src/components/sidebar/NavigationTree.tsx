@@ -17,7 +17,11 @@ import {
 } from '@/components'
 import type { NavigationProps } from '@/utils'
 
-export const NavigationTree = ({ navigation }: { navigation: NavigationProps[] }) => (
+export const NavigationTree = ({
+  navigation
+}: {
+  navigation: NavigationProps[]
+}) => (
   <SidebarGroup>
     <SidebarMenu>
       {navigation.map((item, index) => (
@@ -42,7 +46,9 @@ export const NavigationTree = ({ navigation }: { navigation: NavigationProps[] }
                     {item.subItems.map((sub, subIndex) => (
                       <SidebarMenuSubItem key={subIndex}>
                         <SidebarMenuSubButton asChild isActive={sub.isActive}>
-                          <Link to={sub.url}>{sub.title}</Link>
+                          <Link to={sub.url}>
+                            {sub.title}
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}

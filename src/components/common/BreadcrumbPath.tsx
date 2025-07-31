@@ -13,7 +13,6 @@ import { useCrumbs } from '@/hooks'
 
 export const BreadcrumbPath = () => {
   const crumbs = useCrumbs()
-
   if (!crumbs.length) return null
 
   return (

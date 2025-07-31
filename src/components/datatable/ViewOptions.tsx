@@ -1,26 +1,26 @@
-import { useMemo } from 'react'
-
-import { CheckIcon, SlidersHorizontalIcon } from '@phosphor-icons/react'
-import type { Table } from '@tanstack/react-table'
-
+import { Button } from '@/components/ui/button'
 import {
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
+} from '@/components/ui/command'
+import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/components/ui'
+} from '@/components/ui/popover'
+import type { TViewOptionsProps } from '@/types'
+import { CheckIcon, SlidersHorizontalIcon } from '@phosphor-icons/react'
+import { useMemo } from 'react'
 
-export const ViewOptions = <TData,>({ table }: { table: Table<TData> }) => {
-  const hideableColumns = useMemo(() => {
-    return table.getAllColumns().filter((column) => {
-      return typeof column.accessorFn !== 'undefined' && column.getCanHide()
-    })
+export const ViewOptions = <TData,>({ table }: TViewOptionsProps<TData>) => {
+  const columns = useMemo(() => {
+    return table.getAllColumns().filter((column) =>
+      typeof column.accessorFn !== 'undefined' && column.getCanHide()
+    )
   }, [table])
 
   return (
@@ -37,7 +37,7 @@ export const ViewOptions = <TData,>({ table }: { table: Table<TData> }) => {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {hideableColumns.map((column) => (
+              {columns.map((column) => (
                 <CommandItem
                   key={column.id}
                   aria-checked={column.getIsVisible()}

@@ -18,8 +18,8 @@ const workspaceData = [{
 }]
 
 export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
-  const navigationData = useNavigation()
   const { user } = useAuth()
+  const navigationData = useNavigation()
 
   if (!user) return null
 

@@ -1,30 +1,16 @@
-export type TaskProps = {
+export interface TTaskProps {
   id: string
   code: string
   title: string
   status: 'todo' | 'in-progress' | 'done' | 'canceled'
   priority: 'low' | 'medium' | 'high'
-  label?: string
+  label: 'frontend' | 'backend' | 'design' | 'research'
   createdAt: string
 }
 
-export type FilterVariant =
-  | 'text'
-  | 'number'
-  | 'select'
-  | 'multiSelect'
-
-export interface ColumnOption {
-  label: string
-  value: string
-  count?: string
-  icon?: React.ComponentType<{ className?: string }>
+export interface TTasksColumnsProps {
+  statusCounts: Record<TTaskProps['status'], number>
+  priorityCounts: Record<TTaskProps['priority'], number>
 }
 
-export interface ColumnMeta {
-  variant?: FilterVariant
-  label?: string
-  placeholder?: string
-  options?: ColumnOption[]
-  icon?: React.FC<React.SVGProps<SVGSVGElement>>
-}
+export type TTaskAction = 'edit' | 'delete' | 'label'

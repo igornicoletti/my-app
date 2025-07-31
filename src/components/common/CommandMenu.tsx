@@ -1,16 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-
 import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
+  CommandDialog, CommandEmpty,
+  CommandGroup, CommandInput,
+  CommandItem, CommandList
 } from '@/components'
 import { useCommand } from '@/contexts'
 import { useNavigation } from '@/hooks'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const CommandMenu = () => {
   const { open, setOpen } = useCommand()

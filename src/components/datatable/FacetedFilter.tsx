@@ -1,52 +1,40 @@
-import { useCallback } from 'react'
-
-import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
-import type { Column } from '@tanstack/react-table'
-
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
-  Badge,
-  Button,
-  Checkbox,
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
+  CommandSeparator
+} from '@/components/ui/command'
+import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-  Separator,
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '@/components/ui'
-import type { ColumnOption } from '@/features/app/tasks/data/tasks.types'
+} from '@/components/ui/tooltip'
+import type { TColumnOption, TFacetedFilterProps } from '@/types'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
+import { useCallback } from 'react'
 
-
-interface FacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>
-  title?: string
-  options: ColumnOption[]
-}
-
-export const FacetedFilter = <TData, TValue>({
-  column, title, options
-}: FacetedFilterProps<TData, TValue>) => {
+export const FacetedFilter = <TData, TValue>({ column, title, options }: TFacetedFilterProps<TData, TValue>) => {
   const columnFilterValue = column?.getFilterValue()
   const selectedValues = new Set<string>(Array.isArray(columnFilterValue) ? columnFilterValue : [])
+  const selectedOptions = options.filter((option) => selectedValues.has(option.value))
 
-  const selectedOptions = options.filter((option) =>
-    selectedValues.has(option.value))
-
-  const handleSelect = useCallback((option: ColumnOption, isSelected: boolean) => {
+  const handleSelect = useCallback((option: TColumnOption, isSelected: boolean) => {
     if (!column) return
 
     const current = column.getFilterValue()
-    const valueSet = new Set<string>(
-      Array.isArray(current) ? current : []
-    )
+    const valueSet = new Set<string>(Array.isArray(current) ? current : [])
 
     if (isSelected) {
       valueSet.delete(option.value)
@@ -83,7 +71,7 @@ export const FacetedFilter = <TData, TValue>({
           {selectedValues.size > 0 && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='secondary' className='lg:hidden'>
+              <Badge variant='secondary' className='text-muted-foreground lg:hidden'>
                 {selectedValues.size}
               </Badge>
               <div className='-mr-2 hidden items-center gap-1 lg:flex'>
@@ -103,29 +91,26 @@ export const FacetedFilter = <TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-48 p-0' align='start'>
+      <PopoverContent align='start' className='w-48 p-0'>
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option.value)
-                return (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => handleSelect(option, isSelected)}>
-                    <Checkbox checked={isSelected} />
-                    {option.icon && <option.icon />}
-                    <span className='truncate capitalize'>{option.label}</span>
-                    {option.count && (
-                      <span className='ml-auto text-xs text-muted-foreground'>
-                        {option.count}
-                      </span>
-                    )}
-                  </CommandItem>
-                )
-              })}
+              {options.map((option) => (
+                <CommandItem
+                  key={option.value}
+                  onSelect={() => handleSelect(option, selectedValues.has(option.value))}>
+                  <Checkbox checked={selectedValues.has(option.value)} />
+                  {option.icon && <option.icon />}
+                  <span className='truncate capitalize'>{option.label}</span>
+                  {option.count && (
+                    <span className='ml-auto text-xs text-muted-foreground'>
+                      {option.count}
+                    </span>
+                  )}
+                </CommandItem>
+              ))}
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>

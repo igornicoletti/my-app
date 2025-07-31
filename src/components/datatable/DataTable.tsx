@@ -1,6 +1,4 @@
-import { flexRender, type Table as TanstackTable } from '@tanstack/react-table'
-
-import { Pagination } from '@/components/table/Pagination'
+import { PaginationControls } from '@/components/datatable'
 import {
   Table,
   TableBody,
@@ -8,16 +6,11 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui'
+} from '@/components/ui/table'
+import type { TDataTableProps } from '@/types'
+import { flexRender } from '@tanstack/react-table'
 
-interface DataTableProps<TData> extends React.ComponentProps<'div'> {
-  table: TanstackTable<TData>
-  actionBar?: React.ReactNode
-}
-
-export const DataTable = <TData,>({
-  table, actionBar, children
-}: DataTableProps<TData>) => (
+export const DataTable = <TData,>({ table, children }: TDataTableProps<TData>) => (
   <div className={'flex w-full flex-col gap-2 overflow-auto'}>
     {children}
     <div className='overflow-hidden rounded-md border'>
@@ -55,8 +48,7 @@ export const DataTable = <TData,>({
       </Table>
     </div>
     <div className='flex flex-col gap-2.5'>
-      <Pagination table={table} />
-      {actionBar && table.getFilteredSelectedRowModel().rows.length > 0 && actionBar}
+      <PaginationControls table={table} />
     </div>
   </div>
 )

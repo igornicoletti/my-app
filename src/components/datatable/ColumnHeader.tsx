@@ -1,3 +1,12 @@
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import type { TColumnHeaderProps } from '@/types'
 import {
   CaretDownIcon,
   CaretUpDownIcon,
@@ -5,26 +14,8 @@ import {
   EyeSlashIcon,
   XIcon
 } from '@phosphor-icons/react'
-import type { Column } from '@tanstack/react-table'
 
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui'
-
-interface ColumnHeaderProps<TData, TValue>
-  extends React.ComponentProps<typeof DropdownMenuTrigger> {
-  column: Column<TData, TValue>
-  title: string
-}
-
-export const ColumnHeader = <TData, TValue>({
-  column, title
-}: ColumnHeaderProps<TData, TValue>) => {
+export const ColumnHeader = <TData,>({ column, title }: TColumnHeaderProps<TData>) => {
   if (!column.getCanSort() && !column.getCanHide()) {
     return <div className='text-sm'>{title}</div>
   }
@@ -32,7 +23,7 @@ export const ColumnHeader = <TData, TValue>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='none' className='px-0! [&_svg]:text-muted-foreground'>
+        <Button variant='ghost' size='sm' className='-ml-1.5 [&_svg]:text-muted-foreground'>
           {title}
           {column.getCanSort() &&
             (column.getIsSorted() === 'desc' ? (

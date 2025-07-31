@@ -1,20 +1,33 @@
-import { CaretUpDownIcon, CircleDashedIcon, TextAaIcon } from '@phosphor-icons/react'
+import {
+  ColumnHeader,
+  RowActions
+} from '@/components/datatable'
+import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  formatDate,
+  getActionIcon,
+  getPriorityIcon,
+  getStatusIcon,
+  tasksSchemas,
+  type TTaskProps
+} from '@/features/app/tasks'
+import {
+  CaretUpDownIcon,
+  CircleDashedIcon,
+  TextAaIcon
+} from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 
-import { ColumnHeader } from '@/components'
-import { Badge, Checkbox } from '@/components/ui'
-import { tasksSchemas } from '@/features/app/tasks/data/tasks.schemas'
-import type { TaskProps } from '@/features/app/tasks/data/tasks.types'
-import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/data/tasks.utils'
+type CountMap = Record<string, number>
 
-interface GetTasksTableColumnsProps {
-  statusCounts: Record<TaskProps['status'], number>
-  priorityCounts: Record<TaskProps['priority'], number>
-}
-
-export const getTasksTableColumns = ({
-  statusCounts, priorityCounts
-}: GetTasksTableColumnsProps): ColumnDef<TaskProps>[] => [
+export const tasksColumns = ({
+  statusCounts,
+  priorityCounts
+}: {
+  statusCounts: CountMap
+  priorityCounts: CountMap
+}): ColumnDef<TTaskProps>[] => [
     {
       id: 'select',
       header: ({ table }) => (
@@ -24,46 +37,37 @@ export const getTasksTableColumns = ({
             (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label='Select all'
-        />
+          aria-label='Select all' />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label='Select row'
-        />
+          aria-label='Select row' />
       ),
       enableSorting: false,
       enableHiding: false,
     },
     {
-      id: 'code',
       accessorKey: 'code',
       header: ({ column }) => <ColumnHeader column={column} title='Task' />,
-      cell: ({ row }) => <div>{row.getValue('code')}</div>,
+      cell: ({ row }) => row.getValue('code'),
       enableSorting: false,
       enableHiding: false,
     },
     {
-      id: 'title',
       accessorKey: 'title',
       header: ({ column }) => <ColumnHeader column={column} title='Title' />,
-      cell: ({ row }) => {
-        const label = tasksSchemas.shape.label._def.values.find((label) =>
-          label === row.original.label)
-
-        return (
-          <div className='flex items-center gap-2'>
-            {label && (
-              <Badge variant='outline' className='capitalize'>{label}</Badge>
-            )}
-            <span className='max-w-lg truncate'>
-              {row.getValue('title')}
-            </span>
-          </div>
-        )
-      },
+      cell: ({ row }) => (
+        <div className='flex items-center gap-2'>
+          {row.original.label && (
+            <Badge variant='outline' className='capitalize'>
+              {row.original.label}
+            </Badge>
+          )}
+          <span className='max-w-lg truncate'>{row.getValue('title')}</span>
+        </div>
+      ),
       meta: {
         label: 'Title',
         placeholder: 'Tasks',
@@ -73,33 +77,28 @@ export const getTasksTableColumns = ({
       enableColumnFilter: true,
     },
     {
-      id: 'status',
       accessorKey: 'status',
       header: ({ column }) => <ColumnHeader column={column} title='Status' />,
       cell: ({ cell }) => {
-        const status = tasksSchemas.shape.status._def.values.find((status) =>
-          status === cell.getValue<TaskProps['status']>())
-
-        if (!status) return null
-        const Icon = getStatusIcon(status)
-
+        const value = cell.getValue<TTaskProps['status']>()
+        const Icon = getStatusIcon(value)
         return (
           <div className='flex items-center gap-2'>
             <Icon />
-            <span className='capitalize'>{status}</span>
+            <span className='capitalize'>{value}</span>
           </div>
         )
       },
       meta: {
         label: 'Status',
         variant: 'multiSelect',
+        icon: CircleDashedIcon,
         options: tasksSchemas.shape.status._def.values.map((status) => ({
           label: status.charAt(0).toUpperCase() + status.slice(1),
           value: status,
-          count: statusCounts[status],
+          count: statusCounts[status] || 0,
           icon: getStatusIcon(status),
         })),
-        icon: CircleDashedIcon,
       },
       enableColumnFilter: true,
       filterFn: (row, columnId, filterValue) => {
@@ -108,33 +107,28 @@ export const getTasksTableColumns = ({
       }
     },
     {
-      id: 'priority',
       accessorKey: 'priority',
       header: ({ column }) => <ColumnHeader column={column} title='Priority' />,
       cell: ({ cell }) => {
-        const priority = tasksSchemas.shape.priority._def.values.find((priority) =>
-          priority === cell.getValue<TaskProps['priority']>())
-
-        if (!priority) return null
-        const Icon = getPriorityIcon(priority)
-
+        const value = cell.getValue<TTaskProps['priority']>()
+        const Icon = getPriorityIcon(value)
         return (
           <div className='flex items-center gap-2'>
             <Icon />
-            <span className='capitalize'>{priority}</span>
+            <span className='capitalize'>{value}</span>
           </div>
         )
       },
       meta: {
         label: 'Priority',
         variant: 'multiSelect',
+        icon: CaretUpDownIcon,
         options: tasksSchemas.shape.priority._def.values.map((priority) => ({
           label: priority.charAt(0).toUpperCase() + priority.slice(1),
           value: priority,
-          count: priorityCounts[priority],
+          count: priorityCounts[priority] || 0,
           icon: getPriorityIcon(priority),
         })),
-        icon: CaretUpDownIcon,
       },
       enableColumnFilter: true,
       filterFn: (row, columnId, filterValue) => {
@@ -142,4 +136,42 @@ export const getTasksTableColumns = ({
         return filterValue.includes(row.getValue(columnId))
       }
     },
+    {
+      accessorKey: "createdAt",
+      header: ({ column }) => <ColumnHeader column={column} title="Created At" />,
+      cell: ({ cell }) => formatDate(cell.getValue<Date>()),
+      enableColumnFilter: true,
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => (
+        <RowActions actions={[
+          {
+            type: 'item',
+            label: 'Edit',
+            icon: getActionIcon('edit'),
+            onSelect: () => console.log('Edit row:', row.original),
+          },
+          {
+            type: 'radio-group',
+            label: 'Labels',
+            icon: getActionIcon('label'),
+            value: row.original.label || '',
+            onChange: (value) => console.log('Update label:', value),
+            options: tasksSchemas.shape.label._def.values.map((label) => ({
+              label,
+              value: label,
+            })),
+          },
+          {
+            type: 'item',
+            label: 'Delete',
+            icon: getActionIcon('delete'),
+            onSelect: () => console.log('Delete row:', row.original),
+          },
+        ]} />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    }
   ]

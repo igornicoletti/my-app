@@ -1,6 +1,7 @@
 import type { RouteObject } from 'react-router-dom'
 
 import { HANDLE, LAZY } from '@/constants'
+import { tasksLoader } from '@/features'
 
 // ----- Protected (authenticated) routes -----
 export const getProtectedRoutes = (): RouteObject[] => [
@@ -15,6 +16,7 @@ export const getProtectedRoutes = (): RouteObject[] => [
       },
       {
         path: 'tasks',
+        loader: tasksLoader,
         element: <LAZY.Tasks />,
         handle: HANDLE.tasks,
       },

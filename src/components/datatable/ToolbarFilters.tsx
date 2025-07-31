@@ -1,18 +1,15 @@
+import { FacetedFilter } from '@/components/datatable'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import type {
+  TColumnMeta,
+  TToolbarProps,
+  TToolbarVariantsProps
+} from '@/types'
+import { XIcon } from '@phosphor-icons/react'
 import { useCallback, useMemo } from 'react'
 
-import { XIcon } from '@phosphor-icons/react'
-import type { Column, Table } from '@tanstack/react-table'
-
-import { FacetedFilter } from '@/components/table/FacetedFilter'
-import { Button, Input } from '@/components/ui'
-import type { ColumnMeta } from '@/features/app/tasks/data/tasks.types'
-
-interface ToolbarProps<TData> {
-  table: Table<TData>
-  children?: React.ReactNode
-}
-
-export const Toolbar = <TData,>({ table, children }: ToolbarProps<TData>) => {
+export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0
 
   const columns = useMemo(() => {
@@ -27,7 +24,7 @@ export const Toolbar = <TData,>({ table, children }: ToolbarProps<TData>) => {
     <div role='toolbar' aria-orientation='horizontal' className='flex w-full items-start justify-between gap-2'>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
-          <ToolbarFilter key={column.id} column={column} />
+          <ToolbarVariants key={column.id} column={column} />
         ))}
         {isFiltered && (
           <Button onClick={onReset} aria-label='Reset filters' variant='ghost'>
@@ -43,13 +40,8 @@ export const Toolbar = <TData,>({ table, children }: ToolbarProps<TData>) => {
   )
 }
 
-interface ToolbarFilterProps<TData> {
-  column: Column<TData>
-}
-
-const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
-  const meta = column.columnDef.meta as ColumnMeta
-
+const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
+  const meta = column.columnDef.meta as TColumnMeta | undefined
   if (!meta?.variant) return null
 
   if (meta.variant === 'text' || meta.variant === 'number') {
@@ -57,12 +49,13 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
       <Input
         id={column.id}
         name={column.id}
-        className='min-w-xs'
-        type={meta.variant === 'number' ? 'number' : 'text'}
-        inputMode={meta.variant === 'number' ? 'numeric' : undefined}
+        className='max-w-sm'
         placeholder={meta.placeholder ?? meta.label}
         value={(column.getFilterValue() as string) ?? ''}
-        onChange={(e) => column.setFilterValue(e.target.value)} />
+        type={meta.variant === 'number' ? 'number' : 'text'}
+        inputMode={meta.variant === 'number' ? 'numeric' : undefined}
+        onChange={(e) => column.setFilterValue(e.target.value)}
+      />
     )
   }
 
@@ -71,8 +64,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
       <FacetedFilter
         column={column}
         title={meta.label}
-        options={meta.options ?? []}
-      />
+        options={meta.options ?? []} />
     )
   }
 

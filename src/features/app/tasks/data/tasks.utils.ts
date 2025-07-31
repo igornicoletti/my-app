@@ -3,15 +3,35 @@ import {
   ArrowRightIcon,
   ArrowUpIcon,
   CheckCircleIcon,
-  CircleIcon,
+  PencilSimpleIcon,
   QuestionIcon,
+  TagSimpleIcon,
   TimerIcon,
+  TrashSimpleIcon,
   XCircleIcon
 } from '@phosphor-icons/react'
 
-import type { TaskProps } from '@/features/app/tasks/data/tasks.types'
+import type { TTaskAction, TTaskProps } from '@/features/app/tasks'
 
-export const getStatusIcon = (status: TaskProps['status']) => {
+export const formatDate = (
+  date: Date | string | number | undefined,
+  opts: Intl.DateTimeFormatOptions = {}
+) => {
+  if (!date) return ''
+
+  try {
+    return new Intl.DateTimeFormat('en-US', {
+      month: opts.month ?? 'long',
+      day: opts.day ?? 'numeric',
+      year: opts.year ?? 'numeric',
+      ...opts,
+    }).format(new Date(date))
+  } catch {
+    return ''
+  }
+}
+
+export const getStatusIcon = (status: TTaskProps['status']) => {
   const statusIcons = {
     canceled: XCircleIcon,
     done: CheckCircleIcon,
@@ -19,15 +39,25 @@ export const getStatusIcon = (status: TaskProps['status']) => {
     todo: QuestionIcon,
   } as const
 
-  return statusIcons[status] || CircleIcon
+  return statusIcons[status]
 }
 
-export const getPriorityIcon = (priority: TaskProps['priority']) => {
+export const getPriorityIcon = (priority: TTaskProps['priority']) => {
   const priorityIcons = {
     high: ArrowUpIcon,
     low: ArrowDownIcon,
     medium: ArrowRightIcon,
   } as const
 
-  return priorityIcons[priority] || CircleIcon
+  return priorityIcons[priority]
+}
+
+export const getActionIcon = (action: TTaskAction) => {
+  const actionIcons = {
+    edit: PencilSimpleIcon,
+    delete: TrashSimpleIcon,
+    label: TagSimpleIcon,
+  } as const
+
+  return actionIcons[action]
 }

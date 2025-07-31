@@ -47,7 +47,12 @@ export const FieldControl = <T extends FieldValues>({
                 autoComplete={autoComplete}
                 aria-invalid={!!fieldState.error} />
               {isPassword && (
-                <Button onClick={() => setVisible((prev) => !prev)} type='button' variant='ghost' size='icon' className='absolute top-0 right-0'>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  onClick={() => setVisible((prev) => !prev)}
+                  className='absolute top-0 right-0'>
                   {visible ? <EyeSlashIcon /> : <EyeIcon />}
                 </Button>
               )}
