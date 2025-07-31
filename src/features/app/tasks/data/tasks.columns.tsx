@@ -141,6 +141,23 @@ export const tasksColumns = ({
       header: ({ column }) => <ColumnHeader column={column} title="Created At" />,
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
       enableColumnFilter: true,
+      meta: {
+        label: "Created At",
+        variant: "date",
+        multiple: true,
+      },
+      filterFn: (row, columnId, filterValue) => {
+        const rowDate = new Date(row.getValue<string | Date>(columnId))
+
+        if (isNaN(rowDate.getTime())) return false
+
+        const [from, to] = filterValue as [number, number]
+        if (!from && !to) return true
+        if (from && !to) return rowDate.getTime() >= from
+        if (!from && to) return rowDate.getTime() <= to
+        if (from && to) return rowDate.getTime() >= from && rowDate.getTime() <= to
+        return true
+      },
     },
     {
       id: 'actions',

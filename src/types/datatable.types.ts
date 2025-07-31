@@ -1,6 +1,14 @@
 import type { Column, Table } from '@tanstack/react-table'
 import type { ReactNode } from 'react'
 
+export type TColumnMeta = {
+  label: string
+  variant: 'text' | 'number' | 'select' | 'multiSelect' | 'date'
+  placeholder?: string
+  multiple?: boolean
+  options?: TColumnOption[]
+}
+
 export type TColumnHeaderProps<TData> = {
   column: Column<TData, unknown>
   title: string
@@ -33,17 +41,16 @@ export type TColumnOption = {
   count?: number
 }
 
+export type TDateFilterProps<TData> = {
+  column: Column<TData, unknown>
+  title: string
+  multiple?: boolean
+}
+
 export type TFacetedFilterProps<TData, TValue> = {
   column: Column<TData, TValue>
   title: string
   options: TColumnOption[]
-}
-
-export type TColumnMeta = {
-  label: string
-  variant: 'text' | 'number' | 'select' | 'multiSelect'
-  placeholder?: string
-  options?: TColumnOption[]
 }
 
 export type THideableViewProps<TData> = {
@@ -71,5 +78,6 @@ export type TRowActionsProps = {
       onChange: (value: string) => void
       options: { label: string; value: string }[]
       disabled?: boolean
-    }>
+    }
+  >
 }

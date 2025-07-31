@@ -1,4 +1,4 @@
-import { FacetedFilter } from '@/components/datatable'
+import { DateFilter, FacetedFilter } from '@/components/datatable'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type {
@@ -49,7 +49,7 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
       <Input
         id={column.id}
         name={column.id}
-        className='w-full max-w-xs'
+        className='h-8 w-full max-w-xs'
         placeholder={meta.placeholder ?? meta.label}
         value={(column.getFilterValue() as string) ?? ''}
         type={meta.variant === 'number' ? 'number' : 'text'}
@@ -65,6 +65,16 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
         column={column}
         title={meta.label}
         options={meta.options ?? []} />
+    )
+  }
+
+  if (meta.variant === 'date') {
+    return (
+      <DateFilter
+        column={column}
+        title={meta.label}
+        multiple={meta.multiple}
+      />
     )
   }
 

@@ -1,5 +1,6 @@
 export { ColumnHeader } from './ColumnHeader'
 export { DataTable } from './DataTable'
+export { DateFilter } from './DateFilter'
 export { FacetedFilter } from './FacetedFilter'
 export { PaginationControls } from './PaginationControls'
 export { RowActions } from './RowActions'
