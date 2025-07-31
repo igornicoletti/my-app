@@ -61,7 +61,7 @@ export const tasksColumns = ({
       cell: ({ row }) => (
         <div className='flex items-center gap-2'>
           {row.original.label && (
-            <Badge variant='outline' className='capitalize'>
+            <Badge variant='secondary' className='capitalize'>
               {row.original.label}
             </Badge>
           )}

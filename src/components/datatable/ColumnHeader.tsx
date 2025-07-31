@@ -66,7 +66,7 @@ export const ColumnHeader = <TData,>({ column, title }: TColumnHeaderProps<TData
           <DropdownMenuCheckboxItem
             checked={!column.getIsVisible()}
             onClick={() => column.toggleVisibility(!column.getIsVisible())}
-            className='relative pr-8 pl-2 [&>span:first-child]:right-2 [&>span:first-child]:left-auto [&_svg]:text-muted-foreground'>
+            className='relative hidden lg:flex pr-8 pl-2 [&>span:first-child]:right-2 [&>span:first-child]:left-auto [&_svg]:text-muted-foreground'>
             <EyeSlashIcon />
             Hide
           </DropdownMenuCheckboxItem>
