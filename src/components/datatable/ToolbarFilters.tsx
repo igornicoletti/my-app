@@ -16,7 +16,7 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
     return table.getAllColumns().filter((column) => column.getCanFilter())
   }, [table])
 
-  const onReset = useCallback(() => {
+  const handleReset = useCallback(() => {
     table.resetColumnFilters()
   }, [table])
 
@@ -27,7 +27,7 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
           <ToolbarVariants key={column.id} column={column} />
         ))}
         {isFiltered && (
-          <Button onClick={onReset} aria-label='Reset filters' variant='ghost'>
+          <Button onClick={handleReset} aria-label='Reset filters' variant='ghost'>
             <XIcon />
             Reset
           </Button>

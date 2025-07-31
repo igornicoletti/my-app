@@ -5,13 +5,13 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
-  formatDate,
   getActionIcon,
   getPriorityIcon,
   getStatusIcon,
   tasksSchemas,
   type TTaskProps
 } from '@/features/app/tasks'
+import { formatDate } from '@/utils'
 import {
   CaretUpDownIcon,
   CircleDashedIcon,
@@ -50,7 +50,7 @@ export const tasksColumns = ({
     },
     {
       accessorKey: 'code',
-      header: ({ column }) => <ColumnHeader column={column} title='Task' />,
+      header: ({ column }) => <ColumnHeader column={column} title='Tasks' />,
       cell: ({ row }) => row.getValue('code'),
       enableSorting: false,
       enableHiding: false,
@@ -61,7 +61,7 @@ export const tasksColumns = ({
       cell: ({ row }) => (
         <div className='flex items-center gap-2'>
           {row.original.label && (
-            <Badge variant='secondary' className='capitalize'>
+            <Badge variant='outline'>
               {row.original.label}
             </Badge>
           )}
@@ -70,7 +70,7 @@ export const tasksColumns = ({
       ),
       meta: {
         label: 'Title',
-        placeholder: 'Tasks',
+        placeholder: 'Search titles...',
         variant: 'text',
         icon: TextAaIcon,
       },

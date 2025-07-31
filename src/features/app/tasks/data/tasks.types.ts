@@ -4,7 +4,7 @@ export interface TTaskProps {
   title: string
   status: 'todo' | 'in-progress' | 'done' | 'canceled'
   priority: 'low' | 'medium' | 'high'
-  label: 'frontend' | 'backend' | 'design' | 'research'
+  label: 'bug' | 'documentation' | 'feature' | 'enhancement'
   createdAt: string
 }
 

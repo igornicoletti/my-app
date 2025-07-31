@@ -13,24 +13,6 @@ import {
 
 import type { TTaskAction, TTaskProps } from '@/features/app/tasks'
 
-export const formatDate = (
-  date: Date | string | number | undefined,
-  opts: Intl.DateTimeFormatOptions = {}
-) => {
-  if (!date) return ''
-
-  try {
-    return new Intl.DateTimeFormat('en-US', {
-      month: opts.month ?? 'long',
-      day: opts.day ?? 'numeric',
-      year: opts.year ?? 'numeric',
-      ...opts,
-    }).format(new Date(date))
-  } catch {
-    return ''
-  }
-}
-
 export const getStatusIcon = (status: TTaskProps['status']) => {
   const statusIcons = {
     canceled: XCircleIcon,

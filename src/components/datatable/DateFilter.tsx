@@ -6,9 +6,15 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import { formatDate } from '@/features'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 import type { TDateFilterProps } from '@/types'
-import { CalendarIcon, XCircleIcon } from '@phosphor-icons/react'
+import { formatDate } from '@/utils'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
+import { enUS } from 'date-fns/locale'
 import { useCallback, useMemo } from 'react'
 import type { DateRange } from 'react-day-picker'
 
@@ -67,7 +73,7 @@ export const DateFilter = <TData,>({ column, title, multiple }: TDateFilterProps
     }
   }, [column, multiple])
 
-  const onReset = useCallback((event: React.MouseEvent) => {
+  const handleReset = useCallback((event: React.MouseEvent) => {
     event.stopPropagation()
     column.setFilterValue(undefined)
   }, [column])
@@ -109,21 +115,53 @@ export const DateFilter = <TData,>({ column, title, multiple }: TDateFilterProps
     )
   }, [selectedDates, multiple, formatDateRange, title])
 
+  const calendarSettings = useMemo<{
+    startMonth: Date | undefined
+    endMonth: Date | undefined
+    captionLayout: 'dropdown' | 'dropdown-months'
+  }>(() => {
+    const dates = column.getFacetedRowModel()?.rows
+      .map((row) => new Date(row.getValue(column.id)))
+      .filter((date) => !isNaN(date.getTime()))
+
+    if (!dates || dates.length === 0) {
+      return {
+        startMonth: undefined,
+        endMonth: undefined,
+        captionLayout: 'dropdown'
+      }
+    }
+
+    const years = dates.map((date) => date.getFullYear())
+    const minYear = Math.min(...years)
+    const maxYear = Math.max(...years)
+    const currentYear = new Date().getFullYear()
+
+    const allSameYear = years.every((year) => year === currentYear)
+
+    return {
+      startMonth: new Date(minYear, 0),
+      endMonth: new Date(maxYear, 11),
+      captionLayout: allSameYear ? 'dropdown-months' : 'dropdown'
+    }
+  }, [column])
+
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='h-8 border-dashed'>
+        <Button variant='outline' className='border-dashed'>
           {hasValue ? (
-            <div
-              role='button'
-              aria-label={`Clear ${title} filter`}
-              tabIndex={0}
-              onClick={onReset}
-              className='mr-1 rounded-sm opacity-70 transition-opacity hover:opacity-100'>
-              <XCircleIcon className='h-4 w-4' />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div tabIndex={0} onClick={handleReset} aria-label={`Clear ${title} filter`} role='button'>
+                  <XIcon />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Clear filter</TooltipContent>
+            </Tooltip>
           ) : (
-            <CalendarIcon className='mr-2 h-4 w-4' />
+            <FunnelSimpleIcon />
           )}
           {label}
         </Button>
@@ -131,21 +169,27 @@ export const DateFilter = <TData,>({ column, title, multiple }: TDateFilterProps
       <PopoverContent className='w-auto p-0' align='start'>
         {multiple ? (
           <Calendar
-            captionLayout='dropdown'
             mode='range'
+            locale={enUS}
             onSelect={onSelect}
+            startMonth={calendarSettings.startMonth}
+            captionLayout={calendarSettings.captionLayout}
             selected={getIsDateRange(selectedDates)
               ? selectedDates
-              : { from: undefined, to: undefined }}
+              : { from: undefined, to: undefined }
+            }
           />
         ) : (
           <Calendar
-            captionLayout='dropdown'
             mode='single'
+            locale={enUS}
             onSelect={onSelect}
+            startMonth={calendarSettings.startMonth}
+            captionLayout={calendarSettings.captionLayout}
             selected={!getIsDateRange(selectedDates)
               ? selectedDates[0]
-              : undefined}
+              : undefined
+            }
           />
         )}
       </PopoverContent>

@@ -3,12 +3,12 @@ import { faker } from '@faker-js/faker'
 
 const statuses: TTaskProps['status'][] = ['todo', 'in-progress', 'done', 'canceled']
 const priorities: TTaskProps['priority'][] = ['low', 'medium', 'high']
-const labels: TTaskProps['label'][] = ['frontend', 'backend', 'design', 'research']
+const labels: TTaskProps['label'][] = ['bug', 'documentation', 'feature', 'enhancement']
 
-export const generateTasks = (count: number): TTaskProps[] => {
+export const generateTasks = (count: 10): TTaskProps[] => {
   return Array.from({ length: count }, () => ({
     id: faker.string.uuid(),
-    code: faker.string.alphanumeric(8).toUpperCase(),
+    code: faker.string.alphanumeric(6).toUpperCase(),
     title: faker.hacker.phrase(),
     status: faker.helpers.arrayElement(statuses),
     priority: faker.helpers.arrayElement(priorities),
