@@ -27,11 +27,15 @@ export const RowActions = ({ actions }: TRowActionsProps) => (
             key={index}
             onSelect={action.onSelect}
             disabled={action.disabled}>
-            {action.label}
+            {action.icon && <action.icon />}
+            <span className='truncate capitalize'>{action.label}</span>
           </DropdownMenuItem>
         ) : action.type === 'radio-group' ? (
           <DropdownMenuSub key={index}>
-            <DropdownMenuSubTrigger>{action.label}</DropdownMenuSubTrigger>
+            <DropdownMenuSubTrigger>
+              {action.icon && <action.icon className='mr-2' />}
+              <span className='truncate capitalize'>{action.label}</span>
+            </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
               <DropdownMenuRadioGroup
                 value={action.value}
@@ -42,7 +46,7 @@ export const RowActions = ({ actions }: TRowActionsProps) => (
                     value={opt.value}
                     disabled={action.disabled}
                     className='capitalize'>
-                    {opt.label}
+                    <span className='truncate capitalize'>{opt.label}</span>
                   </DropdownMenuRadioItem>
                 ))}
               </DropdownMenuRadioGroup>

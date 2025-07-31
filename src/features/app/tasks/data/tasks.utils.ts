@@ -5,7 +5,7 @@ import {
   CheckCircleIcon,
   PencilSimpleIcon,
   QuestionIcon,
-  TagSimpleIcon,
+  StickerIcon,
   TimerIcon,
   TrashSimpleIcon,
   XCircleIcon
@@ -56,7 +56,7 @@ export const getActionIcon = (action: TTaskAction) => {
   const actionIcons = {
     edit: PencilSimpleIcon,
     delete: TrashSimpleIcon,
-    label: TagSimpleIcon,
+    label: StickerIcon,
   } as const
 
   return actionIcons[action]

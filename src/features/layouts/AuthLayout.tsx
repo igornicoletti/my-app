@@ -11,7 +11,7 @@ export const AuthLayout = () => {
   return (
     <div className='relative flex min-h-svh flex-col'>
       <div className='flex flex-1 flex-col items-center justify-center py-12'>
-        <div className='w-full max-w-md grid gap-6 px-6'>
+        <div className='w-full max-w-md flex flex-col gap-6 px-6'>
           <header className='grid gap-2 text-center'>
             <FireIcon className='mx-auto size-8 text-primary' />
             <h2 className='text-xl font-bold'>{hero.heading}</h2>
