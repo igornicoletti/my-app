@@ -49,7 +49,7 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
       <Input
         id={column.id}
         name={column.id}
-        className='max-w-sm'
+        className='w-full max-w-xs'
         placeholder={meta.placeholder ?? meta.label}
         value={(column.getFilterValue() as string) ?? ''}
         type={meta.variant === 'number' ? 'number' : 'text'}

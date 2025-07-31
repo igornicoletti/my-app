@@ -1,4 +1,5 @@
 import { PaginationControls } from '@/components/datatable'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
   Table,
   TableBody,
@@ -11,9 +12,9 @@ import type { TDataTableProps } from '@/types'
 import { flexRender } from '@tanstack/react-table'
 
 export const DataTable = <TData,>({ table, children }: TDataTableProps<TData>) => (
-  <div className={'flex w-full flex-col gap-2 overflow-auto'}>
+  <div className='flex flex-col gap-2'>
     {children}
-    <div className='overflow-hidden rounded-md border'>
+    <ScrollArea className='rounded-md border'>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -46,7 +47,8 @@ export const DataTable = <TData,>({ table, children }: TDataTableProps<TData>) =
           )}
         </TableBody>
       </Table>
-    </div>
+      <ScrollBar orientation='horizontal' />
+    </ScrollArea>
     <div className='flex flex-col gap-2.5'>
       <PaginationControls table={table} />
     </div>

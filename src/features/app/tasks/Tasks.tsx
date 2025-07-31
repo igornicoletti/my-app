@@ -1,7 +1,10 @@
-import { Button } from '@/components'
-import { DataTable, ToolbarFilters, ViewOptions } from '@/components/datatable'
-import type { TTaskProps } from '@/features/app/tasks'
-import { tasksColumns } from '@/features/app/tasks'
+import {
+  DataTable,
+  ToolbarFilters,
+  ViewOptions
+} from '@/components/datatable'
+import { Button } from '@/components/ui/button'
+import { tasksColumns, type TTaskProps } from '@/features/app/tasks'
 import { useDataTable } from '@/hooks'
 import { useMemo } from 'react'
 import { useLoaderData } from 'react-router-dom'
@@ -31,13 +34,19 @@ export const Tasks = () => {
   const table = useDataTable({ data: tasks, columns })
 
   return (
-    <DataTable table={table}>
-      <ToolbarFilters table={table}>
-        <ViewOptions table={table} />
-        <Button onClick={() => console.log('Adicionar tarefa')}>
-          Add Task
-        </Button>
-      </ToolbarFilters>
-    </DataTable>
+    <div className='flex flex-col gap-6'>
+      <header className='grid gap-2'>
+        <h2 className='text-xl font-bold'>Tasks Table</h2>
+        <p className='text-sm text-muted-foreground'>Here's a list of your tasks.</p>
+      </header>
+      <DataTable table={table}>
+        <ToolbarFilters table={table}>
+          <ViewOptions table={table} />
+          <Button onClick={() => console.log('Add Task')}>
+            Add Task
+          </Button>
+        </ToolbarFilters>
+      </DataTable>
+    </div>
   )
 }

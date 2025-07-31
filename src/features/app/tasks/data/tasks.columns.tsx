@@ -65,7 +65,7 @@ export const tasksColumns = ({
               {row.original.label}
             </Badge>
           )}
-          <span className='max-w-lg truncate'>{row.getValue('title')}</span>
+          <span className='max-w-xl truncate'>{row.getValue('title')}</span>
         </div>
       ),
       meta: {

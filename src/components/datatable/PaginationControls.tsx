@@ -38,7 +38,7 @@ export const PaginationControls = <TData,>({ table, pageSizeOptions = [10, 20, 3
           </SelectContent>
         </Select>
       </div>
-      <div className='flex items-center justify-center text-sm'>
+      <div className='hidden lg:flex items-center justify-center text-sm'>
         Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
       </div>
       <div className='flex items-center gap-2'>

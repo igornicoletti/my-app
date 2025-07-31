@@ -40,8 +40,12 @@ export const AppLayout = () => {
             </div>
           </div>
         </header>
-        <div className='flex flex-1 flex-col p-4 pt-0'>
-          <Outlet />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col">
+            <div className="flex flex-col p-4 pt-0">
+              <Outlet />
+            </div>
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
