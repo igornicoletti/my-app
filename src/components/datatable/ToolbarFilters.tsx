@@ -1,13 +1,10 @@
+import { useCallback, useMemo } from 'react'
+
 import { DateFilter, FacetedFilter } from '@/components/datatable'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import type {
-  TColumnMeta,
-  TToolbarProps,
-  TToolbarVariantsProps
-} from '@/types'
+import type { TColumnMeta, TToolbarProps, TToolbarVariantsProps } from '@/types'
 import { XIcon } from '@phosphor-icons/react'
-import { useCallback, useMemo } from 'react'
 
 export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0
@@ -21,13 +18,13 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
   }, [table])
 
   return (
-    <div role='toolbar' aria-orientation='horizontal' className='flex w-full flex-col lg:flex-row items-start gap-2'>
+    <div role='toolbar' aria-orientation='horizontal' className='flex w-full items-start gap-2'>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
           <ToolbarVariants key={column.id} column={column} />
         ))}
         {isFiltered && (
-          <Button onClick={handleReset} aria-label='Reset filters' variant='ghost'>
+          <Button size='sm' onClick={handleReset} aria-label='Reset filters' variant='ghost'>
             <XIcon />
             Reset
           </Button>
@@ -49,13 +46,12 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
       <Input
         id={column.id}
         name={column.id}
-        className='w-full max-w-sm'
+        className='w-full md:max-w-xs'
         placeholder={meta.placeholder ?? meta.label}
         value={(column.getFilterValue() as string) ?? ''}
         type={meta.variant === 'number' ? 'number' : 'text'}
         inputMode={meta.variant === 'number' ? 'numeric' : undefined}
-        onChange={(e) => column.setFilterValue(e.target.value)}
-      />
+        onChange={(e) => column.setFilterValue(e.target.value)} />
     )
   }
 
@@ -73,8 +69,7 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
       <DateFilter
         column={column}
         title={meta.label}
-        multiple={meta.multiple}
-      />
+        multiple={meta.multiple} />
     )
   }
 

@@ -14,8 +14,7 @@ import {
 import { formatDate } from '@/utils'
 import {
   CaretUpDownIcon,
-  CircleDashedIcon,
-  TextAaIcon
+  CircleDashedIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 
@@ -71,8 +70,7 @@ export const tasksColumns = ({
       meta: {
         label: 'Title',
         placeholder: 'Search titles...',
-        variant: 'text',
-        icon: TextAaIcon,
+        variant: 'text'
       },
       enableColumnFilter: true,
     },

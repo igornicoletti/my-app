@@ -1,22 +1,15 @@
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
-import { Separator } from '@/components/ui/separator'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-import type { TDateFilterProps } from '@/types'
-import { formatDate } from '@/utils'
-import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import { enUS } from 'date-fns/locale'
 import { useCallback, useMemo } from 'react'
 import type { DateRange } from 'react-day-picker'
+
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import type { TDateFilterProps } from '@/types'
+import { formatDate } from '@/utils'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 
 type DateSelection = Date[] | DateRange
 
@@ -45,12 +38,18 @@ export const DateFilter = <TData,>({ column, title, multiple }: TDateFilterProps
 
   const selectedDates = useMemo<DateSelection>(() => {
     if (!columnFilterValue) {
-      return multiple ? { from: undefined, to: undefined } : []
+      return multiple ? {
+        from: undefined,
+        to: undefined
+      } : []
     }
 
     if (multiple) {
       const timestamps = parseColumnFilterValue(columnFilterValue)
-      return { from: parseAsDate(timestamps[0]), to: parseAsDate(timestamps[1]) }
+      return {
+        from: parseAsDate(timestamps[0]),
+        to: parseAsDate(timestamps[1])
+      }
     }
 
     const timestamps = parseColumnFilterValue(columnFilterValue)
@@ -104,11 +103,11 @@ export const DateFilter = <TData,>({ column, title, multiple }: TDateFilterProps
 
     return (
       <span className='flex items-center gap-2'>
-        <span>{title}</span>
+        {title}
         {selectedText && (
           <>
             <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-            <span>{selectedText}</span>
+            {selectedText}
           </>
         )}
       </span>
@@ -120,9 +119,9 @@ export const DateFilter = <TData,>({ column, title, multiple }: TDateFilterProps
     endMonth: Date | undefined
     captionLayout: 'dropdown' | 'dropdown-months'
   }>(() => {
-    const dates = column.getFacetedRowModel()?.rows
-      .map((row) => new Date(row.getValue(column.id)))
-      .filter((date) => !isNaN(date.getTime()))
+    const dates = column.getFacetedRowModel()?.rows.map((row) =>
+      new Date(row.getValue(column.id))).filter((date) =>
+        !isNaN(date.getTime()))
 
     if (!dates || dates.length === 0) {
       return {

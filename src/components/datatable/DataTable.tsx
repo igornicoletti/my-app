@@ -14,7 +14,7 @@ import { flexRender } from '@tanstack/react-table'
 export const DataTable = <TData,>({ table, children }: TDataTableProps<TData>) => (
   <div className='flex flex-col gap-2'>
     {children}
-    <ScrollArea className='rounded-md border'>
+    <ScrollArea className='rounded-lg border'>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

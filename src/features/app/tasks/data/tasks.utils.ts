@@ -3,12 +3,12 @@ import {
   ArrowRightIcon,
   ArrowUpIcon,
   CheckCircleIcon,
+  CircleIcon,
   PencilSimpleIcon,
-  QuestionIcon,
+  ProhibitIcon,
   StickerIcon,
   TimerIcon,
-  TrashSimpleIcon,
-  XCircleIcon
+  TrashSimpleIcon
 } from '@phosphor-icons/react'
 
 import type {
@@ -19,10 +19,10 @@ import type {
 
 export const getStatusIcon = (status: TTaskStatus) => {
   const statusIcons = {
-    canceled: XCircleIcon,
+    canceled: ProhibitIcon,
     done: CheckCircleIcon,
     'in-progress': TimerIcon,
-    todo: QuestionIcon,
+    todo: CircleIcon,
   } as const
 
   return statusIcons[status]
