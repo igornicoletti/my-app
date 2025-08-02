@@ -18,7 +18,7 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
   }, [table])
 
   return (
-    <div role='toolbar' aria-orientation='horizontal' className='flex w-full items-start gap-2'>
+    <div role='toolbar' aria-orientation='horizontal' className='flex w-full flex-col-reverse md:flex-row items-start gap-2'>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
           <ToolbarVariants key={column.id} column={column} />
@@ -46,7 +46,7 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
       <Input
         id={column.id}
         name={column.id}
-        className='w-full md:max-w-xs'
+        className='w-full lg:max-w-xs'
         placeholder={meta.placeholder ?? meta.label}
         value={(column.getFilterValue() as string) ?? ''}
         type={meta.variant === 'number' ? 'number' : 'text'}

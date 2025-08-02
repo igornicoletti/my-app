@@ -2,6 +2,7 @@ import { enUS } from 'date-fns/locale'
 import { useCallback, useMemo } from 'react'
 import type { DateRange } from 'react-day-picker'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -107,7 +108,9 @@ export const DateFilter = <TData,>({ column, title, multiple }: TDateFilterProps
         {selectedText && (
           <>
             <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-            {selectedText}
+            <Badge variant='secondary' className='-mr-2 text-muted-foreground'>
+              {selectedText}
+            </Badge>
           </>
         )}
       </span>
