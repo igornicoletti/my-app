@@ -52,6 +52,22 @@ export const ERROR = {
     title: 'Popup Request Failed',
     description: 'Another popup interrupted the login process. Please try again.',
   },
+  'firestore/document-not-found': {
+    title: 'Document Not Found',
+    description: 'The requested document could not be found.',
+  },
+  'firestore/write-failed': {
+    title: 'Data Save Error',
+    description: 'There was an issue saving your data. Please try again.',
+  },
+  'firestore/read-failed': {
+    title: 'Data Load Error',
+    description: 'There was an issue loading data. Please try again later.',
+  },
+  'firestore/invalid-data': {
+    title: 'Invalid Data',
+    description: 'The data provided is not in the correct format.',
+  },
   default: {
     title: 'Authentication Error',
     description: 'An error occurred while processing your request. Contact support if the problem persists.',

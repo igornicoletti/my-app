@@ -1,15 +1,27 @@
-import type { TTaskProps } from '@/features/app/tasks'
-import { LABELS, PRIORITIES, STATUSES } from '@/features/app/tasks'
-import { faker } from '@faker-js/faker'
+import {
+  labelsConfig,
+  prioritiesConfig,
+  statusesConfig
+} from '@/features/app/tasks'
+import { faker } from "@faker-js/faker"
+import { customAlphabet, nanoid } from "nanoid"
 
-export const generateTasks = (count = 10): TTaskProps[] => {
-  return Array.from({ length: count }, () => ({
-    id: faker.string.uuid(),
-    code: faker.string.alphanumeric(6).toUpperCase(),
-    title: faker.hacker.phrase(),
-    status: faker.helpers.arrayElement(STATUSES),
-    priority: faker.helpers.arrayElement(PRIORITIES),
-    label: faker.helpers.arrayElement(LABELS),
-    createdAt: faker.date.past().toISOString()
-  }))
-}
+const generateCode = () => `TASK-${customAlphabet("0123456789", 4)()}`
+
+const generateId = () => `task_${nanoid(6)}`
+
+export const generateTask = () => ({
+  id: generateId(),
+  code: generateCode(),
+  title: faker.hacker.phrase().replace(/^./, (letter) => letter.toUpperCase()),
+  estimatedHours: faker.number.int({ min: 1, max: 24 }),
+  status: faker.helpers.arrayElement(statusesConfig),
+  label: faker.helpers.arrayElement(labelsConfig),
+  priority: faker.helpers.arrayElement(prioritiesConfig),
+  archived: faker.datatype.boolean({ probability: 0.2 }),
+  createdAt: new Date(),
+  updatedAt: new Date()
+})
+
+export const generateTasks = (count: number = 10) =>
+  Array.from({ length: count }, generateTask)

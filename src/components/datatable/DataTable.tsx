@@ -1,13 +1,6 @@
 import { PaginationControls } from '@/components/datatable'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import type { TDataTableProps } from '@/types'
 import { flexRender } from '@tanstack/react-table'
 

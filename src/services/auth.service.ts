@@ -11,62 +11,68 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  type ActionCodeSettings,
   type User
 } from 'firebase/auth'
 
-import { AUTH, CODE } from '@/configs'
+import { auth, firebaseConfig } from '@/configs/firebase'
+
+const actionCode: ActionCodeSettings = {
+  url: `${firebaseConfig.appOrigin}/callback`,
+  handleCodeInApp: true,
+}
 
 export const authService = {
   // Sign in
   signInWithGoogle: async (): Promise<User> => {
     const provider = new GoogleAuthProvider()
-    const { user } = await signInWithPopup(AUTH, provider)
+    const { user } = await signInWithPopup(auth, provider)
     return user
   },
 
   signInWithEmail: async (email: string, password: string): Promise<User> =>
-    (await signInWithEmailAndPassword(AUTH, email, password)).user,
+    (await signInWithEmailAndPassword(auth, email, password)).user,
 
   // Sign up
   createUserWithEmail: async (email: string, password: string, displayName?: string): Promise<User> => {
-    const { user } = await createUserWithEmailAndPassword(AUTH, email, password)
+    const { user } = await createUserWithEmailAndPassword(auth, email, password)
     if (displayName) await updateProfile(user, { displayName })
-    await sendEmailVerification(user, CODE)
+    await sendEmailVerification(user, actionCode)
     return user
   },
 
   // Password reset & email verification
   sendPasswordReset: async (email: string) =>
-    sendPasswordResetEmail(AUTH, email, CODE),
+    sendPasswordResetEmail(auth, email, actionCode),
 
   sendEmailVerificationToCurrentUser: async (): Promise<void> => {
-    const user = AUTH.currentUser
+    const user = auth.currentUser
     if (!user) throw new Error('User not authenticated')
-    await sendEmailVerification(user, CODE)
+    await sendEmailVerification(user, actionCode)
   },
 
   confirmUserPasswordReset: async (oobCode: string, newPassword: string): Promise<void> =>
-    confirmPasswordReset(AUTH, oobCode, newPassword),
+    confirmPasswordReset(auth, oobCode, newPassword),
 
   applyUserActionCode: async (oobCode: string) =>
-    applyActionCode(AUTH, oobCode),
+    applyActionCode(auth, oobCode),
 
   // Sign out
-  signOut: async (): Promise<void> => signOut(AUTH),
+  signOut: async (): Promise<void> => signOut(auth),
 
   // Re-authentication for sensitive actions
   reauthenticateWithPassword: async (password: string): Promise<void> => {
-    const user = AUTH.currentUser
+    const user = auth.currentUser
     if (!user?.email) throw new Error('User not authenticated')
     const credential = EmailAuthProvider.credential(user.email, password)
     await reauthenticateWithCredential(user, credential)
   },
 
   // User status
-  getCurrentUser: (): User | null => AUTH.currentUser,
-  isAuthenticated: (): boolean => !!AUTH.currentUser,
-  isEmailVerified: (): boolean => AUTH.currentUser?.emailVerified ?? false,
+  getCurrentUser: (): User | null => auth.currentUser,
+  isAuthenticated: (): boolean => !!auth.currentUser,
+  isEmailVerified: (): boolean => auth.currentUser?.emailVerified ?? false,
 
   // Auth state listener
-  onAuthStateChanged: AUTH.onAuthStateChanged.bind(AUTH),
+  onAuthStateChanged: auth.onAuthStateChanged.bind(auth),
 }

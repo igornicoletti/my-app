@@ -1,40 +1,23 @@
-import {
-  ColumnHeader,
-  RowActions
-} from '@/components/datatable'
+import { ColumnHeader, RowActions } from '@/components/datatable'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  getActionIcon,
-  getPriorityIcon,
-  getStatusIcon,
-  tasksSchemas,
-  type TTaskProps
-} from '@/features/app/tasks'
-import { formatDate } from '@/utils'
-import {
-  CaretUpDownIcon,
-  CircleDashedIcon
-} from '@phosphor-icons/react'
+import { getActionIcon, getPriorityIcon, getStatusIcon, tasksSchemas, type TTaskProps } from '@/features/app/tasks'
+import { dateRangeFilter, dateTimeFormat } from '@/utils'
+import { CaretUpDownIcon, CircleDashedIcon } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
-
-type CountMap = Record<string, number>
 
 export const tasksColumns = ({
   statusCounts,
   priorityCounts
 }: {
-  statusCounts: CountMap
-  priorityCounts: CountMap
+  statusCounts: Record<string, number>
+  priorityCounts: Record<string, number>
 }): ColumnDef<TTaskProps>[] => [
     {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label='Select all' />
       ),
@@ -64,13 +47,15 @@ export const tasksColumns = ({
               {row.original.label}
             </Badge>
           )}
-          <span className='max-w-xl truncate'>{row.getValue('title')}</span>
+          <span className='max-w-sm truncate inline-block'>
+            {row.getValue('title')}
+          </span>
         </div>
       ),
       meta: {
         label: 'Title',
         placeholder: 'Search titles...',
-        variant: 'text'
+        variant: 'text',
       },
       enableColumnFilter: true,
     },
@@ -94,15 +79,15 @@ export const tasksColumns = ({
         options: tasksSchemas.shape.status._def.values.map((status) => ({
           label: status.charAt(0).toUpperCase() + status.slice(1),
           value: status,
-          count: statusCounts[status] || 0,
           icon: getStatusIcon(status),
+          count: statusCounts[status] ?? 0, // INJETANDO CONTAGEM AQUI
         })),
       },
       enableColumnFilter: true,
       filterFn: (row, columnId, filterValue) => {
-        if (!Array.isArray(filterValue)) return true
-        return filterValue.includes(row.getValue(columnId))
-      }
+        const value = row.getValue<string>(columnId)
+        return Array.isArray(filterValue) ? filterValue.includes(value) : true
+      },
     },
     {
       accessorKey: 'priority',
@@ -124,68 +109,64 @@ export const tasksColumns = ({
         options: tasksSchemas.shape.priority._def.values.map((priority) => ({
           label: priority.charAt(0).toUpperCase() + priority.slice(1),
           value: priority,
-          count: priorityCounts[priority] || 0,
           icon: getPriorityIcon(priority),
+          count: priorityCounts[priority] ?? 0, // INJETANDO CONTAGEM AQUI
         })),
       },
       enableColumnFilter: true,
       filterFn: (row, columnId, filterValue) => {
-        if (!Array.isArray(filterValue)) return true
-        return filterValue.includes(row.getValue(columnId))
-      }
+        const value = row.getValue<string>(columnId)
+        return Array.isArray(filterValue) ? filterValue.includes(value) : true
+      },
     },
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <ColumnHeader column={column} title='Created At' />,
-      cell: ({ cell }) => formatDate(cell.getValue<Date>()),
+      cell: ({ cell }) => {
+        const value = cell.getValue<Date>()
+        return value instanceof Date && !isNaN(value.getTime())
+          ? dateTimeFormat(value)
+          : '-'
+      },
       enableColumnFilter: true,
       meta: {
         label: 'Created At',
         variant: 'date',
-        multiple: true,
       },
-      filterFn: (row, columnId, filterValue) => {
-        const rowDate = new Date(row.getValue<string | Date>(columnId))
-        if (isNaN(rowDate.getTime())) return false
-
-        const [from, to] = filterValue as [number, number]
-        if (!from && !to) return true
-        if (from && !to) return rowDate.getTime() >= from
-        if (!from && to) return rowDate.getTime() <= to
-        if (from && to) return rowDate.getTime() >= from && rowDate.getTime() <= to
-        return true
-      },
+      filterFn: dateRangeFilter,
     },
     {
       id: 'actions',
       cell: ({ row }) => (
-        <RowActions actions={[
-          {
-            type: 'item',
-            label: 'Edit',
-            icon: getActionIcon('edit'),
-            onSelect: () => console.log('Edit row:', row.original),
-          },
-          {
-            type: 'radio-group',
-            label: 'Labels',
-            icon: getActionIcon('label'),
-            value: row.original.label || '',
-            onChange: (value) => console.log('Update label:', value),
-            options: tasksSchemas.shape.label._def.values.map((label) => ({
-              label,
-              value: label,
-            })),
-          },
-          {
-            type: 'item',
-            label: 'Delete',
-            icon: getActionIcon('delete'),
-            onSelect: () => console.log('Delete row:', row.original),
-          },
-        ]} />
+        <RowActions
+          actions={[
+            {
+              type: 'item',
+              label: 'Edit',
+              icon: getActionIcon('edit'),
+              onSelect: () => console.log('Edit row:', row.original),
+            },
+            {
+              type: 'radio-group',
+              label: 'Labels',
+              icon: getActionIcon('label'),
+              value: row.original.label || '',
+              onChange: (value) => console.log('Update label:', value),
+              options: tasksSchemas.shape.label._def.values.map((label) => ({
+                label,
+                value: label,
+              })),
+            },
+            {
+              type: 'item',
+              label: 'Delete',
+              icon: getActionIcon('delete'),
+              onSelect: () => console.log('Delete row:', row.original),
+            },
+          ]}
+        />
       ),
       enableSorting: false,
       enableHiding: false,
-    }
+    },
   ]

@@ -1,4 +1,4 @@
-export const STATUSES = ['todo', 'in-progress', 'done', 'canceled'] as const
-export const PRIORITIES = ['low', 'medium', 'high'] as const
-export const LABELS = ['bug', 'documentation', 'feature'] as const
-export const ACTIONS = ['edit', 'delete', 'label'] as const
+export const statusesConfig = ['todo', 'in-progress', 'done', 'canceled'] as const
+export const prioritiesConfig = ['low', 'medium', 'high'] as const
+export const labelsConfig = ['bug', 'documentation', 'feature'] as const
+export const actionsConfig = ['edit', 'delete', 'label'] as const

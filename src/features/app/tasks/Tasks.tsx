@@ -10,17 +10,19 @@ export const Tasks = () => {
   const { tasks } = useLoaderData() as { tasks: TTaskProps[] }
 
   const statusCounts = useMemo(() => {
-    return tasks.reduce((acc, task) => {
-      acc[task.status] = (acc[task.status] || 0) + 1
-      return acc
-    }, {} as Record<TTaskProps['status'], number>)
+    const counts: Record<string, number> = {}
+    tasks.forEach((task) => {
+      counts[task.status] = (counts[task.status] ?? 0) + 1
+    })
+    return counts
   }, [tasks])
 
   const priorityCounts = useMemo(() => {
-    return tasks.reduce((acc, task) => {
-      acc[task.priority] = (acc[task.priority] || 0) + 1
-      return acc
-    }, {} as Record<TTaskProps['priority'], number>)
+    const counts: Record<string, number> = {}
+    tasks.forEach((task) => {
+      counts[task.priority] = (counts[task.priority] ?? 0) + 1
+    })
+    return counts
   }, [tasks])
 
   const columns = useMemo(() => tasksColumns({

@@ -1,4 +1,4 @@
-export const formatDate = (
+export const dateTimeFormat = (
   date: Date | string | number | undefined,
   opts: Intl.DateTimeFormatOptions = {}
 ) => {

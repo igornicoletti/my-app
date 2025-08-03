@@ -9,6 +9,7 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type PaginationState,
+  type RowSelectionState,
   type SortingState,
   type Table,
   type VisibilityState,
@@ -24,36 +25,33 @@ export const useDataTable = <TData, TValue = unknown>({
   data,
   columns,
 }: IUseDataTableProps<TData, TValue>): Table<TData> => {
-  const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 10 })
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [sorting, setSorting] = useState<SortingState>([])
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  })
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
       columnFilters,
+      columnVisibility,
       pagination,
+      rowSelection,
+      sorting,
     },
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
   })
 
   return table

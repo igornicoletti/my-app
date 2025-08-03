@@ -1,8 +1,8 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app'
-import { getAuth, type ActionCodeSettings, type Auth } from 'firebase/auth'
+import { getAuth, type Auth } from 'firebase/auth'
 import { getFirestore, type Firestore } from 'firebase/firestore'
 
-const firebase = {
+const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -13,12 +13,8 @@ const firebase = {
   appOrigin: import.meta.env.VITE_APP_ORIGIN,
 }
 
-const APP: FirebaseApp = initializeApp(firebase)
-const AUTH: Auth = getAuth(APP)
-const DB: Firestore = getFirestore(APP)
-const CODE: ActionCodeSettings = {
-  url: `${firebase.appOrigin}/callback`,
-  handleCodeInApp: true,
-}
+const app: FirebaseApp = initializeApp(firebaseConfig)
+const auth: Auth = getAuth(app)
+const db: Firestore = getFirestore(app)
 
-export { APP, AUTH, CODE, DB }
+export { app, auth, db, firebaseConfig }

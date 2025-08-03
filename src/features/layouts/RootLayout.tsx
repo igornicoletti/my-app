@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom'
 
 import {
   CommandMenu,
-  ConfirmDialog,
   HelmetMetadata,
   KeyboardShortcut,
   LoadingSpinner,
@@ -18,7 +17,6 @@ export const RootLayout = () => (
     <ProgressBar />
     <Outlet />
     <CommandMenu />
-    <ConfirmDialog />
     <Toaster />
   </Suspense>
 )

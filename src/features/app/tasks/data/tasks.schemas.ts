@@ -1,9 +1,10 @@
-import { LABELS, PRIORITIES, STATUSES } from '@/features/app/tasks'
 import { z } from 'zod'
 
-export const statusEnum = z.enum(STATUSES)
-export const priorityEnum = z.enum(PRIORITIES)
-export const labelEnum = z.enum(LABELS)
+import { labelsConfig, prioritiesConfig, statusesConfig } from '@/features/app/tasks'
+
+export const statusEnum = z.enum(statusesConfig)
+export const priorityEnum = z.enum(prioritiesConfig)
+export const labelEnum = z.enum(labelsConfig)
 export const tasksSchemas = z.object({
   status: statusEnum,
   priority: priorityEnum,

@@ -1,3 +1,4 @@
+import type { TTaskAction, TTaskPriority, TTaskStatus } from '@/features/app/tasks'
 import {
   ArrowDownIcon,
   ArrowRightIcon,
@@ -10,12 +11,6 @@ import {
   TimerIcon,
   TrashSimpleIcon
 } from '@phosphor-icons/react'
-
-import type {
-  TTaskAction,
-  TTaskPriority,
-  TTaskStatus
-} from '@/features/app/tasks'
 
 export const getStatusIcon = (status: TTaskStatus) => {
   const statusIcons = {

@@ -104,7 +104,7 @@ export const FacetedFilter = <TData, TValue>({ column, title, options }: TFacete
                   <Checkbox checked={selectedValues.has(option.value)} />
                   {option.icon && <option.icon />}
                   <span className='truncate capitalize'>{option.label}</span>
-                  {option.count && (
+                  {option.count !== undefined && (
                     <span className='ml-auto text-xs text-muted-foreground'>
                       {option.count}
                     </span>

@@ -1,10 +1,7 @@
-import {
-  ERROR,
-  SUCCESS,
-  type ErrorKey,
-  type SuccessKey,
-} from '@/constants'
 import { toast } from 'sonner'
+
+import { ERROR, SUCCESS, type ErrorKey, type SuccessKey } from '@/constants'
+import { FirestoreBaseError } from '@/utils'
 
 type FirebaseErrorLike = { code: string }
 
@@ -15,8 +12,15 @@ const isFirebaseError = (error: unknown): error is FirebaseErrorLike =>
   typeof (error as FirebaseErrorLike).code === 'string'
 
 const getErrorCode = (error: unknown): string => {
-  if (isFirebaseError(error)) return error.code
-  if (error instanceof Error && error.message) return error.message
+  if (error instanceof FirestoreBaseError) {
+    return error.code
+  }
+  if (isFirebaseError(error)) {
+    return error.code
+  }
+  if (error instanceof Error && error.message) {
+    return error.message
+  }
   return 'default'
 }
 

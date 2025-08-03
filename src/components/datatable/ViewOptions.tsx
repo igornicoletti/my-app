@@ -26,9 +26,9 @@ export const ViewOptions = <TData,>({ table }: TViewOptionsProps<TData>) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' className='ml-auto hidden lg:flex'>
+        <Button variant='outline' className='ml-auto lg:inline-flex hidden'>
           <SlidersHorizontalIcon />
-          Columns
+          Views
         </Button>
       </PopoverTrigger>
       <PopoverContent align='end' className='w-48 p-0'>

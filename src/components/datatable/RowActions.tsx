@@ -44,8 +44,7 @@ export const RowActions = ({ actions }: TRowActionsProps) => (
                   <DropdownMenuRadioItem
                     key={opt.value}
                     value={opt.value}
-                    disabled={action.disabled}
-                    className='capitalize'>
+                    disabled={action.disabled}>
                     <span className='truncate capitalize'>{opt.label}</span>
                   </DropdownMenuRadioItem>
                 ))}

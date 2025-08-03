@@ -24,7 +24,7 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
           <ToolbarVariants key={column.id} column={column} />
         ))}
         {isFiltered && (
-          <Button size='sm' onClick={handleReset} aria-label='Reset filters' variant='ghost'>
+          <Button onClick={handleReset} aria-label='Reset filters' variant='ghost'>
             <XIcon />
             Reset
           </Button>
@@ -46,12 +46,13 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
       <Input
         id={column.id}
         name={column.id}
-        className='w-full lg:max-w-xs'
-        placeholder={meta.placeholder ?? meta.label}
         value={(column.getFilterValue() as string) ?? ''}
+        onChange={(e) => column.setFilterValue(e.target.value)}
+        placeholder={meta.placeholder ?? meta.label}
         type={meta.variant === 'number' ? 'number' : 'text'}
         inputMode={meta.variant === 'number' ? 'numeric' : undefined}
-        onChange={(e) => column.setFilterValue(e.target.value)} />
+        className='w-full lg:max-w-xs'
+      />
     )
   }
 
@@ -68,8 +69,7 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
     return (
       <DateFilter
         column={column}
-        title={meta.label}
-        multiple={meta.multiple} />
+        title={meta.label} />
     )
   }
 

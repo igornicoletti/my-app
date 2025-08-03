@@ -1,5 +1,12 @@
 import type { Column, Table } from '@tanstack/react-table'
-import type { ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
+
+export type TColumnOption = {
+  label: string
+  value: string
+  icon?: ComponentType<{ className?: string }>
+  count?: number
+}
 
 export type TColumnMeta = {
   label: string
@@ -25,6 +32,7 @@ export type TPaginationControlsProps<TData> = {
   pageSizeOptions?: number[]
 }
 
+// Props para a toolbar de filtros e ações
 export type TToolbarProps<TData> = {
   table: Table<TData>
   children?: ReactNode
@@ -34,17 +42,9 @@ export type TToolbarVariantsProps<TData> = {
   column: Column<TData, unknown>
 }
 
-export type TColumnOption = {
-  label: string
-  value: string
-  icon?: React.ComponentType<{ className?: string }>
-  count?: number
-}
-
 export type TDateFilterProps<TData> = {
   column: Column<TData, unknown>
   title: string
-  multiple?: boolean
 }
 
 export type TFacetedFilterProps<TData, TValue> = {
@@ -66,14 +66,14 @@ export type TRowActionsProps = {
     | {
       type: 'item'
       label: string
-      icon?: React.ComponentType<{ className?: string }>
+      icon?: ComponentType<{ className?: string }>
       onSelect: () => void
       disabled?: boolean
     }
     | {
       type: 'radio-group'
       label: string
-      icon?: React.ComponentType<{ className?: string }>
+      icon?: ComponentType<{ className?: string }>
       value: string
       onChange: (value: string) => void
       options: { label: string; value: string }[]
