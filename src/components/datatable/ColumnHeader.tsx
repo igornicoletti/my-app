@@ -23,7 +23,7 @@ export const ColumnHeader = <TData,>({ column, title }: TColumnHeaderProps<TData
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='sm' className='-ml-1.5 [&_svg]:text-muted-foreground'>
+        <Button variant='ghost' size='sm' className='-ml-2 data-[state=open]:bg-accent [&_svg]:text-muted-foreground'>
           {title}
           {column.getCanSort() &&
             (column.getIsSorted() === 'desc' ? (

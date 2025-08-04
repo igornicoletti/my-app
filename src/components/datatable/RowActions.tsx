@@ -16,11 +16,11 @@ import { DotsThreeIcon } from '@phosphor-icons/react'
 export const RowActions = ({ actions }: TRowActionsProps) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
-      <Button aria-label='Open row actions' variant='ghost' size='sm'>
+      <Button aria-label='Open menu' variant='ghost' size='sm' className='data-[state=open]:bg-muted'>
         <DotsThreeIcon weight='bold' />
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent align='end'>
+    <DropdownMenuContent align='end' className='w-40'>
       {actions.map((action, index) =>
         action.type === 'item' ? (
           <DropdownMenuItem

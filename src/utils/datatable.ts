@@ -1,5 +1,10 @@
 import type { Row } from '@tanstack/react-table'
 
+export const multiSelectFilter = <TData>(row: Row<TData>, columnId: string, filterValue: string[]) => {
+  const value = row.getValue<string>(columnId)
+  return Array.isArray(filterValue) ? filterValue.includes(value) : true
+}
+
 export const dateRangeFilter = <TData>(row: Row<TData>, columnId: string, filterValue: [number?, number?]) => {
   const raw = row.getValue<string | number | Date>(columnId)
   const date = new Date(raw)

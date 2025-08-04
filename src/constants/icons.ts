@@ -1,6 +1,6 @@
 import {
+  CheckSquareOffsetIcon,
   HouseSimpleIcon,
-  NotepadIcon,
   UserIcon,
   type Icon
 } from '@phosphor-icons/react'
@@ -8,5 +8,5 @@ import {
 export const ICON: Record<string, Icon> = {
   dashboard: HouseSimpleIcon,
   users: UserIcon,
-  tasks: NotepadIcon,
+  tasks: CheckSquareOffsetIcon,
 }

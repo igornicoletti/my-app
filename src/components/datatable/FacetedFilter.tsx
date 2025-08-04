@@ -10,41 +10,39 @@ import {
   CommandList,
   CommandSeparator
 } from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { TColumnOption, TFacetedFilterProps } from '@/types'
 import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
-import { useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-export const FacetedFilter = <TData, TValue>({ column, title, options }: TFacetedFilterProps<TData, TValue>) => {
+export const FacetedFilter = <TData, TValue>({ column, title, options, multiple }: TFacetedFilterProps<TData, TValue>) => {
+  const [open, setOpen] = useState(false)
+
   const columnFilterValue = column?.getFilterValue()
-  const selectedValues = new Set<string>(Array.isArray(columnFilterValue) ? columnFilterValue : [])
-  const selectedOptions = options.filter((option) => selectedValues.has(option.value))
+  const selectedValues = useMemo(() => new Set(Array.isArray(columnFilterValue)
+    ? columnFilterValue
+    : []
+  ), [columnFilterValue])
 
   const handleSelect = useCallback((option: TColumnOption, isSelected: boolean) => {
     if (!column) return
 
-    const current = column.getFilterValue()
-    const valueSet = new Set<string>(Array.isArray(current) ? current : [])
-
-    if (isSelected) {
-      valueSet.delete(option.value)
+    if (multiple) {
+      const newSelectedValues = new Set(selectedValues)
+      if (isSelected) {
+        newSelectedValues.delete(option.value)
+      } else {
+        newSelectedValues.add(option.value)
+      }
+      const filterValues = Array.from(newSelectedValues)
+      column.setFilterValue(filterValues.length ? filterValues : undefined)
     } else {
-      valueSet.add(option.value)
+      column.setFilterValue(isSelected ? undefined : [option.value])
+      setOpen(false)
     }
-
-    const next = Array.from(valueSet)
-    column.setFilterValue(next.length ? next : undefined)
-  }, [column])
+  }, [column, multiple, selectedValues])
 
   const handleReset = useCallback((event?: React.MouseEvent) => {
     event?.stopPropagation()
@@ -52,7 +50,7 @@ export const FacetedFilter = <TData, TValue>({ column, title, options }: TFacete
   }, [column])
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant='outline' className='border-dashed'>
           {selectedValues.size > 0 ? (
@@ -80,7 +78,7 @@ export const FacetedFilter = <TData, TValue>({ column, title, options }: TFacete
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
-                  selectedOptions.map((option) => (
+                  options.filter((option) => selectedValues.has(option.value)).map((option) => (
                     <Badge key={option.value} variant='secondary' className='text-muted-foreground'>
                       {option.label}
                     </Badge>
@@ -103,9 +101,9 @@ export const FacetedFilter = <TData, TValue>({ column, title, options }: TFacete
                   onSelect={() => handleSelect(option, selectedValues.has(option.value))}>
                   <Checkbox checked={selectedValues.has(option.value)} />
                   {option.icon && <option.icon />}
-                  <span className='truncate capitalize'>{option.label}</span>
-                  {option.count !== undefined && (
-                    <span className='ml-auto text-xs text-muted-foreground'>
+                  <span className='truncate'>{option.label}</span>
+                  {option.count && (
+                    <span className='ml-auto font-mono text-xs text-muted-foreground'>
                       {option.count}
                     </span>
                   )}

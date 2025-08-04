@@ -39,39 +39,44 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
 
 const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
   const meta = column.columnDef.meta as TColumnMeta | undefined
-  if (!meta?.variant) return null
 
-  if (meta.variant === 'text' || meta.variant === 'number') {
-    return (
-      <Input
-        id={column.id}
-        name={column.id}
-        value={(column.getFilterValue() as string) ?? ''}
-        onChange={(e) => column.setFilterValue(e.target.value)}
-        placeholder={meta.placeholder ?? meta.label}
-        type={meta.variant === 'number' ? 'number' : 'text'}
-        inputMode={meta.variant === 'number' ? 'numeric' : undefined}
-        className='w-full lg:max-w-xs'
-      />
-    )
-  }
+  const onFilterRender = useCallback(() => {
+    if (!meta?.variant) return null
 
-  if (meta.variant === 'multiSelect' || meta.variant === 'select') {
-    return (
-      <FacetedFilter
-        column={column}
-        title={meta.label}
-        options={meta.options ?? []} />
-    )
-  }
+    switch (meta.variant) {
+      case 'text':
+        return (
+          <Input
+            placeholder={meta.placeholder ?? meta.label}
+            value={(column.getFilterValue() as string) ?? ''}
+            onChange={(e) => column.setFilterValue(e.target.value)}
+            className='w-full lg:max-w-xs'
+          />
+        )
 
-  if (meta.variant === 'date') {
-    return (
-      <DateFilter
-        column={column}
-        title={meta.label} />
-    )
-  }
+      case 'date':
+        return (
+          <DateFilter
+            column={column}
+            title={meta.label ?? column.id}
+          />
+        )
 
-  return null
+      case 'select':
+      case 'multiSelect':
+        return (
+          <FacetedFilter
+            column={column}
+            title={meta.label ?? column.id}
+            options={meta.options ?? []}
+            multiple={meta.variant === 'multiSelect'}
+          />
+        )
+
+      default:
+        return null
+    }
+  }, [column, meta])
+
+  return onFilterRender()
 }

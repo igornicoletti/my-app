@@ -51,6 +51,7 @@ export type TFacetedFilterProps<TData, TValue> = {
   column: Column<TData, TValue>
   title: string
   options: TColumnOption[]
+  multiple: boolean
 }
 
 export type THideableViewProps<TData> = {
