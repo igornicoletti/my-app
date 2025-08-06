@@ -18,21 +18,27 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
   }, [table])
 
   return (
-    <div role='toolbar' aria-orientation='horizontal' className='flex w-full flex-col-reverse md:flex-row items-start gap-2'>
+    <div
+      role='toolbar'
+      aria-orientation='horizontal'
+      className='flex w-full flex-col-reverse md:flex-row items-start gap-2'
+    >
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
           <ToolbarVariants key={column.id} column={column} />
         ))}
         {isFiltered && (
-          <Button onClick={handleReset} aria-label='Reset filters' variant='ghost'>
+          <Button
+            onClick={handleReset}
+            aria-label='Reset filters'
+            variant='ghost'
+          >
             <XIcon />
             Reset
           </Button>
         )}
       </div>
-      <div className='flex items-center gap-2'>
-        {children}
-      </div>
+      <div className='flex items-center gap-2'>{children}</div>
     </div>
   )
 }
@@ -63,15 +69,35 @@ const ToolbarVariants = <TData,>({ column }: TToolbarVariantsProps<TData>) => {
         )
 
       case 'select':
-      case 'multiSelect':
+      case 'multiSelect': {
+        // Garantir que options reflita o estado atual da tabela
+        let options = meta.options ?? []
+
+        // Se tiver counts dinâmicos na meta, recalcular usando dados atuais
+        if (options.length > 0 && options.some(opt => typeof opt.count === 'number')) {
+          const rows = column.getFacetedRowModel().flatRows
+          const counts: Record<string, number> = {}
+          rows.forEach(row => {
+            const value = row.getValue(column.id) as string
+            if (value != null) {
+              counts[value] = (counts[value] ?? 0) + 1
+            }
+          })
+          options = options.map(opt => ({
+            ...opt,
+            count: counts[opt.value] ?? 0,
+          }))
+        }
+
         return (
           <FacetedFilter
             column={column}
             title={meta.label ?? column.id}
-            options={meta.options ?? []}
+            options={options}
             multiple={meta.variant === 'multiSelect'}
           />
         )
+      }
 
       default:
         return null
