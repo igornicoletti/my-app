@@ -69,7 +69,7 @@ export const ERROR = {
     description: 'The data provided is not in the correct format.',
   },
   default: {
-    title: 'Authentication Error',
+    title: 'Something Went Wrong',
     description: 'An error occurred while processing your request. Contact support if the problem persists.',
   },
 } satisfies Record<string, MessagesProps>
@@ -105,8 +105,12 @@ export const SUCCESS = {
     title: 'Password Updated',
     description: 'Your password has been updated. You can now sign in with the new one.',
   },
+  'table/delete-success': {
+    title: 'Deletion Successful',
+    description: 'The selected item was removed from the table.',
+  },
   default: {
-    title: 'Authentication Success',
+    title: 'Successfully',
     description: 'The action was completed successfully.',
   },
 } satisfies Record<string, MessagesProps>

@@ -1,11 +1,11 @@
+import { Button } from '@/components/ui/button'
 import {
-  Button,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/components/ui'
+} from '@/components/ui/select'
 import type { TPaginationControlsProps } from '@/types'
 import {
   CaretDoubleLeftIcon,

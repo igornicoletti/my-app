@@ -18,21 +18,13 @@ export const ToolbarFilters = <TData,>({ table, children }: TToolbarProps<TData>
   }, [table])
 
   return (
-    <div
-      role='toolbar'
-      aria-orientation='horizontal'
-      className='flex w-full flex-col-reverse md:flex-row items-start gap-2'
-    >
+    <div role='toolbar' aria-orientation='horizontal' className='flex w-full flex-col-reverse md:flex-row items-start gap-2'>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
           <ToolbarVariants key={column.id} column={column} />
         ))}
         {isFiltered && (
-          <Button
-            onClick={handleReset}
-            aria-label='Reset filters'
-            variant='ghost'
-          >
+          <Button onClick={handleReset} aria-label='Reset filters' variant='ghost'>
             <XIcon />
             Reset
           </Button>

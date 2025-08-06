@@ -1,18 +1,23 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 
 import { DataTable, ToolbarFilters, ViewOptions } from '@/components/datatable'
-import { Button } from '@/components/ui/button'
 import { tasksColumns, type TTaskProps } from '@/features/app/tasks'
-import { useDataTable } from '@/hooks/ui'
+import { useDataTable, useToast } from '@/hooks/ui'
 
 export const Tasks = () => {
   const { tasks: initialTasks } = useLoaderData() as { tasks: TTaskProps[] }
   const [data, setData] = useState<TTaskProps[]>(initialTasks)
+  const { errorToast, successToast } = useToast()
 
-  const deleteTask = (taskId: string) => {
-    setData((currentTasks) => currentTasks.filter((task) => task.id !== taskId))
-  }
+  const onDeleteTask = useCallback((taskId: string) => {
+    try {
+      setData((currentTasks) => currentTasks.filter((task) => task.id !== taskId))
+      successToast('table/delete-success')
+    } catch (error) {
+      errorToast(error)
+    }
+  }, [setData, successToast, errorToast])
 
   const statusCounts = useMemo(() => {
     const counts: Record<string, number> = {}
@@ -33,8 +38,8 @@ export const Tasks = () => {
   const columns = useMemo(() => tasksColumns({
     statusCounts,
     priorityCounts,
-    onDeleteTask: deleteTask,
-  }), [statusCounts, priorityCounts])
+    onDeleteTask,
+  }), [statusCounts, priorityCounts, onDeleteTask])
 
   const table = useDataTable({ data, columns })
 
@@ -47,9 +52,6 @@ export const Tasks = () => {
       <DataTable table={table}>
         <ToolbarFilters table={table}>
           <ViewOptions table={table} />
-          <Button onClick={() => console.log('Add Task')} variant='secondary'>
-            Add Task
-          </Button>
         </ToolbarFilters>
       </DataTable>
     </div>
