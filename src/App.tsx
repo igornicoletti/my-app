@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom'
 import {
   AuthProvider,
   CommandProvider,
+  ConfirmProvider,
   ThemeProvider
 } from '@/contexts'
 import { router } from '@/routers'
@@ -12,9 +13,11 @@ export const App = () => (
   <HelmetProvider>
     <ThemeProvider>
       <AuthProvider>
-        <CommandProvider>
-          <RouterProvider router={router} />
-        </CommandProvider>
+        <ConfirmProvider>
+          <CommandProvider>
+            <RouterProvider router={router} />
+          </CommandProvider>
+        </ConfirmProvider>
       </AuthProvider>
     </ThemeProvider>
   </HelmetProvider>

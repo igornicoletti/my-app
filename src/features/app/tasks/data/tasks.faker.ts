@@ -1,14 +1,10 @@
-import {
-  labelsConfig,
-  prioritiesConfig,
-  statusesConfig
-} from '@/features/app/tasks'
-import { faker } from "@faker-js/faker"
 import { customAlphabet, nanoid } from "nanoid"
 
-const generateCode = () => `TASK-${customAlphabet("0123456789", 4)()}`
+import { labelsConfig, prioritiesConfig, statusesConfig } from '@/features/app/tasks'
+import { faker } from "@faker-js/faker"
 
 const generateId = () => `task_${nanoid(6)}`
+const generateCode = () => `TASK-${customAlphabet("0123456789", 4)()}`
 
 export const generateTask = () => ({
   id: generateId(),
@@ -23,5 +19,6 @@ export const generateTask = () => ({
   updatedAt: new Date()
 })
 
-export const generateTasks = (count: number = 10) =>
-  Array.from({ length: count }, generateTask)
+export const generateTasks = (count: number = 10) => Array.from({
+  length: count
+}, generateTask)

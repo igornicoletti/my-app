@@ -13,6 +13,7 @@ export interface TTaskProps {
 export interface TTasksColumnsProps {
   statusCounts: Record<TTaskStatus, number>
   priorityCounts: Record<TTaskPriority, number>
+  onDeleteTask: (taskId: string) => void
 }
 
 export type TTaskStatus = (typeof statusesConfig)[number]

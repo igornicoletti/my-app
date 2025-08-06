@@ -72,6 +72,17 @@ export type TRowActionsProps = {
       disabled?: boolean
     }
     | {
+      type: 'confirm'
+      label: string
+      icon?: ComponentType<{ className?: string }>
+      confirmTitle?: string
+      confirmDescription?: string
+      confirmText?: string
+      cancelText?: string
+      onConfirm: () => void
+      disabled?: boolean
+    }
+    | {
       type: 'radio-group'
       label: string
       icon?: ComponentType<{ className?: string }>
