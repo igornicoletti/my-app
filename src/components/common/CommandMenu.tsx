@@ -1,42 +1,57 @@
-import {
-  CommandDialog, CommandEmpty,
-  CommandGroup, CommandInput,
-  CommandItem, CommandList
-} from '@/components'
-import { useCommand } from '@/contexts'
-import { useNavigation } from '@/hooks'
-import React from 'react'
 import { Link } from 'react-router-dom'
+import { Fragment } from 'react/jsx-runtime'
+
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator
+} from '@/components/ui/command'
+import { useCommand } from '@/providers/CommandProvider'
+import { routeNavigations } from '@/routes'
 
 export const CommandMenu = () => {
   const { open, setOpen } = useCommand()
-  const navigation = useNavigation()
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder='Type a command or search...' />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading='Go to...'>
-          {navigation.map((item) => (
-            <React.Fragment key={item.url}>
-              <CommandItem asChild onSelect={() => setOpen(false)}>
-                <Link to={item.url}>
-                  {item.Icon && <item.Icon />}
-                  {item.title}
-                </Link>
-              </CommandItem>
-              {item.subItems?.map((subItem) => (
-                <CommandItem asChild key={subItem.url} onSelect={() => setOpen(false)}>
-                  <Link to={subItem.url}>
-                    {subItem.Icon && <subItem.Icon />}
-                    {subItem.title}
+        <CommandEmpty>No results found</CommandEmpty>
+        {routeNavigations.map((group, i) => (
+          <Fragment key={group.label}>
+            <CommandGroup heading={group.label ?? 'Go to...'}>
+              {group.items.map((item) => (
+                !item.items || item.items.length === 0) ? (
+                <CommandItem
+                  asChild
+                  key={item.url ?? item.title}
+                  onSelect={() => setOpen(false)}>
+                  <Link to={item.url}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
                   </Link>
                 </CommandItem>
-              ))}
-            </React.Fragment>
-          ))}
-        </CommandGroup>
+              ) : (
+                item.items.map((subItem) => (
+                  <CommandItem
+                    asChild
+                    key={subItem.url ?? subItem.title}
+                    onSelect={() => setOpen(false)}>
+                    <Link to={subItem.url}>
+                      {subItem.icon && <subItem.icon />}
+                      <span>{subItem.title}</span>
+                    </Link>
+                  </CommandItem>
+                )))
+              )}
+            </CommandGroup>
+            {i !== routeNavigations.length - 1 && <CommandSeparator />}
+          </Fragment>
+        ))}
       </CommandList>
     </CommandDialog>
   )

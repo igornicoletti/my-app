@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { useAuth } from '@/contexts'
-import { authService } from '@/services'
+import { useAuth } from '@/providers/AuthProvider'
+import { authService } from '@/services/authService'
 
 export const CallbackRoute = () => {
   const { isLoading } = useAuth()

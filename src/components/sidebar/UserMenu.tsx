@@ -1,43 +1,40 @@
 import {
+  BellSimpleIcon,
   CaretUpDownIcon,
-  ListMagnifyingGlassIcon,
-  MoonIcon,
+  CreditCardIcon,
   RocketLaunchIcon,
-  SignOutIcon,
-  SunIcon,
-  UserIcon
+  SealCheckIcon,
+  SignOutIcon
 } from '@phosphor-icons/react'
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Button,
+} from '@/components/ui/avatar'
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
-} from '@/components'
-import { useCommand, useTheme } from '@/contexts'
-import { authService } from '@/services'
+  useSidebar,
+} from '@/components/ui/sidebar'
 
-type UserMenuProps = {
-  title: string
-  description?: string
-  avatar?: string
+interface User {
+  name: string
+  email: string
+  avatar: string
 }
 
-export const UserMenu = ({ user }: { user: UserMenuProps }) => {
-  const { theme, toggleTheme } = useTheme()
-  const { openCommand } = useCommand()
+export const NavUser = ({ user }: { user: User }) => {
   const { isMobile } = useSidebar()
 
   return (
@@ -45,57 +42,62 @@ export const UserMenu = ({ user }: { user: UserMenuProps }) => {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent'>
-              <Avatar>
-                <AvatarImage src={user.avatar} alt={user.title} />
-                <AvatarFallback>{user.title[0]}</AvatarFallback>
+            <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
+              <Avatar className='size-8 rounded-lg'>
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback className='rounded-lg'>{user.name[0]}</AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-semibold'>{user.title}</span>
-                <span className='truncate text-xs text-muted-foreground'>{user.description}</span>
+                <span className='truncate font-medium'>{user.name}</span>
+                <span className='truncate text-xs'>{user.email}</span>
               </div>
               <CaretUpDownIcon className='ml-auto' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side={isMobile ? 'bottom' : 'right'} align='end' className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'>
-            <DropdownMenuLabel>
-              <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-semibold'>{user.title}</span>
-                <span className='truncate text-xs text-muted-foreground'>{user.description}</span>
+          <DropdownMenuContent
+            align='end'
+            sideOffset={4}
+            side={isMobile ? 'bottom' : 'right'}
+            className='w-(--radix-dropdown-menu-trigger-width) min-w-56'>
+            <DropdownMenuLabel className='p-0 font-normal'>
+              <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
+                <Avatar className='size-8 rounded-lg'>
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback className='rounded-lg'>{user.name[0]}</AvatarFallback>
+                </Avatar>
+                <div className='grid flex-1 text-left text-sm leading-tight'>
+                  <span className='truncate font-medium'>{user.name}</span>
+                  <span className='truncate text-xs'>{user.email}</span>
+                </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup className='my-2'>
+            <DropdownMenuGroup>
               <DropdownMenuItem>
-                <UserIcon />
-                Account Settings
-                <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuGroup className='my-2'>
-              <DropdownMenuItem onSelect={toggleTheme}>
-                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-                <DropdownMenuShortcut>⌘J</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={openCommand}>
-                <ListMagnifyingGlassIcon />
-                Command Menu
-                <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuGroup className='my-2'>
-              <DropdownMenuItem onSelect={() => authService.signOut()}>
-                <SignOutIcon />
-                Log Out
-                <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
+                <RocketLaunchIcon />
+                Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <Button className='w-full'>
-              <RocketLaunchIcon />
-              Upgrade to Pro
-            </Button>
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <SealCheckIcon />
+                Account
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <CreditCardIcon />
+                Billing
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <BellSimpleIcon />
+                Notifications
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <SignOutIcon />
+              Log out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

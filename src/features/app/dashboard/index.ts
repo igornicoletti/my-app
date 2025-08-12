@@ -1,2 +1,1 @@
-export { Dashboard } from './Dashboard'
-export * from './data'
+export * from './DashboardPage'

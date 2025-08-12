@@ -1,6 +1,5 @@
 export * from './common'
 export * from './datatable'
-export * from './feedback'
 export * from './form'
 export * from './sidebar'
 export * from './ui'

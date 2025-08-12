@@ -1,6 +1,9 @@
-import { useCommand, useTheme } from '@/contexts'
-import { useShortcut } from '@/hooks'
-import { authService } from '@/services'
+import { useShortcut } from '@/hooks/useShortcut'
+import {
+  useCommand,
+  useTheme
+} from '@/providers'
+import { authService } from '@/services/authService'
 
 export const KeyboardShortcut = () => {
   const { toggleTheme } = useTheme()

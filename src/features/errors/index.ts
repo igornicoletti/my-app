@@ -1,3 +1,2 @@
-export { ErrorFallback } from './ErrorFallback'
-export { NotFound } from './NotFound'
-
+export * from './ErrorFallback'
+export * from './NotFoundPage'

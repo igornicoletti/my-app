@@ -1,18 +1,23 @@
+import {
+  MagnifyingGlassIcon,
+  MoonIcon,
+  SignOutIcon,
+  SunIcon
+} from '@phosphor-icons/react'
 import { Outlet } from 'react-router-dom'
 
-import { MagnifyingGlassIcon, MoonIcon, SignOutIcon, SunIcon } from '@phosphor-icons/react'
-
+import { BreadcrumbPath } from '@/components/common/BreadcrumbPath'
+import { AppSidebar } from '@/components/sidebar/AppSidebar'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import {
-  AppSidebar,
-  BreadcrumbPath,
-  Button,
-  Separator,
   SidebarInset,
   SidebarProvider,
   SidebarTrigger
-} from '@/components'
-import { useCommand, useTheme } from '@/contexts'
-import { authService } from '@/services'
+} from '@/components/ui/sidebar'
+import { useCommand } from '@/providers/CommandProvider'
+import { useTheme } from '@/providers/ThemeProvider'
+import { authService } from '@/services/authService'
 
 export const AppLayout = () => {
   const { openCommand } = useCommand()
@@ -20,29 +25,31 @@ export const AppLayout = () => {
 
   return (
     <SidebarProvider>
-      <AppSidebar variant='floating' />
+      <AppSidebar />
       <SidebarInset>
-        <header className='flex h-16 md:h-22 shrink-0 items-center gap-2 ease-linear transition-[width,height] group-has-data-[collapsible=icon]/sidebar-wrapper:h-16'>
-          <div className='flex w-full items-center gap-4 px-2'>
-            <SidebarTrigger />
-            <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+        <header className='flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
+          <div className='flex flex-1 items-center gap-2 px-4'>
+            <SidebarTrigger className='-ml-1' />
+            <Separator
+              orientation='vertical'
+              className='mr-2 data-[orientation=vertical]:h-4' />
             <BreadcrumbPath />
-            <div className='ml-auto'>
-              <Button onClick={openCommand} size='icon' variant='ghost'>
-                <MagnifyingGlassIcon />
-              </Button>
-              <Button onClick={toggleTheme} size='icon' variant='ghost'>
-                {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-              </Button>
-              <Button onClick={() => authService.signOut()} size='icon' variant='ghost'>
-                <SignOutIcon />
-              </Button>
-            </div>
+          </div>
+          <div className='ml-auto px-4'>
+            <Button onClick={openCommand} size='icon' variant='ghost'>
+              <MagnifyingGlassIcon />
+            </Button>
+            <Button onClick={toggleTheme} size='icon' variant='ghost'>
+              {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+            </Button>
+            <Button onClick={() => authService.signOut()} size='icon' variant='ghost'>
+              <SignOutIcon />
+            </Button>
           </div>
         </header>
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col">
-            <div className="flex flex-col p-4 pt-0">
+        <div className='flex flex-1 flex-col'>
+          <div className='@container/main flex flex-1 flex-col'>
+            <div className='flex flex-col p-4 pt-0'>
               <Outlet />
             </div>
           </div>

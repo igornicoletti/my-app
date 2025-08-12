@@ -1,11 +1,10 @@
-import { isRouteErrorResponse, useRouteError } from 'react-router-dom'
-
 import { TerminalIcon } from '@phosphor-icons/react'
-
 import {
-  Alert,
-  AlertDescription
-} from '@/components'
+  isRouteErrorResponse,
+  useRouteError
+} from 'react-router-dom'
+
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
 export const ErrorFallback = () => {
   const error = useRouteError()

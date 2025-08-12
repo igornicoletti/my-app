@@ -6,8 +6,8 @@ import {
   CommandProvider,
   ConfirmProvider,
   ThemeProvider
-} from '@/contexts'
-import { router } from '@/routers'
+} from '@/providers'
+import { router } from '@/routes'
 
 export const App = () => (
   <HelmetProvider>

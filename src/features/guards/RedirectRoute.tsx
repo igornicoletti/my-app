@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useAuth } from '@/contexts'
+import { useAuth } from '@/providers/AuthProvider'
 
 export const RedirectRoute = () => {
   const { user, isLoading } = useAuth()

@@ -4,9 +4,7 @@ import { PanelLeftIcon } from 'lucide-react'
 import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
-import { useIsMobile } from '@/components/ui/hooks/use-mobile'
 import { Input } from '@/components/ui/input'
-import { cn } from '@/components/ui/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import {
   Sheet,
@@ -22,6 +20,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useIsMobile } from '@/hooks/useMobile'
+import { cn } from '@/lib/utils'
 import { useLocation } from 'react-router-dom'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'

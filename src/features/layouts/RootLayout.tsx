@@ -3,16 +3,16 @@ import { Outlet } from 'react-router-dom'
 
 import {
   CommandMenu,
-  HelmetMetadata,
   KeyboardShortcut,
   LoadingSpinner,
+  MetadataHelmet,
   ProgressBar,
-  Toaster
-} from '@/components'
+} from '@/components/common'
+import { Toaster } from '@/components/ui/sonner'
 
 export const RootLayout = () => (
   <Suspense fallback={<LoadingSpinner />}>
-    <HelmetMetadata />
+    <MetadataHelmet />
     <KeyboardShortcut />
     <ProgressBar />
     <Outlet />

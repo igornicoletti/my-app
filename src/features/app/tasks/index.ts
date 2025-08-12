@@ -1,2 +1,3 @@
-export * from './data'
-export { Tasks } from './Tasks'
+export * from './api'
+export * from './datatable'
+export * from './TasksPage'

@@ -1,26 +1,48 @@
-import { PaginationControls } from '@/components/datatable'
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import {
+  flexRender,
+  type Table as TanstackTable
+} from '@tanstack/react-table'
+import type {
+  ComponentProps,
+  ReactNode
+} from 'react'
+
+import { Pagination } from '@/components/datatable'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from '@/components/ui/table'
-import type { TDataTableProps } from '@/types'
-import { flexRender } from '@tanstack/react-table'
+import { getCommonPinningStyles } from '@/lib/datatable'
+import { cn } from '@/lib/utils'
 
-export const DataTable = <TData,>({ table, children }: TDataTableProps<TData>) => (
-  <div className='flex flex-col gap-2'>
+interface Props<TData> extends ComponentProps<'div'> {
+  table: TanstackTable<TData>
+  actionBar?: ReactNode
+}
+
+export const DataTable = <TData,>({
+  table,
+  actionBar,
+  children,
+  className,
+  ...props
+}: Props<TData>) => (
+  <div className={cn('flex w-full flex-col gap-2.5 overflow-auto', className)} {...props}>
     {children}
-    <ScrollArea className='rounded-lg border'>
+    <div className='overflow-hidden rounded-md border'>
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} colSpan={header.colSpan}>
+              {headerGroup.headers.map(header => (
+                <TableHead
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  style={{ ...getCommonPinningStyles({ column: header.column }) }}>
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
@@ -29,10 +51,10 @@ export const DataTable = <TData,>({ table, children }: TDataTableProps<TData>) =
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+            table.getRowModel().rows.map(row => (
+              <TableRow key={row.id} data-state={row.getIsSelected() ? 'selected' : undefined}>
+                {row.getVisibleCells().map(cell => (
+                  <TableCell key={cell.id} style={{ ...getCommonPinningStyles({ column: cell.column }) }}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -41,16 +63,16 @@ export const DataTable = <TData,>({ table, children }: TDataTableProps<TData>) =
           ) : (
             <TableRow>
               <TableCell colSpan={table.getAllColumns().length} className='h-24 text-center'>
-                No results found.
+                No results.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      <ScrollBar orientation='horizontal' />
-    </ScrollArea>
-    <div className='flex flex-col gap-2'>
-      <PaginationControls table={table} />
+    </div>
+    <div className='flex flex-col gap-2.5'>
+      <Pagination table={table} />
+      {actionBar}
     </div>
   </div>
 )

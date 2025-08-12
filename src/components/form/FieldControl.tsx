@@ -1,16 +1,19 @@
-import { useState } from 'react'
-import type { Control, FieldPath, FieldValues } from 'react-hook-form'
-
 import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react'
+import { useState } from 'react'
+import type {
+  Control,
+  FieldPath,
+  FieldValues
+} from 'react-hook-form'
 
+import { Button } from '@/components/ui/button'
 import {
-  Button,
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
-  Input
-} from '@/components/ui'
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 
 interface FieldControlProps<T extends FieldValues> {
   name: FieldPath<T>
@@ -23,7 +26,13 @@ interface FieldControlProps<T extends FieldValues> {
 }
 
 export const FieldControl = <T extends FieldValues>({
-  autoComplete, autoFocus, control, disabled, name, placeholder, type
+  autoComplete,
+  autoFocus,
+  control,
+  disabled,
+  name,
+  placeholder,
+  type
 }: FieldControlProps<T>) => {
   const [visible, setVisible] = useState(false)
 
@@ -48,11 +57,12 @@ export const FieldControl = <T extends FieldValues>({
                 aria-invalid={!!fieldState.error} />
               {isPassword && (
                 <Button
+                  aria-label='Password visibility'
                   type='button'
                   variant='ghost'
                   size='icon'
-                  onClick={() => setVisible((prev) => !prev)}
-                  className='absolute top-0 right-0'>
+                  className='absolute top-0 right-0'
+                  onClick={() => setVisible((prev) => !prev)}>
                   {visible ? <EyeSlashIcon /> : <EyeIcon />}
                 </Button>
               )}

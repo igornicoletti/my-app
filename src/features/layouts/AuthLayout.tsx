@@ -1,12 +1,11 @@
+import { FireIcon } from '@phosphor-icons/react'
 import { Link, Outlet } from 'react-router-dom'
 
-import { FireIcon } from '@phosphor-icons/react'
-
-import { Button } from '@/components'
-import { useHero } from '@/hooks'
+import { Button } from '@/components/ui/button'
+import { useAuthHero } from '@/hooks/useAuthHero'
 
 export const AuthLayout = () => {
-  const { hero } = useHero()
+  const { hero } = useAuthHero()
 
   return (
     <div className='relative flex min-h-svh flex-col'>

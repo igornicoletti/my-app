@@ -1,5 +1,5 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
+import { Fragment } from 'react/jsx-runtime'
 
 import {
   Breadcrumb,
@@ -8,11 +8,11 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator
-} from '@/components'
-import { useCrumbs } from '@/hooks'
+} from '@/components/ui/breadcrumb'
+import { useBreadcrumb } from '@/hooks/useBreadcrumb'
 
 export const BreadcrumbPath = () => {
-  const crumbs = useCrumbs()
+  const crumbs = useBreadcrumb()
   if (!crumbs.length) return null
 
   return (
@@ -22,7 +22,7 @@ export const BreadcrumbPath = () => {
           <BreadcrumbPage>{crumbs[crumbs.length - 1].name}</BreadcrumbPage>
         </BreadcrumbItem>
         {crumbs.map((crumb) => (
-          <React.Fragment key={crumb.path}>
+          <Fragment key={crumb.path}>
             <BreadcrumbItem className='hidden md:inline-flex'>
               {crumb.isCurrent ? (
                 <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
@@ -37,7 +37,7 @@ export const BreadcrumbPath = () => {
             {!crumb.isCurrent && (
               <BreadcrumbSeparator className='hidden md:inline-flex' />
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </BreadcrumbList>
     </Breadcrumb>

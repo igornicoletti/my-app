@@ -1,135 +1,192 @@
-import { enUS } from 'date-fns/locale'
-import { useCallback, useMemo } from 'react'
+import {
+  CalendarBlankIcon,
+  XCircleIcon
+} from '@phosphor-icons/react'
+import type { Column } from '@tanstack/react-table'
+import {
+  useCallback,
+  useMemo,
+  type MouseEvent
+} from 'react'
 import type { DateRange } from 'react-day-picker'
 
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/ui'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { TDateFilterProps } from '@/types'
-import { dateTimeFormat } from '@/utils'
-import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
+import { formatDate } from '@/lib/format'
+
+type DateSelection = Date[] | DateRange
+
+const getIsDateRange = (value: DateSelection): value is DateRange =>
+  value && typeof value === 'object' && !Array.isArray(value)
 
 const parseAsDate = (timestamp: number | string | undefined): Date | undefined => {
   if (!timestamp) return undefined
-  const numeric = typeof timestamp === 'string' ? Number(timestamp) : timestamp
-  const date = new Date(numeric)
-  return isNaN(date.getTime()) ? undefined : date
+  const numericTimestamp = typeof timestamp === 'string' ? Number(timestamp) : timestamp
+  const date = new Date(numericTimestamp)
+  return !Number.isNaN(date.getTime()) ? date : undefined
 }
 
-const parseFilterValue = (value: unknown): (number | string | undefined)[] => {
-  if (Array.isArray(value)) return value.map((v) => typeof v === 'number' || typeof v === 'string' ? v : undefined)
-  if (typeof value === 'string' || typeof value === 'number') return [value]
+const parseColumnFilterValue = (value: unknown) => {
+  if (value === null || value === undefined) return []
+
+  if (Array.isArray(value)) {
+    return value.map((item) => (typeof item === 'number' || typeof item === 'string' ? item : undefined))
+  }
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    return [value]
+  }
+
   return []
 }
 
-export const DateFilter = <TData,>({ column, title }: TDateFilterProps<TData>) => {
-  const rawValue = column.getFilterValue()
+interface DateFilterProps<TData> {
+  column: Column<TData, unknown>
+  title?: string
+  multiple?: boolean
+}
 
-  const selectedRange = useMemo<DateRange>(() => {
-    const [fromRaw, toRaw] = parseFilterValue(rawValue)
-    return {
-      from: parseAsDate(fromRaw),
-      to: parseAsDate(toRaw)
+export const DateFilter = <TData,>({ column, title, multiple }: DateFilterProps<TData>) => {
+  const columnFilterValue = column.getFilterValue()
+
+  const selectedDates = useMemo<DateSelection>(() => {
+    if (!columnFilterValue) return multiple ? { from: undefined, to: undefined } : []
+
+    if (multiple) {
+      const timestamps = parseColumnFilterValue(columnFilterValue)
+      return {
+        from: parseAsDate(timestamps[0]),
+        to: parseAsDate(timestamps[1]),
+      }
     }
-  }, [rawValue])
 
-  const handleSelect = useCallback((range: DateRange | undefined) => {
-    if (!range) {
+    const timestamps = parseColumnFilterValue(columnFilterValue)
+    const date = parseAsDate(timestamps[0])
+    return date ? [date] : []
+  }, [columnFilterValue, multiple])
+
+  const onSelect = useCallback((date: Date | DateRange | undefined) => {
+    if (!date) {
       column.setFilterValue(undefined)
       return
     }
 
-    const from = range.from?.getTime()
-    const to = range.to?.getTime()
-    column.setFilterValue(from || to ? [from, to] : undefined)
-  }, [column])
+    if (multiple) {
+      if (!('getTime' in date)) {
+        const from = date.from?.getTime()
+        const to = date.to?.getTime()
+        column.setFilterValue(from || to ? [from, to] : undefined)
+      }
+    } else {
+      if ('getTime' in date) {
+        column.setFilterValue(date.getTime())
+      }
+    }
+  }, [column, multiple])
 
-  const handleReset = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation()
+  const onReset = useCallback((event: MouseEvent) => {
+    event.stopPropagation()
     column.setFilterValue(undefined)
   }, [column])
 
-  const hasValue = selectedRange.from || selectedRange.to
+  const hasValue = useMemo(() => {
+    if (multiple) {
+      if (!getIsDateRange(selectedDates)) return false
+      return selectedDates.from || selectedDates.to
+    }
+
+    if (!Array.isArray(selectedDates)) return false
+    return selectedDates.length > 0
+  }, [multiple, selectedDates])
+
+  const formatDateRange = useCallback((range: DateRange) => {
+    if (!range.from && !range.to) return ''
+    if (range.from && range.to) return `${formatDate(range.from)} - ${formatDate(range.to)}`
+    return formatDate(range.from ?? range.to)
+  }, [])
 
   const label = useMemo(() => {
-    if (!hasValue) return title
+    if (multiple) {
+      if (!getIsDateRange(selectedDates)) return null
 
-    const formatted =
-      selectedRange.from && selectedRange.to
-        ? `${dateTimeFormat(selectedRange.from)} - ${dateTimeFormat(selectedRange.to)}`
-        : dateTimeFormat(selectedRange.from ?? selectedRange.to!)
+      const hasSelectedDates = selectedDates.from || selectedDates.to
+      const dateText = hasSelectedDates ? formatDateRange(selectedDates) : 'Select date range'
+
+      return (
+        <div className='flex items-center gap-2'>
+          {title && <span>{title}</span>}
+          {hasSelectedDates && (
+            <>
+              <Separator orientation='vertical' className='mx-0.5 h-4' />
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+                {dateText}
+              </Badge>
+            </>
+          )}
+        </div>
+      )
+    }
+
+    if (getIsDateRange(selectedDates)) return null
+
+    const hasSelectedDate = selectedDates.length > 0
+    const dateText = hasSelectedDate ? formatDate(selectedDates[0]) : 'Select date'
 
     return (
-      <span className='flex items-center gap-2'>
-        {title}
-        <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-        <Badge variant='secondary' className='-mr-2 text-muted-foreground'>
-          {formatted}
-        </Badge>
-      </span>
+      <div className='flex items-center gap-2'>
+        {title && <span>{title}</span>}
+        {hasSelectedDate && (
+          <>
+            <Separator orientation='vertical' className='mx-0.5 h-4' />
+            <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+              {dateText}
+            </Badge>
+          </>
+        )}
+      </div>
     )
-  }, [hasValue, selectedRange, title])
-
-  const calendarSettings: {
-    startMonth: Date | undefined
-    endMonth: Date | undefined
-    captionLayout: 'dropdown' | 'dropdown-months' | 'dropdown-years' | 'label' | undefined
-  } = useMemo(() => {
-    const dates = column.getFacetedRowModel()?.rows
-      .map((row) => new Date(row.getValue(column.id)))
-      .filter((date) => !isNaN(date.getTime()))
-
-    if (!dates?.length) {
-      return {
-        startMonth: undefined,
-        endMonth: undefined,
-        captionLayout: 'dropdown'
-      }
-    }
-
-    const years = dates.map((d) => d.getFullYear())
-    const minYear = Math.min(...years)
-    const maxYear = Math.max(...years)
-    const allSameYear = years.every((y) => y === new Date().getFullYear())
-
-    return {
-      startMonth: new Date(minYear, 0),
-      endMonth: new Date(maxYear, 11),
-      captionLayout: allSameYear ? 'dropdown-months' : 'dropdown'
-    }
-  }, [column])
+  }, [selectedDates, multiple, formatDateRange, title])
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' className='border-dashed'>
+        <Button variant='outline' size='sm' className='border-dashed'>
           {hasValue ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div tabIndex={0} role='button' onClick={handleReset} aria-label={`Clear ${title} filter`}>
-                  <XIcon />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Clear filter</TooltipContent>
-            </Tooltip>
+            <div
+              tabIndex={0}
+              onClick={onReset}
+              aria-label={`Clear ${title} filter`}
+              role='button'
+              className='rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'>
+              <XCircleIcon />
+            </div>
           ) : (
-            <FunnelSimpleIcon />
+            <CalendarBlankIcon />
           )}
           {label}
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-auto p-0' align='start'>
-        <Calendar
-          mode='range'
-          locale={enUS}
-          captionLayout={calendarSettings.captionLayout}
-          startMonth={calendarSettings.startMonth}
-          selected={selectedRange}
-          onSelect={handleSelect}
-        />
+        {multiple ? (
+          <Calendar
+            mode='range'
+            selected={getIsDateRange(selectedDates) ? selectedDates : undefined}
+            onSelect={onSelect}
+          />
+        ) : (
+          <Calendar
+            mode='single'
+            selected={!getIsDateRange(selectedDates) ? selectedDates[0] : undefined}
+            onSelect={onSelect}
+          />
+        )}
       </PopoverContent>
     </Popover>
   )

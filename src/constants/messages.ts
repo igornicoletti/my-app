@@ -1,9 +1,9 @@
-type MessagesProps = {
+interface Messages {
   title: string
-  description: string
+  description?: string
 }
 
-export const ERROR = {
+export const errorCode = {
   'auth/invalid-credential': {
     title: 'Invalid Credentials',
     description: 'The credentials you entered are incorrect. Please try again.',
@@ -72,11 +72,11 @@ export const ERROR = {
     title: 'Something Went Wrong',
     description: 'An error occurred while processing your request. Contact support if the problem persists.',
   },
-} satisfies Record<string, MessagesProps>
+} satisfies Record<string, Messages>
 
-export type ErrorKey = keyof typeof ERROR
+export type ErrorKey = keyof typeof errorCode
 
-export const SUCCESS = {
+export const successCode = {
   'auth/account-created': {
     title: 'Account Created',
     description: 'Your account was created successfully. Please check your email to verify before logging in.',
@@ -113,6 +113,6 @@ export const SUCCESS = {
     title: 'Successfully',
     description: 'The action was completed successfully.',
   },
-} satisfies Record<string, MessagesProps>
+} satisfies Record<string, Messages>
 
-export type SuccessKey = keyof typeof SUCCESS
+export type SuccessKey = keyof typeof successCode
