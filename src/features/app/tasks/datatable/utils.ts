@@ -10,7 +10,7 @@ import {
 } from '@phosphor-icons/react'
 import { customAlphabet, nanoid } from 'nanoid'
 
-import type { TaskSchema } from '@/features/app/tasks/datatable/taskSchema'
+import type { TaskSchema } from '@/features/app/tasks/api/schemas'
 
 const generateId = () => `task_${nanoid(6)}`
 const generateCode = () => `TASK-${customAlphabet('0123456789', 4)()}`

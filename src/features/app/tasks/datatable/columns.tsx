@@ -3,7 +3,9 @@ import {
   CaretUpDownIcon,
   CircleDashedIcon,
   DotsThreeIcon,
-  TextAaIcon
+  PencilSimpleIcon,
+  TextAaIcon,
+  TrashSimpleIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 
@@ -15,15 +17,15 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import {
+  taskSchema,
+  type TaskSchema
+} from '@/features/app/tasks/api'
 import {
   getPriorityIcon,
   getStatusIcon,
-  taskSchema,
-  type TaskSchema
 } from '@/features/app/tasks/datatable'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
@@ -89,7 +91,7 @@ export const getTasksTableColumns = ({
         return (
           <div className='flex items-center gap-2'>
             {label && <Badge variant='outline'>{label}</Badge>}
-            <span className='max-w-[31.25rem] truncate font-medium'>
+            <span className='max-w-lg truncate font-medium'>
               {row.getValue('title')}
             </span>
           </div>
@@ -114,10 +116,10 @@ export const getTasksTableColumns = ({
         if (!status) return null
         const Icon = getStatusIcon(status)
         return (
-          <Badge variant='outline' className='py-1 [&>svg]:size-3.5'>
+          <div className='flex items-center gap-2'>
             <Icon />
             <span className='capitalize'>{status}</span>
-          </Badge>
+          </div>
         )
       },
       meta: {
@@ -145,10 +147,10 @@ export const getTasksTableColumns = ({
         if (!priority) return null
         const Icon = getPriorityIcon(priority)
         return (
-          <Badge variant='outline' className='py-1 [&>svg]:size-3.5'>
+          <div className='flex items-center gap-2'>
             <Icon />
             <span className='capitalize'>{priority}</span>
-          </Badge>
+          </div>
         )
       },
       meta: {
@@ -178,20 +180,12 @@ export const getTasksTableColumns = ({
         icon: CalendarIcon,
       },
       enableColumnFilter: true,
-      filterFn: (row, columnId, filterValue: [number | undefined, number | undefined]) => {
-        const rowValue = row.getValue<Date>(columnId)
-        if (!rowValue) return false
-
-        const [from, to] = filterValue
-        const rowTimestamp = rowValue.getTime()
-
-        if (from && to) {
-          return rowTimestamp >= from && rowTimestamp <= to
-        } else if (from) {
-          return rowTimestamp >= from
-        } else if (to) {
-          return rowTimestamp <= to
-        }
+      filterFn: (row, columnId, [from, to]: [number | undefined, number | undefined]) => {
+        const rowDate = row.getValue<Date>(columnId)
+        if (!rowDate) return false
+        const ts = rowDate.getTime()
+        if (from !== undefined && ts < new Date(from).setHours(0, 0, 0, 0)) return false
+        if (to !== undefined && ts > new Date(to).setHours(23, 59, 59, 999)) return false
         return true
       },
     },
@@ -201,17 +195,17 @@ export const getTasksTableColumns = ({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button aria-label='Open menu' variant='ghost' className='flex size-8 p-0 data-[state=open]:bg-muted'>
-              <DotsThreeIcon className='size-4' aria-hidden='true' />
+              <DotsThreeIcon aria-hidden='true' />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' className='w-40'>
             <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
+              <PencilSimpleIcon />
               Edit
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'delete' })}>
+            <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
+              <TrashSimpleIcon />
               Delete
-              <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

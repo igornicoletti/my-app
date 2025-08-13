@@ -1,5 +1,4 @@
 import {
-  CaretUpDownIcon,
   CheckIcon,
   SlidersHorizontalIcon
 } from '@phosphor-icons/react'
@@ -42,9 +41,8 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
           variant='outline'
           size='sm'
           className='ml-auto hidden h-8 lg:flex'>
-          <SlidersHorizontalIcon className='size-4' />
+          <SlidersHorizontalIcon />
           View
-          <CaretUpDownIcon className='ml-auto size-4 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent align='end' className='w-44 p-0'>

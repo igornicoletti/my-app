@@ -9,6 +9,10 @@ import type {
 
 import { Pagination } from '@/components/datatable'
 import {
+  ScrollArea,
+  ScrollBar
+} from '@/components/ui/scroll-area'
+import {
   Table,
   TableBody,
   TableCell,
@@ -17,7 +21,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { getCommonPinningStyles } from '@/lib/datatable'
-import { cn } from '@/lib/utils'
 
 interface Props<TData> extends ComponentProps<'div'> {
   table: TanstackTable<TData>
@@ -28,12 +31,10 @@ export const DataTable = <TData,>({
   table,
   actionBar,
   children,
-  className,
-  ...props
 }: Props<TData>) => (
-  <div className={cn('flex w-full flex-col gap-2.5 overflow-auto', className)} {...props}>
+  <div className={'flex w-full flex-col gap-2 overflow-auto'}>
     {children}
-    <div className='overflow-hidden rounded-md border'>
+    <ScrollArea className='rounded-md border whitespace-nowrap'>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (
@@ -69,8 +70,9 @@ export const DataTable = <TData,>({
           )}
         </TableBody>
       </Table>
-    </div>
-    <div className='flex flex-col gap-2.5'>
+      <ScrollBar orientation='horizontal' />
+    </ScrollArea>
+    <div className='flex flex-col gap-2'>
       <Pagination table={table} />
       {actionBar}
     </div>

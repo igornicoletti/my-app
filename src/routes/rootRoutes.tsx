@@ -1,6 +1,6 @@
 import { type RouteObject } from 'react-router-dom'
 
-import { taskLoader } from '@/features/app/tasks/api/taskLoader'
+import { taskLoader } from '@/features/app/tasks/api/loaders'
 import {
   routeElements,
   routeMeta

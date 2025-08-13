@@ -18,7 +18,6 @@ import {
 } from '@/components/datatable'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
 
 interface ToolbarProps<TData> extends ComponentProps<'div'> {
   table: Table<TData>
@@ -27,8 +26,6 @@ interface ToolbarProps<TData> extends ComponentProps<'div'> {
 export const Toolbar = <TData,>({
   table,
   children,
-  className,
-  ...props
 }: ToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -41,14 +38,19 @@ export const Toolbar = <TData,>({
   }, [table])
 
   return (
-    <div role='toolbar' aria-orientation='horizontal' className={cn('flex w-full items-start justify-between gap-2 p-1', className)} {...props}>
+    <div role='toolbar' aria-orientation='horizontal' className='flex w-full items-start justify-between'>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
           <ToolbarFilter key={column.id} column={column} />
         ))}
         {isFiltered && (
-          <Button onClick={onReset} aria-label='Reset filters' variant='outline' size='sm' className='border-dashed'>
-            <XIcon className='size-3.5' />
+          <Button
+            aria-label='Reset filters'
+            variant='outline'
+            size='sm'
+            onClick={onReset}
+            className='border-dashed'>
+            <XIcon />
             Reset
           </Button>
         )}
@@ -102,7 +104,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
           placeholder={columnMeta.placeholder ?? columnMeta.label}
           value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
-          className='h-8 w-40 lg:w-56'
+          className='h-8 w-full md:w-xs'
         />
       )
 
@@ -115,7 +117,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
             placeholder={columnMeta.placeholder ?? columnMeta.label}
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
-            className={cn('h-8 w-[120px]', columnMeta.unit && 'pr-8')}
+            className='h-8 w-full md:w-xs'
           />
           {columnMeta.unit && (
             <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>

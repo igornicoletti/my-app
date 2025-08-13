@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { cn } from '@/lib/utils'
 
 interface PaginationProps<TData> extends ComponentProps<'div'> {
   table: Table<TData>
@@ -24,24 +23,22 @@ interface PaginationProps<TData> extends ComponentProps<'div'> {
 
 export const Pagination = <TData,>({
   table,
-  pageSizeOptions = [10, 20, 30, 40, 50],
-  className,
-  ...props
+  pageSizeOptions = [10, 20, 30, 40, 50]
 }: PaginationProps<TData>) => (
-  <div className={cn('flex w-full flex-col-reverse items-center justify-between gap-4 overflow-auto p-1 sm:flex-row sm:gap-8', className)} {...props}>
-    <div className='flex-1 whitespace-nowrap text-muted-foreground text-sm'>
+  <div className={'flex w-full flex-col-reverse items-center gap-4 sm:flex-row lg:gap-6'}>
+    <div className='flex-1 text-muted-foreground text-sm'>
       {table.getFilteredSelectedRowModel().rows.length} of{' '}
       {table.getFilteredRowModel().rows.length} row(s) selected.
     </div>
-    <div className='flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8'>
-      <div className='flex items-center space-x-2'>
-        <p className='whitespace-nowrap font-medium text-sm'>Rows per page</p>
+    <div className='flex flex-col-reverse items-center gap-4 sm:flex-row lg:gap-6'>
+      <div className='flex items-center gap-2'>
+        <p className='whitespace-nowrap text-sm'>Rows per page</p>
         <Select
           value={`${table.getState().pagination.pageSize}`}
           onValueChange={(value) => {
             table.setPageSize(Number(value))
           }}>
-          <SelectTrigger className='h-8 w-[4.5rem]'>
+          <SelectTrigger size='sm' className='h-8'>
             <SelectValue />
           </SelectTrigger>
           <SelectContent side='top'>
@@ -53,11 +50,11 @@ export const Pagination = <TData,>({
           </SelectContent>
         </Select>
       </div>
-      <div className='flex items-center justify-center font-medium text-sm'>
+      <div className='whitespace-nowrap text-sm'>
         Page {table.getState().pagination.pageIndex + 1} of{' '}
         {table.getPageCount() > 0 ? table.getPageCount() : 1}
       </div>
-      <div className='flex items-center space-x-2'>
+      <div className='flex items-center gap-1'>
         <Button
           aria-label='Go to first page'
           variant='outline'
@@ -65,7 +62,7 @@ export const Pagination = <TData,>({
           className='hidden size-8 lg:flex'
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}>
-          <CaretDoubleLeftIcon className='size-4' />
+          <CaretDoubleLeftIcon />
         </Button>
         <Button
           aria-label='Go to previous page'
@@ -74,7 +71,7 @@ export const Pagination = <TData,>({
           className='size-8'
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}>
-          <CaretLeftIcon className='size-4' />
+          <CaretLeftIcon />
         </Button>
         <Button
           aria-label='Go to next page'
@@ -83,7 +80,7 @@ export const Pagination = <TData,>({
           className='size-8'
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}>
-          <CaretRightIcon className='size-4' />
+          <CaretRightIcon />
         </Button>
         <Button
           aria-label='Go to last page'
@@ -92,7 +89,7 @@ export const Pagination = <TData,>({
           className='hidden size-8 lg:flex'
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}>
-          <CaretDoubleRightIcon className='size-4' />
+          <CaretDoubleRightIcon />
         </Button>
       </div>
     </div>

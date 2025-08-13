@@ -1,14 +1,11 @@
-// TasksPage.tsx
 import { useLoaderData } from 'react-router-dom'
 
 import {
   DataTable,
   Toolbar
 } from '@/components/datatable'
-import {
-  getTasksTableColumns,
-  type TaskSchema
-} from '@/features/app/tasks/datatable'
+import type { TaskSchema } from '@/features/app/tasks/api'
+import { getTasksTableColumns, } from '@/features/app/tasks/datatable'
 import { useDataTable } from '@/hooks/useDataTable'
 
 type LoaderData = {

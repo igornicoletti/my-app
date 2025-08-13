@@ -1,6 +1,6 @@
 import {
   CalendarBlankIcon,
-  XCircleIcon
+  XIcon
 } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import {
@@ -124,8 +124,10 @@ export const DateFilter = <TData,>({ column, title, multiple }: DateFilterProps<
           {title && <span>{title}</span>}
           {hasSelectedDates && (
             <>
-              <Separator orientation='vertical' className='mx-0.5 h-4' />
-              <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+              <Separator
+                orientation='vertical'
+                className='mx-0.5 data-[orientation=vertical]:h-4' />
+              <Badge variant='secondary'>
                 {dateText}
               </Badge>
             </>
@@ -144,8 +146,10 @@ export const DateFilter = <TData,>({ column, title, multiple }: DateFilterProps<
         {title && <span>{title}</span>}
         {hasSelectedDate && (
           <>
-            <Separator orientation='vertical' className='mx-0.5 h-4' />
-            <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+            <Separator
+              orientation='vertical'
+              className='mx-0.5 data-[orientation=vertical]:h-4' />
+            <Badge variant='secondary'>
               {dateText}
             </Badge>
           </>
@@ -163,9 +167,8 @@ export const DateFilter = <TData,>({ column, title, multiple }: DateFilterProps<
               tabIndex={0}
               onClick={onReset}
               aria-label={`Clear ${title} filter`}
-              role='button'
-              className='rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'>
-              <XCircleIcon />
+              role='button'>
+              <XIcon />
             </div>
           ) : (
             <CalendarBlankIcon />
@@ -176,12 +179,14 @@ export const DateFilter = <TData,>({ column, title, multiple }: DateFilterProps<
       <PopoverContent className='w-auto p-0' align='start'>
         {multiple ? (
           <Calendar
+            captionLayout='dropdown'
             mode='range'
-            selected={getIsDateRange(selectedDates) ? selectedDates : undefined}
+            selected={getIsDateRange(selectedDates) ? selectedDates : { from: undefined, to: undefined }}
             onSelect={onSelect}
           />
         ) : (
           <Calendar
+            captionLayout='dropdown'
             mode='single'
             selected={!getIsDateRange(selectedDates) ? selectedDates[0] : undefined}
             onSelect={onSelect}

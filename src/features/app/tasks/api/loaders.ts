@@ -1,7 +1,7 @@
 import {
   generateTasks,
   getFacetedCounts,
-} from '@/features/app/tasks/datatable/taskUtils'
+} from '@/features/app/tasks/datatable/utils'
 import { type LoaderFunctionArgs } from 'react-router-dom'
 
 export const taskLoader = async (_: LoaderFunctionArgs) => {
