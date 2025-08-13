@@ -1,11 +1,4 @@
-import {
-  flexRender,
-  type Table as TanstackTable
-} from '@tanstack/react-table'
-import type {
-  ComponentProps,
-  ReactNode
-} from 'react'
+import { flexRender } from '@tanstack/react-table'
 
 import { Pagination } from '@/components/datatable'
 import {
@@ -21,25 +14,21 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { getCommonPinningStyles } from '@/lib/datatable'
-
-interface Props<TData> extends ComponentProps<'div'> {
-  table: TanstackTable<TData>
-  actionBar?: ReactNode
-}
+import type { DataTableProps } from '@/types/datatable'
 
 export const DataTable = <TData,>({
   table,
   actionBar,
   children,
-}: Props<TData>) => (
+}: DataTableProps<TData>) => (
   <div className={'flex w-full flex-col gap-2 overflow-auto'}>
     {children}
-    <ScrollArea className='rounded-md border whitespace-nowrap'>
+    <ScrollArea className='rounded-md border'>
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
+              {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
                   colSpan={header.colSpan}
@@ -52,9 +41,9 @@ export const DataTable = <TData,>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map(row => (
+            table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() ? 'selected' : undefined}>
-                {row.getVisibleCells().map(cell => (
+                {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} style={{ ...getCommonPinningStyles({ column: cell.column }) }}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
@@ -64,7 +53,7 @@ export const DataTable = <TData,>({
           ) : (
             <TableRow>
               <TableCell colSpan={table.getAllColumns().length} className='h-24 text-center'>
-                No results.
+                No results found.
               </TableCell>
             </TableRow>
           )}

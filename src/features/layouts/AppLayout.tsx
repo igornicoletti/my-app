@@ -47,12 +47,8 @@ export const AppLayout = () => {
             </Button>
           </div>
         </header>
-        <div className='flex flex-1 flex-col'>
-          <div className='@container/main flex flex-1 flex-col'>
-            <div className='flex flex-col p-4 pt-0'>
-              <Outlet />
-            </div>
-          </div>
+        <div className='@container/main flex flex-1 flex-col p-4'>
+          <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>

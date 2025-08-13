@@ -1,13 +1,12 @@
 import {
+  ArrowsDownUpIcon,
   CalendarIcon,
-  CaretUpDownIcon,
   CircleDashedIcon,
   DotsThreeIcon,
-  PencilSimpleIcon,
-  TextAaIcon,
-  TrashSimpleIcon
+  TextAaIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
+import type { Dispatch, SetStateAction } from 'react'
 
 import { ColumnHeader } from '@/components/datatable'
 import { Badge } from '@/components/ui/badge'
@@ -17,33 +16,32 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
-  taskSchema,
-  type TaskSchema
+  type TaskLoaderData,
+  type TaskSchema,
+  taskSchema
 } from '@/features/app/tasks/api'
 import {
   getPriorityIcon,
-  getStatusIcon,
+  getStatusIcon
 } from '@/features/app/tasks/datatable'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
 
-interface GetTasksTableColumnsProps {
-  statusCounts: Record<TaskSchema['status'], number>
-  priorityCounts: Record<TaskSchema['priority'], number>
-  setRowAction: React.Dispatch<React.SetStateAction<DataTableRowAction<TaskSchema> | null>>
+interface GetTasksTableColumnsProps extends Pick<TaskLoaderData, 'statusCounts' | 'priorityCounts'> {
+  setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
+const statusValues = taskSchema.shape.status.options
+const priorityValues = taskSchema.shape.priority.options
 
 export const getTasksTableColumns = ({
   statusCounts,
   priorityCounts,
   setRowAction,
 }: GetTasksTableColumnsProps): ColumnDef<TaskSchema>[] => {
-  const statusValues = taskSchema.shape.status.options
-  const priorityValues = taskSchema.shape.priority.options
-
   return [
     {
       id: 'select',
@@ -134,7 +132,7 @@ export const getTasksTableColumns = ({
         icon: CircleDashedIcon,
       },
       enableColumnFilter: true,
-      filterFn: 'arrIncludesSome'
+      filterFn: 'arrIncludesSome',
     },
     {
       id: 'priority',
@@ -162,10 +160,10 @@ export const getTasksTableColumns = ({
           count: priorityCounts[priority],
           icon: getPriorityIcon(priority),
         })),
-        icon: CaretUpDownIcon,
+        icon: ArrowsDownUpIcon,
       },
       enableColumnFilter: true,
-      filterFn: 'arrIncludesSome'
+      filterFn: 'arrIncludesSome',
     },
     {
       id: 'createdAt',
@@ -199,12 +197,14 @@ export const getTasksTableColumns = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' className='w-40'>
+            <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'detail' })}>
+              View detail
+            </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
-              <PencilSimpleIcon />
               Edit
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
-              <TrashSimpleIcon />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

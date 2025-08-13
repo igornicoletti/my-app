@@ -2,7 +2,6 @@ import {
   CheckIcon,
   SlidersHorizontalIcon
 } from '@phosphor-icons/react'
-import type { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -19,13 +18,9 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
+import type { DataTableViewOptions } from '@/types/datatable'
 
-interface ViewOptionsProps<TData> {
-  table: Table<TData>
-}
-
-export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
+export const ViewOptions = <TData,>({ table }: DataTableViewOptions<TData>) => {
   const columns = useMemo(() => {
     return table.getAllColumns().filter(column =>
       typeof column.accessorFn !== 'undefined' && column.getCanHide()
@@ -60,9 +55,7 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
                   <span className='truncate'>
                     {column.columnDef.meta?.label ?? column.id}
                   </span>
-                  <CheckIcon className={cn('ml-auto size-4 shrink-0',
-                    column.getIsVisible() ? 'opacity-100' : 'opacity-0'
-                  )} />
+                  <CheckIcon className={`ml-auto shrink-0 ${column.getIsVisible() ? 'opacity-100' : 'opacity-0'}`} />
                 </CommandItem>
               ))}
             </CommandGroup>

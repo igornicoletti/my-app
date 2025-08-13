@@ -20,7 +20,7 @@ export const CommandMenu = () => {
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder='Type a command or search...' />
       <CommandList>
-        <CommandEmpty>No results found</CommandEmpty>
+        <CommandEmpty>No results found.</CommandEmpty>
         {routeNavigations.map((group, i) => (
           <Fragment key={group.label}>
             <CommandGroup heading={group.label ?? 'Go to...'}>

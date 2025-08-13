@@ -4,8 +4,6 @@ import {
   CaretLeftIcon,
   CaretRightIcon
 } from '@phosphor-icons/react'
-import type { Table } from '@tanstack/react-table'
-import type { ComponentProps } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -15,16 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-
-interface PaginationProps<TData> extends ComponentProps<'div'> {
-  table: Table<TData>
-  pageSizeOptions?: number[]
-}
+import type { DataTablePagination } from '@/types/datatable'
 
 export const Pagination = <TData,>({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50]
-}: PaginationProps<TData>) => (
+}: DataTablePagination<TData>) => (
   <div className={'flex w-full flex-col-reverse items-center gap-4 sm:flex-row lg:gap-6'}>
     <div className='flex-1 text-muted-foreground text-sm'>
       {table.getFilteredSelectedRowModel().rows.length} of{' '}

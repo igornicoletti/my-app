@@ -1,10 +1,15 @@
 import type {
+  Column,
   ColumnSort,
   Row,
-  RowData
+  RowData,
+  Table,
+  Table as TanstackTable
 } from '@tanstack/react-table'
-import type { ElementType } from 'react'
+import type { motion } from 'motion/react'
+import type { ComponentProps, ElementType, ReactNode } from 'react'
 
+import { Button } from '@/components/ui/button'
 import type { DataTableConfig } from '@/config/datatable'
 import type { FilterItemSchema } from '@/lib/parsers'
 
@@ -44,5 +49,51 @@ export interface ExtendedColumnFilter<TData> extends FilterItemSchema {
 
 export interface DataTableRowAction<TData> {
   row: Row<TData>
-  variant: 'update' | 'delete'
+  variant: 'update' | 'delete' | 'detail'
+}
+
+export interface DataTableProps<TData> extends ComponentProps<'div'> {
+  table: TanstackTable<TData>
+  actionBar?: ReactNode
+}
+
+export interface DataTableDateFilter<TData> {
+  column: Column<TData, unknown>
+  title?: string
+  multiple?: boolean
+}
+
+export interface DataTableFacetedFilter<TData, TValue> {
+  column?: Column<TData, TValue>
+  title?: string
+  options: Option[]
+  multiple?: boolean
+}
+
+export interface DataTablePagination<TData> extends ComponentProps<'div'> {
+  table: Table<TData>
+  pageSizeOptions?: number[]
+}
+
+export interface DataTableToolbar<TData> extends ComponentProps<'div'> {
+  table: Table<TData>
+}
+
+export interface DataTableViewOptions<TData> {
+  table: Table<TData>
+}
+
+export interface DataTableActionBarSelection<TData> {
+  table: Table<TData>
+}
+
+export interface DataTableActionBar<TData> extends ComponentProps<typeof motion.div> {
+  table: Table<TData>
+  visible?: boolean
+  container?: HTMLElement | null
+}
+
+export interface DataTableActionBarAction extends ComponentProps<typeof Button> {
+  tooltip?: string
+  isPending?: boolean
 }

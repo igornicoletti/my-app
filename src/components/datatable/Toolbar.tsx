@@ -1,14 +1,10 @@
 import { XIcon } from '@phosphor-icons/react'
-import type {
-  Column,
-  Table
-} from '@tanstack/react-table'
+import type { Column } from '@tanstack/react-table'
 import {
   useCallback,
   useEffect,
   useMemo,
   useState,
-  type ComponentProps
 } from 'react'
 
 import {
@@ -18,15 +14,12 @@ import {
 } from '@/components/datatable'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
-interface ToolbarProps<TData> extends ComponentProps<'div'> {
-  table: Table<TData>
-}
+import type { DataTableToolbar } from '@/types/datatable'
 
 export const Toolbar = <TData,>({
   table,
-  children,
-}: ToolbarProps<TData>) => {
+  children
+}: DataTableToolbar<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0
 
   const columns = useMemo(() => table.getAllColumns().filter((column) =>
@@ -104,7 +97,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
           placeholder={columnMeta.placeholder ?? columnMeta.label}
           value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
-          className='h-8 w-full md:w-xs'
+          className='h-8 w-xs'
         />
       )
 

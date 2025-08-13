@@ -32,6 +32,7 @@ const getCommonPinningStyles = <TData,>({
   }
 }
 
+
 const getFilterOperators = (filterVariant: FilterVariant) => {
   const operatorMap: Record<FilterVariant, { label: string; value: FilterOperator }[]> = {
     text: dataTableConfig.textOperators,

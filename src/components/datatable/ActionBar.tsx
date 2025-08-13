@@ -2,7 +2,6 @@ import {
   SpinnerGapIcon,
   XIcon
 } from '@phosphor-icons/react'
-import type { Table } from '@tanstack/react-table'
 import {
   AnimatePresence,
   motion
@@ -12,7 +11,6 @@ import {
   useEffect,
   useLayoutEffect,
   useState,
-  type ComponentProps
 } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -24,21 +22,18 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
-
-interface ActionBarProps<TData> extends ComponentProps<typeof motion.div> {
-  table: Table<TData>
-  visible?: boolean
-  container?: HTMLElement | null
-}
+import type {
+  DataTableActionBar,
+  DataTableActionBarAction,
+  DataTableActionBarSelection
+} from '@/types/datatable'
 
 export const ActionBar = <TData,>({
   table,
   visible: visibleProp,
   container: containerProp,
   children,
-  className,
-  ...props
-}: ActionBarProps<TData>) => {
+}: DataTableActionBar<TData>) => {
   const [mounted, setMounted] = useState(false)
 
   useLayoutEffect(() => {
@@ -71,8 +66,7 @@ export const ActionBar = <TData,>({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
-          className={cn('fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm', className)}
-          {...props}>
+          className='fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm'>
           {children}
         </motion.div>
       )}
@@ -81,20 +75,13 @@ export const ActionBar = <TData,>({
   )
 }
 
-interface ActionBarActionProps extends React.ComponentProps<typeof Button> {
-  tooltip?: string
-  isPending?: boolean
-}
-
 export const ActionBarAction = ({
   size = 'sm',
   tooltip,
   isPending,
   disabled,
-  className,
   children,
-  ...props
-}: ActionBarActionProps) => {
+}: DataTableActionBarAction) => {
   const trigger = (
     <Button
       variant='secondary'
@@ -102,10 +89,8 @@ export const ActionBarAction = ({
       disabled={disabled || isPending}
       className={cn(
         'gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5',
-        size === 'icon' ? 'size-7' : 'h-7',
-        className
-      )}
-      {...props}>
+        size === 'icon' ? 'size-7' : 'h-7'
+      )}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
     </Button>
   )
@@ -124,11 +109,7 @@ export const ActionBarAction = ({
   )
 }
 
-interface ActionBarSelectionProps<TData> {
-  table: Table<TData>
-}
-
-export const ActionBarSelection = <TData,>({ table }: ActionBarSelectionProps<TData>) => {
+export const ActionBarSelection = <TData,>({ table }: DataTableActionBarSelection<TData>) => {
   const onClearSelection = useCallback(() => {
     table.toggleAllRowsSelected(false)
   }, [table])
@@ -138,7 +119,9 @@ export const ActionBarSelection = <TData,>({ table }: ActionBarSelectionProps<TD
       <span className='whitespace-nowrap text-xs'>
         {table.getFilteredSelectedRowModel().rows.length} selected
       </span>
-      <Separator orientation='vertical' className='mx-2 h-4' />
+      <Separator
+        orientation='vertical'
+        className='mx-2 data-[orientation=vertical]:h-4' />
       <Tooltip>
         <TooltipTrigger asChild>
           <Button

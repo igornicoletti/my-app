@@ -1,5 +1,3 @@
-// ColumnHeader.tsx
-
 import {
   ArrowsDownUpIcon,
   EyeSlashIcon,

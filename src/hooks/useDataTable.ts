@@ -18,16 +18,17 @@ import {
 import { useState } from 'react'
 
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback'
+import type { ColumnPinningState } from '@tanstack/react-table'
 
 interface UseDataTableProps<TData>
   extends Omit<
     TableOptions<TData>,
     | 'state'
-    | 'pageCount'
     | 'getCoreRowModel'
     | 'manualFiltering'
     | 'manualPagination'
-    | 'manualSorting'> {
+    | 'manualSorting'
+  > {
   pageCount?: number
   initialState?: Partial<{
     sorting: SortingState
@@ -35,11 +36,12 @@ interface UseDataTableProps<TData>
     rowSelection: RowSelectionState
     columnVisibility: VisibilityState
     columnFilters: ColumnFiltersState
+    columnPinning: ColumnPinningState
   }>
   debounceMs?: number
 }
 
-export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
+export const useDataTable = <TData>(props: UseDataTableProps<TData>) => {
   const {
     columns,
     pageCount,
@@ -66,6 +68,10 @@ export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
     initialState?.columnFilters ?? []
   )
 
+  const [columnPinning, setColumnPinning] = useState<ColumnPinningState>(
+    initialState?.columnPinning ?? {}
+  )
+
   const setDebouncedColumnFilters = useDebouncedCallback(
     (updater: Updater<ColumnFiltersState>) => {
       setColumnFilters(updater)
@@ -74,7 +80,7 @@ export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
     debounceMs
   )
 
-  return useReactTable({
+  const table = useReactTable({
     ...tableProps,
     columns,
     pageCount,
@@ -84,7 +90,9 @@ export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
       columnVisibility,
       rowSelection,
       columnFilters,
+      columnPinning
     },
+    enableColumnPinning: true,
     defaultColumn: {
       ...tableProps.defaultColumn,
       enableColumnFilter: true,
@@ -95,6 +103,7 @@ export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
     onSortingChange: setSorting,
     onColumnFiltersChange: setDebouncedColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onColumnPinningChange: setColumnPinning,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -103,4 +112,6 @@ export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
   })
+
+  return table
 }

@@ -5,10 +5,10 @@ import {
   ArrowUpIcon,
   CheckCircleIcon,
   CircleIcon,
-  QuestionIcon,
   TimerIcon
 } from '@phosphor-icons/react'
 import { customAlphabet, nanoid } from 'nanoid'
+import type { ElementType } from 'react'
 
 import type { TaskSchema } from '@/features/app/tasks/api/schemas'
 
@@ -31,22 +31,24 @@ export const generateTask = (): TaskSchema => ({
 export const generateTasks = (count = 10): TaskSchema[] =>
   Array.from({ length: count }, generateTask)
 
+const statusIconMap: Record<TaskSchema['status'], ElementType> = {
+  'todo': CircleIcon,
+  'in progress': TimerIcon,
+  'done': CheckCircleIcon,
+}
+
 export const getStatusIcon = (status: TaskSchema['status']) => {
-  const statusIcons: Record<TaskSchema['status'], React.ElementType> = {
-    todo: QuestionIcon,
-    'in progress': TimerIcon,
-    done: CheckCircleIcon,
-  }
-  return statusIcons[status] ?? CircleIcon
+  return statusIconMap[status] ?? CircleIcon
+}
+
+const priorityIconMap: Record<TaskSchema['priority'], ElementType> = {
+  'low': ArrowDownIcon,
+  'medium': ArrowRightIcon,
+  'high': ArrowUpIcon,
 }
 
 export const getPriorityIcon = (priority: TaskSchema['priority']) => {
-  const priorityIcons: Record<TaskSchema['priority'], React.ElementType> = {
-    low: ArrowDownIcon,
-    medium: ArrowRightIcon,
-    high: ArrowUpIcon,
-  }
-  return priorityIcons[priority] ?? CircleIcon
+  return priorityIconMap[priority] ?? CircleIcon
 }
 
 export const getFacetedCounts = <T extends Record<string, any>>(

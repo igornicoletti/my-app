@@ -1,8 +1,7 @@
 import {
   CalendarBlankIcon,
-  XIcon
+  XCircleIcon
 } from '@phosphor-icons/react'
-import type { Column } from '@tanstack/react-table'
 import {
   useCallback,
   useMemo,
@@ -20,6 +19,7 @@ import {
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { formatDate } from '@/lib/format'
+import type { DataTableDateFilter } from '@/types/datatable'
 
 type DateSelection = Date[] | DateRange
 
@@ -47,13 +47,10 @@ const parseColumnFilterValue = (value: unknown) => {
   return []
 }
 
-interface DateFilterProps<TData> {
-  column: Column<TData, unknown>
-  title?: string
-  multiple?: boolean
-}
-
-export const DateFilter = <TData,>({ column, title, multiple }: DateFilterProps<TData>) => {
+export const DateFilter = <TData,>({
+  column,
+  title,
+  multiple }: DataTableDateFilter<TData>) => {
   const columnFilterValue = column.getFilterValue()
 
   const selectedDates = useMemo<DateSelection>(() => {
@@ -168,7 +165,7 @@ export const DateFilter = <TData,>({ column, title, multiple }: DateFilterProps<
               onClick={onReset}
               aria-label={`Clear ${title} filter`}
               role='button'>
-              <XIcon />
+              <XCircleIcon />
             </div>
           ) : (
             <CalendarBlankIcon />

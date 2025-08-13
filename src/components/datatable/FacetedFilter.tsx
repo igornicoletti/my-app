@@ -1,8 +1,7 @@
 import {
-  FunnelSimpleIcon,
-  XIcon
+  PlusCircleIcon,
+  XCircleIcon
 } from '@phosphor-icons/react'
-import type { Column } from '@tanstack/react-table'
 import {
   useCallback,
   useState,
@@ -27,21 +26,17 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import type { Option } from '@/types/datatable'
-
-interface FacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>
-  title?: string
-  options: Option[]
-  multiple?: boolean
-}
+import type {
+  DataTableFacetedFilter,
+  Option
+} from '@/types/datatable'
 
 export const FacetedFilter = <TData, TValue>({
   column,
   title,
   options,
-  multiple,
-}: FacetedFilterProps<TData, TValue>) => {
+  multiple
+}: DataTableFacetedFilter<TData, TValue>) => {
   const [open, setOpen] = useState(false)
 
   const columnFilterValue = column?.getFilterValue()
@@ -80,10 +75,10 @@ export const FacetedFilter = <TData, TValue>({
               onClick={onReset}
               aria-label={`Clear ${title} filter`}
               role='button'>
-              <XIcon />
+              <XCircleIcon />
             </div>
           ) : (
-            <FunnelSimpleIcon />
+            <PlusCircleIcon />
           )}
           {title}
           {selectedValues?.size > 0 && (
@@ -100,13 +95,11 @@ export const FacetedFilter = <TData, TValue>({
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
-                  options
-                    .filter((option) => selectedValues.has(option.value))
-                    .map((option) => (
-                      <Badge key={option.value} variant='secondary'>
-                        {option.label}
-                      </Badge>
-                    ))
+                  options.filter((option) => selectedValues.has(option.value)).map((option) => (
+                    <Badge key={option.value} variant='secondary'>
+                      {option.label}
+                    </Badge>
+                  ))
                 )}
               </div>
             </>
