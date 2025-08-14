@@ -2,15 +2,12 @@ import {
   PlusCircleIcon,
   XCircleIcon
 } from '@phosphor-icons/react'
-import {
-  useCallback,
-  useState,
-  type MouseEvent
-} from 'react'
+import type { Column } from '@tanstack/react-table'
+import { useCallback, useState } from 'react'
 
+import { Checkbox } from '@/components/ui'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Command,
   CommandEmpty,
@@ -26,109 +23,113 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import type {
-  DataTableFacetedFilter,
-  Option
-} from '@/types/datatable'
+import type { Option } from '@/types/datatable'
+
+interface FacetedFilterProps<TData, TValue> {
+  column?: Column<TData, TValue>
+  title?: string
+  options: Option[]
+  multiple?: boolean
+}
 
 export const FacetedFilter = <TData, TValue>({
   column,
   title,
   options,
-  multiple
-}: DataTableFacetedFilter<TData, TValue>) => {
+  multiple,
+}: FacetedFilterProps<TData, TValue>) => {
   const [open, setOpen] = useState(false)
 
   const columnFilterValue = column?.getFilterValue()
   const selectedValues = new Set(Array.isArray(columnFilterValue) ? columnFilterValue : [])
 
-  const onItemSelect = useCallback((option: Option, isSelected: boolean) => {
-    if (!column) return
+  const onItemSelect = useCallback(
+    (option: Option, isSelected: boolean) => {
+      if (!column) return
 
-    if (multiple) {
-      const newSelectedValues = new Set(selectedValues)
-      if (isSelected) {
-        newSelectedValues.delete(option.value)
+      if (multiple) {
+        const newSelectedValues = new Set(selectedValues)
+        if (isSelected) newSelectedValues.delete(option.value)
+        else newSelectedValues.add(option.value)
+
+        const filterValues = Array.from(newSelectedValues)
+        column.setFilterValue(filterValues.length ? filterValues : undefined)
       } else {
-        newSelectedValues.add(option.value)
+        column.setFilterValue(isSelected ? undefined : [option.value])
+        setOpen(false)
       }
-      const filterValues = Array.from(newSelectedValues)
-      column.setFilterValue(filterValues.length ? filterValues : undefined)
-    } else {
-      column.setFilterValue(isSelected ? undefined : [option.value])
-      setOpen(false)
-    }
-  }, [column, multiple, selectedValues])
+    },
+    [column, multiple, selectedValues],
+  )
 
-  const onReset = useCallback((event?: MouseEvent) => {
-    event?.stopPropagation()
-    column?.setFilterValue(undefined)
-    if (!multiple) setOpen(false)
-  }, [column, multiple])
+  const onReset = useCallback(
+    (event?: React.MouseEvent) => {
+      event?.stopPropagation()
+      column?.setFilterValue(undefined)
+    },
+    [column],
+  )
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='border-dashed'>
-          {selectedValues?.size > 0 ? (
-            <div tabIndex={0}
-              onClick={onReset}
+          {selectedValues.size > 0 ? (
+            <div
+              role='button'
               aria-label={`Clear ${title} filter`}
-              role='button'>
+              tabIndex={0}
+              onClick={onReset}
+              className='rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'>
               <XCircleIcon />
             </div>
           ) : (
             <PlusCircleIcon />
           )}
           {title}
-          {selectedValues?.size > 0 && (
+          {selectedValues.size > 0 && (
             <>
-              <Separator
-                orientation='vertical'
-                className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='secondary' className='lg:hidden'>
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
                 {selectedValues.size}
               </Badge>
               <div className='hidden items-center gap-1 lg:flex'>
                 {selectedValues.size > 2 ? (
-                  <Badge variant='secondary'>
+                  <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
-                  options.filter((option) => selectedValues.has(option.value)).map((option) => (
-                    <Badge key={option.value} variant='secondary'>
-                      {option.label}
-                    </Badge>
-                  ))
+                  options
+                    .filter((option) => selectedValues.has(option.value))
+                    .map((option) => (
+                      <Badge key={option.value} variant='secondary' className='rounded-sm px-1 font-normal'>
+                        {option.label}
+                      </Badge>
+                    ))
                 )}
               </div>
             </>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-48 p-0' align='start'>
+      <PopoverContent className='w-[12.5rem] p-0' align='start'>
         <Command>
           <CommandInput placeholder={title} />
           <CommandList className='max-h-full'>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
+            <CommandGroup className='max-h-[18.75rem] overflow-y-auto overflow-x-hidden'>
               {options.map((option) => {
-                const checked = selectedValues.has(option.value)
-
+                const isSelected = selectedValues.has(option.value)
                 return (
                   <CommandItem
                     key={option.value}
-                    onSelect={() => onItemSelect(option, checked)}>
+                    onSelect={() => onItemSelect(option, isSelected)}>
                     <Checkbox
-                      checked={checked}
-                      onCheckedChange={() => onItemSelect(option, checked)} />
+                      checked={isSelected}
+                      onCheckedChange={() => onItemSelect(option, isSelected)} />
                     {option.icon && <option.icon />}
                     <span className='truncate'>{option.label}</span>
-                    {option.count && (
-                      <span className='ml-auto font-mono text-xs text-muted-foreground'>
-                        {option.count}
-                      </span>
-                    )}
+                    {option.count && <span className='ml-auto font-mono text-xs'>{option.count}</span>}
                   </CommandItem>
                 )
               })}

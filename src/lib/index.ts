@@ -1,5 +1,6 @@
 export * from './compose-refs'
 export * from './datatable'
+export * from './exports'
 export * from './format'
 export * from './id'
 export * from './normalize'

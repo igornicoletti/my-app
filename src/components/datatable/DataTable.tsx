@@ -1,29 +1,39 @@
-import { flexRender } from '@tanstack/react-table'
-
-import { Pagination } from '@/components/datatable'
 import {
-  ScrollArea,
-  ScrollBar
-} from '@/components/ui/scroll-area'
+  flexRender,
+  type Table as TanstackTable
+} from '@tanstack/react-table'
+import type {
+  ComponentProps,
+  ReactNode
+} from 'react'
+
+import { Pagination } from '@/components/datatable/Pagination'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from '@/components/ui/table'
 import { getCommonPinningStyles } from '@/lib/datatable'
-import type { DataTableProps } from '@/types/datatable'
+import { cn } from '@/lib/utils'
+
+interface DataTableProps<TData> extends ComponentProps<'div'> {
+  table: TanstackTable<TData>
+  actionBar?: ReactNode
+}
 
 export const DataTable = <TData,>({
   table,
   actionBar,
   children,
+  className,
+  ...props
 }: DataTableProps<TData>) => (
-  <div className={'flex w-full flex-col gap-2 overflow-auto'}>
+  <div className={cn('flex w-full flex-col gap-2.5 overflow-auto', className)} {...props}>
     {children}
-    <ScrollArea className='rounded-md border'>
+    <div className='overflow-hidden rounded-md border'>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -33,7 +43,9 @@ export const DataTable = <TData,>({
                   key={header.id}
                   colSpan={header.colSpan}
                   style={{ ...getCommonPinningStyles({ column: header.column }) }}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
             </TableRow>
@@ -42,9 +54,11 @@ export const DataTable = <TData,>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() ? 'selected' : undefined}>
+              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} style={{ ...getCommonPinningStyles({ column: cell.column }) }}>
+                  <TableCell
+                    key={cell.id}
+                    style={{ ...getCommonPinningStyles({ column: cell.column }) }}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -53,17 +67,16 @@ export const DataTable = <TData,>({
           ) : (
             <TableRow>
               <TableCell colSpan={table.getAllColumns().length} className='h-24 text-center'>
-                No results found.
+                No results.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      <ScrollBar orientation='horizontal' />
-    </ScrollArea>
-    <div className='flex flex-col gap-2'>
+    </div>
+    <div className='flex flex-col gap-2.5'>
       <Pagination table={table} />
-      {actionBar}
+      {actionBar && table.getFilteredSelectedRowModel().rows.length > 0 && actionBar}
     </div>
   </div>
 )
