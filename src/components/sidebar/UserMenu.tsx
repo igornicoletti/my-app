@@ -1,17 +1,6 @@
-import {
-  BellSimpleIcon,
-  CaretUpDownIcon,
-  CreditCardIcon,
-  RocketLaunchIcon,
-  SealCheckIcon,
-  SignOutIcon
-} from '@phosphor-icons/react'
+import { BellSimpleIcon, CaretUpDownIcon, CreditCardIcon, RocketLaunchIcon, SealCheckIcon, SignOutIcon } from '@phosphor-icons/react'
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,12 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from '@/components/ui/sidebar'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 
 interface User {
   name: string
@@ -58,7 +42,7 @@ export const NavUser = ({ user }: { user: User }) => {
             align='end'
             sideOffset={4}
             side={isMobile ? 'bottom' : 'right'}
-            className='w-(--radix-dropdown-menu-trigger-width) origin-[var(--radix-dropdown-menu-content-transform-origin)]'>
+            className='w-(--radix-dropdown-menu-trigger-width) min-w-56 origin-[var(--radix-dropdown-menu-content-transform-origin)]'>
             <DropdownMenuLabel className='p-0 font-normal'>
               <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                 <Avatar className='rounded-lg'>

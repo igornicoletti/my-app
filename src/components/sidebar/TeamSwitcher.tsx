@@ -11,17 +11,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar
-} from '@/components/ui/sidebar'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 
 interface Teams {
   name: string
-  logo?: ElementType
-  plan?: string
+  logo: ElementType
+  plan: string
 }
 
 export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
@@ -37,7 +32,7 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
               <Avatar className='rounded-lg'>
-                <AvatarFallback className='rounded-lg'>
+                <AvatarFallback className='rounded-lg uppercase'>
                   {activeTeam.logo
                     ? <activeTeam.logo className='size-6' />
                     : activeTeam.name[0]}
@@ -54,27 +49,21 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
             align='start'
             sideOffset={4}
             side={isMobile ? 'bottom' : 'right'}
-            className='w-(--radix-dropdown-menu-trigger-width) origin-[var(--radix-dropdown-menu-content-transform-origin)]'>
+            className='w-(--radix-dropdown-menu-trigger-width) min-w-56 origin-[var(--radix-dropdown-menu-content-transform-origin)]'>
             <DropdownMenuLabel className='text-muted-foreground text-xs'>
               Workspaces
             </DropdownMenuLabel>
             {teams.map((team, index) => (
-              <DropdownMenuItem key={team.name} onClick={() => setActiveTeam(team)} className='gap-2 p-2'>
-                <Avatar className='size-6 rounded-sm'>
-                  <AvatarFallback className='bg-transparent rounded-sm'>
-                    {team.logo ? <team.logo /> : team.name[0]}
-                  </AvatarFallback>
-                </Avatar>
+              <DropdownMenuItem key={team.name} onClick={() => setActiveTeam(team)} className='p-2'>
+                <team.logo />
                 {team.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className='gap-2 p-2'>
-              <div className='flex size-6 items-center justify-center rounded-sm border bg-transparent'>
-                <PlusIcon className='size-4' />
-              </div>
-              <div className='text-muted-foreground font-medium'>Add Workspace</div>
+            <DropdownMenuItem className='p-2'>
+              <PlusIcon />
+              Add Workspace
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

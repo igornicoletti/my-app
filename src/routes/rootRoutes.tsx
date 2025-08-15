@@ -2,33 +2,33 @@ import { type RouteObject } from 'react-router-dom'
 
 import { taskLoader } from '@/features/app/tasks/api/loaders'
 import {
-  routeElements,
+  routeLazy,
   routeMeta
 } from '@/routes/config'
 
 export const getPublicRoutes = (): RouteObject[] => [
   {
-    element: <routeElements.AuthLayout />,
-    errorElement: <routeElements.ErrorFallback />,
+    element: <routeLazy.AuthLayout />,
+    errorElement: <routeLazy.ErrorFallback />,
     children: [
       {
         path: 'login',
-        element: <routeElements.LoginPage />,
+        element: <routeLazy.LoginPage />,
         handle: routeMeta.login,
       },
       {
         path: 'register',
-        element: <routeElements.RegisterPage />,
+        element: <routeLazy.RegisterPage />,
         handle: routeMeta.register,
       },
       {
         path: 'forgot-password',
-        element: <routeElements.ForgotPasswordPage />,
+        element: <routeLazy.ForgotPasswordPage />,
         handle: routeMeta.forgotPassword,
       },
       {
         path: 'reset-password',
-        element: <routeElements.ResetPasswordPage />,
+        element: <routeLazy.ResetPasswordPage />,
         handle: routeMeta.resetPassword,
       },
     ],
@@ -37,23 +37,23 @@ export const getPublicRoutes = (): RouteObject[] => [
 
 export const getProtectedRoutes = (): RouteObject[] => [
   {
-    element: <routeElements.AppLayout />,
-    errorElement: <routeElements.ErrorFallback />,
+    element: <routeLazy.AppLayout />,
+    errorElement: <routeLazy.ErrorFallback />,
     children: [
       {
         path: 'dashboard',
-        element: <routeElements.DashboardPage />,
+        element: <routeLazy.DashboardPage />,
         handle: routeMeta.dashboard,
       },
       {
         path: 'tasks',
-        element: <routeElements.TasksPage />,
+        element: <routeLazy.TasksPage />,
         loader: taskLoader,
         handle: routeMeta.tasks,
       },
       {
         path: 'users',
-        element: <routeElements.UsersPage />,
+        element: <routeLazy.UsersPage />,
         handle: routeMeta.users,
       },
     ],

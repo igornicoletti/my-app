@@ -45,7 +45,6 @@ export const CallbackRoute = () => {
           }
         }
       } catch (error) {
-        console.error('CallbackRoute error:', error)
         navigate('/login', { replace: true })
       }
     }

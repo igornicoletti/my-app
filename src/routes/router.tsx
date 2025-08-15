@@ -1,40 +1,32 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import {
-  AuthGuardRoute,
-  GuestGuardRoute,
-  RedirectRoute
-} from '@/features/guards'
-import { routeElements } from '@/routes/config/routeElements'
-import {
-  getProtectedRoutes,
-  getPublicRoutes
-} from '@/routes/rootRoutes'
+import { routeLazy } from '@/routes/config/routeLazy'
+import { getProtectedRoutes, getPublicRoutes } from '@/routes/rootRoutes'
 
 export const router = createBrowserRouter([
   {
-    element: <routeElements.RootLayout />,
-    errorElement: <routeElements.ErrorFallback />,
+    element: <routeLazy.RootLayout />,
+    errorElement: <routeLazy.ErrorFallback />,
     children: [
       {
         path: '/',
-        element: <RedirectRoute />,
+        element: <routeLazy.RedirectRoute />,
       },
       {
         path: 'callback',
-        element: <routeElements.CallbackRoute />,
+        element: <routeLazy.CallbackRoute />,
       },
       {
-        element: <GuestGuardRoute />,
+        element: <routeLazy.GuestGuardRoute />,
         children: getPublicRoutes(),
       },
       {
-        element: <AuthGuardRoute />,
+        element: <routeLazy.AuthGuardRoute />,
         children: getProtectedRoutes(),
       },
       {
         path: '*',
-        element: <routeElements.NotFoundPage />,
+        element: <routeLazy.NotFoundPage />,
       },
     ],
   },

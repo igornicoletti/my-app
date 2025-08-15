@@ -42,7 +42,7 @@ export const TasksPage = () => {
         <DataTable table={table}>
           <Toolbar table={table}>
             <Button variant='default' size='sm'>
-              Create Task
+              New Task
             </Button>
           </Toolbar>
         </DataTable>

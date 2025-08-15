@@ -92,7 +92,7 @@ export const Toolbar = <TData,>({ table, children, className, ...props }: Toolba
     <div
       role='toolbar'
       aria-orientation='horizontal'
-      className={cn('flex flex-wrap-reverse items-baseline gap-2', className)}
+      className={cn('flex flex-col items-baseline gap-2 sm:flex-row', className)}
       {...props}>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {filterableColumns.map((column) => (
@@ -109,7 +109,7 @@ export const Toolbar = <TData,>({ table, children, className, ...props }: Toolba
           </Button>
         )}
       </div>
-      <div className='flex items-center gap-2 ml-auto'>
+      <div className='flex items-center gap-2'>
         <ViewOptions table={table} />
         {children}
       </div>
