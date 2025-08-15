@@ -1,6 +1,7 @@
 import { CaretUpDownIcon, PlusIcon } from '@phosphor-icons/react'
 import { useState, type ElementType } from 'react'
 
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,28 +9,26 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
+  useSidebar
 } from '@/components/ui/sidebar'
 
 interface Teams {
   name: string
-  logo: ElementType
-  plan: string
+  logo?: ElementType
+  plan?: string
 }
 
 export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = useState(teams[0])
 
-  if (!activeTeam) {
-    return null
-  }
+  if (!activeTeam) return null
 
   return (
     <SidebarMenu>
@@ -37,9 +36,13 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
-              <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
-                <activeTeam.logo className='size-6' />
-              </div>
+              <Avatar className='rounded-lg'>
+                <AvatarFallback className='rounded-lg'>
+                  {activeTeam.logo
+                    ? <activeTeam.logo className='size-6' />
+                    : activeTeam.name[0]}
+                </AvatarFallback>
+              </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-medium'>{activeTeam.name}</span>
                 <span className='truncate text-xs'>{activeTeam.plan}</span>
@@ -51,15 +54,17 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
             align='start'
             sideOffset={4}
             side={isMobile ? 'bottom' : 'right'}
-            className='w-(--radix-dropdown-menu-trigger-width) min-w-56'>
+            className='w-(--radix-dropdown-menu-trigger-width) origin-[var(--radix-dropdown-menu-content-transform-origin)]'>
             <DropdownMenuLabel className='text-muted-foreground text-xs'>
               Workspaces
             </DropdownMenuLabel>
             {teams.map((team, index) => (
               <DropdownMenuItem key={team.name} onClick={() => setActiveTeam(team)} className='gap-2 p-2'>
-                <div className='flex size-6 items-center justify-center rounded-sm border'>
-                  <team.logo className='size-4 shrink-0' />
-                </div>
+                <Avatar className='size-6 rounded-sm'>
+                  <AvatarFallback className='bg-transparent rounded-sm'>
+                    {team.logo ? <team.logo /> : team.name[0]}
+                  </AvatarFallback>
+                </Avatar>
                 {team.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>

@@ -1,10 +1,7 @@
 import { z } from 'zod'
 
 import { dataTableConfig } from '@/config/datatable'
-import type {
-  ExtendedColumnFilter,
-  ExtendedColumnSort,
-} from '@/types/datatable'
+import type { ExtendedColumnFilter, ExtendedColumnSort } from '@/types/datatable'
 
 const sortingItemSchema = z.object({
   id: z.string(),
@@ -65,9 +62,7 @@ const filterItemSchema = z.object({
 
 export type FilterItemSchema = z.infer<typeof filterItemSchema>
 
-export const getFiltersStateParser = <TData>(
-  columnIds?: string[] | Set<string>,
-) => {
+export const getFiltersStateParser = <TData>(columnIds?: string[] | Set<string>) => {
   const validKeys = columnIds
     ? columnIds instanceof Set
       ? columnIds
@@ -81,10 +76,7 @@ export const getFiltersStateParser = <TData>(
         const result = z.array(filterItemSchema).safeParse(parsed)
 
         if (!result.success) return null
-
-        if (validKeys && result.data.some((item) => !validKeys.has(item.id))) {
-          return null
-        }
+        if (validKeys && result.data.some((item) => !validKeys.has(item.id))) return null
 
         return result.data as unknown as ExtendedColumnFilter<TData>[]
       } catch {
@@ -92,14 +84,11 @@ export const getFiltersStateParser = <TData>(
       }
     },
     serialize: (value) => JSON.stringify(value),
-    eq: (a, b) =>
-      a.length === b.length &&
-      a.every(
-        (filter, index) =>
-          filter.id === b[index]?.id &&
-          filter.value === b[index]?.value &&
-          filter.variant === b[index]?.variant &&
-          filter.operator === b[index]?.operator,
-      ),
+    eq: (a, b) => a.length === b.length && a.every((filter, index) =>
+      filter.id === b[index]?.id &&
+      filter.value === b[index]?.value &&
+      filter.variant === b[index]?.variant &&
+      filter.operator === b[index]?.operator,
+    )
   })
 }

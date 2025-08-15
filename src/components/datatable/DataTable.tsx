@@ -31,7 +31,7 @@ export const DataTable = <TData,>({
   className,
   ...props
 }: DataTableProps<TData>) => (
-  <div className={cn('flex w-full flex-col gap-2.5 overflow-auto', className)} {...props}>
+  <div className={cn('flex w-full flex-col gap-2 overflow-auto', className)} {...props}>
     {children}
     <div className='overflow-hidden rounded-md border'>
       <Table>
@@ -74,7 +74,7 @@ export const DataTable = <TData,>({
         </TableBody>
       </Table>
     </div>
-    <div className='flex flex-col gap-2.5'>
+    <div className='flex flex-col gap-2'>
       <Pagination table={table} />
       {actionBar && table.getFilteredSelectedRowModel().rows.length > 0 && actionBar}
     </div>

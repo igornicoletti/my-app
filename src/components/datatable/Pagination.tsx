@@ -43,10 +43,10 @@ export const Pagination = <TData,>({
         <Select
           value={`${table.getState().pagination.pageSize}`}
           onValueChange={(value) => table.setPageSize(Number(value))}>
-          <SelectTrigger className='h-8 w-[4.5rem] [&[data-size]]:h-8'>
+          <SelectTrigger size='sm'>
             <SelectValue placeholder={table.getState().pagination.pageSize} />
           </SelectTrigger>
-          <SelectContent side='top'>
+          <SelectContent position='item-aligned' className='min-w-[var(--radix-select-trigger-width)] origin-[var(--radix-select-content-transform-origin)]'>
             {pageSizeOptions.map((pageSize) => (
               <SelectItem key={pageSize} value={`${pageSize}`}>
                 {pageSize}
@@ -62,8 +62,8 @@ export const Pagination = <TData,>({
         <Button
           aria-label='Go to first page'
           variant='outline'
-          size='icon'
-          className='hidden size-8 lg:flex'
+          size='sm'
+          className='hidden lg:flex'
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}>
           <CaretDoubleLeftIcon />
@@ -71,8 +71,7 @@ export const Pagination = <TData,>({
         <Button
           aria-label='Go to previous page'
           variant='outline'
-          size='icon'
-          className='size-8'
+          size='sm'
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}>
           <CaretLeftIcon />
@@ -80,8 +79,7 @@ export const Pagination = <TData,>({
         <Button
           aria-label='Go to next page'
           variant='outline'
-          size='icon'
-          className='size-8'
+          size='sm'
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}>
           <CaretRightIcon />
@@ -89,8 +87,8 @@ export const Pagination = <TData,>({
         <Button
           aria-label='Go to last page'
           variant='outline'
-          size='icon'
-          className='hidden size-8 lg:flex'
+          size='sm'
+          className='hidden lg:flex'
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}>
           <CaretDoubleRightIcon />

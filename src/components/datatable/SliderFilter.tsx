@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
-import { cn } from '@/lib/utils'
 
 type RangeValue = [number, number]
 
@@ -120,9 +119,7 @@ export const SliderFilter = <TData,>({ column, title }: SliderFilterProps<TData>
                 min={range[0]}
                 max={range[1]}
                 value={range[0]}
-                onChange={onFromInputChange}
-                className={cn('h-8 w-24', unit && 'pr-8')}
-              />
+                onChange={onFromInputChange} />
               {unit && <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>{unit}</span>}
             </div>
             <Label htmlFor={`${id}-to`} className='sr-only'>To</Label>
@@ -135,16 +132,23 @@ export const SliderFilter = <TData,>({ column, title }: SliderFilterProps<TData>
                 min={range[0]}
                 max={range[1]}
                 value={range[1]}
-                onChange={onToInputChange}
-                className={cn('h-8 w-24', unit && 'pr-8')}
-              />
+                onChange={onToInputChange} />
               {unit && <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>{unit}</span>}
             </div>
           </div>
           <Label htmlFor={`${id}-slider`} className='sr-only'>{title} slider</Label>
-          <Slider id={`${id}-slider`} min={range[0]} max={range[1]} step={step} value={range} onValueChange={onSliderValueChange} />
+          <Slider
+            id={`${id}-slider`}
+            min={range[0]}
+            max={range[1]}
+            step={step}
+            value={range} onValueChange={onSliderValueChange} />
         </div>
-        <Button aria-label={`Clear ${title} filter`} variant='outline' size='sm' onClick={onReset}>
+        <Button
+          aria-label={`Clear ${title} filter`}
+          variant='outline'
+          size='sm'
+          onClick={onReset}>
           Clear
         </Button>
       </PopoverContent>

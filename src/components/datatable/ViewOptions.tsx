@@ -1,8 +1,4 @@
-import {
-  CaretUpDownIcon,
-  CheckIcon,
-  SlidersHorizontalIcon
-} from '@phosphor-icons/react'
+import { CaretUpDownIcon, CheckIcon, SlidersHorizontalIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 
@@ -15,11 +11,7 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
 interface ViewOptionsProps<TData> {
@@ -27,35 +19,31 @@ interface ViewOptionsProps<TData> {
 }
 
 export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
-  const columns = useMemo(
-    () =>
-      table
-        .getAllColumns()
-        .filter((col) => typeof col.accessorFn !== 'undefined' && col.getCanHide()),
-    [table],
-  )
+  const columns = useMemo(() => table.getAllColumns().filter((col) =>
+    typeof col.accessorFn !== 'undefined' && col.getCanHide()
+  ), [table])
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button aria-label='Toggle columns' role='combobox' variant='outline' size='sm' className='ml-auto hidden h-8 lg:flex'>
+        <Button aria-label='Toggle columns' role='combobox' variant='outline' size='sm' className='ml-auto hidden lg:flex'>
           <SlidersHorizontalIcon />
           View
           <CaretUpDownIcon className='ml-auto opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align='end' className='w-44 p-0'>
+      <PopoverContent className='w-48 p-0' align='end'>
         <Command>
           <CommandInput placeholder='Search columns...' />
-          <CommandList>
+          <CommandList className='max-h-full'>
             <CommandEmpty>No columns found.</CommandEmpty>
-            <CommandGroup>
+            <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
               {columns.map((column) => (
-                <CommandItem key={column.id} onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
+                <CommandItem
+                  key={column.id}
+                  onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
+                  <CheckIcon weight='bold' className={cn(column.getIsVisible() ? 'opacity-100' : 'opacity-0')} />
                   <span className='truncate'>{column.columnDef.meta?.label ?? column.id}</span>
-                  <CheckIcon
-                    className={cn('ml-auto size-4 shrink-0', column.getIsVisible() ? 'opacity-100' : 'opacity-0')}
-                  />
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -1,8 +1,4 @@
-import {
-  CircuitryIcon,
-  CpuIcon,
-  MemoryIcon
-} from '@phosphor-icons/react'
+import { CircuitryIcon, CpuIcon, MemoryIcon } from '@phosphor-icons/react'
 import type { ComponentProps } from 'react'
 
 import { NavigationMain } from '@/components/sidebar/NavigationMain'
@@ -15,13 +11,13 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { routeNavigations } from '@/routes'
+import { routeNavigations } from '@/routes/config'
 
 const data = {
   user: {
     name: 'shadcn',
     email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
+    avatar: 'https://github.com/shadcn.png',
   },
   teams: [
     {
@@ -30,12 +26,12 @@ const data = {
       plan: 'Enterprise',
     },
     {
-      name: 'Acme Corp.',
+      name: 'Acme Corporation',
       logo: CpuIcon,
       plan: 'Startup',
     },
     {
-      name: 'Evil Corp.',
+      name: 'Evil Company',
       logo: MemoryIcon,
       plan: 'Free',
     },

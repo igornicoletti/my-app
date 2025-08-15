@@ -43,9 +43,9 @@ export const NavUser = ({ user }: { user: User }) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
-              <Avatar className='size-8 rounded-lg'>
+              <Avatar className='rounded-lg'>
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className='rounded-lg'>{user.name[0]}</AvatarFallback>
+                <AvatarFallback className='rounded-lg uppercase'>{user.name[0]}</AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-medium'>{user.name}</span>
@@ -58,10 +58,10 @@ export const NavUser = ({ user }: { user: User }) => {
             align='end'
             sideOffset={4}
             side={isMobile ? 'bottom' : 'right'}
-            className='w-(--radix-dropdown-menu-trigger-width) min-w-56'>
+            className='w-(--radix-dropdown-menu-trigger-width) origin-[var(--radix-dropdown-menu-content-transform-origin)]'>
             <DropdownMenuLabel className='p-0 font-normal'>
               <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
-                <Avatar className='size-8 rounded-lg'>
+                <Avatar className='rounded-lg'>
                   <AvatarImage src={user.avatar} alt={user.name} />
                   <AvatarFallback className='rounded-lg'>{user.name[0]}</AvatarFallback>
                 </Avatar>

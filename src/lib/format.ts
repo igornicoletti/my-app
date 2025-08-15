@@ -1,4 +1,4 @@
-const formatDate = (
+export const formatDate = (
   date: Date | string | number | undefined,
   opts: Intl.DateTimeFormatOptions = {},
 ): string => {
@@ -15,5 +15,3 @@ const formatDate = (
     return ''
   }
 }
-
-export { formatDate }

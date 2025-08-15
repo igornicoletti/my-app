@@ -2,8 +2,11 @@ import {
   ArrowsDownUpIcon,
   CalendarIcon,
   CircleDashedIcon,
+  CopySimpleIcon,
   DotsThreeIcon,
-  TextAaIcon
+  PencilSimpleIcon,
+  TextAaIcon,
+  TrashSimpleIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
@@ -21,19 +24,16 @@ import {
 } from '@/components/ui/dropdown-menu'
 import {
   type TaskLoaderData,
-  type TaskSchema,
-  taskSchema
+  type TaskSchema, taskSchema
 } from '@/features/app/tasks/api'
-import {
-  getPriorityIcon,
-  getStatusIcon
-} from '@/features/app/tasks/datatable'
+import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/datatable'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
 
 interface GetTasksTableColumnsProps extends Pick<TaskLoaderData, 'statusCounts' | 'priorityCounts'> {
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
+
 const statusValues = taskSchema.shape.status.options
 const priorityValues = taskSchema.shape.priority.options
 
@@ -41,16 +41,12 @@ export const getTasksTableColumns = ({
   statusCounts,
   priorityCounts,
   setRowAction,
-}: GetTasksTableColumnsProps): ColumnDef<TaskSchema>[] => {
-  return [
+}: GetTasksTableColumnsProps): ColumnDef<TaskSchema>[] => [
     {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label='Select all'
           className='translate-y-0.5'
@@ -69,29 +65,21 @@ export const getTasksTableColumns = ({
       size: 40,
     },
     {
-      id: 'code',
       accessorKey: 'code',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Task' />
-      ),
+      header: ({ column }) => <ColumnHeader column={column} title='Task' />,
       cell: ({ row }) => row.getValue('code'),
       enableSorting: false,
       enableHiding: false,
     },
     {
-      id: 'title',
       accessorKey: 'title',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Title' />
-      ),
+      header: ({ column }) => <ColumnHeader column={column} title='Title' />,
       cell: ({ row }) => {
         const label = row.original.label
         return (
           <div className='flex items-center gap-2'>
             {label && <Badge variant='outline'>{label}</Badge>}
-            <span className='max-w-lg truncate font-medium'>
-              {row.getValue('title')}
-            </span>
+            <span className='max-w-lg truncate font-medium'>{row.getValue('title')}</span>
           </div>
         )
       },
@@ -104,11 +92,8 @@ export const getTasksTableColumns = ({
       enableColumnFilter: true,
     },
     {
-      id: 'status',
       accessorKey: 'status',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Status' />
-      ),
+      header: ({ column }) => <ColumnHeader column={column} title='Status' />,
       cell: ({ cell }) => {
         const status = cell.getValue<TaskSchema['status']>()
         if (!status) return null
@@ -135,11 +120,8 @@ export const getTasksTableColumns = ({
       filterFn: 'arrIncludesSome',
     },
     {
-      id: 'priority',
       accessorKey: 'priority',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Priority' />
-      ),
+      header: ({ column }) => <ColumnHeader column={column} title='Priority' />,
       cell: ({ cell }) => {
         const priority = cell.getValue<TaskSchema['priority']>()
         if (!priority) return null
@@ -166,11 +148,8 @@ export const getTasksTableColumns = ({
       filterFn: 'arrIncludesSome',
     },
     {
-      id: 'createdAt',
       accessorKey: 'createdAt',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Created At' />
-      ),
+      header: ({ column }) => <ColumnHeader column={column} title='Created At' />,
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
       meta: {
         label: 'Created At',
@@ -178,12 +157,18 @@ export const getTasksTableColumns = ({
         icon: CalendarIcon,
       },
       enableColumnFilter: true,
-      filterFn: (row, columnId, [from, to]: [number | undefined, number | undefined]) => {
-        const rowDate = row.getValue<Date>(columnId)
+      filterFn: (row, columnId, value: [number?, number?]) => {
+        const rowDate = row.getValue<Date>(columnId)?.getTime()
         if (!rowDate) return false
-        const ts = rowDate.getTime()
-        if (from !== undefined && ts < new Date(from).setHours(0, 0, 0, 0)) return false
-        if (to !== undefined && ts > new Date(to).setHours(23, 59, 59, 999)) return false
+
+        const [from, to] = value
+        if (from && rowDate < from) return false
+        if (to) {
+          const toDate = new Date(to)
+          toDate.setHours(23, 59, 59, 999)
+          if (rowDate > toDate.getTime()) return false
+        }
+
         return true
       },
     },
@@ -192,25 +177,25 @@ export const getTasksTableColumns = ({
       cell: ({ row }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button aria-label='Open menu' variant='ghost' className='flex size-8 p-0 data-[state=open]:bg-muted'>
-              <DotsThreeIcon aria-hidden='true' />
+            <Button aria-label='Open menu' variant='ghost' size='icon' className='h-8 w-8 flex data-[state=open]:bg-muted'>
+              <DotsThreeIcon />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='w-40'>
-            <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'detail' })}>
-              View detail
+          <DropdownMenuContent className='w-48' align='end'>
+            <DropdownMenuItem>
+              <CopySimpleIcon className='mr-2' /> Copy
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
-              Edit
+              <PencilSimpleIcon className='mr-2' /> Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
-              Delete
+              <TrashSimpleIcon className='mr-2' /> Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       ),
       size: 40,
+      enableHiding: false,
     },
   ]
-}

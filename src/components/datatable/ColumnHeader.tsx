@@ -36,7 +36,7 @@ export const ColumnHeader = <TData, TValue>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='sm' className={cn('-ml-2 data-[state=open]:bg-muted [&_svg]:text-muted-foreground', className)}   {...props}>
+        <Button variant='ghost' size='sm' className={cn('-ml-2 data-[state=open]:bg-muted [&_svg]:text-muted-foreground', className)} {...props}>
           {title}
           {column.getCanSort() &&
             (column.getIsSorted() === 'desc' ? (
@@ -48,7 +48,7 @@ export const ColumnHeader = <TData, TValue>({
             ))}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='start' className='w-28'>
+      <DropdownMenuContent align='start'>
         {column.getCanSort() && (
           <>
             <DropdownMenuCheckboxItem

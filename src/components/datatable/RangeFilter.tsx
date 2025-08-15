@@ -86,7 +86,7 @@ export const RangeFilter = <TData,>({
         placeholder={min.toString()}
         min={min}
         max={max}
-        className='h-8 w-full rounded'
+        className='w-full rounded'
         defaultValue={value[0]}
         onChange={(e) => onRangeValueChange(e.target.value, true)}
       />
@@ -102,7 +102,7 @@ export const RangeFilter = <TData,>({
         placeholder={max.toString()}
         min={min}
         max={max}
-        className='h-8 w-full rounded'
+        className='w-full rounded'
         defaultValue={value[1]}
         onChange={(e) => onRangeValueChange(e.target.value)}
       />

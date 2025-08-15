@@ -1,23 +1,8 @@
-import {
-  ArrowsDownUpIcon,
-  CaretUpDownIcon,
-  DotsSixVerticalIcon,
-  TrashSimpleIcon
-} from '@phosphor-icons/react'
-import type {
-  ColumnSort,
-  SortDirection,
-  Table
-} from '@tanstack/react-table'
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
+import { ArrowsDownUpIcon, CaretUpDownIcon, DotsSixVerticalIcon, TrashSimpleIcon } from '@phosphor-icons/react'
+import type { ColumnSort, SortDirection, Table } from '@tanstack/react-table'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
+import { Separator } from '@/components/ui'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -28,11 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
   Select,
   SelectContent,
@@ -44,8 +25,7 @@ import {
   Sortable,
   SortableContent,
   SortableItem,
-  SortableItemHandle,
-  SortableOverlay
+  SortableItemHandle
 } from '@/components/ui/sortable'
 import { dataTableConfig } from '@/config/datatable'
 import { cn } from '@/lib/utils'
@@ -88,12 +68,9 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
     onSortingChange((prev) => [...prev, { id: firstColumn.id, desc: false }])
   }, [columns, onSortingChange])
 
-  const onSortUpdate = useCallback(
-    (sortId: string, updates: Partial<ColumnSort>) => {
-      onSortingChange((prev) => prev.map((sort) => (sort.id === sortId ? { ...sort, ...updates } : sort)))
-    },
-    [onSortingChange],
-  )
+  const onSortUpdate = useCallback((sortId: string, updates: Partial<ColumnSort>) => {
+    onSortingChange((prev) => prev.map((sort) => (sort.id === sortId ? { ...sort, ...updates } : sort)))
+  }, [onSortingChange])
 
   const onSortRemove = useCallback((sortId: string) => {
     onSortingChange((prev) => prev.filter((s) => s.id !== sortId))
@@ -119,15 +96,12 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [sorting.length, onSortingReset])
 
-  const onTriggerKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase()) && sorting.length > 0) {
-        event.preventDefault()
-        onSortingReset()
-      }
-    },
-    [sorting.length, onSortingReset],
-  )
+  const onTriggerKeyDown = useCallback((event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase()) && sorting.length > 0) {
+      event.preventDefault()
+      onSortingReset()
+    }
+  }, [sorting.length, onSortingReset])
 
   return (
     <Sortable
@@ -140,9 +114,12 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
             <ArrowsDownUpIcon />
             Sort
             {sorting.length > 0 && (
-              <Badge variant='secondary' className='h-[18.24px] px-[5.12px] font-mono font-normal text-[10.4px]'>
-                {sorting.length}
-              </Badge>
+              <>
+                <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+                <Badge variant='secondary'>
+                  {sorting.length}
+                </Badge>
+              </>
             )}
           </Button>
         </PopoverTrigger>
@@ -177,7 +154,11 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
             </SortableContent>
           )}
           <div className='flex w-full items-center gap-2'>
-            <Button size='sm' ref={addButtonRef} onClick={onSortAdd} disabled={columns.length === 0}>
+            <Button
+              size='sm'
+              ref={addButtonRef}
+              onClick={onSortAdd}
+              disabled={columns.length === 0}>
               Add sort
             </Button>
             {sorting.length > 0 && (
@@ -188,14 +169,6 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
           </div>
         </PopoverContent>
       </Popover>
-      <SortableOverlay>
-        <div className='flex items-center gap-2'>
-          <div className='h-8 w-[180px] bg-primary/10' />
-          <div className='h-8 w-24 bg-primary/10' />
-          <div className='size-8 shrink-0 bg-primary/10' />
-          <div className='size-8 shrink-0 bg-primary/10' />
-        </div>
-      </SortableOverlay>
     </Sortable>
   )
 }
@@ -240,7 +213,7 @@ const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSor
               aria-controls={fieldListboxId}
               variant='outline'
               size='sm'
-              className='w-44 justify-between font-normal'>
+              className='w-44 justify-between'>
               <span className='truncate'>{columnLabels.get(sort.id)}</span>
               <CaretUpDownIcon className='opacity-50' />
             </Button>
@@ -266,7 +239,7 @@ const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSor
           onOpenChange={setShowDirectionSelector}
           value={sort.desc ? 'desc' : 'asc'}
           onValueChange={(value: SortDirection) => onSortUpdate(sort.id, { desc: value === 'desc' })}>
-          <SelectTrigger aria-controls={directionListboxId} className='h-8 w-24 [&[data-size]]:h-8'>
+          <SelectTrigger aria-controls={directionListboxId}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent id={directionListboxId} className='min-w-[var(--radix-select-trigger-width)] origin-[var(--radix-select-content-transform-origin)]'>
