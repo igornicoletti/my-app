@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import {
   AuthGuardRoute,
-  CallbackRoute,
   GuestGuardRoute,
   RedirectRoute
 } from '@/features/guards'
@@ -23,7 +22,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'callback',
-        element: <CallbackRoute />,
+        element: <routeElements.CallbackRoute />,
       },
       {
         element: <GuestGuardRoute />,
