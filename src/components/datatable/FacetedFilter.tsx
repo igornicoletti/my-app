@@ -1,4 +1,4 @@
-import { PlusCircleIcon, XCircleIcon } from '@phosphor-icons/react'
+import { FunnelIcon, XCircleIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useMemo, useState, type MouseEvent } from 'react'
 
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+import { useMediaQuery } from '@/hooks'
 import type { Option } from '@/types/datatable'
 
 interface FacetedFilterProps<TData, TValue> {
@@ -32,6 +33,7 @@ export const FacetedFilter = <TData, TValue>({
   multiple,
 }: FacetedFilterProps<TData, TValue>) => {
   const [open, setOpen] = useState(false)
+  const isMobile = useMediaQuery('(max-width: 639px)')
 
   const selectedValues = useMemo(() => {
     const filterValue = column?.getFilterValue()
@@ -67,28 +69,20 @@ export const FacetedFilter = <TData, TValue>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='border-dashed'>
-          {/* Show clear filter icon if filters are applied, otherwise show plus icon */}
           {hasSelectedFilters ? (
-            <div
-              tabIndex={0}
-              role='button'
-              aria-label={`Clear ${title} filter`}
-              onClick={onReset}>
+            <div onClick={onReset} tabIndex={0} role='button' aria-label={`Clear ${title} Filter`}>
               <XCircleIcon />
             </div>
           ) : (
-            <PlusCircleIcon className='mr-2' />
+            <FunnelIcon />
           )}
           {title}
-          {/* Display selected badges and clear all button */}
           {hasSelectedFilters && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              {/* Badge for small screens */}
               <Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
                 {selectedValues.size}
               </Badge>
-              {/* Badges for larger screens */}
               <div className='hidden space-x-1 lg:flex'>
                 {selectedValues.size > 2 ? (
                   <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
@@ -108,7 +102,7 @@ export const FacetedFilter = <TData, TValue>({
       </PopoverTrigger>
       <PopoverContent className='w-48 p-0' align='start'>
         <Command>
-          <CommandInput placeholder={title} />
+          <CommandInput tabIndex={isMobile ? -1 : 1} placeholder={title} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup className='max-h-72 overflow-y-auto'>
@@ -141,6 +135,6 @@ export const FacetedFilter = <TData, TValue>({
           </CommandList>
         </Command>
       </PopoverContent>
-    </Popover>
+    </Popover >
   )
 }

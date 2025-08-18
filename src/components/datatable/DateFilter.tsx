@@ -40,7 +40,10 @@ export const DateFilter = <TData, TValue>({
     }
     if (multiple && Array.isArray(columnFilterValue)) {
       const [from, to] = columnFilterValue
-      return { from: parseDateFromTimestamp(from), to: parseDateFromTimestamp(to) }
+      return {
+        from: parseDateFromTimestamp(from),
+        to: parseDateFromTimestamp(to)
+      }
     }
     if (!multiple && !Array.isArray(columnFilterValue)) {
       return parseDateFromTimestamp(columnFilterValue)
@@ -88,17 +91,13 @@ export const DateFilter = <TData, TValue>({
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='border-dashed'>
           {hasValue ? (
-            <div
-              tabIndex={0}
-              role='button'
-              aria-label={`Clear ${title} filter`}
-              onClick={onReset}>
+            <div onClick={onReset} tabIndex={0} aria-label={`Clear ${title} filter`} role='button'>
               <XCircleIcon />
             </div>
           ) : (
             <CalendarIcon />
           )}
-          <span>{title}</span>
+          {title}
           {displayLabel && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
@@ -115,15 +114,13 @@ export const DateFilter = <TData, TValue>({
             captionLayout='dropdown'
             mode='range'
             selected={isDateRange(selectedValue) ? selectedValue : undefined}
-            onSelect={handleRangeSelect}
-          />
+            onSelect={handleRangeSelect} />
         ) : (
           <Calendar
             captionLayout='dropdown'
             mode='single'
             selected={selectedValue instanceof Date ? selectedValue : undefined}
-            onSelect={handleSingleSelect}
-          />
+            onSelect={handleSingleSelect} />
         )}
       </PopoverContent>
     </Popover>

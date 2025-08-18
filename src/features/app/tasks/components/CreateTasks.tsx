@@ -74,7 +74,7 @@ export const CreateTasks = ({ onCreated }: CreateTasksProps) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='default' size='sm'>
+        <Button variant='secondary' size='sm'>
           Create Task
         </Button>
       </SheetTrigger>

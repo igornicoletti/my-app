@@ -23,7 +23,8 @@ import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/datatable'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
 
-interface GetTasksTableColumnsProps extends Pick<TaskLoaderData, 'statusCounts' | 'priorityCounts'> {
+interface GetTasksTableColumnsProps
+  extends Pick<TaskLoaderData, 'statusCounts' | 'priorityCounts' | 'estimatedHoursRange'> {
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
 
@@ -35,6 +36,7 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 export const getTasksTableColumns = ({
   statusCounts,
   priorityCounts,
+  estimatedHoursRange,
   setRowAction,
 }: GetTasksTableColumnsProps): ColumnDef<TaskSchema>[] => [
     {
@@ -142,21 +144,41 @@ export const getTasksTableColumns = ({
       filterFn: 'arrIncludesSome',
     },
     {
-      accessorKey: "estimatedHours",
-      header: ({ column }) => <ColumnHeader column={column} title="Est. Hours" />,
+      accessorKey: 'estimatedHours',
+      header: ({ column }) => <ColumnHeader column={column} title='Est. Hours' />,
       cell: ({ cell }) => {
         const estimatedHours = cell.getValue<number>()
-        return <div className="w-20 text-right">{estimatedHours}</div>
+        return <div className='w-20 text-right font-mono'>{estimatedHours}</div>
       },
       meta: {
-        label: "Est. Hours",
-        variant: "range",
-        range: [0, 24],
-        unit: "hr",
+        label: 'Est. Hours',
+        variant: 'range',
+        range: [estimatedHoursRange.min, estimatedHoursRange.max],
+        unit: 'hr',
         icon: ClockIcon,
       },
       enableColumnFilter: true,
-      filterFn: 'arrIncludesSome',
+      filterFn: (row, columnId, value: [number?, number?]) => {
+        const rowValue = row.getValue<number>(columnId)
+        if (typeof rowValue !== 'number') {
+          return false
+        }
+
+        const [min, max] = value
+        const isMinValid = typeof min === 'number' && !Number.isNaN(min)
+        const isMaxValid = typeof max === 'number' && !Number.isNaN(max)
+
+        if (isMinValid && isMaxValid) {
+          return rowValue >= min && rowValue <= max
+        }
+        if (isMinValid) {
+          return rowValue >= min
+        }
+        if (isMaxValid) {
+          return rowValue <= max
+        }
+        return true
+      },
     },
     {
       accessorKey: 'createdAt',

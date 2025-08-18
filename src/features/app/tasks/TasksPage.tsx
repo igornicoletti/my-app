@@ -9,7 +9,7 @@ import { useDataTable } from '@/hooks/useDataTable'
 import type { DataTableRowAction } from '@/types/datatable'
 
 export const TasksPage = () => {
-  const { tasks: loaderTasks, statusCounts, priorityCounts } = useLoaderData() as TaskLoaderData
+  const { tasks: loaderTasks, statusCounts, priorityCounts, estimatedHoursRange } = useLoaderData() as TaskLoaderData
   const [tasksData, setTasksData] = useState(loaderTasks)
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
 
@@ -17,8 +17,9 @@ export const TasksPage = () => {
   const columns = useMemo(() => getTasksTableColumns({
     statusCounts,
     priorityCounts,
+    estimatedHoursRange: estimatedHoursRange || { min: 0, max: 100 },
     setRowAction,
-  }), [statusCounts, priorityCounts, setRowAction])
+  }), [statusCounts, priorityCounts, estimatedHoursRange, setRowAction])
 
   const { table } = useDataTable({
     data: tasksData,

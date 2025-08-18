@@ -1,4 +1,4 @@
-import { CaretUpDownIcon, CheckIcon, SlidersHorizontalIcon } from '@phosphor-icons/react'
+import { CheckIcon, SlidersHorizontalIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 
@@ -26,10 +26,9 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button aria-label='Toggle columns' role='combobox' variant='outline' size='sm' className='ml-auto hidden lg:flex'>
+        <Button size='sm' variant='outline' role='combobox' className='ml-auto hidden lg:flex'>
           <SlidersHorizontalIcon />
           View
-          <CaretUpDownIcon className='ml-auto opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-48 p-0' align='end'>
