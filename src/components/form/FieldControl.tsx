@@ -1,10 +1,6 @@
 import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react'
 import { useState } from 'react'
-import type {
-  Control,
-  FieldPath,
-  FieldValues
-} from 'react-hook-form'
+import type { Control, FieldPath, FieldValues } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import {

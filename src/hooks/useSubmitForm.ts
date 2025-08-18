@@ -8,7 +8,7 @@ type ExtraCheck = () => boolean | Promise<boolean>
 
 export const useSubmitForm = <T>(
   submitFn: SubmitFn<T>,
-  redirectPath: string,
+  redirectPath?: string,
   extraCheck?: ExtraCheck
 ) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -20,7 +20,7 @@ export const useSubmitForm = <T>(
     try {
       if (extraCheck && !(await extraCheck())) return
       await submitFn(data)
-      navigate(redirectPath, { replace: true })
+      if (redirectPath) navigate(redirectPath, { replace: true })
     } catch (error) {
       errorToast(error)
     } finally {

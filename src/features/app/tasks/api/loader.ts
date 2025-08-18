@@ -3,7 +3,7 @@ import type { LoaderFunctionArgs } from 'react-router-dom'
 import {
   taskSchema,
   type TaskSchema
-} from '@/features/app/tasks/api/schemas'
+} from '@/features/app/tasks/api/schema'
 import {
   generateTasks,
   getFacetedCounts
@@ -16,7 +16,7 @@ export type TaskLoaderData = {
 }
 
 export const taskLoader = async (_: LoaderFunctionArgs): Promise<TaskLoaderData> => {
-  const tasks = generateTasks(50)
+  const tasks = generateTasks(20)
 
   const statusCounts = getFacetedCounts(tasks, 'status', taskSchema.shape.status.options)
   const priorityCounts = getFacetedCounts(tasks, 'priority', taskSchema.shape.priority.options)

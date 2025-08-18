@@ -9,10 +9,7 @@ const parseCombo = (combo: string) => {
   return { key, modifiers }
 }
 
-export const useShortcut = (
-  combos: string | string[],
-  action: () => void
-) => {
+export const useShortcut = (combos: string | string[], action: () => void) => {
   useEffect(() => {
     const comboList = Array.isArray(combos) ? combos : [combos]
 

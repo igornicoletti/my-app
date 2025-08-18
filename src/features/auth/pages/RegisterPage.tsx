@@ -1,22 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  SpinnerGapIcon,
-  UserPlusIcon
-} from '@phosphor-icons/react'
+import { SpinnerGapIcon, UserPlusIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
-import { FieldControl } from '@/components/form/FieldControl'
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
-import {
-  registerSchema,
-  type RegisterSchema
-} from '@/features/auth/api'
-import {
-  useSubmitForm,
-  useToast
-} from '@/hooks'
-import { authService } from '@/services/authService'
+import { FieldControl } from '@/components/form'
+import { Button, Form } from '@/components/ui'
+import { registerSchema, type RegisterSchema } from '@/features/auth'
+import { useSubmitForm, useToast } from '@/hooks'
+import { authService } from '@/services'
 
 export const RegisterPage = () => {
   const { successToast } = useToast()
@@ -74,7 +64,7 @@ export const RegisterPage = () => {
           ) : (
             <UserPlusIcon />
           )}
-          {isLoading ? '' : 'Create account'}
+          {!isLoading && 'Create account'}
         </Button>
       </form>
     </Form>

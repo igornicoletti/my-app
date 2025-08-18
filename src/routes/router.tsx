@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { routeLazy } from '@/routes/config/routeLazy'
+import { AuthGuardRoute, CallbackRoute, GuestGuardRoute, RedirectRoute } from '@/features/guards'
+import { routeLazy } from '@/routes/config/lazy'
 import { getProtectedRoutes, getPublicRoutes } from '@/routes/rootRoutes'
 
 export const router = createBrowserRouter([
@@ -10,18 +11,18 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <routeLazy.RedirectRoute />,
+        element: <RedirectRoute />,
       },
       {
         path: 'callback',
-        element: <routeLazy.CallbackRoute />,
+        element: <CallbackRoute />,
       },
       {
-        element: <routeLazy.GuestGuardRoute />,
+        element: <GuestGuardRoute />,
         children: getPublicRoutes(),
       },
       {
-        element: <routeLazy.AuthGuardRoute />,
+        element: <AuthGuardRoute />,
         children: getProtectedRoutes(),
       },
       {

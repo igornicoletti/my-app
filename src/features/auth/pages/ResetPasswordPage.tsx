@@ -1,20 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  ShieldStarIcon,
-  SpinnerGapIcon
-} from '@phosphor-icons/react'
+import { ShieldStarIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
 import { FieldControl } from '@/components/form'
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
-import {
-  resetPasswordSchema,
-  type ResetPasswordSchema
-} from '@/features/auth/api'
+import { Button, Form } from '@/components/ui'
+import { resetPasswordSchema, type ResetPasswordSchema } from '@/features/auth'
 import { useSubmitForm, useToast } from '@/hooks'
-import { authService } from '@/services/authService'
+import { authService } from '@/services'
 
 export const ResetPasswordPage = () => {
   const { successToast } = useToast()
@@ -59,7 +52,7 @@ export const ResetPasswordPage = () => {
           ) : (
             <ShieldStarIcon />
           )}
-          {isLoading ? '' : 'Reset password'}
+          {isLoading && 'Reset password'}
         </Button>
       </form>
     </Form>

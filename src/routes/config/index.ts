@@ -1,3 +1,3 @@
-export * from './routeLazy'
-export * from './routeMeta'
-export * from './routeNavigations'
+export * from './lazy'
+export * from './metadata'
+export * from './navigation'

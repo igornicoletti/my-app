@@ -1,46 +1,29 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  GoogleLogoIcon,
-  SignInIcon,
-  SpinnerGapIcon
-} from '@phosphor-icons/react'
+import { GoogleLogoIcon, SignInIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { FieldControl } from '@/components/form/FieldControl'
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
-import { Separator } from '@/components/ui/separator'
-import {
-  loginSchema,
-  type LoginSchema
-} from '@/features/auth/api'
-import {
-  useSubmitForm,
-  useToast
-} from '@/hooks'
-import { authService } from '@/services/authService'
+import { FieldControl } from '@/components/form'
+import { Button, Form, Separator } from '@/components/ui'
+import { loginSchema, type LoginSchema } from '@/features/auth'
+import { useSubmitForm, useToast } from '@/hooks'
+import { authService } from '@/services'
 
 export const LoginPage = () => {
   const { successToast } = useToast()
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: ''
-    }
+    defaultValues: { email: '', password: '' }
   })
 
   const { onSubmit, isLoading } = useSubmitForm(async (data: LoginSchema) => {
     await authService.signInWithEmail(data.email, data.password)
     await authService.getCurrentUser()?.reload()
-
     const updatedUser = authService.getCurrentUser()
     if (!updatedUser?.emailVerified) {
       throw new Error('auth/unverified-email')
     }
-
     successToast('auth/login-success')
   }, `/dashboard`)
 
@@ -62,9 +45,9 @@ export const LoginPage = () => {
           ) : (
             <GoogleLogoIcon />
           )}
-          {isSocialLoading ? '' : 'Continue with Google'}
+          {!isSocialLoading && 'Continue with Google'}
         </Button>
-        <div className='w-full flex items-center justify-center gap-2 overflow-hidden'>
+        <div className='flex items-center justify-center gap-2 overflow-hidden'>
           <Separator />
           <span className='text-sm text-muted-foreground'>OR</span>
           <Separator />
@@ -92,7 +75,7 @@ export const LoginPage = () => {
           ) : (
             <SignInIcon />
           )}
-          {isLoading ? '' : 'Login to account'}
+          {!isLoading && 'Login to account'}
         </Button>
       </form>
     </Form>

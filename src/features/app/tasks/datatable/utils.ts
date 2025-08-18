@@ -10,7 +10,7 @@ import {
 import { customAlphabet, nanoid } from 'nanoid'
 import type { ElementType } from 'react'
 
-import type { TaskSchema } from '@/features/app/tasks/api/schemas'
+import type { TaskSchema } from '@/features/app/tasks/api/schema'
 
 const generateId = () => `task_${nanoid(6)}`
 const generateCode = () => `TASK-${customAlphabet('0123456789', 4)()}`

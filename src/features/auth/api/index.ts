@@ -1,2 +1,2 @@
-export * from './authConfig'
-export * from './authSchema'
+export * from './config'
+export * from './schema'

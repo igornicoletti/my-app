@@ -1,22 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  PaperPlaneTiltIcon,
-  SpinnerGapIcon
-} from '@phosphor-icons/react'
+import { PaperPlaneTiltIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
-import { FieldControl } from '@/components/form/FieldControl'
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
-import {
-  forgotPasswordSchema,
-  type ForgotPasswordSchema
-} from '@/features/auth'
-import {
-  useSubmitForm,
-  useToast
-} from '@/hooks'
-import { authService } from '@/services/authService'
+import { FieldControl } from '@/components/form'
+import { Button, Form } from '@/components/ui'
+import { forgotPasswordSchema, type ForgotPasswordSchema } from '@/features/auth'
+import { useSubmitForm, useToast } from '@/hooks'
+import { authService } from '@/services'
 
 export const ForgotPasswordPage = () => {
   const { successToast } = useToast()
@@ -50,7 +40,7 @@ export const ForgotPasswordPage = () => {
           ) : (
             <PaperPlaneTiltIcon />
           )}
-          {isLoading ? '' : 'Send reset email'}
+          {!isLoading && 'Send reset email'}
         </Button>
       </form>
     </Form>

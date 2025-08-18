@@ -14,3 +14,15 @@ export const taskSchema = z.object({
 })
 
 export type TaskSchema = z.infer<typeof taskSchema>
+
+export const tasks = {
+  status: {
+    enumValues: taskSchema.shape.status.options,
+  },
+  label: {
+    enumValues: taskSchema.shape.label.unwrap().options,
+  },
+  priority: {
+    enumValues: taskSchema.shape.priority.options,
+  },
+}

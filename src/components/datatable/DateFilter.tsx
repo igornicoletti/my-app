@@ -102,7 +102,7 @@ export const DateFilter = <TData, TValue>({
           {displayLabel && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='secondary' className='font-normal'>
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
                 {displayLabel}
               </Badge>
             </>

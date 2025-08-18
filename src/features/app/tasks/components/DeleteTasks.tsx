@@ -1,9 +1,6 @@
+import { TrashIcon } from '@phosphor-icons/react'
 import type { Row } from '@tanstack/react-table'
-import {
-  useTransition,
-  type ComponentPropsWithoutRef
-} from 'react'
-import { toast } from 'sonner'
+import { useTransition, type ComponentPropsWithoutRef } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -27,8 +24,8 @@ import {
   DrawerTrigger
 } from '@/components/ui/drawer'
 import type { TaskSchema as Task } from '@/features/app/tasks/api'
+import { useToast } from '@/hooks'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { SpinnerIcon, TrashIcon } from '@phosphor-icons/react'
 
 interface DeleteTasksDialogProps extends ComponentPropsWithoutRef<typeof Dialog> {
   tasks: Row<Task>['original'][]
@@ -36,7 +33,20 @@ interface DeleteTasksDialogProps extends ComponentPropsWithoutRef<typeof Dialog>
   onSuccess?: () => void
 }
 
-export const DeleteTasksDialog = ({
+const TriggerButton = ({ count }: { count: number }) => (
+  <Button variant='outline' size='sm'>
+    <TrashIcon aria-hidden='true' />
+    Delete ({count})
+  </Button>
+)
+
+const ActionButtons = ({ onDelete, isPending }: { onDelete: () => void; isPending: boolean }) => (
+  <Button onClick={onDelete} disabled={isPending} variant='destructive'>
+    Delete
+  </Button>
+)
+
+export const DeleteTasks = ({
   tasks,
   showTrigger = true,
   onSuccess,
@@ -44,84 +54,61 @@ export const DeleteTasksDialog = ({
 }: DeleteTasksDialogProps) => {
   const [isDeletePending, startDeleteTransition] = useTransition()
   const isDesktop = useMediaQuery('(min-width: 640px)')
+  const { successToast } = useToast()
 
   const onDelete = () => {
     startDeleteTransition(async () => {
-      await new Promise(res => setTimeout(res, 500))
-      toast.success(`${tasks.length} task${tasks.length > 1 ? 's' : ''} deleted`)
+      await new Promise((res) => setTimeout(res, 500))
+      successToast({
+        title: 'Task Deleted!',
+        description: `${tasks.length} task has been successfully deleted.`
+      })
       props.onOpenChange?.(false)
       onSuccess?.()
     })
   }
 
-  const DeleteButton = (
-    <Button
-      aria-label='Delete selected rows'
-      variant='destructive'
-      onClick={onDelete}
-      disabled={isDeletePending}>
-      {isDeletePending && (
-        <SpinnerIcon className='mr-2 animate-spin' aria-hidden='true' />
-      )}
-      Delete
-    </Button>
-  )
-
-  if (isDesktop) {
-    return (
-      <Dialog {...props}>
-        {showTrigger ? (
-          <DialogTrigger asChild>
-            <Button variant='outline' size='sm'>
-              <TrashIcon weight='bold' className='mr-2' aria-hidden='true' />
-              Delete ({tasks.length})
-            </Button>
-          </DialogTrigger>
-        ) : null}
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your{' '}
-              <span className='font-semibold'>{tasks.length}</span>
-              {tasks.length === 1 ? ' task' : ' tasks'}.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className='gap-2 sm:space-x-0'>
-            <DialogClose asChild>
-              <Button variant='outline'>Cancel</Button>
-            </DialogClose>
-            {DeleteButton}
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    )
-  }
-
-  return (
+  return isDesktop ? (
+    <Dialog {...props}>
+      {showTrigger ? (
+        <DialogTrigger asChild>
+          <TriggerButton count={tasks.length} />
+        </DialogTrigger>
+      ) : null}
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. This will permanently remove the data from our servers.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant='outline'>Cancel</Button>
+          </DialogClose>
+          <ActionButtons onDelete={onDelete} isPending={isDeletePending} />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ) : (
     <Drawer {...props}>
       {showTrigger ? (
         <DrawerTrigger asChild>
-          <Button variant='outline' size='sm'>
-            <TrashIcon weight='bold' className='mr-2' aria-hidden='true' />
-            Delete ({tasks.length})
-          </Button>
+          <TriggerButton count={tasks.length} />
         </DrawerTrigger>
       ) : null}
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Are you absolutely sure?</DrawerTitle>
           <DrawerDescription>
-            This action cannot be undone. This will permanently delete your{' '}
-            <span className='font-semibold'>{tasks.length}</span>
-            {tasks.length === 1 ? ' task' : ' tasks'}.
+            This action cannot be undone. This will permanently remove the data from our servers.
           </DrawerDescription>
         </DrawerHeader>
-        <DrawerFooter className='gap-2 sm:space-x-0'>
+        <DrawerFooter>
           <DrawerClose asChild>
             <Button variant='outline'>Cancel</Button>
           </DrawerClose>
-          {DeleteButton}
+          <ActionButtons onDelete={onDelete} isPending={isDeletePending} />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

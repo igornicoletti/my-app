@@ -2,25 +2,26 @@ import { useMemo, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 
 import { DataTable, Toolbar } from '@/components/datatable'
-import { Button } from '@/components/ui/button'
 import type { TaskLoaderData, TaskSchema } from '@/features/app/tasks/api'
-import { DeleteTasksDialog } from '@/features/app/tasks/components'
+import { CreateTasks, DeleteTasks } from '@/features/app/tasks/components'
 import { getTasksTableColumns } from '@/features/app/tasks/datatable'
 import { useDataTable } from '@/hooks/useDataTable'
 import type { DataTableRowAction } from '@/types/datatable'
 
 export const TasksPage = () => {
-  const { tasks, statusCounts, priorityCounts } = useLoaderData() as TaskLoaderData
+  const { tasks: loaderTasks, statusCounts, priorityCounts } = useLoaderData() as TaskLoaderData
+  const [tasksData, setTasksData] = useState(loaderTasks)
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
+
 
   const columns = useMemo(() => getTasksTableColumns({
     statusCounts,
     priorityCounts,
-    setRowAction
-  }), [statusCounts, priorityCounts])
+    setRowAction,
+  }), [statusCounts, priorityCounts, setRowAction])
 
   const { table } = useDataTable({
-    data: tasks,
+    data: tasksData,
     columns,
     initialState: {
       sorting: [{ id: 'createdAt', desc: true }],
@@ -29,31 +30,37 @@ export const TasksPage = () => {
     getRowId: (originalRow) => originalRow.id,
   })
 
-  const tasksToDelete = rowAction?.row.original ? [rowAction.row.original] : []
+  const tasksToDelete = rowAction?.variant === 'delete' ? [rowAction.row.original] : []
 
   return (
     <>
       <div className='flex flex-col gap-6 px-2'>
-        <header className='grid gap-2'>
+        <div className='grid gap-2'>
           <h2 className='text-xl font-bold'>Tasks Table</h2>
-          <p className='text-sm text-muted-foreground'>Here's a list of your tasks.</p>
-        </header>
-
+          <p className='text-sm text-muted-foreground'>
+            Here's a list of your tasks for this month!
+          </p>
+        </div>
         <DataTable table={table}>
           <Toolbar table={table}>
-            <Button variant='default' size='sm'>
-              New Task
-            </Button>
+            <CreateTasks onCreated={(task) => setTasksData(prev => [task, ...prev])} />
           </Toolbar>
         </DataTable>
       </div>
 
-      <DeleteTasksDialog
+      <DeleteTasks
         open={rowAction?.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         tasks={tasksToDelete}
         showTrigger={false}
-        onSuccess={() => rowAction?.row.toggleSelected(false)}
+        onSuccess={() => {
+          if (tasksToDelete.length > 0) {
+            setTasksData(prev =>
+              prev.filter(task => !tasksToDelete.some(del => del.id === task.id))
+            )
+          }
+          rowAction?.row.toggleSelected(false)
+        }}
       />
     </>
   )

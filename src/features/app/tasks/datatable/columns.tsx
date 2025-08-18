@@ -1,31 +1,23 @@
+// features/app/tasks/datatable/columns.tsx
+
 import {
   ArrowsDownUpIcon,
   CalendarIcon,
   CircleDashedIcon,
   CopySimpleIcon,
   DotsThreeIcon,
+  EyeIcon,
   PencilSimpleIcon,
   TextAaIcon,
-  TrashSimpleIcon
+  TrashSimpleIcon,
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 
 import { ColumnHeader } from '@/components/datatable'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import {
-  type TaskLoaderData,
-  type TaskSchema, taskSchema
-} from '@/features/app/tasks/api'
+import { Badge, Button, Checkbox } from '@/components/ui'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { type TaskLoaderData, type TaskSchema, taskSchema } from '@/features/app/tasks/api'
 import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/datatable'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
@@ -37,6 +29,8 @@ interface GetTasksTableColumnsProps extends Pick<TaskLoaderData, 'statusCounts' 
 const statusValues = taskSchema.shape.status.options
 const priorityValues = taskSchema.shape.priority.options
 
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
 export const getTasksTableColumns = ({
   statusCounts,
   priorityCounts,
@@ -46,7 +40,9 @@ export const getTasksTableColumns = ({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label='Select all'
           className='translate-y-0.5'
@@ -74,15 +70,12 @@ export const getTasksTableColumns = ({
     {
       accessorKey: 'title',
       header: ({ column }) => <ColumnHeader column={column} title='Title' />,
-      cell: ({ row }) => {
-        const label = row.original.label
-        return (
-          <div className='flex items-center gap-2'>
-            {label && <Badge variant='outline'>{label}</Badge>}
-            <span className='max-w-lg truncate font-medium'>{row.getValue('title')}</span>
-          </div>
-        )
-      },
+      cell: ({ row }) => (
+        <div className='flex items-center gap-2'>
+          {row.original.label && <Badge variant='outline'>{row.original.label}</Badge>}
+          <span className='max-w-lg truncate font-medium'>{row.getValue('title')}</span>
+        </div>
+      ),
       meta: {
         label: 'Title',
         placeholder: 'Search titles...',
@@ -100,7 +93,7 @@ export const getTasksTableColumns = ({
         const Icon = getStatusIcon(status)
         return (
           <div className='flex items-center gap-2'>
-            <Icon />
+            <Icon className='text-muted-foreground' />
             <span className='capitalize'>{status}</span>
           </div>
         )
@@ -109,7 +102,7 @@ export const getTasksTableColumns = ({
         label: 'Status',
         variant: 'multiSelect',
         options: statusValues.map((status) => ({
-          label: status.charAt(0).toUpperCase() + status.slice(1),
+          label: capitalize(status),
           value: status,
           count: statusCounts[status],
           icon: getStatusIcon(status),
@@ -128,7 +121,7 @@ export const getTasksTableColumns = ({
         const Icon = getPriorityIcon(priority)
         return (
           <div className='flex items-center gap-2'>
-            <Icon />
+            <Icon className='text-muted-foreground' />
             <span className='capitalize'>{priority}</span>
           </div>
         )
@@ -137,7 +130,7 @@ export const getTasksTableColumns = ({
         label: 'Priority',
         variant: 'multiSelect',
         options: priorityValues.map((priority) => ({
-          label: priority.charAt(0).toUpperCase() + priority.slice(1),
+          label: capitalize(priority),
           value: priority,
           count: priorityCounts[priority],
           icon: getPriorityIcon(priority),
@@ -177,25 +170,35 @@ export const getTasksTableColumns = ({
       cell: ({ row }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button aria-label='Open menu' variant='ghost' size='icon' className='h-8 w-8 flex data-[state=open]:bg-muted'>
+            <Button
+              aria-label='Open menu'
+              variant='ghost'
+              size='icon'
+              className='flex size-8 data-[state=open]:bg-muted'>
               <DotsThreeIcon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className='w-48' align='end'>
             <DropdownMenuItem>
-              <CopySimpleIcon className='mr-2' /> Copy
+              <EyeIcon /> View Detail
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <CopySimpleIcon /> Copy
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
-              <PencilSimpleIcon className='mr-2' /> Edit
+              <PencilSimpleIcon /> Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
-              <TrashSimpleIcon className='mr-2' /> Delete
+            <DropdownMenuItem
+              variant='destructive'
+              onSelect={() => setRowAction({ row, variant: 'delete' })}>
+              <TrashSimpleIcon /> Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       ),
-      size: 40,
+      enableSorting: false,
       enableHiding: false,
+      size: 40,
     },
   ]
