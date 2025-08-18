@@ -3,7 +3,17 @@ import { customAlphabet } from 'nanoid'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { Button, Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui'
+import { Button } from '@/components/ui/button'
 import { taskSchema, type TaskSchema } from '@/features/app/tasks/api/schema'
 import { TasksForm } from '@/features/app/tasks/components/TasksForm'
 import { useSubmitForm, useToast } from '@/hooks'
@@ -57,7 +67,7 @@ export const CreateTasks = ({ onCreated }: CreateTasksProps) => {
     onCreated?.(data)
     successToast({
       title: 'Task Created!',
-      description: `The task "${data.title}" has been successfully created.`
+      description: `The task "${data.title}" has been successfully created.`,
     })
   })
 

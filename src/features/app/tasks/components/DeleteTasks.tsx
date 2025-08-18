@@ -11,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import {
   Drawer,
@@ -21,47 +21,34 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger
+  DrawerTrigger,
 } from '@/components/ui/drawer'
 import type { TaskSchema as Task } from '@/features/app/tasks/api'
 import { useToast } from '@/hooks'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
-interface DeleteTasksDialogProps extends ComponentPropsWithoutRef<typeof Dialog> {
+interface DeleteTasksProps extends ComponentPropsWithoutRef<typeof Dialog> {
   tasks: Row<Task>['original'][]
   showTrigger?: boolean
   onSuccess?: () => void
 }
-
-const TriggerButton = ({ count }: { count: number }) => (
-  <Button variant='outline' size='sm'>
-    <TrashIcon aria-hidden='true' />
-    Delete ({count})
-  </Button>
-)
-
-const ActionButtons = ({ onDelete, isPending }: { onDelete: () => void; isPending: boolean }) => (
-  <Button onClick={onDelete} disabled={isPending} variant='destructive'>
-    Delete
-  </Button>
-)
 
 export const DeleteTasks = ({
   tasks,
   showTrigger = true,
   onSuccess,
   ...props
-}: DeleteTasksDialogProps) => {
+}: DeleteTasksProps) => {
   const [isDeletePending, startDeleteTransition] = useTransition()
   const isDesktop = useMediaQuery('(min-width: 640px)')
   const { successToast } = useToast()
 
   const onDelete = () => {
     startDeleteTransition(async () => {
-      await new Promise((res) => setTimeout(res, 500))
+      await new Promise(res => setTimeout(res, 500))
       successToast({
         title: 'Task Deleted!',
-        description: `${tasks.length} task has been successfully deleted.`
+        description: `${tasks.length} task has been successfully deleted.`,
       })
       props.onOpenChange?.(false)
       onSuccess?.()
@@ -70,11 +57,14 @@ export const DeleteTasks = ({
 
   return isDesktop ? (
     <Dialog {...props}>
-      {showTrigger ? (
+      {showTrigger && (
         <DialogTrigger asChild>
-          <TriggerButton count={tasks.length} />
+          <Button variant='outline' size='sm'>
+            <TrashIcon aria-hidden='true' />
+            Delete ({tasks.length})
+          </Button>
         </DialogTrigger>
-      ) : null}
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -86,17 +76,22 @@ export const DeleteTasks = ({
           <DialogClose asChild>
             <Button variant='outline'>Cancel</Button>
           </DialogClose>
-          <ActionButtons onDelete={onDelete} isPending={isDeletePending} />
+          <Button onClick={onDelete} disabled={isDeletePending} variant='destructive'>
+            Delete
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   ) : (
     <Drawer {...props}>
-      {showTrigger ? (
+      {showTrigger && (
         <DrawerTrigger asChild>
-          <TriggerButton count={tasks.length} />
+          <Button variant='outline' size='sm'>
+            <TrashIcon aria-hidden='true' />
+            Delete ({tasks.length})
+          </Button>
         </DrawerTrigger>
-      ) : null}
+      )}
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Are you absolutely sure?</DrawerTitle>
@@ -108,7 +103,9 @@ export const DeleteTasks = ({
           <DrawerClose asChild>
             <Button variant='outline'>Cancel</Button>
           </DrawerClose>
-          <ActionButtons onDelete={onDelete} isPending={isDeletePending} />
+          <Button onClick={onDelete} disabled={isDeletePending} variant='destructive'>
+            Delete
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

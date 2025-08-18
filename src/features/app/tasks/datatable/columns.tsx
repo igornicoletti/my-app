@@ -4,6 +4,7 @@ import {
   ArrowsDownUpIcon,
   CalendarIcon,
   CircleDashedIcon,
+  ClockIcon,
   CopySimpleIcon,
   DotsThreeIcon,
   EyeIcon,
@@ -136,6 +137,23 @@ export const getTasksTableColumns = ({
           icon: getPriorityIcon(priority),
         })),
         icon: ArrowsDownUpIcon,
+      },
+      enableColumnFilter: true,
+      filterFn: 'arrIncludesSome',
+    },
+    {
+      accessorKey: "estimatedHours",
+      header: ({ column }) => <ColumnHeader column={column} title="Est. Hours" />,
+      cell: ({ cell }) => {
+        const estimatedHours = cell.getValue<number>()
+        return <div className="w-20 text-right">{estimatedHours}</div>
+      },
+      meta: {
+        label: "Est. Hours",
+        variant: "range",
+        range: [0, 24],
+        unit: "hr",
+        icon: ClockIcon,
       },
       enableColumnFilter: true,
       filterFn: 'arrIncludesSome',

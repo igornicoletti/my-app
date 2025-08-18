@@ -6,13 +6,14 @@ import {
 } from '@/features/app/tasks/api/schema'
 import {
   generateTasks,
-  getFacetedCounts
+  getFacetedCounts,
 } from '@/features/app/tasks/datatable/utils'
 
 export type TaskLoaderData = {
   tasks: TaskSchema[]
   statusCounts: Record<TaskSchema['status'], number>
   priorityCounts: Record<TaskSchema['priority'], number>
+  estimatedHoursRange?: { min: number; max: number }
 }
 
 export const taskLoader = async (_: LoaderFunctionArgs): Promise<TaskLoaderData> => {

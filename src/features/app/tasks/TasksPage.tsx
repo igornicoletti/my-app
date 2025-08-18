@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router-dom'
 
 import { DataTable, Toolbar } from '@/components/datatable'
 import type { TaskLoaderData, TaskSchema } from '@/features/app/tasks/api'
-import { CreateTasks, DeleteTasks } from '@/features/app/tasks/components'
+import { CreateTasks, DeleteTasks, UpdateTasks } from '@/features/app/tasks/components'
 import { getTasksTableColumns } from '@/features/app/tasks/datatable'
 import { useDataTable } from '@/hooks/useDataTable'
 import type { DataTableRowAction } from '@/types/datatable'
@@ -48,6 +48,16 @@ export const TasksPage = () => {
         </DataTable>
       </div>
 
+      <UpdateTasks
+        open={rowAction?.variant === "update"}
+        onOpenChange={() => setRowAction(null)}
+        task={rowAction?.row.original ?? null}
+        onSuccess={(updatedTask) => {
+          setTasksData((prev) => prev.map((task) => task.id === updatedTask.id ? updatedTask : task))
+          rowAction?.row.toggleSelected(false)
+        }}
+      />
+
       <DeleteTasks
         open={rowAction?.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
@@ -55,9 +65,7 @@ export const TasksPage = () => {
         showTrigger={false}
         onSuccess={() => {
           if (tasksToDelete.length > 0) {
-            setTasksData(prev =>
-              prev.filter(task => !tasksToDelete.some(del => del.id === task.id))
-            )
+            setTasksData((prev) => prev.filter((task) => !tasksToDelete.some((del) => del.id === task.id)))
           }
           rowAction?.row.toggleSelected(false)
         }}
