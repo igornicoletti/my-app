@@ -1,5 +1,3 @@
-// features/app/tasks/datatable/columns.tsx
-
 import {
   ArrowsDownUpIcon,
   CalendarIcon,
@@ -17,19 +15,24 @@ import type { Dispatch, SetStateAction } from 'react'
 
 import { ColumnHeader } from '@/components/datatable'
 import { Badge, Button, Checkbox } from '@/components/ui'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { type TaskLoaderData, type TaskSchema, taskSchema } from '@/features/app/tasks/api'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { type TaskSchema, taskSchema } from '@/features/app/tasks/api'
 import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/datatable'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
 
-interface GetTasksTableColumnsProps
-  extends Pick<TaskLoaderData, 'statusCounts' | 'priorityCounts' | 'estimatedHoursRange'> {
+interface GetTasksTableColumnsProps {
+  statusCounts: Record<TaskSchema["status"], number>
+  priorityCounts: Record<TaskSchema["priority"], number>
+  estimatedHoursRange: { min: number; max: number }
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
-
-const statusValues = taskSchema.shape.status.options
-const priorityValues = taskSchema.shape.priority.options
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
@@ -104,7 +107,7 @@ export const getTasksTableColumns = ({
       meta: {
         label: 'Status',
         variant: 'multiSelect',
-        options: statusValues.map((status) => ({
+        options: taskSchema.shape.status.options.map((status) => ({
           label: capitalize(status),
           value: status,
           count: statusCounts[status],
@@ -132,7 +135,7 @@ export const getTasksTableColumns = ({
       meta: {
         label: 'Priority',
         variant: 'multiSelect',
-        options: priorityValues.map((priority) => ({
+        options: taskSchema.shape.priority.options.map((priority) => ({
           label: capitalize(priority),
           value: priority,
           count: priorityCounts[priority],

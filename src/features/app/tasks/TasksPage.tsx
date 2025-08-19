@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 
-import { DataTable, Toolbar } from '@/components/datatable'
+import { ActionBar, ActionBarAction, ActionBarSelection, DataTable, SortList, Toolbar } from '@/components/datatable'
 import type { TaskLoaderData, TaskSchema } from '@/features/app/tasks/api'
-import { CreateTasks, DeleteTasks, UpdateTasks } from '@/features/app/tasks/components'
+import { DeleteTasks, UpdateTasks } from '@/features/app/tasks/components'
 import { getTasksTableColumns } from '@/features/app/tasks/datatable'
 import { useDataTable } from '@/hooks/useDataTable'
 import type { DataTableRowAction } from '@/types/datatable'
+import { DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 
 export const TasksPage = () => {
   const { tasks: loaderTasks, statusCounts, priorityCounts, estimatedHoursRange } = useLoaderData() as TaskLoaderData
@@ -42,15 +43,33 @@ export const TasksPage = () => {
             Here's a list of your tasks for this month!
           </p>
         </div>
-        <DataTable table={table}>
+        <DataTable
+          table={table}
+          actionBar={
+            <ActionBar table={table}>
+              <ActionBarSelection table={table} />
+              <ActionBarAction
+                size='icon'
+                tooltip='Export tasks'
+                onClick={() => console.log(`Export tasks`)}>
+                <DownloadSimpleIcon />
+              </ActionBarAction>
+              <ActionBarAction
+                size='icon'
+                tooltip='Delete tasks'
+                onClick={() => console.log(`Delete tasks`)}>
+                <TrashSimpleIcon />
+              </ActionBarAction>
+            </ActionBar>
+          }>
           <Toolbar table={table}>
-            <CreateTasks onCreated={(task) => setTasksData(prev => [task, ...prev])} />
+            <SortList table={table} />
           </Toolbar>
         </DataTable>
       </div>
 
       <UpdateTasks
-        open={rowAction?.variant === "update"}
+        open={rowAction?.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
         task={rowAction?.row.original ?? null}
         onSuccess={(updatedTask) => {

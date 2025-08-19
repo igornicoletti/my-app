@@ -38,11 +38,11 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
             <CommandEmpty>No columns found.</CommandEmpty>
             <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
               {columns.map((column) => (
-                <CommandItem
-                  key={column.id}
-                  onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
+                <CommandItem key={column.id} onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
                   <CheckIcon weight='bold' className={cn(column.getIsVisible() ? 'opacity-100' : 'opacity-0')} />
-                  <span className='truncate'>{column.columnDef.meta?.label ?? column.id}</span>
+                  <span className='truncate'>
+                    {column.columnDef.meta?.label ?? column.id}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>

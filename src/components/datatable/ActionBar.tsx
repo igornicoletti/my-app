@@ -1,25 +1,15 @@
 import { SpinnerGapIcon, XIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'motion/react'
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-  type ComponentProps
-} from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState, type ComponentProps } from 'react'
 import { createPortal } from 'react-dom'
 
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 
-interface ActionBarProps<TData> extends React.ComponentProps<typeof motion.div> {
+interface ActionBarProps<TData> extends ComponentProps<typeof motion.div> {
   table: Table<TData>
   visible?: boolean
   container?: Element | DocumentFragment | null
@@ -41,11 +31,13 @@ export const ActionBar = <TData,>({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') table.toggleAllRowsSelected(false)
     }
+
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [table])
 
   const container = containerProp ?? (mounted ? globalThis.document?.body : null)
+
   if (!container) return null
 
   const visible = visibleProp ?? table.getFilteredSelectedRowModel().rows.length > 0
@@ -54,18 +46,13 @@ export const ActionBar = <TData,>({
     <AnimatePresence>
       {visible && (
         <motion.div
-          role="toolbar"
-          aria-orientation="horizontal"
+          role='toolbar'
+          aria-orientation='horizontal'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
-          className={cn(
-            'fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm',
-            className
-          )}
-          {...props}
-        >
+          className={cn('fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-1.5 text-foreground shadow-sm', className)}  {...props}>
           {children}
         </motion.div>
       )}
@@ -92,14 +79,9 @@ export const ActionBarAction = ({
     <Button
       variant='secondary'
       size={size}
-      className={cn(
-        'gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5',
-        size === 'icon' ? 'size-7' : 'h-7',
-        className
-      )}
+      className={cn('gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70', size === 'icon' ? 'size-7' : 'h-7', className)}
       disabled={disabled || isPending}
-      {...props}
-    >
+      {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
     </Button>
   )
@@ -109,10 +91,7 @@ export const ActionBarAction = ({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-      <TooltipContent
-        sideOffset={6}
-        className='border bg-accent font-semibold text-foreground dark:bg-zinc-900 [&>span]:hidden'
-      >
+      <TooltipContent sideOffset={6} className='border bg-accent font-semibold text-foreground dark:bg-zinc-900 [&>span]:hidden'>
         <p>{tooltip}</p>
       </TooltipContent>
     </Tooltip>
@@ -123,7 +102,9 @@ interface ActionBarSelectionProps<TData> {
   table: Table<TData>
 }
 
-export const ActionBarSelection = <TData,>({ table }: ActionBarSelectionProps<TData>) => {
+export const ActionBarSelection = <TData,>({
+  table
+}: ActionBarSelectionProps<TData>) => {
   const onClearSelection = useCallback(() => table.toggleAllRowsSelected(false), [table])
 
   return (
@@ -135,13 +116,10 @@ export const ActionBarSelection = <TData,>({ table }: ActionBarSelectionProps<TD
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant='ghost' size='icon' className='size-5' onClick={onClearSelection}>
-            <XIcon className='size-3.5' />
+            <XIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent
-          sideOffset={10}
-          className='flex items-center gap-2 border bg-accent px-2 py-1 font-semibold text-foreground dark:bg-zinc-900 [&>span]:hidden'
-        >
+        <TooltipContent sideOffset={10} className='flex items-center gap-2 border bg-accent px-2 py-1 font-semibold text-foreground dark:bg-zinc-900 [&>span]:hidden'>
           <p>Clear selection</p>
           <kbd className='select-none rounded border bg-background px-1.5 py-px font-mono font-normal text-[0.7rem] text-foreground shadow-xs'>
             <abbr title='Escape' className='no-underline'>

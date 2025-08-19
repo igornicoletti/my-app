@@ -1,10 +1,4 @@
-import {
-  ArrowsDownUpIcon,
-  EyeSlashIcon,
-  SortAscendingIcon,
-  SortDescendingIcon,
-  XIcon
-} from '@phosphor-icons/react'
+import { ArrowsDownUpIcon, EyeSlashIcon, SortAscendingIcon, SortDescendingIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import type { ComponentProps } from 'react'
 

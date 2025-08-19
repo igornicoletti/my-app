@@ -49,19 +49,19 @@ export const UpdateTasks = ({ task, open, onOpenChange, onSuccess }: UpdateTasks
   }, [task, open])
 
   const { onSubmit, isLoading } = useSubmitForm(async (data: TaskSchema) => {
-    await new Promise(res => setTimeout(res, 500)) // simula request
+    await new Promise(res => setTimeout(res, 500))
     form.reset(data)
     onOpenChange(false)
     onSuccess?.({ ...data, updatedAt: new Date() })
     successToast({
       title: 'Task Updated!',
-      description: `The task "${data.title}" has been successfully updated.`
+      description: `The task ${data.title} has been successfully updated.`
     })
   })
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full max-w-sm">
+      <SheetContent className='w-full max-w-sm'>
         <SheetHeader>
           <SheetTitle>Update task</SheetTitle>
           <SheetDescription>
@@ -70,11 +70,11 @@ export const UpdateTasks = ({ task, open, onOpenChange, onSuccess }: UpdateTasks
         </SheetHeader>
         <TasksForm form={form} onSubmit={onSubmit}>
           <SheetFooter>
-            <Button disabled={isLoading} type="submit">
+            <Button disabled={isLoading} type='submit'>
               Save Task
             </Button>
             <SheetClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant='outline'>Cancel</Button>
             </SheetClose>
           </SheetFooter>
         </TasksForm>

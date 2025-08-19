@@ -1,6 +1,6 @@
-import { ArrowsDownUpIcon, CaretUpDownIcon, DotsSixVerticalIcon, TrashSimpleIcon } from '@phosphor-icons/react'
+import { ArrowsDownUpIcon, CaretDownIcon, DotsSixVerticalIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import type { ColumnSort, SortDirection, Table } from '@tanstack/react-table'
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ComponentProps } from 'react'
 
 import { Separator } from '@/components/ui'
 import { Badge } from '@/components/ui/badge'
@@ -13,13 +13,17 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from '@/components/ui/select'
 import {
   Sortable,
@@ -33,11 +37,15 @@ import { cn } from '@/lib/utils'
 const OPEN_MENU_SHORTCUT = 's'
 const REMOVE_SORT_SHORTCUTS = ['backspace', 'delete']
 
-interface SortListProps<TData> extends React.ComponentProps<typeof PopoverContent> {
+interface SortListProps<TData>
+  extends ComponentProps<typeof PopoverContent> {
   table: Table<TData>
 }
 
-export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
+export const SortList = <TData,>({
+  table,
+  ...props
+}: SortListProps<TData>) => {
   const id = useId()
   const labelId = useId()
   const descriptionId = useId()
@@ -54,50 +62,89 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
 
     for (const column of table.getAllColumns()) {
       if (!column.getCanSort()) continue
+
       const label = column.columnDef.meta?.label ?? column.id
       labels.set(column.id, label)
-      if (!sortingIds.has(column.id)) availableColumns.push({ id: column.id, label })
+
+      if (!sortingIds.has(column.id)) {
+        availableColumns.push({ id: column.id, label })
+      }
     }
 
-    return { columnLabels: labels, columns: availableColumns }
+    return {
+      columnLabels: labels,
+      columns: availableColumns,
+    }
   }, [sorting, table])
 
   const onSortAdd = useCallback(() => {
     const firstColumn = columns[0]
     if (!firstColumn) return
-    onSortingChange((prev) => [...prev, { id: firstColumn.id, desc: false }])
+
+    onSortingChange((prevSorting) => [
+      ...prevSorting,
+      { id: firstColumn.id, desc: false },
+    ])
   }, [columns, onSortingChange])
 
   const onSortUpdate = useCallback((sortId: string, updates: Partial<ColumnSort>) => {
-    onSortingChange((prev) => prev.map((sort) => (sort.id === sortId ? { ...sort, ...updates } : sort)))
+    onSortingChange((prevSorting) => {
+      if (!prevSorting) return prevSorting
+      return prevSorting.map((sort) =>
+        sort.id === sortId ? { ...sort, ...updates } : sort,
+      )
+    })
   }, [onSortingChange])
 
   const onSortRemove = useCallback((sortId: string) => {
-    onSortingChange((prev) => prev.filter((s) => s.id !== sortId))
+    onSortingChange((prevSorting) =>
+      prevSorting.filter((item) => item.id !== sortId),
+    )
   }, [onSortingChange])
 
-  const onSortingReset = useCallback(() => {
-    onSortingChange(table.initialState.sorting)
-  }, [onSortingChange, table.initialState.sorting])
+  const onSortingReset = useCallback(() =>
+    onSortingChange(table.initialState.sorting),
+    [onSortingChange, table.initialState.sorting],
+  )
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return
-      if (event.key.toLowerCase() === OPEN_MENU_SHORTCUT && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement
+      ) {
+        return
+      }
+
+      if (
+        event.key.toLowerCase() === OPEN_MENU_SHORTCUT &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.shiftKey
+      ) {
         event.preventDefault()
         setOpen(true)
       }
-      if (event.key.toLowerCase() === OPEN_MENU_SHORTCUT && event.shiftKey && sorting.length > 0) {
+
+      if (
+        event.key.toLowerCase() === OPEN_MENU_SHORTCUT &&
+        event.shiftKey &&
+        sorting.length > 0
+      ) {
         event.preventDefault()
         onSortingReset()
       }
     }
+
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [sorting.length, onSortingReset])
 
   const onTriggerKeyDown = useCallback((event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase()) && sorting.length > 0) {
+    if (
+      REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase()) &&
+      sorting.length > 0
+    ) {
       event.preventDefault()
       onSortingReset()
     }
@@ -116,7 +163,7 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
             {sorting.length > 0 && (
               <>
                 <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-                <Badge variant='secondary'>
+                <Badge variant='secondary' className='rounded-sm-sm px-1 font-normal'>
                   {sorting.length}
                 </Badge>
               </>
@@ -124,9 +171,10 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
           </Button>
         </PopoverTrigger>
         <PopoverContent
+          align='end'
           aria-labelledby={labelId}
           aria-describedby={descriptionId}
-          className='flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-2 p-4 sm:min-w-[380px]'
+          className='flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-2.5 p-4 sm:min-w-[380px]'
           {...props}>
           <div className='flex flex-col gap-1'>
             <h4 id={labelId} className='font-medium leading-none'>
@@ -138,7 +186,7 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
           </div>
           {sorting.length > 0 && (
             <SortableContent asChild>
-              <ul className='flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1'>
+              <ul className='flex max-h-[300px] flex-col gap-2 overflow-y-auto'>
                 {sorting.map((sort) => (
                   <SortItem
                     key={sort.id}
@@ -156,13 +204,18 @@ export const SortList = <TData,>({ table, ...props }: SortListProps<TData>) => {
           <div className='flex w-full items-center gap-2'>
             <Button
               size='sm'
+              className='rounded-sm'
               ref={addButtonRef}
               onClick={onSortAdd}
               disabled={columns.length === 0}>
               Add sort
             </Button>
             {sorting.length > 0 && (
-              <Button variant='outline' size='sm' onClick={onSortingReset}>
+              <Button
+                variant='outline'
+                size='sm'
+                className='rounded-sm'
+                onClick={onSortingReset}>
                 Reset sorting
               </Button>
             )}
@@ -182,7 +235,14 @@ interface SortItemProps {
   onSortRemove: (sortId: string) => void
 }
 
-const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSortRemove }: SortItemProps) => {
+const SortItem = ({
+  sort,
+  sortItemId,
+  columns,
+  columnLabels,
+  onSortUpdate,
+  onSortRemove,
+}: SortItemProps) => {
   const fieldListboxId = `${sortItemId}-field-listbox`
   const fieldTriggerId = `${sortItemId}-field-trigger`
   const directionListboxId = `${sortItemId}-direction-listbox`
@@ -190,22 +250,31 @@ const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSor
   const [showFieldSelector, setShowFieldSelector] = useState(false)
   const [showDirectionSelector, setShowDirectionSelector] = useState(false)
 
-  const onItemKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLLIElement>) => {
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return
-      if (showFieldSelector || showDirectionSelector) return
-      if (REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase())) onSortRemove(sort.id)
-    },
-    [sort.id, showFieldSelector, showDirectionSelector, onSortRemove],
-  )
+  const onItemKeyDown = useCallback((event: React.KeyboardEvent<HTMLLIElement>) => {
+    if (
+      event.target instanceof HTMLInputElement ||
+      event.target instanceof HTMLTextAreaElement
+    ) {
+      return
+    }
+
+    if (showFieldSelector || showDirectionSelector) {
+      return
+    }
+
+    if (REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase())) {
+      event.preventDefault()
+      onSortRemove(sort.id)
+    }
+  }, [sort.id, showFieldSelector, showDirectionSelector, onSortRemove])
 
   return (
     <SortableItem value={sort.id} asChild>
       <li
         id={sortItemId}
+        onKeyDown={onItemKeyDown}
         tabIndex={-1}
-        className='flex items-center gap-2'
-        onKeyDown={onItemKeyDown}>
+        className='flex items-center gap-2'>
         <Popover open={showFieldSelector} onOpenChange={setShowFieldSelector}>
           <PopoverTrigger asChild>
             <Button
@@ -213,9 +282,9 @@ const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSor
               aria-controls={fieldListboxId}
               variant='outline'
               size='sm'
-              className='w-44 justify-between'>
+              className='w-44 justify-between rounded-sm font-normal'>
               <span className='truncate'>{columnLabels.get(sort.id)}</span>
-              <CaretUpDownIcon className='opacity-50' />
+              <CaretDownIcon className='opacity-50' />
             </Button>
           </PopoverTrigger>
           <PopoverContent id={fieldListboxId} className='w-[var(--radix-popover-trigger-width)] origin-[var(--radix-popover-content-transform-origin)] p-0'>
@@ -225,7 +294,10 @@ const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSor
                 <CommandEmpty>No fields found.</CommandEmpty>
                 <CommandGroup>
                   {columns.map((column) => (
-                    <CommandItem key={column.id} value={column.id} onSelect={(value) => onSortUpdate(sort.id, { id: value })}>
+                    <CommandItem
+                      key={column.id}
+                      value={column.id}
+                      onSelect={(value) => onSortUpdate(sort.id, { id: value })}>
                       <span className='truncate'>{column.label}</span>
                     </CommandItem>
                   ))}
@@ -239,7 +311,7 @@ const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSor
           onOpenChange={setShowDirectionSelector}
           value={sort.desc ? 'desc' : 'asc'}
           onValueChange={(value: SortDirection) => onSortUpdate(sort.id, { desc: value === 'desc' })}>
-          <SelectTrigger aria-controls={directionListboxId}>
+          <SelectTrigger aria-controls={directionListboxId} className='h-8 rounded-sm [&[data-size]]:h-8'>
             <SelectValue />
           </SelectTrigger>
           <SelectContent id={directionListboxId} className='min-w-[var(--radix-select-trigger-width)] origin-[var(--radix-select-content-transform-origin)]'>
@@ -254,12 +326,15 @@ const SortItem = ({ sort, sortItemId, columns, columnLabels, onSortUpdate, onSor
           aria-controls={sortItemId}
           variant='outline'
           size='icon'
-          className='size-8 shrink-0'
+          className='size-8 shrink-0 rounded-sm'
           onClick={() => onSortRemove(sort.id)}>
           <TrashSimpleIcon />
         </Button>
         <SortableItemHandle asChild>
-          <Button variant='outline' size='icon' className='size-8 shrink-0'>
+          <Button
+            variant='outline'
+            size='icon'
+            className='size-8 shrink-0 rounded-sm'>
             <DotsSixVerticalIcon />
           </Button>
         </SortableItemHandle>

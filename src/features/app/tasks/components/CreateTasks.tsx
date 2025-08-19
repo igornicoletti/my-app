@@ -67,15 +67,15 @@ export const CreateTasks = ({ onCreated }: CreateTasksProps) => {
     onCreated?.(data)
     successToast({
       title: 'Task Created!',
-      description: `The task "${data.title}" has been successfully created.`,
+      description: `The task ${data.title} has been successfully created.`,
     })
   })
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='secondary' size='sm'>
-          Create Task
+        <Button variant='default' size='sm'>
+          New Task
         </Button>
       </SheetTrigger>
       <SheetContent className='w-full max-w-sm'>
