@@ -72,12 +72,11 @@ export const RangeFilter = <TData,>({
   }, [filter.filterId, filter.value, min, max, onFilterUpdate])
 
   return (
-    <div
-      data-slot='range'
-      className={cn('flex w-full items-center gap-2', className)}
+    <div data-slot='range' className={cn('flex w-full items-center gap-2', className)}
       {...props}>
       <Input
         id={`${inputId}-min`}
+        name={`${column.id}-min`}
         type='number'
         aria-label={`${meta?.label} minimum value`}
         aria-valuemin={min}
@@ -87,13 +86,14 @@ export const RangeFilter = <TData,>({
         placeholder={min.toString()}
         min={min}
         max={max}
-        className='h-8 w-full rounded'
+        className='h-8 w-full'
         defaultValue={value[0]}
         onChange={(event) => onRangeValueChange(event.target.value, true)}
       />
       <span className='sr-only shrink-0 text-muted-foreground'>to</span>
       <Input
         id={`${inputId}-max`}
+        name={`${column.id}-max`}
         type='number'
         aria-label={`${meta?.label} maximum value`}
         aria-valuemin={min}
@@ -103,7 +103,7 @@ export const RangeFilter = <TData,>({
         placeholder={max.toString()}
         min={min}
         max={max}
-        className='h-8 w-full rounded'
+        className='h-8 w-full'
         defaultValue={value[1]}
         onChange={(event) => onRangeValueChange(event.target.value)}
       />

@@ -5,7 +5,6 @@ import { useCallback, useId, useMemo, type ChangeEvent, type MouseEvent } from '
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
@@ -113,7 +112,7 @@ export const SliderFilter = <TData,>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='border-dashed [&_svg]:size-4'>
+        <Button variant='outline' size='sm' className='border-dashed'>
           {columnFilterValue ? (
             <div
               role='button'
@@ -140,12 +139,10 @@ export const SliderFilter = <TData,>({
       </PopoverTrigger>
       <PopoverContent align='start' className='flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3.5 p-4'>
         <div className='flex items-center gap-4'>
-          <Label htmlFor={`${id}-from`} className='sr-only'>
-            From
-          </Label>
           <div className='relative'>
             <Input
               id={`${id}-from`}
+              name={`${column.id}-from`}
               type='number'
               aria-valuemin={min}
               aria-valuemax={max}
@@ -164,12 +161,10 @@ export const SliderFilter = <TData,>({
               </span>
             )}
           </div>
-          <Label htmlFor={`${id}-to`} className='sr-only'>
-            to
-          </Label>
           <div className='relative'>
             <Input
               id={`${id}-to`}
+              name={`${column.id}-to`}
               type='number'
               aria-valuemin={min}
               aria-valuemax={max}
@@ -189,11 +184,8 @@ export const SliderFilter = <TData,>({
             )}
           </div>
         </div>
-        <Label htmlFor={`${id}-slider`} className='sr-only'>
-          {title} slider
-        </Label>
         <Slider
-          id={`${id}-slider`}
+          aria-label={`${title} slider`}
           min={min}
           max={max}
           step={step}

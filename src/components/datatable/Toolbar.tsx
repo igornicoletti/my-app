@@ -30,7 +30,7 @@ export const Toolbar = <TData,>({
     <div
       role='toolbar'
       aria-orientation='horizontal'
-      className={cn('flex w-full flex-col sm:flex-row items-start justify-between gap-2 p-1', className)}
+      className={cn('flex w-full flex-col lg:flex-row items-start justify-between gap-2 p-1', className)}
       {...props}>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
@@ -39,9 +39,10 @@ export const Toolbar = <TData,>({
         {isFiltered && (
           <Button
             aria-label='Reset filters'
-            variant='ghost'
+            variant='outline'
             size='sm'
-            onClick={onReset}>
+            onClick={onReset}
+            className='border-dashed'>
             <XIcon />
             Reset
           </Button>
@@ -72,10 +73,11 @@ const ToolbarFilter = <TData,>({
         case 'text':
           return (
             <Input
+              name={column.id}
               placeholder={columnMeta.placeholder ?? columnMeta.label}
               value={(column.getFilterValue() as string) ?? ''}
               onChange={(event) => column.setFilterValue(event.target.value)}
-              className='h-8 w-full lg:w-56'
+              className={cn('h-8 w-full md:w-56', columnMeta.unit && 'pr-8')}
             />
           )
 
@@ -83,12 +85,13 @@ const ToolbarFilter = <TData,>({
           return (
             <div className='relative'>
               <Input
+                name={column.id}
                 type='number'
                 inputMode='numeric'
                 placeholder={columnMeta.placeholder ?? columnMeta.label}
                 value={(column.getFilterValue() as string) ?? ''}
                 onChange={(event) => column.setFilterValue(event.target.value)}
-                className={cn('h-8 w-[120px]', columnMeta.unit && 'pr-8')}
+                className={cn('h-8 w-28', columnMeta.unit && 'pr-8')}
               />
               {columnMeta.unit && (
                 <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>

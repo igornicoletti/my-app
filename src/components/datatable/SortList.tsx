@@ -141,10 +141,7 @@ export const SortList = <TData,>({
   }, [sorting.length, onSortingReset])
 
   const onTriggerKeyDown = useCallback((event: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (
-      REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase()) &&
-      sorting.length > 0
-    ) {
+    if (REMOVE_SORT_SHORTCUTS.includes(event.key.toLowerCase()) && sorting.length > 0) {
       event.preventDefault()
       onSortingReset()
     }
@@ -282,7 +279,7 @@ const SortItem = ({
               aria-controls={fieldListboxId}
               variant='outline'
               size='sm'
-              className='w-44 justify-between rounded-sm font-normal'>
+              className='w-44 justify-between font-normal'>
               <span className='truncate'>{columnLabels.get(sort.id)}</span>
               <CaretDownIcon className='opacity-50' />
             </Button>
@@ -311,7 +308,7 @@ const SortItem = ({
           onOpenChange={setShowDirectionSelector}
           value={sort.desc ? 'desc' : 'asc'}
           onValueChange={(value: SortDirection) => onSortUpdate(sort.id, { desc: value === 'desc' })}>
-          <SelectTrigger aria-controls={directionListboxId} className='h-8 rounded-sm [&[data-size]]:h-8'>
+          <SelectTrigger aria-controls={directionListboxId} className='h-8 w-full [&[data-size]]:h-8'>
             <SelectValue />
           </SelectTrigger>
           <SelectContent id={directionListboxId} className='min-w-[var(--radix-select-trigger-width)] origin-[var(--radix-select-content-transform-origin)]'>
@@ -326,7 +323,7 @@ const SortItem = ({
           aria-controls={sortItemId}
           variant='outline'
           size='icon'
-          className='size-8 shrink-0 rounded-sm'
+          className='size-8 shrink-0'
           onClick={() => onSortRemove(sort.id)}>
           <TrashSimpleIcon />
         </Button>
@@ -334,7 +331,7 @@ const SortItem = ({
           <Button
             variant='outline'
             size='icon'
-            className='size-8 shrink-0 rounded-sm'>
+            className='size-8 shrink-0'>
             <DotsSixVerticalIcon />
           </Button>
         </SortableItemHandle>

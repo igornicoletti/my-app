@@ -14,34 +14,36 @@ import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 
 import { ColumnHeader } from '@/components/datatable'
-import { Badge, Button, Checkbox } from '@/components/ui'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type TaskSchema, taskSchema } from '@/features/app/tasks/api'
-import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/datatable'
+import { type TaskSchema, taskSchema } from '@/features/app/tasks/lib/schema'
+import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/lib/utils'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
 
-interface GetTasksTableColumnsProps {
-  statusCounts: Record<TaskSchema["status"], number>
-  priorityCounts: Record<TaskSchema["priority"], number>
-  estimatedHoursRange: { min: number; max: number }
+interface TasksColumnsProps {
+  statusCounts: Record<TaskSchema['status'], number>
+  priorityCounts: Record<TaskSchema['priority'], number>
+  estimatedHoursRange: [number, number]
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
-export const getTasksTableColumns = ({
+export const tasksColumns = ({
   statusCounts,
   priorityCounts,
   estimatedHoursRange,
   setRowAction,
-}: GetTasksTableColumnsProps): ColumnDef<TaskSchema>[] => [
+}: TasksColumnsProps): ColumnDef<TaskSchema>[] => [
     {
       id: 'select',
       header: ({ table }) => (
@@ -50,7 +52,7 @@ export const getTasksTableColumns = ({
             table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label='Select all'
+          aria-label='Select all rows'
           className='translate-y-0.5'
         />
       ),
@@ -78,7 +80,7 @@ export const getTasksTableColumns = ({
       header: ({ column }) => <ColumnHeader column={column} title='Title' />,
       cell: ({ row }) => (
         <div className='flex items-center gap-2'>
-          {row.original.label && <Badge variant='outline'>{row.original.label}</Badge>}
+          {row.original.label && <Badge variant='secondary'>{capitalize(row.original.label)}</Badge>}
           <span className='max-w-lg truncate font-medium'>{row.getValue('title')}</span>
         </div>
       ),
@@ -100,7 +102,7 @@ export const getTasksTableColumns = ({
         return (
           <div className='flex items-center gap-2'>
             <Icon className='text-muted-foreground' />
-            <span className='capitalize'>{status}</span>
+            <span className='capitalize'>{capitalize(status)}</span>
           </div>
         )
       },
@@ -128,7 +130,7 @@ export const getTasksTableColumns = ({
         return (
           <div className='flex items-center gap-2'>
             <Icon className='text-muted-foreground' />
-            <span className='capitalize'>{priority}</span>
+            <span className='capitalize'>{capitalize(priority)}</span>
           </div>
         )
       },
@@ -156,30 +158,22 @@ export const getTasksTableColumns = ({
       meta: {
         label: 'Est. Hours',
         variant: 'range',
-        range: [estimatedHoursRange.min, estimatedHoursRange.max],
+        range: estimatedHoursRange,
         unit: 'hr',
         icon: ClockIcon,
       },
       enableColumnFilter: true,
       filterFn: (row, columnId, value: [number?, number?]) => {
         const rowValue = row.getValue<number>(columnId)
-        if (typeof rowValue !== 'number') {
-          return false
-        }
+        if (typeof rowValue !== 'number') return false
 
         const [min, max] = value
         const isMinValid = typeof min === 'number' && !Number.isNaN(min)
         const isMaxValid = typeof max === 'number' && !Number.isNaN(max)
 
-        if (isMinValid && isMaxValid) {
-          return rowValue >= min && rowValue <= max
-        }
-        if (isMinValid) {
-          return rowValue >= min
-        }
-        if (isMaxValid) {
-          return rowValue <= max
-        }
+        if (isMinValid && isMaxValid) return rowValue >= min && rowValue <= max
+        if (isMinValid) return rowValue >= min
+        if (isMaxValid) return rowValue <= max
         return true
       },
     },
@@ -193,18 +187,16 @@ export const getTasksTableColumns = ({
         icon: CalendarIcon,
       },
       enableColumnFilter: true,
-      filterFn: (row, columnId, value: [number?, number?]) => {
-        const rowDate = row.getValue<Date>(columnId)?.getTime()
+      filterFn: (row, columnId, value: [Date?, Date?]) => {
+        const rowDate = row.getValue<Date>(columnId)
         if (!rowDate) return false
-
         const [from, to] = value
         if (from && rowDate < from) return false
         if (to) {
-          const toDate = new Date(to)
-          toDate.setHours(23, 59, 59, 999)
-          if (rowDate > toDate.getTime()) return false
+          const endOfDay = new Date(to)
+          endOfDay.setHours(23, 59, 59, 999)
+          if (rowDate > endOfDay) return false
         }
-
         return true
       },
     },
@@ -214,7 +206,7 @@ export const getTasksTableColumns = ({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              aria-label='Open menu'
+              aria-label='Open actions menu'
               variant='ghost'
               size='icon'
               className='flex size-8 data-[state=open]:bg-muted'>
@@ -223,10 +215,10 @@ export const getTasksTableColumns = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className='w-48' align='end'>
             <DropdownMenuItem>
-              <EyeIcon /> View Detail
+              <EyeIcon /> View Details
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <CopySimpleIcon /> Copy
+            <DropdownMenuItem onSelect={() => navigator.clipboard.writeText(row.original.code)}>
+              <CopySimpleIcon /> Copy Code
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
               <PencilSimpleIcon /> Edit
@@ -240,8 +232,6 @@ export const getTasksTableColumns = ({
           </DropdownMenuContent>
         </DropdownMenu>
       ),
-      enableSorting: false,
-      enableHiding: false,
       size: 40,
     },
   ]

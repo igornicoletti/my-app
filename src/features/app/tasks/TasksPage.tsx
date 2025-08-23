@@ -1,29 +1,27 @@
 import { useMemo, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 
-import { ActionBar, ActionBarAction, ActionBarSelection, DataTable, SortList, Toolbar } from '@/components/datatable'
-import type { TaskLoaderData, TaskSchema } from '@/features/app/tasks/api'
-import { DeleteTasks, UpdateTasks } from '@/features/app/tasks/components'
-import { getTasksTableColumns } from '@/features/app/tasks/datatable'
-import { useDataTable } from '@/hooks/useDataTable'
+import { DataTable, SortList, Toolbar } from '@/components/datatable'
+import { DeleteTasks, TasksActionBar, UpdateTask } from '@/features/app/tasks/components'
+import { tasksColumns } from '@/features/app/tasks/lib/columns'
+import type { TaskLoaderData } from '@/features/app/tasks/lib/loader'
+import type { TaskSchema } from '@/features/app/tasks/lib/schema'
+import { useDataTable } from '@/hooks'
 import type { DataTableRowAction } from '@/types/datatable'
-import { DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 
 export const TasksPage = () => {
-  const { tasks: loaderTasks, statusCounts, priorityCounts, estimatedHoursRange } = useLoaderData() as TaskLoaderData
-  const [tasksData, setTasksData] = useState(loaderTasks)
+  const { tasks, statusCounts, priorityCounts, estimatedHoursRange } = useLoaderData() as TaskLoaderData
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
 
-
-  const columns = useMemo(() => getTasksTableColumns({
+  const columns = useMemo(() => tasksColumns({
     statusCounts,
     priorityCounts,
-    estimatedHoursRange: estimatedHoursRange || { min: 0, max: 100 },
+    estimatedHoursRange,
     setRowAction,
-  }), [statusCounts, priorityCounts, estimatedHoursRange, setRowAction])
+  }), [statusCounts, priorityCounts, estimatedHoursRange])
 
   const { table } = useDataTable({
-    data: tasksData,
+    data: tasks,
     columns,
     initialState: {
       sorting: [{ id: 'createdAt', desc: true }],
@@ -32,7 +30,6 @@ export const TasksPage = () => {
     getRowId: (originalRow) => originalRow.id,
   })
 
-  const tasksToDelete = rowAction?.variant === 'delete' ? [rowAction.row.original] : []
 
   return (
     <>
@@ -43,53 +40,27 @@ export const TasksPage = () => {
             Here's a list of your tasks for this month!
           </p>
         </div>
+
         <DataTable
           table={table}
-          actionBar={
-            <ActionBar table={table}>
-              <ActionBarSelection table={table} />
-              <ActionBarAction
-                size='icon'
-                tooltip='Export tasks'
-                onClick={() => console.log(`Export tasks`)}>
-                <DownloadSimpleIcon />
-              </ActionBarAction>
-              <ActionBarAction
-                size='icon'
-                tooltip='Delete tasks'
-                onClick={() => console.log(`Delete tasks`)}>
-                <TrashSimpleIcon />
-              </ActionBarAction>
-            </ActionBar>
-          }>
+          actionBar={<TasksActionBar table={table} />}>
           <Toolbar table={table}>
             <SortList table={table} />
           </Toolbar>
         </DataTable>
+
+        <UpdateTask
+          open={rowAction?.variant === 'update'}
+          onOpenChange={() => setRowAction(null)}
+          task={rowAction?.row.original ?? null} />
+
+        <DeleteTasks
+          open={rowAction?.variant === 'delete'}
+          onOpenChange={() => setRowAction(null)}
+          tasks={rowAction?.row.original ? [rowAction?.row.original] : []}
+          showTrigger={false}
+          onSuccess={() => rowAction?.row.toggleSelected(false)} />
       </div>
-
-      <UpdateTasks
-        open={rowAction?.variant === 'update'}
-        onOpenChange={() => setRowAction(null)}
-        task={rowAction?.row.original ?? null}
-        onSuccess={(updatedTask) => {
-          setTasksData((prev) => prev.map((task) => task.id === updatedTask.id ? updatedTask : task))
-          rowAction?.row.toggleSelected(false)
-        }}
-      />
-
-      <DeleteTasks
-        open={rowAction?.variant === 'delete'}
-        onOpenChange={() => setRowAction(null)}
-        tasks={tasksToDelete}
-        showTrigger={false}
-        onSuccess={() => {
-          if (tasksToDelete.length > 0) {
-            setTasksData((prev) => prev.filter((task) => !tasksToDelete.some((del) => del.id === task.id)))
-          }
-          rowAction?.row.toggleSelected(false)
-        }}
-      />
     </>
   )
 }

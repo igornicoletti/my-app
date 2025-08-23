@@ -1,4 +1,4 @@
-import { ArrowsDownUpIcon, EyeSlashIcon, SortAscendingIcon, SortDescendingIcon, XIcon } from '@phosphor-icons/react'
+import { ArrowDownIcon, ArrowsDownUpIcon, ArrowUpIcon, EyeSlashIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import type { ComponentProps } from 'react'
 
@@ -34,9 +34,9 @@ export const ColumnHeader = <TData, TValue>({
           {title}
           {column.getCanSort() &&
             (column.getIsSorted() === 'desc' ? (
-              <SortDescendingIcon />
+              <ArrowDownIcon />
             ) : column.getIsSorted() === 'asc' ? (
-              <SortAscendingIcon />
+              <ArrowUpIcon />
             ) : (
               <ArrowsDownUpIcon />
             ))}
@@ -49,14 +49,14 @@ export const ColumnHeader = <TData, TValue>({
               className='relative pr-8 pl-2 [&>span:first-child]:right-2 [&>span:first-child]:left-auto [&_svg]:text-muted-foreground'
               checked={column.getIsSorted() === 'asc'}
               onClick={() => column.toggleSorting(false)}>
-              <SortAscendingIcon />
+              <ArrowUpIcon />
               Asc
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               className='relative pr-8 pl-2 [&>span:first-child]:right-2 [&>span:first-child]:left-auto [&_svg]:text-muted-foreground'
               checked={column.getIsSorted() === 'desc'}
               onClick={() => column.toggleSorting(true)}>
-              <SortDescendingIcon />
+              <ArrowDownIcon />
               Desc
             </DropdownMenuCheckboxItem>
             {column.getIsSorted() && (

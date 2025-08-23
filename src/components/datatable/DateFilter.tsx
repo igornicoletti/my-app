@@ -158,7 +158,7 @@ export const DateFilter = <TData,>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='border-dashed [&_svg]:size-4'>
+        <Button variant='outline' size='sm' className='border-dashed'>
           {hasValue ? (
             <div
               role='button'

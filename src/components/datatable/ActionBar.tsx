@@ -52,12 +52,16 @@ export const ActionBar = <TData,>({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
-          className={cn('fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-1.5 text-foreground shadow-sm', className)}  {...props}>
+          className={cn(
+            'fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-1.5 text-foreground shadow-sm',
+            className,
+          )}
+          {...props}>
           {children}
         </motion.div>
       )}
     </AnimatePresence>,
-    container
+    container,
   )
 }
 
@@ -77,9 +81,9 @@ export const ActionBarAction = ({
 }: ActionBarActionProps) => {
   const trigger = (
     <Button
-      variant='secondary'
+      variant='outline'
       size={size}
-      className={cn('gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70', size === 'icon' ? 'size-7' : 'h-7', className)}
+      className={cn(size === 'icon' ? 'size-7' : 'h-7', className)}
       disabled={disabled || isPending}
       {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
@@ -91,7 +95,7 @@ export const ActionBarAction = ({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-      <TooltipContent sideOffset={6} className='border bg-accent font-semibold text-foreground dark:bg-zinc-900 [&>span]:hidden'>
+      <TooltipContent sideOffset={6} className='border bg-popover font-semibold text-foreground [&>span]:hidden'>
         <p>{tooltip}</p>
       </TooltipContent>
     </Tooltip>
@@ -102,9 +106,7 @@ interface ActionBarSelectionProps<TData> {
   table: Table<TData>
 }
 
-export const ActionBarSelection = <TData,>({
-  table
-}: ActionBarSelectionProps<TData>) => {
+export const ActionBarSelection = <TData,>({ table }: ActionBarSelectionProps<TData>) => {
   const onClearSelection = useCallback(() => table.toggleAllRowsSelected(false), [table])
 
   return (
@@ -115,11 +117,17 @@ export const ActionBarSelection = <TData,>({
       <Separator orientation='vertical' className='mr-1 ml-2 data-[orientation=vertical]:h-4' />
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant='ghost' size='icon' className='size-5' onClick={onClearSelection}>
+          <Button
+            variant='ghost'
+            size='icon'
+            className='size-5'
+            onClick={onClearSelection}>
             <XIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent sideOffset={10} className='flex items-center gap-2 border bg-accent px-2 py-1 font-semibold text-foreground dark:bg-zinc-900 [&>span]:hidden'>
+        <TooltipContent
+          sideOffset={10}
+          className='flex items-center gap-2 border bg-popover px-2 py-1 font-semibold text-foreground [&>span]:hidden'>
           <p>Clear selection</p>
           <kbd className='select-none rounded border bg-background px-1.5 py-px font-mono font-normal text-[0.7rem] text-foreground shadow-xs'>
             <abbr title='Escape' className='no-underline'>

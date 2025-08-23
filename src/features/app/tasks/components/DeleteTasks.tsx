@@ -1,6 +1,7 @@
-import { TrashIcon } from '@phosphor-icons/react'
+import { SpinnerGapIcon, TrashIcon } from '@phosphor-icons/react'
 import type { Row } from '@tanstack/react-table'
 import { useTransition, type ComponentPropsWithoutRef } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -23,34 +24,33 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import type { TaskSchema as Task } from '@/features/app/tasks/api'
-import { useToast } from '@/hooks'
+import { deleteTasks } from '@/features/app/tasks/lib/actions'
+import type { TaskSchema } from '@/features/app/tasks/lib/schema'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 interface DeleteTasksProps extends ComponentPropsWithoutRef<typeof Dialog> {
-  tasks: Row<Task>['original'][]
+  tasks: Row<TaskSchema>['original'][]
   showTrigger?: boolean
   onSuccess?: () => void
 }
 
-export const DeleteTasks = ({
-  tasks,
-  showTrigger = true,
-  onSuccess,
-  ...props
-}: DeleteTasksProps) => {
+export const DeleteTasks = ({ tasks, showTrigger = true, onSuccess, ...props }: DeleteTasksProps) => {
   const [isDeletePending, startDeleteTransition] = useTransition()
   const isDesktop = useMediaQuery('(min-width: 640px)')
-  const { successToast } = useToast()
 
   const onDelete = () => {
     startDeleteTransition(async () => {
-      await new Promise(res => setTimeout(res, 500))
-      successToast({
-        title: 'Task Deleted!',
-        description: `${tasks.length} task has been successfully deleted.`,
+      const { error } = await deleteTasks({
+        ids: tasks.map((task) => task.id),
       })
+
+      if (error) {
+        toast.error(error)
+        return
+      }
+
       props.onOpenChange?.(false)
+      toast.success('Tasks deleted')
       onSuccess?.()
     })
   }
@@ -69,14 +69,21 @@ export const DeleteTasks = ({
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently remove the data from our servers.
+            This action cannot be undone. This will permanently delete your{' '}
+            <span className='font-semibold'>{tasks.length}</span>
+            {tasks.length === 1 ? ' task' : ' tasks'} from our system.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant='outline'>Cancel</Button>
           </DialogClose>
-          <Button onClick={onDelete} disabled={isDeletePending} variant='destructive'>
+          <Button
+            aria-label='Delete selected rows'
+            variant='destructive'
+            onClick={onDelete}
+            disabled={isDeletePending}>
+            {isDeletePending && <SpinnerGapIcon className='animate-spin' />}
             Delete
           </Button>
         </DialogFooter>
@@ -96,16 +103,23 @@ export const DeleteTasks = ({
         <DrawerHeader>
           <DrawerTitle>Are you absolutely sure?</DrawerTitle>
           <DrawerDescription>
-            This action cannot be undone. This will permanently remove the data from our servers.
+            This action cannot be undone. This will permanently delete your{' '}
+            <span className='font-semibold'>{tasks.length}</span>
+            {tasks.length === 1 ? ' task' : ' tasks'} from our system.
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
+          <Button
+            aria-label='Delete selected rows'
+            variant='destructive'
+            onClick={onDelete}
+            disabled={isDeletePending}>
+            {isDeletePending && <SpinnerGapIcon className='animate-spin' />}
+            Delete
+          </Button>
           <DrawerClose asChild>
             <Button variant='outline'>Cancel</Button>
           </DrawerClose>
-          <Button onClick={onDelete} disabled={isDeletePending} variant='destructive'>
-            Delete
-          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
