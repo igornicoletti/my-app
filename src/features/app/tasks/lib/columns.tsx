@@ -7,7 +7,8 @@ import {
   TextAaIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
-import type { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
+import { useFetcher } from 'react-router-dom'
 
 import { ColumnHeader } from '@/components/datatable'
 import { Badge } from '@/components/ui/badge'
@@ -20,12 +21,13 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type TaskSchema, taskSchema } from '@/features/app/tasks/lib/schema'
+import { taskSchema, type TaskSchema } from '@/features/app/tasks/lib/schema'
 import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/lib/utils'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
@@ -50,7 +52,8 @@ export const tasksColumns = ({
       header: ({ table }) => (
         <Checkbox
           checked={
-            table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label='Select all rows'
@@ -70,6 +73,7 @@ export const tasksColumns = ({
       size: 40,
     },
     {
+      id: 'code',
       accessorKey: 'code',
       header: ({ column }) => <ColumnHeader column={column} title='Task' />,
       cell: ({ row }) => row.getValue('code'),
@@ -77,14 +81,19 @@ export const tasksColumns = ({
       enableHiding: false,
     },
     {
+      id: 'title',
       accessorKey: 'title',
       header: ({ column }) => <ColumnHeader column={column} title='Title' />,
-      cell: ({ row }) => (
-        <div className='flex items-center gap-2'>
-          {row.original.label && <Badge variant='secondary'>{capitalize(row.original.label)}</Badge>}
-          <span className='max-w-lg truncate font-medium'>{row.getValue('title')}</span>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const label = taskSchema.shape.label.options.find((label) =>
+          label === row.original.label)
+        return (
+          <div className='flex items-center gap-2'>
+            {label && <Badge variant='secondary'>{capitalize(label)}</Badge>}
+            <span className='max-w-lg truncate'>{row.getValue('title')}</span>
+          </div>
+        )
+      },
       meta: {
         label: 'Title',
         placeholder: 'Search titles...',
@@ -94,10 +103,12 @@ export const tasksColumns = ({
       enableColumnFilter: true,
     },
     {
+      id: 'status',
       accessorKey: 'status',
       header: ({ column }) => <ColumnHeader column={column} title='Status' />,
       cell: ({ cell }) => {
-        const status = cell.getValue<TaskSchema['status']>()
+        const status = taskSchema.shape.status.options.find((status) =>
+          status === cell.getValue<TaskSchema['status']>())
         if (!status) return null
         const Icon = getStatusIcon(status)
         return (
@@ -122,10 +133,12 @@ export const tasksColumns = ({
       filterFn: 'arrIncludesSome',
     },
     {
+      id: 'priority',
       accessorKey: 'priority',
       header: ({ column }) => <ColumnHeader column={column} title='Priority' />,
       cell: ({ cell }) => {
-        const priority = cell.getValue<TaskSchema['priority']>()
+        const priority = taskSchema.shape.priority.options.find((priority) =>
+          priority === cell.getValue<TaskSchema['priority']>())
         if (!priority) return null
         const Icon = getPriorityIcon(priority)
         return (
@@ -150,11 +163,12 @@ export const tasksColumns = ({
       filterFn: 'arrIncludesSome',
     },
     {
+      id: 'estimatedHours',
       accessorKey: 'estimatedHours',
       header: ({ column }) => <ColumnHeader column={column} title='Est. Hours' />,
       cell: ({ cell }) => {
         const estimatedHours = cell.getValue<number>()
-        return <div className='w-20 text-right font-mono'>{estimatedHours}</div>
+        return <div className='w-20 text-right'>{estimatedHours}</div>
       },
       meta: {
         label: 'Est. Hours',
@@ -179,6 +193,7 @@ export const tasksColumns = ({
       },
     },
     {
+      id: 'createdAt',
       accessorKey: 'createdAt',
       header: ({ column }) => <ColumnHeader column={column} title='Created At' />,
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
@@ -203,53 +218,56 @@ export const tasksColumns = ({
     },
     {
       id: 'actions',
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label='Open actions menu'
-              variant='ghost'
-              size='icon'
-              className='flex size-8 data-[state=open]:bg-muted'>
-              <DotsThreeIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-48' align='end'>
-            <DropdownMenuItem>
-              View details
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => navigator.clipboard.writeText(row.original.code)}>
-              Make a copy
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
-                <DropdownMenuRadioGroup value={row.original.label}>
-                  {taskSchema.shape.status.options.map((label) => (
-                    <DropdownMenuRadioItem
-                      key={label}
-                      value={label}
-                      className="capitalize">
-                      {label}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              variant='destructive'
-              onSelect={() => setRowAction({ row, variant: 'delete' })}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
+      cell: function Cell({ row }) {
+        const fetcher = useFetcher()
+        const isUpdating = fetcher.state !== 'idle'
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                aria-label='Open menu'
+                variant='ghost'
+                className='flex size-8 p-0 data-[state=open]:bg-muted'>
+                <DotsThreeIcon aria-hidden='true' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end' className='w-40'>
+              <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuRadioGroup
+                    value={row.original.label}
+                    onValueChange={(value) => {
+                      const formData = new FormData()
+                      formData.append('intent', 'updateTask')
+                      formData.append('id', row.original.id)
+                      formData.append('label', value)
+                      fetcher.submit(formData, { method: 'POST' })
+                    }}>
+                    {taskSchema.shape.label.options.map((label) => (
+                      <DropdownMenuRadioItem
+                        key={label}
+                        value={label}
+                        className='capitalize'
+                        disabled={isUpdating}>
+                        {label}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'delete' })}>
+                Delete
+                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
       size: 40,
     },
   ]

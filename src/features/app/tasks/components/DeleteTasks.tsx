@@ -24,8 +24,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { deleteTasks } from '@/features/app/tasks/lib/actions'
 import type { TaskSchema } from '@/features/app/tasks/lib/schema'
+import { deleteTasks } from '@/features/app/tasks/lib/service'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 interface DeleteTasksProps extends ComponentPropsWithoutRef<typeof Dialog> {

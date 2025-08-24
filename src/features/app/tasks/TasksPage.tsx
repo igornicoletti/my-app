@@ -34,14 +34,11 @@ export const TasksPage = () => {
   return (
     <>
       <div className='flex flex-col gap-6 px-2'>
-        <div className='flex w-full flex-wrap items-end justify-between gap-6'>
-          <div className='grid gap-2'>
-            <h2 className='text-xl font-bold'>Tasks Table</h2>
-            <p className='text-sm text-muted-foreground'>
-              Here's a list of your tasks for this month!
-            </p>
-          </div>
-          {/* <TasksToolbarActions table={table} /> */}
+        <div className='grid gap-2'>
+          <h2 className='text-xl font-bold'>Tasks Table</h2>
+          <p className='text-sm text-muted-foreground'>
+            Here's a list of your tasks for this month!
+          </p>
         </div>
 
         <DataTable
@@ -56,14 +53,16 @@ export const TasksPage = () => {
       <UpdateTask
         open={rowAction?.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
-        task={rowAction?.row.original ?? null} />
+        task={rowAction?.row.original ?? null}
+      />
 
       <DeleteTasks
         open={rowAction?.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         tasks={rowAction?.row.original ? [rowAction?.row.original] : []}
         showTrigger={false}
-        onSuccess={() => rowAction?.row.toggleSelected(false)} />
+        onSuccess={() => rowAction?.row.toggleSelected(false)}
+      />
     </>
   )
 }

@@ -8,7 +8,7 @@ export const taskSchema = z.object({
   id: z.string(),
   code: z.string(),
   title: z.string(),
-  estimatedHours: z.number().min(0),
+  estimatedHours: z.coerce.number().min(0),
   status: z.enum(statuses),
   label: z.enum(labels),
   priority: z.enum(priorities),

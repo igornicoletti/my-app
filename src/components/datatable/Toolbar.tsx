@@ -1,4 +1,4 @@
-import { XIcon } from '@phosphor-icons/react'
+import { ArrowsClockwiseIcon } from '@phosphor-icons/react'
 import type { Column, Table } from '@tanstack/react-table'
 import { useCallback, useMemo, type ComponentProps } from 'react'
 
@@ -43,7 +43,7 @@ export const Toolbar = <TData,>({
             size='sm'
             onClick={onReset}
             className='border-dashed'>
-            <XIcon />
+            <ArrowsClockwiseIcon />
             Reset
           </Button>
         )}

@@ -137,8 +137,8 @@ export const SliderFilter = <TData,>({
           ) : null}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align='start' className='flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3.5 p-4'>
-        <div className='flex items-center gap-4'>
+      <PopoverContent align='start' className='flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-4 p-2'>
+        <div className='flex items-center gap-2'>
           <div className='relative'>
             <Input
               id={`${id}-from`}
@@ -153,7 +153,7 @@ export const SliderFilter = <TData,>({
               max={max}
               value={range[0]?.toString()}
               onChange={onFromInputChange}
-              className={cn('h-8', unit && 'pr-8')}
+              className={cn('h-8 w-24', unit && 'pr-8')}
             />
             {unit && (
               <span className='absolute top-0 right-0 bottom-0 flex items-center px-2 text-muted-foreground text-sm'>
@@ -175,7 +175,7 @@ export const SliderFilter = <TData,>({
               max={max}
               value={range[1]?.toString()}
               onChange={onToInputChange}
-              className={cn('h-8', unit && 'pr-8')}
+              className={cn('h-8 w-24', unit && 'pr-8')}
             />
             {unit && (
               <span className='absolute top-0 right-0 bottom-0 flex items-center px-2 text-muted-foreground text-sm'>

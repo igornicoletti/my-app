@@ -1,4 +1,4 @@
-import { ArrowUpIcon, CheckCircleIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
+import { ArrowClockwiseIcon, ArrowUpIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
 import { useCallback, useState, useTransition } from 'react'
@@ -6,8 +6,8 @@ import { toast } from 'sonner'
 
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/datatable'
 import { Select, SelectContent, SelectGroup, SelectItem, Separator } from '@/components/ui'
-import { deleteTasks, updateTasks } from '@/features/app/tasks/lib/actions'
 import { taskSchema, type TaskSchema } from '@/features/app/tasks/lib/schema'
+import { deleteTasks, updateTasks } from '@/features/app/tasks/lib/service'
 import { exportTableToCSV } from '@/lib/export'
 
 const actions = [
@@ -99,7 +99,7 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
               size='icon'
               tooltip='Update status'
               isPending={getIsActionPending('update-status')}>
-              <CheckCircleIcon />
+              <ArrowClockwiseIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>

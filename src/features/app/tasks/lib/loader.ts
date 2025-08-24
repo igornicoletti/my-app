@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from 'react-router-dom'
 
-import { generateRandomTasks } from '@/features/app/tasks/lib/faker'
-import { type TaskSchema, priorities, statuses, } from '@/features/app/tasks/lib/schema'
+import { type TaskSchema, priorities, statuses } from '@/features/app/tasks/lib/schema'
+import { getTasks } from '@/features/app/tasks/lib/service'
 import { getFacetedCounts, getRangeValues } from '@/features/app/tasks/lib/utils'
 
 export type TaskLoaderData = {
@@ -12,7 +12,8 @@ export type TaskLoaderData = {
 }
 
 export const taskLoader = async (_: LoaderFunctionArgs): Promise<TaskLoaderData> => {
-  const tasks = generateRandomTasks(50)
+  const tasks = await getTasks()
+
   const statusCounts = getFacetedCounts(tasks, 'status', statuses)
   const priorityCounts = getFacetedCounts(tasks, 'priority', priorities)
   const [min, max] = getRangeValues(tasks, 'estimatedHours')

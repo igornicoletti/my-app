@@ -16,8 +16,8 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { TaskForm } from '@/features/app/tasks/components'
-import { createTask } from '@/features/app/tasks/lib/actions'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/schema'
+import { createTask } from '@/features/app/tasks/lib/service'
 
 export const CreateTasks = () => {
   const [open, setOpen] = useState(false)

@@ -153,9 +153,7 @@ export const TaskForm = <T extends FieldValues>({
                 step='0.5'
                 min='0'
                 {...field}
-                onChange={(event) =>
-                  field.onChange(event.target.valueAsNumber)
-                }
+                onChange={(event) => field.onChange(event.target.valueAsNumber)}
               />
             </FormControl>
             <FormMessage />

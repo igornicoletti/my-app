@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
+import { customAlphabet } from 'nanoid'
 
 import { type TaskSchema, labels, priorities, statuses } from '@/features/app/tasks/lib/schema'
 import { generateId } from '@/lib'
-import { customAlphabet } from 'nanoid'
 
 export const generateRandomTask = (): TaskSchema => {
   return {

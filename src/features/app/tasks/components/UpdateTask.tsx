@@ -15,8 +15,8 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { TaskForm } from '@/features/app/tasks/components'
-import { updateTask } from '@/features/app/tasks/lib/actions'
 import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema } from '@/features/app/tasks/lib/schema'
+import { updateTask } from '@/features/app/tasks/lib/service'
 
 interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {
   task: TaskSchema | null
