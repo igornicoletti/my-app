@@ -1,10 +1,11 @@
 import { ArrowUpIcon, CheckCircleIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
+import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
 import { useCallback, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/datatable'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, Separator } from '@/components/ui'
+import { Select, SelectContent, SelectGroup, SelectItem, Separator } from '@/components/ui'
 import { deleteTasks, updateTasks } from '@/features/app/tasks/lib/actions'
 import { taskSchema, type TaskSchema } from '@/features/app/tasks/lib/schema'
 import { exportTableToCSV } from '@/lib/export'

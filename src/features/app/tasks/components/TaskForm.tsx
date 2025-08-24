@@ -40,7 +40,7 @@ export const TaskForm = <T extends FieldValues>({
         control={form.control}
         name={'title' as FieldPath<T>}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className='px-4'>
             <FormLabel>Title</FormLabel>
             <FormControl>
               <Textarea
@@ -57,11 +57,11 @@ export const TaskForm = <T extends FieldValues>({
         control={form.control}
         name={'label' as FieldPath<T>}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className='px-4'>
             <FormLabel>Label</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className='capitalize'>
+                <SelectTrigger className='capitalize w-full'>
                   <SelectValue placeholder='Select a label' />
                 </SelectTrigger>
               </FormControl>
@@ -86,11 +86,11 @@ export const TaskForm = <T extends FieldValues>({
         control={form.control}
         name={'status' as FieldPath<T>}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className='px-4'>
             <FormLabel>Status</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className='capitalize'>
+                <SelectTrigger className='capitalize w-full'>
                   <SelectValue placeholder='Select a status' />
                 </SelectTrigger>
               </FormControl>
@@ -115,11 +115,11 @@ export const TaskForm = <T extends FieldValues>({
         control={form.control}
         name={'priority' as FieldPath<T>}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className='px-4'>
             <FormLabel>Priority</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className='capitalize'>
+                <SelectTrigger className='capitalize w-full'>
                   <SelectValue placeholder='Select a priority' />
                 </SelectTrigger>
               </FormControl>
@@ -144,7 +144,7 @@ export const TaskForm = <T extends FieldValues>({
         control={form.control}
         name={'estimatedHours' as FieldPath<T>}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className='px-4'>
             <FormLabel>Estimated Hours</FormLabel>
             <FormControl>
               <Input

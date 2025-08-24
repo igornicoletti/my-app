@@ -30,7 +30,7 @@ export const Toolbar = <TData,>({
     <div
       role='toolbar'
       aria-orientation='horizontal'
-      className={cn('flex w-full flex-col lg:flex-row items-start justify-between gap-2 p-1', className)}
+      className={cn('flex flex-wrap w-full items-start justify-between gap-2 p-1', className)}
       {...props}>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
@@ -77,7 +77,7 @@ const ToolbarFilter = <TData,>({
               placeholder={columnMeta.placeholder ?? columnMeta.label}
               value={(column.getFilterValue() as string) ?? ''}
               onChange={(event) => column.setFilterValue(event.target.value)}
-              className={cn('h-8 w-full md:w-56', columnMeta.unit && 'pr-8')}
+              className={cn('h-8 min-w-max lg:w-56', columnMeta.unit && 'pr-8')}
             />
           )
 
@@ -91,7 +91,7 @@ const ToolbarFilter = <TData,>({
                 placeholder={columnMeta.placeholder ?? columnMeta.label}
                 value={(column.getFilterValue() as string) ?? ''}
                 onChange={(event) => column.setFilterValue(event.target.value)}
-                className={cn('h-8 w-28', columnMeta.unit && 'pr-8')}
+                className={cn('h-8 w-full md:w-28', columnMeta.unit && 'pr-8')}
               />
               {columnMeta.unit && (
                 <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>

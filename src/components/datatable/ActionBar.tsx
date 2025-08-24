@@ -25,7 +25,9 @@ export const ActionBar = <TData,>({
 }: ActionBarProps<TData>) => {
   const [mounted, setMounted] = useState(false)
 
-  useLayoutEffect(() => setMounted(true), [])
+  useLayoutEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -53,7 +55,7 @@ export const ActionBar = <TData,>({
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
           className={cn(
-            'fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-1.5 text-foreground shadow-sm',
+            'fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm',
             className,
           )}
           {...props}>
@@ -81,9 +83,12 @@ export const ActionBarAction = ({
 }: ActionBarActionProps) => {
   const trigger = (
     <Button
-      variant='outline'
+      variant='secondary'
       size={size}
-      className={cn(size === 'icon' ? 'size-7' : 'h-7', className)}
+      className={cn(
+        size === 'icon' ? 'size-7' : 'h-7',
+        className
+      )}
       disabled={disabled || isPending}
       {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
@@ -95,9 +100,7 @@ export const ActionBarAction = ({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-      <TooltipContent sideOffset={6} className='border bg-popover font-semibold text-foreground [&>span]:hidden'>
-        <p>{tooltip}</p>
-      </TooltipContent>
+      <TooltipContent>{tooltip}</TooltipContent>
     </Tooltip>
   )
 }
@@ -106,8 +109,12 @@ interface ActionBarSelectionProps<TData> {
   table: Table<TData>
 }
 
-export const ActionBarSelection = <TData,>({ table }: ActionBarSelectionProps<TData>) => {
-  const onClearSelection = useCallback(() => table.toggleAllRowsSelected(false), [table])
+export const ActionBarSelection = <TData,>({
+  table
+}: ActionBarSelectionProps<TData>) => {
+  const onClearSelection = useCallback(() => {
+    table.toggleAllRowsSelected(false)
+  }, [table])
 
   return (
     <div className='flex h-7 items-center rounded-md border pr-1 pl-2.5'>
@@ -125,11 +132,9 @@ export const ActionBarSelection = <TData,>({ table }: ActionBarSelectionProps<TD
             <XIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent
-          sideOffset={10}
-          className='flex items-center gap-2 border bg-popover px-2 py-1 font-semibold text-foreground [&>span]:hidden'>
-          <p>Clear selection</p>
-          <kbd className='select-none rounded border bg-background px-1.5 py-px font-mono font-normal text-[0.7rem] text-foreground shadow-xs'>
+        <TooltipContent>
+          Clear selection
+          <kbd className='ml-2 select-none rounded border bg-primary-foreground/25 px-1 py-px text-[0.675rem] shadow-xs'>
             <abbr title='Escape' className='no-underline'>
               Esc
             </abbr>

@@ -3,12 +3,8 @@ import {
   CalendarIcon,
   CircleDashedIcon,
   ClockIcon,
-  CopySimpleIcon,
   DotsThreeIcon,
-  EyeIcon,
-  PencilSimpleIcon,
-  TextAaIcon,
-  TrashSimpleIcon,
+  TextAaIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
@@ -21,7 +17,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { type TaskSchema, taskSchema } from '@/features/app/tasks/lib/schema'
@@ -215,19 +216,36 @@ export const tasksColumns = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className='w-48' align='end'>
             <DropdownMenuItem>
-              <EyeIcon /> View Details
+              View details
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
+              Edit
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => navigator.clipboard.writeText(row.original.code)}>
-              <CopySimpleIcon /> Copy Code
+              Make a copy
             </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
-              <PencilSimpleIcon /> Edit
-            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuRadioGroup value={row.original.label}>
+                  {taskSchema.shape.status.options.map((label) => (
+                    <DropdownMenuRadioItem
+                      key={label}
+                      value={label}
+                      className="capitalize">
+                      {label}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               variant='destructive'
               onSelect={() => setRowAction({ row, variant: 'delete' })}>
-              <TrashSimpleIcon /> Delete
+              Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
