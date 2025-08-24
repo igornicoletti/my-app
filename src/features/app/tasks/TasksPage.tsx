@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 
 import { DataTable, Toolbar } from '@/components/datatable'
-import { DeleteTasks, TasksActionBar, UpdateTask } from '@/features/app/tasks/components'
+import { DeleteTasks, TasksActionBar, TasksToolbarActions, UpdateTask } from '@/features/app/tasks/components'
 import { tasksColumns } from '@/features/app/tasks/lib/columns'
 import type { TaskLoaderData } from '@/features/app/tasks/lib/loader'
 import type { TaskSchema } from '@/features/app/tasks/lib/schema'
@@ -46,6 +46,7 @@ export const TasksPage = () => {
           actionBar={<TasksActionBar table={table} />}>
           <Toolbar table={table}>
             {/* <SortList table={table} /> */}
+            <TasksToolbarActions table={table} />
           </Toolbar>
         </DataTable>
       </div>

@@ -1,23 +1,13 @@
 import { ArrowClockwiseIcon, ArrowUpIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
-import { useCallback, useState, useTransition } from 'react'
-import { toast } from 'sonner'
+import { startTransition, useCallback } from 'react'
+import { useFetcher } from 'react-router-dom'
 
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/datatable'
 import { Select, SelectContent, SelectGroup, SelectItem, Separator } from '@/components/ui'
 import { taskSchema, type TaskSchema } from '@/features/app/tasks/lib/schema'
-import { deleteTasks, updateTasks } from '@/features/app/tasks/lib/service'
 import { exportTableToCSV } from '@/lib/export'
-
-const actions = [
-  'update-status',
-  'update-priority',
-  'export',
-  'delete',
-] as const
-
-type Action = (typeof actions)[number]
 
 interface TasksActionBarProps {
   table: Table<TaskSchema>
@@ -25,40 +15,29 @@ interface TasksActionBarProps {
 
 export const TasksActionBar = ({ table }: TasksActionBarProps) => {
   const rows = table.getFilteredSelectedRowModel().rows
-  const [isPending, startTransition] = useTransition()
-  const [currentAction, setCurrentAction] = useState<Action | null>(null)
+  const fetcher = useFetcher()
+  const isPending = fetcher.state !== 'idle'
 
-  const getIsActionPending = useCallback((action: Action) =>
-    isPending && currentAction === action,
-    [isPending, currentAction]
-  )
+  const getIsActionPending = (intent: string) => {
+    return isPending && fetcher.formData?.get('intent') === intent
+  }
 
-  const onTaskUpdate = useCallback(
-    ({
-      field,
-      value,
-    }: {
+  const onTaskUpdate = (
+    { field, value }: {
       field: 'status' | 'priority'
       value: TaskSchema['status'] | TaskSchema['priority']
-    }) => {
-      setCurrentAction(field === 'status' ? 'update-status' : 'update-priority')
-      startTransition(async () => {
-        const { error } = await updateTasks({
-          ids: rows.map((row) => row.original.id),
-          [field]: value,
-        })
+    }
+  ) => {
+    const formData = new FormData()
+    formData.append('intent', 'updateTasks')
+    rows.forEach(row => formData.append('ids', row.original.id))
+    formData.append(field, value)
 
-        if (error) {
-          toast.error(error)
-          return
-        }
-        toast.success('Tasks updated')
-      })
-    }, [rows])
+    fetcher.submit(formData, { method: 'POST' })
+  }
 
 
   const onTaskExport = useCallback(() => {
-    setCurrentAction('export')
     startTransition(() => {
       exportTableToCSV(table, {
         excludeColumns: ['select', 'actions'],
@@ -67,20 +46,13 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
     })
   }, [table])
 
-  const onTaskDelete = useCallback(() => {
-    setCurrentAction('delete')
-    startTransition(async () => {
-      const { error } = await deleteTasks({
-        ids: rows.map((row) => row.original.id),
-      })
+  const onTaskDelete = () => {
+    const formData = new FormData()
+    formData.append('intent', 'deleteTasks')
+    rows.forEach(row => formData.append('ids', row.original.id))
 
-      if (error) {
-        toast.error(error)
-        return
-      }
-      table.toggleAllRowsSelected(false)
-    })
-  }, [rows, table])
+    fetcher.submit(formData, { method: 'POST' })
+  }
 
   return (
     <ActionBar table={table} visible={rows.length > 0}>
@@ -98,7 +70,7 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
             <ActionBarAction
               size='icon'
               tooltip='Update status'
-              isPending={getIsActionPending('update-status')}>
+              isPending={getIsActionPending('updateTasks')}>
               <ArrowClockwiseIcon />
             </ActionBarAction>
           </SelectTrigger>
@@ -120,7 +92,7 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
             <ActionBarAction
               size='icon'
               tooltip='Update priority'
-              isPending={getIsActionPending('update-priority')}>
+              isPending={getIsActionPending('updateTasks')}>
               <ArrowUpIcon />
             </ActionBarAction>
           </SelectTrigger>
@@ -140,14 +112,14 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
         <ActionBarAction
           size='icon'
           tooltip='Export tasks'
-          isPending={getIsActionPending('export')}
+          isPending={getIsActionPending('exportTasks')}
           onClick={onTaskExport}>
           <DownloadSimpleIcon />
         </ActionBarAction>
         <ActionBarAction
           size='icon'
           tooltip='Delete tasks'
-          isPending={getIsActionPending('delete')}
+          isPending={getIsActionPending('deleteTasks')}
           onClick={onTaskDelete}>
           <TrashSimpleIcon />
         </ActionBarAction>

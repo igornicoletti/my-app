@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
-import { useTransition, type ComponentPropsWithRef } from 'react'
+import { useEffect, type ComponentPropsWithRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { useFetcher } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -16,42 +17,50 @@ import {
 } from '@/components/ui/sheet'
 import { TaskForm } from '@/features/app/tasks/components'
 import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema } from '@/features/app/tasks/lib/schema'
-import { updateTask } from '@/features/app/tasks/lib/service'
 
 interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {
   task: TaskSchema | null
 }
 
 export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
-  const [isPending, startTransition] = useTransition()
+  const fetcher = useFetcher()
+  const isPending = fetcher.state !== 'idle'
 
   const form = useForm<UpdateTaskSchema>({
     resolver: zodResolver(updateTaskSchema),
-    defaultValues: {
-      title: task?.title,
-      label: task?.label,
-      status: task?.status,
-      priority: task?.priority,
-    },
   })
 
-  const onSubmit = (input: UpdateTaskSchema) => {
-    startTransition(async () => {
-      if (!task) return
-      const { error } = await updateTask({
-        id: task.id,
-        ...input,
-      })
+  useEffect(() => {
+    if (task) {
+      form.reset(task)
+    }
+  }, [task, form])
 
-      if (error) {
-        toast.error(error)
-        return
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data) {
+      if (!fetcher.data.error) {
+        toast.success('Task updated')
+        props.onOpenChange?.(false)
+      } else {
+        toast.error(fetcher.data.error)
       }
+    }
+  }, [fetcher.state, fetcher.data, props.onOpenChange])
 
-      form.reset(input)
-      props.onOpenChange?.(false)
-      toast.success('Task updated')
+  const onSubmit = (input: UpdateTaskSchema) => {
+    if (!task) return
+
+    const formData = new FormData()
+    formData.append('intent', 'updateTask')
+    formData.append('id', task.id)
+
+    Object.entries(input).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, String(value))
+      }
     })
+
+    fetcher.submit(formData, { method: 'POST' })
   }
 
   return (

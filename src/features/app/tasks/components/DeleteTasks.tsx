@@ -1,6 +1,7 @@
 import { SpinnerGapIcon, TrashIcon } from '@phosphor-icons/react'
 import type { Row } from '@tanstack/react-table'
-import { useTransition, type ComponentPropsWithoutRef } from 'react'
+import { useEffect, type ComponentPropsWithoutRef } from 'react'
+import { useFetcher } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -25,7 +26,6 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import type { TaskSchema } from '@/features/app/tasks/lib/schema'
-import { deleteTasks } from '@/features/app/tasks/lib/service'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 interface DeleteTasksProps extends ComponentPropsWithoutRef<typeof Dialog> {
@@ -35,25 +35,36 @@ interface DeleteTasksProps extends ComponentPropsWithoutRef<typeof Dialog> {
 }
 
 export const DeleteTasks = ({ tasks, showTrigger = true, onSuccess, ...props }: DeleteTasksProps) => {
-  const [isDeletePending, startDeleteTransition] = useTransition()
+  const fetcher = useFetcher()
+  const isDeletePending = fetcher.state !== 'idle'
   const isDesktop = useMediaQuery('(min-width: 640px)')
 
-  const onDelete = () => {
-    startDeleteTransition(async () => {
-      const { error } = await deleteTasks({
-        ids: tasks.map((task) => task.id),
-      })
-
-      if (error) {
-        toast.error(error)
-        return
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data) {
+      if (!fetcher.data.error) {
+        toast.success('Tasks deleted')
+        props.onOpenChange?.(false)
+        onSuccess?.()
+      } else {
+        toast.error(fetcher.data.error)
       }
+    }
+  }, [fetcher.state, fetcher.data, props.onOpenChange, onSuccess])
 
-      props.onOpenChange?.(false)
-      toast.success('Tasks deleted')
-      onSuccess?.()
-    })
+  const onDelete = () => {
+    const formData = new FormData()
+    const intent = tasks.length > 1 ? 'deleteTasks' : 'deleteTask'
+    formData.append('intent', intent)
+
+    if (tasks.length > 1) {
+      tasks.forEach(task => formData.append('ids', task.id))
+    } else {
+      formData.append('id', tasks[0]?.id)
+    }
+
+    fetcher.submit(formData, { method: 'POST' })
   }
+
 
   return isDesktop ? (
     <Dialog {...props}>

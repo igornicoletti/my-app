@@ -49,8 +49,8 @@ export const Toolbar = <TData,>({
         )}
       </div>
       <div className='flex items-center gap-2'>
-        {children}
         <ViewOptions table={table} />
+        {children}
       </div>
     </div>
   )

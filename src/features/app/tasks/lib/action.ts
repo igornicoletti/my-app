@@ -1,11 +1,11 @@
-import { type ActionFunctionArgs } from 'react-router-dom'
+import type { ActionFunctionArgs } from 'react-router-dom'
 import { z } from 'zod'
 
 import { createTaskSchema, updateTaskSchema, type TaskSchema } from '@/features/app/tasks/lib/schema'
 import { createTask, deleteTask, deleteTasks, updateTask, updateTasks } from '@/features/app/tasks/lib/service'
 import { json } from '@/lib/json'
 
-export async function taskAction({ request }: ActionFunctionArgs) {
+export const taskAction = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData()
   const intent = formData.get('intent') as string
 
@@ -30,7 +30,12 @@ export async function taskAction({ request }: ActionFunctionArgs) {
         const status = formData.get('status') as TaskSchema['status'] | null
         const priority = formData.get('priority') as TaskSchema['priority'] | null
 
-        const payload: { ids: string[], status?: TaskSchema['status'], priority?: TaskSchema['priority'] } = { ids }
+        const payload: {
+          ids: string[]
+          status?: TaskSchema['status']
+          priority?: TaskSchema['priority']
+        } = { ids }
+
         if (status) payload.status = status
         if (priority) payload.priority = priority
 
@@ -55,7 +60,7 @@ export async function taskAction({ request }: ActionFunctionArgs) {
     if (error instanceof z.ZodError) {
       return json({ error: error.flatten() }, { status: 400 })
     }
-    const message = error instanceof Error ? error.message : "An unknown error occurred."
+    const message = error instanceof Error ? error.message : 'An unknown error occurred.'
     return json({ error: message }, { status: 500 })
   }
 }

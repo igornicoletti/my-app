@@ -1,5 +1,6 @@
 import { type RouteObject } from 'react-router-dom'
 
+import { taskAction } from '@/features/app/tasks/lib/action'
 import { taskLoader } from '@/features/app/tasks/lib/loader'
 import { routeLazy, routeMeta } from '@/routes/config'
 
@@ -45,6 +46,7 @@ export const getProtectedRoutes = (): RouteObject[] => [
       {
         path: 'tasks',
         loader: taskLoader,
+        action: taskAction,
         element: <routeLazy.TasksPage />,
         handle: routeMeta.tasks,
       },

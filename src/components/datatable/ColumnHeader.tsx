@@ -1,4 +1,4 @@
-import { ArrowDownIcon, ArrowsDownUpIcon, ArrowUpIcon, EyeSlashIcon, XIcon } from '@phosphor-icons/react'
+import { ArrowDownIcon, ArrowsClockwiseIcon, ArrowsDownUpIcon, ArrowUpIcon, EyeSlashIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import type { ComponentProps } from 'react'
 
@@ -63,7 +63,7 @@ export const ColumnHeader = <TData, TValue>({
               <DropdownMenuItem
                 className='pl-2 [&_svg]:text-muted-foreground'
                 onClick={() => column.clearSorting()}>
-                <XIcon />
+                <ArrowsClockwiseIcon />
                 Reset
               </DropdownMenuItem>
             )}
