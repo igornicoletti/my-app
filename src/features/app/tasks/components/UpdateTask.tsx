@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
-import { useEffect, type ComponentPropsWithRef } from 'react'
+import type { ComponentPropsWithRef } from 'react'
+import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { useFetcher } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -13,71 +13,63 @@ import {
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from '@/components/ui/sheet'
 import { TaskForm } from '@/features/app/tasks/components'
-import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema } from '@/features/app/tasks/lib/schema'
+import { updateTask } from '@/features/app/tasks/lib/actions'
+import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema, } from '@/features/app/tasks/lib/schema'
 
 interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {
   task: TaskSchema | null
 }
 
 export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
-  const fetcher = useFetcher()
-  const isPending = fetcher.state !== 'idle'
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<UpdateTaskSchema>({
     resolver: zodResolver(updateTaskSchema),
+    defaultValues: {
+      title: task?.title ?? '',
+      label: task?.label,
+      status: task?.status,
+      priority: task?.priority,
+    }
   })
 
-  useEffect(() => {
-    if (task) {
-      form.reset(task)
-    }
-  }, [task, form])
-
-  useEffect(() => {
-    if (fetcher.state === 'idle' && fetcher.data) {
-      if (!fetcher.data.error) {
-        toast.success('Task updated')
-        props.onOpenChange?.(false)
-      } else {
-        toast.error(fetcher.data.error)
-      }
-    }
-  }, [fetcher.state, fetcher.data, props.onOpenChange])
-
   const onSubmit = (input: UpdateTaskSchema) => {
-    if (!task) return
+    startTransition(async () => {
+      if (!task) return
 
-    const formData = new FormData()
-    formData.append('intent', 'updateTask')
-    formData.append('id', task.id)
+      const { error } = await updateTask({ id: task.id, ...input })
 
-    Object.entries(input).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        formData.append(key, String(value))
+      if (error) {
+        toast.error(error)
+        return
       }
-    })
 
-    fetcher.submit(formData, { method: 'POST' })
+      form.reset(input)
+      props.onOpenChange?.(false)
+      toast.success(`Task '${input.title ?? task.title}' updated`)
+    })
   }
 
   return (
     <Sheet {...props}>
-      <SheetContent className='w-full max-w-md'>
+      <SheetContent className='flex flex-col gap-6 sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Update task</SheetTitle>
-          <SheetDescription>Update the task details and save the changes</SheetDescription>
+          <SheetDescription>
+            Update the task details and save the changes
+          </SheetDescription>
         </SheetHeader>
         <TaskForm<UpdateTaskSchema> form={form} onSubmit={onSubmit}>
           <SheetFooter>
             <Button disabled={isPending}>
-              {isPending && <SpinnerGapIcon className='animate-spin' />}
-              Save Changes
+              {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
+              Save
             </Button>
             <SheetClose asChild>
-              <Button variant='outline' type='button'>
+              <Button type='button' variant='outline'>
                 Cancel
               </Button>
             </SheetClose>

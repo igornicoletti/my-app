@@ -1,7 +1,6 @@
 import { SpinnerGapIcon, TrashIcon } from '@phosphor-icons/react'
 import type { Row } from '@tanstack/react-table'
-import { useEffect, type ComponentPropsWithoutRef } from 'react'
-import { useFetcher } from 'react-router-dom'
+import { useTransition, type ComponentPropsWithoutRef } from 'react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -25,6 +24,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import { deleteTasks } from '@/features/app/tasks/lib/actions'
 import type { TaskSchema } from '@/features/app/tasks/lib/schema'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
@@ -34,37 +34,31 @@ interface DeleteTasksProps extends ComponentPropsWithoutRef<typeof Dialog> {
   onSuccess?: () => void
 }
 
-export const DeleteTasks = ({ tasks, showTrigger = true, onSuccess, ...props }: DeleteTasksProps) => {
-  const fetcher = useFetcher()
-  const isDeletePending = fetcher.state !== 'idle'
+export const DeleteTasks = ({
+  tasks,
+  showTrigger = true,
+  onSuccess,
+  ...props
+}: DeleteTasksProps) => {
+  const [isPending, startTransition] = useTransition()
   const isDesktop = useMediaQuery('(min-width: 640px)')
 
-  useEffect(() => {
-    if (fetcher.state === 'idle' && fetcher.data) {
-      if (!fetcher.data.error) {
-        toast.success('Tasks deleted')
-        props.onOpenChange?.(false)
-        onSuccess?.()
-      } else {
-        toast.error(fetcher.data.error)
-      }
-    }
-  }, [fetcher.state, fetcher.data, props.onOpenChange, onSuccess])
-
   const onDelete = () => {
-    const formData = new FormData()
-    const intent = tasks.length > 1 ? 'deleteTasks' : 'deleteTask'
-    formData.append('intent', intent)
+    startTransition(async () => {
+      const { error } = await deleteTasks({
+        ids: tasks.map((task) => task.id)
+      })
 
-    if (tasks.length > 1) {
-      tasks.forEach(task => formData.append('ids', task.id))
-    } else {
-      formData.append('id', tasks[0]?.id)
-    }
+      if (error) {
+        toast.error(error)
+        return
+      }
 
-    fetcher.submit(formData, { method: 'POST' })
+      props.onOpenChange?.(false)
+      toast.success(`${tasks.length} ${tasks.length === 1 ? 'task' : 'tasks'} deleted`)
+      onSuccess?.()
+    })
   }
-
 
   return isDesktop ? (
     <Dialog {...props}>
@@ -93,8 +87,8 @@ export const DeleteTasks = ({ tasks, showTrigger = true, onSuccess, ...props }: 
             aria-label='Delete selected rows'
             variant='destructive'
             onClick={onDelete}
-            disabled={isDeletePending}>
-            {isDeletePending && <SpinnerGapIcon className='animate-spin' />}
+            disabled={isPending}>
+            {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
             Delete
           </Button>
         </DialogFooter>
@@ -124,8 +118,8 @@ export const DeleteTasks = ({ tasks, showTrigger = true, onSuccess, ...props }: 
             aria-label='Delete selected rows'
             variant='destructive'
             onClick={onDelete}
-            disabled={isDeletePending}>
-            {isDeletePending && <SpinnerGapIcon className='animate-spin' />}
+            disabled={isPending}>
+            {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
             Delete
           </Button>
           <DrawerClose asChild>

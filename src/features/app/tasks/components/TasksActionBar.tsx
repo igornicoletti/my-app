@@ -1,13 +1,28 @@
-import { ArrowClockwiseIcon, ArrowUpIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
+import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
-import { startTransition, useCallback } from 'react'
-import { useFetcher } from 'react-router-dom'
+import { useCallback, useState, useTransition } from 'react'
+import { toast } from 'sonner'
 
-import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/datatable'
-import { Select, SelectContent, SelectGroup, SelectItem, Separator } from '@/components/ui'
-import { taskSchema, type TaskSchema } from '@/features/app/tasks/lib/schema'
+import {
+  ActionBar,
+  ActionBarAction,
+  ActionBarSelection,
+} from '@/components/datatable'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  Separator,
+} from '@/components/ui'
+import { deleteTasks, updateTasks } from '@/features/app/tasks/lib/actions'
+import { priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schema'
 import { exportTableToCSV } from '@/lib/export'
+
+const actions = ['update-status', 'update-priority', 'export', 'delete'] as const
+
+type Action = (typeof actions)[number]
 
 interface TasksActionBarProps {
   table: Table<TaskSchema>
@@ -15,29 +30,39 @@ interface TasksActionBarProps {
 
 export const TasksActionBar = ({ table }: TasksActionBarProps) => {
   const rows = table.getFilteredSelectedRowModel().rows
-  const fetcher = useFetcher()
-  const isPending = fetcher.state !== 'idle'
+  const [isPending, startTransition] = useTransition()
+  const [currentAction, setCurrentAction] = useState<Action | null>(null)
 
-  const getIsActionPending = (intent: string) => {
-    return isPending && fetcher.formData?.get('intent') === intent
-  }
+  const getIsActionPending = useCallback((action: Action) =>
+    isPending && currentAction === action,
+    [isPending, currentAction]
+  )
 
-  const onTaskUpdate = (
-    { field, value }: {
-      field: 'status' | 'priority'
-      value: TaskSchema['status'] | TaskSchema['priority']
-    }
-  ) => {
-    const formData = new FormData()
-    formData.append('intent', 'updateTasks')
-    rows.forEach(row => formData.append('ids', row.original.id))
-    formData.append(field, value)
+  const onTaskUpdate = useCallback(({
+    field,
+    value,
+  }: {
+    field: 'status' | 'priority'
+    value: TaskSchema['status'] | TaskSchema['priority']
+  }) => {
+    setCurrentAction((field) === 'status' ? 'update-status' : 'update-priority')
+    startTransition(async () => {
+      const { error } = await updateTasks({
+        ids: rows.map((row) => row.original.id),
+        [field]: value,
+      })
 
-    fetcher.submit(formData, { method: 'POST' })
-  }
+      if (error) {
+        toast.error(error)
+        return
+      }
 
+      toast.success('Tasks updated')
+    })
+  }, [rows])
 
   const onTaskExport = useCallback(() => {
+    setCurrentAction('export')
     startTransition(() => {
       exportTableToCSV(table, {
         excludeColumns: ['select', 'actions'],
@@ -46,37 +71,41 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
     })
   }, [table])
 
-  const onTaskDelete = () => {
-    const formData = new FormData()
-    formData.append('intent', 'deleteTasks')
-    rows.forEach(row => formData.append('ids', row.original.id))
+  const onTaskDelete = useCallback(() => {
+    setCurrentAction('delete')
+    startTransition(async () => {
+      const { error } = await deleteTasks({
+        ids: rows.map((row) => row.original.id),
+      })
 
-    fetcher.submit(formData, { method: 'POST' })
-  }
+      if (error) {
+        toast.error(error)
+        return
+      }
+
+      table.toggleAllRowsSelected(false)
+    })
+  }, [rows, table])
 
   return (
     <ActionBar table={table} visible={rows.length > 0}>
       <ActionBarSelection table={table} />
-      <Separator
-        orientation='vertical'
-        className='hidden data-[orientation=vertical]:h-5 sm:block'
-      />
+      <Separator orientation='vertical' className='hidden data-[orientation=vertical]:h-5 sm:block' />
       <div className='flex items-center gap-1.5'>
-        <Select
-          onValueChange={(value: TaskSchema['status']) =>
-            onTaskUpdate({ field: 'status', value })
-          }>
+        <Select onValueChange={(value: TaskSchema['status']) => onTaskUpdate({
+          field: 'status', value
+        })}>
           <SelectTrigger asChild>
             <ActionBarAction
               size='icon'
               tooltip='Update status'
-              isPending={getIsActionPending('updateTasks')}>
-              <ArrowClockwiseIcon />
+              isPending={getIsActionPending('update-status')}>
+              <CircleDashedIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
-              {taskSchema.shape.status.options.map((status) => (
+              {statuses.map((status) => (
                 <SelectItem key={status} value={status} className='capitalize'>
                   {status}
                 </SelectItem>
@@ -84,25 +113,21 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select
-          onValueChange={(value: TaskSchema['priority']) =>
-            onTaskUpdate({ field: 'priority', value })
-          }>
+        <Select onValueChange={(value: TaskSchema['priority']) => onTaskUpdate({
+          field: 'priority', value
+        })}>
           <SelectTrigger asChild>
             <ActionBarAction
               size='icon'
               tooltip='Update priority'
-              isPending={getIsActionPending('updateTasks')}>
+              isPending={getIsActionPending('update-priority')}>
               <ArrowUpIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
-              {taskSchema.shape.priority.options.map((priority) => (
-                <SelectItem
-                  key={priority}
-                  value={priority}
-                  className='capitalize'>
+              {priorities.map((priority) => (
+                <SelectItem key={priority} value={priority} className='capitalize'>
                   {priority}
                 </SelectItem>
               ))}
@@ -112,14 +137,14 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
         <ActionBarAction
           size='icon'
           tooltip='Export tasks'
-          isPending={getIsActionPending('exportTasks')}
+          isPending={getIsActionPending('export')}
           onClick={onTaskExport}>
           <DownloadSimpleIcon />
         </ActionBarAction>
         <ActionBarAction
           size='icon'
           tooltip='Delete tasks'
-          isPending={getIsActionPending('deleteTasks')}
+          isPending={getIsActionPending('delete')}
           onClick={onTaskDelete}>
           <TrashSimpleIcon />
         </ActionBarAction>

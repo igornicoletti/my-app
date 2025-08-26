@@ -1,24 +1,28 @@
-import { useMemo, useState } from 'react'
-import { useLoaderData } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 import { DataTable, Toolbar } from '@/components/datatable'
-import { DeleteTasks, TasksActionBar, TasksToolbarActions, UpdateTask } from '@/features/app/tasks/components'
+import {
+  DeleteTasks,
+  TasksActionBar,
+  TasksToolbarActions,
+  UpdateTask
+} from '@/features/app/tasks/components'
+import { seedTasks } from '@/features/app/tasks/lib/actions'
 import { tasksColumns } from '@/features/app/tasks/lib/columns'
-import type { TaskLoaderData } from '@/features/app/tasks/lib/loader'
 import type { TaskSchema } from '@/features/app/tasks/lib/schema'
 import { useDataTable } from '@/hooks'
 import type { DataTableRowAction } from '@/types/datatable'
 
 export const TasksPage = () => {
-  const { tasks, statusCounts, priorityCounts, estimatedHoursRange } = useLoaderData() as TaskLoaderData
+  const [tasks, setTasks] = useState<TaskSchema[]>([])
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
 
-  const columns = useMemo(() => tasksColumns({
-    statusCounts,
-    priorityCounts,
-    estimatedHoursRange,
-    setRowAction,
-  }), [statusCounts, priorityCounts, estimatedHoursRange])
+  useEffect(() => {
+    const seededTasks = seedTasks({ count: 50 })
+    setTasks(seededTasks)
+  }, [])
+
+  const columns = tasksColumns({ tasks, setRowAction })
 
   const { table } = useDataTable({
     data: tasks,
@@ -27,9 +31,8 @@ export const TasksPage = () => {
       sorting: [{ id: 'createdAt', desc: true }],
       columnPinning: { right: ['actions'] },
     },
-    getRowId: (originalRow) => originalRow.id,
+    getRowId: (row) => row.id,
   })
-
 
   return (
     <>
@@ -41,11 +44,8 @@ export const TasksPage = () => {
           </p>
         </div>
 
-        <DataTable
-          table={table}
-          actionBar={<TasksActionBar table={table} />}>
+        <DataTable table={table} actionBar={<TasksActionBar table={table} />}>
           <Toolbar table={table}>
-            {/* <SortList table={table} /> */}
             <TasksToolbarActions table={table} />
           </Toolbar>
         </DataTable>

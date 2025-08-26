@@ -12,7 +12,7 @@ export const taskSchema = z.object({
   status: z.enum(statuses),
   label: z.enum(labels),
   priority: z.enum(priorities),
-  archived: z.boolean(),
+  archived: z.coerce.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

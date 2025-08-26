@@ -24,9 +24,15 @@ export const FacetedFilter = <TData, TValue>({
   const [open, setOpen] = useState(false)
 
   const columnFilterValue = column?.getFilterValue()
+
   const selectedValues = useMemo(() => {
     return new Set(Array.isArray(columnFilterValue) ? columnFilterValue : [])
   }, [columnFilterValue])
+
+  const facetedCounts = useMemo(() => {
+    if (!column) return new Map<string, number>()
+    return column.getFacetedUniqueValues()
+  }, [column?.getFacetedUniqueValues(), column?.getFilterValue()])
 
   const onItemSelect = useCallback((option: Option, isSelected: boolean) => {
     if (!column) return
@@ -98,24 +104,28 @@ export const FacetedFilter = <TData, TValue>({
           <CommandList className='max-h-full'>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
-              {options.map((option) => (
-                <CommandItem key={option.value} onSelect={() => onItemSelect(option, selectedValues.has(option.value))}>
-                  <div className='flex items-center space-x-2'>
-                    <Checkbox
-                      checked={selectedValues.has(option.value)}
-                      onCheckedChange={() => onItemSelect(option, selectedValues.has(option.value))}
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                    {option.icon && <option.icon className='text-muted-foreground' />}
-                  </div>
-                  <span className='truncate'>{option.label}</span>
-                  {option.count !== undefined && (
-                    <span className='ml-auto font-mono text-xs text-muted-foreground'>
-                      {option.count}
-                    </span>
-                  )}
-                </CommandItem>
-              ))}
+              {options.map((option) => {
+                const count = facetedCounts.get(option.value) ?? 0
+
+                return (
+                  <CommandItem key={option.value} onSelect={() => onItemSelect(option, selectedValues.has(option.value))}>
+                    <div className='flex items-center space-x-2'>
+                      <Checkbox
+                        checked={selectedValues.has(option.value)}
+                        onCheckedChange={() => onItemSelect(option, selectedValues.has(option.value))}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      {option.icon && <option.icon className='text-muted-foreground' />}
+                    </div>
+                    <span className='truncate'>{option.label}</span>
+                    {count !== undefined && (
+                      <span className='ml-auto font-mono text-xs text-muted-foreground'>
+                        {count}
+                      </span>
+                    )}
+                  </CommandItem>
+                )
+              })}
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>

@@ -7,8 +7,8 @@ import {
   TextAaIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
-import { type Dispatch, type SetStateAction } from 'react'
-import { useFetcher } from 'react-router-dom'
+import { useMemo, useTransition, type Dispatch, type SetStateAction } from 'react'
+import { toast } from 'sonner'
 
 import { ColumnHeader } from '@/components/datatable'
 import { Badge } from '@/components/ui/badge'
@@ -27,26 +27,27 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { taskSchema, type TaskSchema } from '@/features/app/tasks/lib/schema'
-import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/lib/utils'
+import { updateTask } from '@/features/app/tasks/lib/actions'
+import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schema'
+import { getPriorityIcon, getRangeValues, getStatusIcon } from '@/features/app/tasks/lib/utils'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
 
 interface TasksColumnsProps {
-  statusCounts: Record<TaskSchema['status'], number>
-  priorityCounts: Record<TaskSchema['priority'], number>
-  estimatedHoursRange: [number, number]
+  tasks: TaskSchema[]
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
 
-const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
-
 export const tasksColumns = ({
-  statusCounts,
-  priorityCounts,
-  estimatedHoursRange,
+  tasks,
   setRowAction,
-}: TasksColumnsProps): ColumnDef<TaskSchema>[] => [
+}: TasksColumnsProps): ColumnDef<TaskSchema>[] => {
+  const estimatedHoursRange = useMemo(() => {
+    const [min, max] = getRangeValues(tasks, 'estimatedHours')
+    return { min, max }
+  }, [tasks])
+
+  return [
     {
       id: 'select',
       header: ({ table }) => (
@@ -56,7 +57,7 @@ export const tasksColumns = ({
             (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label='Select all rows'
+          aria-label='Select all'
           className='translate-y-0.5'
         />
       ),
@@ -76,7 +77,7 @@ export const tasksColumns = ({
       id: 'code',
       accessorKey: 'code',
       header: ({ column }) => <ColumnHeader column={column} title='Task' />,
-      cell: ({ row }) => row.getValue('code'),
+      cell: ({ row }) => <div className='w-20'>{row.getValue('code')}</div>,
       enableSorting: false,
       enableHiding: false,
     },
@@ -85,12 +86,13 @@ export const tasksColumns = ({
       accessorKey: 'title',
       header: ({ column }) => <ColumnHeader column={column} title='Title' />,
       cell: ({ row }) => {
-        const label = taskSchema.shape.label.options.find((label) =>
-          label === row.original.label)
+        const label = labels.find((label) => label === row.original.label)
         return (
           <div className='flex items-center gap-2'>
-            {label && <Badge variant='secondary'>{capitalize(label)}</Badge>}
-            <span className='max-w-lg truncate'>{row.getValue('title')}</span>
+            {label && <Badge variant='outline'>{label}</Badge>}
+            <span className='max-w-[31.25rem] truncate font-medium'>
+              {row.getValue('title')}
+            </span>
           </div>
         )
       },
@@ -107,24 +109,22 @@ export const tasksColumns = ({
       accessorKey: 'status',
       header: ({ column }) => <ColumnHeader column={column} title='Status' />,
       cell: ({ cell }) => {
-        const status = taskSchema.shape.status.options.find((status) =>
-          status === cell.getValue<TaskSchema['status']>())
+        const status = statuses.find((status) => status === cell.getValue<TaskSchema['status']>())
         if (!status) return null
         const Icon = getStatusIcon(status)
         return (
-          <div className='flex items-center gap-2'>
-            <Icon className='text-muted-foreground' />
-            <span className='capitalize'>{capitalize(status)}</span>
-          </div>
+          <Badge variant='outline' className='py-1 [&>svg]:size-3.5'>
+            <Icon />
+            <span className='capitalize'>{status}</span>
+          </Badge>
         )
       },
       meta: {
         label: 'Status',
         variant: 'multiSelect',
-        options: taskSchema.shape.status.options.map((status) => ({
-          label: capitalize(status),
+        options: statuses.map((status) => ({
+          label: status.charAt(0).toUpperCase() + status.slice(1),
           value: status,
-          count: statusCounts[status],
           icon: getStatusIcon(status),
         })),
         icon: CircleDashedIcon,
@@ -137,24 +137,22 @@ export const tasksColumns = ({
       accessorKey: 'priority',
       header: ({ column }) => <ColumnHeader column={column} title='Priority' />,
       cell: ({ cell }) => {
-        const priority = taskSchema.shape.priority.options.find((priority) =>
-          priority === cell.getValue<TaskSchema['priority']>())
+        const priority = priorities.find((priority) => priority === cell.getValue<TaskSchema['priority']>())
         if (!priority) return null
         const Icon = getPriorityIcon(priority)
         return (
-          <div className='flex items-center gap-2'>
-            <Icon className='text-muted-foreground' />
-            <span className='capitalize'>{capitalize(priority)}</span>
-          </div>
+          <Badge variant='outline' className='py-1 [&>svg]:size-3.5'>
+            <Icon />
+            <span className='capitalize'>{priority}</span>
+          </Badge>
         )
       },
       meta: {
         label: 'Priority',
         variant: 'multiSelect',
-        options: taskSchema.shape.priority.options.map((priority) => ({
-          label: capitalize(priority),
+        options: priorities.map((priority) => ({
+          label: priority.charAt(0).toUpperCase() + priority.slice(1),
           value: priority,
-          count: priorityCounts[priority],
           icon: getPriorityIcon(priority),
         })),
         icon: ArrowsDownUpIcon,
@@ -173,22 +171,17 @@ export const tasksColumns = ({
       meta: {
         label: 'Est. Hours',
         variant: 'range',
-        range: estimatedHoursRange,
+        range: [estimatedHoursRange.min, estimatedHoursRange.max],
         unit: 'hr',
         icon: ClockIcon,
       },
       enableColumnFilter: true,
-      filterFn: (row, columnId, value: [number?, number?]) => {
-        const rowValue = row.getValue<number>(columnId)
-        if (typeof rowValue !== 'number') return false
-
-        const [min, max] = value
-        const isMinValid = typeof min === 'number' && !Number.isNaN(min)
-        const isMaxValid = typeof max === 'number' && !Number.isNaN(max)
-
-        if (isMinValid && isMaxValid) return rowValue >= min && rowValue <= max
-        if (isMinValid) return rowValue >= min
-        if (isMaxValid) return rowValue <= max
+      filterFn: (row, columnId, range: [number | undefined, number | undefined]) => {
+        const val = row.getValue<number>(columnId)
+        const [min, max] = range
+        if (typeof val !== 'number') return false
+        if (min != null && val < min) return false
+        if (max != null && val > max) return false
         return true
       },
     },
@@ -219,8 +212,7 @@ export const tasksColumns = ({
     {
       id: 'actions',
       cell: function Cell({ row }) {
-        const fetcher = useFetcher()
-        const isUpdating = fetcher.state !== 'idle'
+        const [isUpdatePending, startUpdateTransition] = useTransition()
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -241,18 +233,25 @@ export const tasksColumns = ({
                   <DropdownMenuRadioGroup
                     value={row.original.label}
                     onValueChange={(value) => {
-                      const formData = new FormData()
-                      formData.append('intent', 'updateTask')
-                      formData.append('id', row.original.id)
-                      formData.append('label', value)
-                      fetcher.submit(formData, { method: 'POST' })
+                      startUpdateTransition(() => {
+                        toast.promise(
+                          updateTask({
+                            id: row.original.id,
+                            label: value as TaskSchema['label'],
+                          }),
+                          {
+                            loading: 'Updating...',
+                            success: 'Label updated',
+                          },
+                        )
+                      })
                     }}>
-                    {taskSchema.shape.label.options.map((label) => (
+                    {labels.map((label) => (
                       <DropdownMenuRadioItem
                         key={label}
                         value={label}
                         className='capitalize'
-                        disabled={isUpdating}>
+                        disabled={isUpdatePending}>
                         {label}
                       </DropdownMenuRadioItem>
                     ))}
@@ -271,3 +270,4 @@ export const tasksColumns = ({
       size: 40,
     },
   ]
+}

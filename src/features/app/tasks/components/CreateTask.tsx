@@ -1,8 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
-import { useEffect, useState } from 'react'
+import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { useFetcher } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -17,61 +16,54 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { TaskForm } from '@/features/app/tasks/components'
+import { createTask } from '@/features/app/tasks/lib/actions'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/schema'
 
-export const CreateTasks = () => {
+export const CreateTask = () => {
   const [open, setOpen] = useState(false)
-  const fetcher = useFetcher()
-  const isPending = fetcher.state !== 'idle'
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<CreateTaskSchema>({
     resolver: zodResolver(createTaskSchema)
   })
 
-  useEffect(() => {
-    if (fetcher.state === 'idle' && fetcher.data) {
-      if (!fetcher.data.error) {
-        toast.success('Task created')
-        form.reset()
-        setOpen(false)
-      } else {
-        toast.error(fetcher.data.error)
-      }
-    }
-  }, [fetcher.state, fetcher.data, form])
-
   const onSubmit = (input: CreateTaskSchema) => {
-    const formData = new FormData()
-    formData.append('intent', 'createTask')
-    formData.append('title', input.title)
-    formData.append('label', input.label)
-    formData.append('status', input.status)
-    formData.append('priority', input.priority)
-    formData.append('estimatedHours', String(input.estimatedHours))
+    startTransition(async () => {
+      const { error } = await createTask(input)
 
-    fetcher.submit(formData, { method: 'POST' })
+      if (error) {
+        toast.error(error)
+        return
+      }
+
+      form.reset()
+      setOpen(false)
+      toast.success('Task created')
+    })
   }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant='default' size='sm'>
-          New Task
+          New task
         </Button>
       </SheetTrigger>
-      <SheetContent className='w-full max-w-md'>
+      <SheetContent className='flex flex-col gap-6 sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Create task</SheetTitle>
-          <SheetDescription>Fill in the details below to create a new task</SheetDescription>
+          <SheetDescription>
+            Fill in the details below to create a new task
+          </SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={onSubmit}>
           <SheetFooter>
             <Button disabled={isPending}>
-              {isPending && <SpinnerGapIcon className='animate-spin' />}
+              {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
               Create
             </Button>
             <SheetClose asChild>
-              <Button variant='outline' type='button'>
+              <Button type='button' variant='outline'>
                 Cancel
               </Button>
             </SheetClose>
