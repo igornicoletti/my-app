@@ -72,7 +72,7 @@ export const tasksColumns = ({
       id: 'code',
       accessorKey: 'code',
       header: ({ column }) => <ColumnHeader column={column} title='Task' />,
-      cell: ({ row }) => <div className='w-20'>{row.getValue('code')}</div>,
+      cell: ({ row }) => row.getValue('code'),
       enableSorting: false,
       enableHiding: false,
     },
@@ -84,8 +84,8 @@ export const tasksColumns = ({
         const label = labels.find((label) => label === row.original.label)
         return (
           <div className='flex items-center gap-2'>
-            {label && <Badge variant='outline'>{label}</Badge>}
-            <span className='max-w-[31.25rem] truncate font-medium'>
+            {label && <Badge variant='secondary'>{label}</Badge>}
+            <span className='max-w-md truncate'>
               {row.getValue('title')}
             </span>
           </div>
@@ -108,10 +108,10 @@ export const tasksColumns = ({
         if (!status) return null
         const Icon = getStatusIcon(status)
         return (
-          <Badge variant='outline' className='py-1 [&>svg]:size-3.5'>
+          <div className='flex items-center gap-2 [&>svg]:size-3'>
             <Icon />
-            <span className='capitalize'>{status}</span>
-          </Badge>
+            {status}
+          </div>
         )
       },
       meta: {
@@ -136,10 +136,10 @@ export const tasksColumns = ({
         if (!priority) return null
         const Icon = getPriorityIcon(priority)
         return (
-          <Badge variant='outline' className='py-1 [&>svg]:size-3.5'>
+          <div className='flex items-center gap-2 [&>svg]:size-3'>
             <Icon />
-            <span className='capitalize'>{priority}</span>
-          </Badge>
+            {priority}
+          </div>
         )
       },
       meta: {
@@ -246,7 +246,6 @@ export const tasksColumns = ({
                       <DropdownMenuRadioItem
                         key={label}
                         value={label}
-                        className='capitalize'
                         disabled={isUpdatePending}>
                         {label}
                       </DropdownMenuRadioItem>

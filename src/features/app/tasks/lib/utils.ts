@@ -31,19 +31,19 @@ export const generateRandomTasks = (count = 10): TaskSchema[] =>
 
 export const getStatusIcon = (status: TaskSchema['status']) => {
   const statusIcons: Record<TaskSchema['status'], any> = {
-    canceled: ProhibitIcon,
-    done: CheckCircleIcon,
-    'in progress': TimerIcon,
-    todo: CircleIcon,
+    Canceled: ProhibitIcon,
+    Done: CheckCircleIcon,
+    'In progress': TimerIcon,
+    Todo: CircleIcon,
   }
   return statusIcons[status] || CircleIcon
 }
 
 export const getPriorityIcon = (priority: TaskSchema['priority']) => {
   const priorityIcons: Record<TaskSchema['priority'], any> = {
-    high: ArrowUpIcon,
-    low: ArrowDownIcon,
-    medium: ArrowRightIcon,
+    High: ArrowUpIcon,
+    Low: ArrowDownIcon,
+    Medium: ArrowRightIcon,
   }
   return priorityIcons[priority] || CircleIcon
 }

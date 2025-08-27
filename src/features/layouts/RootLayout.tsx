@@ -11,7 +11,7 @@ import {
 import { Toaster } from '@/components/ui/sonner'
 
 export const RootLayout = () => (
-  <Suspense fallback={<LoadingSpinner />}>
+  <Suspense fallback={<LoadingSpinner message='Loading...' />}>
     <MetadataHelmet />
     <KeyboardShortcut />
     <ProgressBar />

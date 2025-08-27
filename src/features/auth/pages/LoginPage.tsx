@@ -49,7 +49,7 @@ export const LoginPage = () => {
         </Button>
         <div className='flex items-center justify-center gap-2 overflow-hidden'>
           <Separator />
-          <span className='text-sm text-muted-foreground'>OR</span>
+          <span className='text-sm text-muted-foreground'>or</span>
           <Separator />
         </div>
         <FieldControl

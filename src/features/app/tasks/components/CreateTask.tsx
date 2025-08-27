@@ -24,7 +24,13 @@ export const CreateTask = () => {
   const [isPending, startTransition] = useTransition()
 
   const form = useForm<CreateTaskSchema>({
-    resolver: zodResolver(createTaskSchema)
+    resolver: zodResolver(createTaskSchema),
+    defaultValues: {
+      label: 'Feature',
+      status: 'Todo',
+      priority: 'Medium',
+      estimatedHours: 1
+    }
   })
 
   const onSubmit = (input: CreateTaskSchema) => {
@@ -49,7 +55,7 @@ export const CreateTask = () => {
           New task
         </Button>
       </SheetTrigger>
-      <SheetContent className='w-full flex flex-col gap-6 sm:max-w-md'>
+      <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Create task</SheetTitle>
           <SheetDescription>
@@ -60,7 +66,7 @@ export const CreateTask = () => {
           <SheetFooter>
             <Button disabled={isPending}>
               {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
-              Create
+              Create new task
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='outline'>

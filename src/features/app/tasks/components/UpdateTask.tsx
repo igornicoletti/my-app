@@ -61,18 +61,18 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
 
   return (
     <Sheet {...props}>
-      <SheetContent className='flex flex-col gap-6 sm:max-w-md'>
+      <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Update task</SheetTitle>
           <SheetDescription>
             Update the task details and save the changes
           </SheetDescription>
         </SheetHeader>
-        <TaskForm<UpdateTaskSchema> form={form} onSubmit={onSubmit}>
+        <TaskForm form={form} onSubmit={onSubmit}>
           <SheetFooter>
             <Button disabled={isPending}>
               {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
-              Save
+              Save changes
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='outline'>
