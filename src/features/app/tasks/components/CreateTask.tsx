@@ -49,7 +49,7 @@ export const CreateTask = () => {
           New task
         </Button>
       </SheetTrigger>
-      <SheetContent className='flex flex-col gap-6 sm:max-w-md'>
+      <SheetContent className='w-full flex flex-col gap-6 sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Create task</SheetTitle>
           <SheetDescription>
