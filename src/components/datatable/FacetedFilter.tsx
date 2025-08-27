@@ -106,7 +106,6 @@ export const FacetedFilter = <TData, TValue>({
             <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
               {options.map((option) => {
                 const count = facetedCounts.get(option.value) ?? 0
-
                 return (
                   <CommandItem key={option.value} onSelect={() => onItemSelect(option, selectedValues.has(option.value))}>
                     <div className='flex items-center space-x-2'>

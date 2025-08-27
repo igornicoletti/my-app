@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { DataTable, Toolbar } from '@/components/datatable'
 import {
@@ -7,22 +7,30 @@ import {
   TasksToolbarActions,
   UpdateTask
 } from '@/features/app/tasks/components'
-import { seedTasks } from '@/features/app/tasks/lib/actions'
+import { seedTasks, useTasks } from '@/features/app/tasks/lib/actions'
 import { tasksColumns } from '@/features/app/tasks/lib/columns'
 import type { TaskSchema } from '@/features/app/tasks/lib/schema'
+import { getRangeValues } from '@/features/app/tasks/lib/utils'
 import { useDataTable } from '@/hooks'
 import type { DataTableRowAction } from '@/types/datatable'
 
 export const TasksPage = () => {
-  const [tasks, setTasks] = useState<TaskSchema[]>([])
+  const tasks = useTasks()
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
+  const estimatedHoursRange: [number, number] = tasks.length === 0
+    ? [0, 24]
+    : getRangeValues(tasks, 'estimatedHours')
 
   useEffect(() => {
-    const seededTasks = seedTasks({ count: 50 })
-    setTasks(seededTasks)
+    if (tasks.length === 0) {
+      seedTasks({ count: 50 })
+    }
   }, [])
 
-  const columns = tasksColumns({ tasks, setRowAction })
+  const columns = useMemo(() => tasksColumns({
+    estimatedHoursRange,
+    setRowAction
+  }), [estimatedHoursRange, setRowAction])
 
   const { table } = useDataTable({
     data: tasks,
@@ -43,20 +51,17 @@ export const TasksPage = () => {
             Here's a list of your tasks for this month!
           </p>
         </div>
-
         <DataTable table={table} actionBar={<TasksActionBar table={table} />}>
           <Toolbar table={table}>
             <TasksToolbarActions table={table} />
           </Toolbar>
         </DataTable>
       </div>
-
       <UpdateTask
         open={rowAction?.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
         task={rowAction?.row.original ?? null}
       />
-
       <DeleteTasks
         open={rowAction?.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}

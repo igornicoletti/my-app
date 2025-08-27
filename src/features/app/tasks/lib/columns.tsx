@@ -7,7 +7,7 @@ import {
   TextAaIcon
 } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
-import { useMemo, useTransition, type Dispatch, type SetStateAction } from 'react'
+import { useTransition, type Dispatch, type SetStateAction } from 'react'
 import { toast } from 'sonner'
 
 import { ColumnHeader } from '@/components/datatable'
@@ -29,24 +29,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { updateTask } from '@/features/app/tasks/lib/actions'
 import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schema'
-import { getPriorityIcon, getRangeValues, getStatusIcon } from '@/features/app/tasks/lib/utils'
+import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/lib/utils'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
 
 interface TasksColumnsProps {
-  tasks: TaskSchema[]
+  estimatedHoursRange: [number, number]
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
 
 export const tasksColumns = ({
-  tasks,
+  estimatedHoursRange,
   setRowAction,
 }: TasksColumnsProps): ColumnDef<TaskSchema>[] => {
-  const estimatedHoursRange = useMemo(() => {
-    const [min, max] = getRangeValues(tasks, 'estimatedHours')
-    return { min, max }
-  }, [tasks])
-
   return [
     {
       id: 'select',
@@ -171,7 +166,7 @@ export const tasksColumns = ({
       meta: {
         label: 'Est. Hours',
         variant: 'range',
-        range: [estimatedHoursRange.min, estimatedHoursRange.max],
+        range: estimatedHoursRange,
         unit: 'hr',
         icon: ClockIcon,
       },
@@ -242,6 +237,7 @@ export const tasksColumns = ({
                           {
                             loading: 'Updating...',
                             success: 'Label updated',
+                            error: 'Update failed',
                           },
                         )
                       })

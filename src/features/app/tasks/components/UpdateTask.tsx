@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
 import type { ComponentPropsWithRef } from 'react'
-import { useTransition } from 'react'
+import { useEffect, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -28,13 +28,19 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
 
   const form = useForm<UpdateTaskSchema>({
     resolver: zodResolver(updateTaskSchema),
-    defaultValues: {
-      title: task?.title ?? '',
-      label: task?.label,
-      status: task?.status,
-      priority: task?.priority,
-    }
   })
+
+  useEffect(() => {
+    if (task) {
+      form.reset({
+        title: task.title,
+        label: task.label,
+        status: task.status,
+        priority: task.priority,
+        estimatedHours: task.estimatedHours,
+      })
+    }
+  }, [task, form])
 
   const onSubmit = (input: UpdateTaskSchema) => {
     startTransition(async () => {

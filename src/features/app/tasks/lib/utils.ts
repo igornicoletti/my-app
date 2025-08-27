@@ -1,5 +1,13 @@
 import { faker } from '@faker-js/faker'
-import { ArrowDownIcon, ArrowRightIcon, ArrowUpIcon, CheckCircleIcon, CircleIcon, ProhibitIcon, TimerIcon } from '@phosphor-icons/react'
+import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+  CheckCircleIcon,
+  CircleIcon,
+  ProhibitIcon,
+  TimerIcon
+} from '@phosphor-icons/react'
 import { customAlphabet } from 'nanoid'
 
 import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schema'
@@ -44,18 +52,20 @@ export const getRangeValues = <T extends Record<string, any>>(
   items: T[],
   key: keyof T,
 ): [number, number] => {
-  if (items.length === 0) return [0, 0]
+  if (items.length === 0) {
+    return [0, 0]
+  }
 
-  return items.reduce(
-    (range, item) => {
-      const value = Number(item[key])
-      if (!Number.isFinite(value)) {
-        return range
-      }
-      range[0] = Math.min(range[0], value)
-      range[1] = Math.max(range[1], value)
-      return range
-    },
-    [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
-  )
+  const numbers = items
+    .map((item) => Number(item[key]))
+    .filter((num) => Number.isFinite(num))
+
+  if (numbers.length === 0) {
+    return [0, 0]
+  }
+
+  const min = Math.min(...numbers)
+  const max = Math.max(...numbers)
+
+  return [min, max]
 }

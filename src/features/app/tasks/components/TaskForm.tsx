@@ -34,7 +34,7 @@ export const TaskForm = <T extends FieldValues>({
 }: TaskFormProps<T>) => (
   <Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col flex-1 gap-6'>
-      <div className="grid auto-rows-min gap-4 px-4">
+      <div className='grid auto-rows-min gap-4 px-4'>
         <FormField
           control={form.control}
           name={'title' as FieldPath<T>}
@@ -58,7 +58,7 @@ export const TaskForm = <T extends FieldValues>({
           render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Label</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select onValueChange={field.onChange} value={field.value ?? ''}>
                 <FormControl>
                   <SelectTrigger className='w-full capitalize'>
                     <SelectValue
@@ -86,7 +86,7 @@ export const TaskForm = <T extends FieldValues>({
           render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Status</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select onValueChange={field.onChange} value={field.value ?? ''}>
                 <FormControl>
                   <SelectTrigger className='w-full capitalize'>
                     <SelectValue
@@ -114,7 +114,7 @@ export const TaskForm = <T extends FieldValues>({
           render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Priority</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select onValueChange={field.onChange} value={field.value ?? ''}>
                 <FormControl>
                   <SelectTrigger className='w-full capitalize'>
                     <SelectValue
@@ -149,6 +149,7 @@ export const TaskForm = <T extends FieldValues>({
                   placeholder='Enter estimated hours'
                   step='0.5'
                   min='0'
+                  value={field.value ?? ''}
                   onChange={(event) => field.onChange(event.target.valueAsNumber)}
                   aria-invalid={!!fieldState.error} />
               </FormControl>

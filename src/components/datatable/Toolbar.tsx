@@ -2,7 +2,12 @@ import { ArrowsClockwiseIcon } from '@phosphor-icons/react'
 import type { Column, Table } from '@tanstack/react-table'
 import { useCallback, useMemo, type ComponentProps } from 'react'
 
-import { DateFilter, FacetedFilter, SliderFilter, ViewOptions } from '@/components/datatable'
+import {
+  DateFilter,
+  FacetedFilter,
+  SliderFilter,
+  ViewOptions,
+} from '@/components/datatable'
 import { Button, Input } from '@/components/ui'
 import { cn } from '@/lib/utils'
 
@@ -30,7 +35,10 @@ export const Toolbar = <TData,>({
     <div
       role='toolbar'
       aria-orientation='horizontal'
-      className={cn('flex flex-wrap w-full items-start justify-between gap-2 p-1', className)}
+      className={cn(
+        'flex flex-wrap w-full items-start justify-between gap-2 p-1',
+        className
+      )}
       {...props}>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
@@ -60,81 +68,83 @@ interface ToolbarFilterProps<TData> {
   column: Column<TData>
 }
 
-const ToolbarFilter = <TData,>({
-  column
-}: ToolbarFilterProps<TData>) => {
-  {
-    const columnMeta = column.columnDef.meta
+const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
+  const columnMeta = column.columnDef.meta
 
-    const onFilterRender = useCallback(() => {
-      if (!columnMeta?.variant) return null
+  const onFilterRender = useCallback(() => {
+    if (!columnMeta?.variant) return null
 
-      switch (columnMeta.variant) {
-        case 'text':
-          return (
+    switch (columnMeta.variant) {
+      case 'text':
+        return (
+          <Input
+            name={column.id}
+            placeholder={columnMeta.placeholder ?? columnMeta.label}
+            value={(column.getFilterValue() as string) ?? ''}
+            onChange={(event) => column.setFilterValue(event.target.value)}
+            className={cn(
+              'h-8 min-w-max lg:w-56',
+              columnMeta.unit && 'pr-8'
+            )}
+          />
+        )
+
+      case 'number':
+        return (
+          <div className='relative'>
             <Input
               name={column.id}
+              type='number'
+              inputMode='numeric'
               placeholder={columnMeta.placeholder ?? columnMeta.label}
               value={(column.getFilterValue() as string) ?? ''}
               onChange={(event) => column.setFilterValue(event.target.value)}
-              className={cn('h-8 min-w-max lg:w-56', columnMeta.unit && 'pr-8')}
-            />
-          )
-
-        case 'number':
-          return (
-            <div className='relative'>
-              <Input
-                name={column.id}
-                type='number'
-                inputMode='numeric'
-                placeholder={columnMeta.placeholder ?? columnMeta.label}
-                value={(column.getFilterValue() as string) ?? ''}
-                onChange={(event) => column.setFilterValue(event.target.value)}
-                className={cn('h-8 w-full md:w-28', columnMeta.unit && 'pr-8')}
-              />
-              {columnMeta.unit && (
-                <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>
-                  {columnMeta.unit}
-                </span>
+              className={cn(
+                'h-8 w-full md:w-28',
+                columnMeta.unit && 'pr-8'
               )}
-            </div>
-          )
-
-        case 'range':
-          return (
-            <SliderFilter
-              column={column}
-              title={columnMeta.label ?? column.id}
             />
-          )
+            {columnMeta.unit && (
+              <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>
+                {columnMeta.unit}
+              </span>
+            )}
+          </div>
+        )
 
-        case 'date':
-        case 'dateRange':
-          return (
-            <DateFilter
-              column={column}
-              title={columnMeta.label ?? column.id}
-              multiple={columnMeta.variant === 'dateRange'}
-            />
-          )
+      case 'range':
+        return (
+          <SliderFilter
+            column={column}
+            title={columnMeta.label ?? column.id}
+          />
+        )
 
-        case 'select':
-        case 'multiSelect':
-          return (
-            <FacetedFilter
-              column={column}
-              title={columnMeta.label ?? column.id}
-              options={columnMeta.options ?? []}
-              multiple={columnMeta.variant === 'multiSelect'}
-            />
-          )
+      case 'date':
+      case 'dateRange':
+        return (
+          <DateFilter
+            column={column}
+            title={columnMeta.label ?? column.id}
+            multiple={columnMeta.variant === 'dateRange'}
+          />
+        )
 
-        default:
-          return null
-      }
-    }, [column, columnMeta])
+      case 'select':
+      case 'multiSelect':
+        return (
+          <FacetedFilter
+            column={column}
+            title={columnMeta.label ?? column.id}
+            options={columnMeta.options ?? []}
+            multiple={columnMeta.variant === 'multiSelect'}
+          />
+        )
 
-    return onFilterRender()
-  }
+      default:
+        return null
+    }
+  }, [column, columnMeta])
+
+  return onFilterRender()
 }
