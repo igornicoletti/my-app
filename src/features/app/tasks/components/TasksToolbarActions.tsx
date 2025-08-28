@@ -23,7 +23,7 @@ export const TasksToolbarActions = ({
         />
       ) : null}
       <Button
-        variant='outline'
+        variant='secondary'
         size='sm'
         onClick={() => exportTableToCSV(table, {
           filename: 'tasks',

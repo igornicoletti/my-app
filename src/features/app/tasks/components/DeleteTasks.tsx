@@ -1,4 +1,4 @@
-import { SpinnerGapIcon, TrashIcon } from '@phosphor-icons/react'
+import { SpinnerGapIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import type { Row } from '@tanstack/react-table'
 import { useTransition, type ComponentPropsWithoutRef } from 'react'
 import { toast } from 'sonner'
@@ -66,11 +66,11 @@ export const DeleteTasks = ({
       {showTrigger && (
         <DialogTrigger asChild>
           <Button variant='outline' size='sm'>
-            <TrashIcon aria-hidden='true' />
+            <TrashSimpleIcon aria-hidden='true' />
             Delete
             <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
             <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
-              {tasks.length}
+              {tasks.length} selected
             </Badge>
           </Button>
         </DialogTrigger>
@@ -104,11 +104,11 @@ export const DeleteTasks = ({
       {showTrigger && (
         <DrawerTrigger asChild>
           <Button variant='outline' size='sm'>
-            <TrashIcon aria-hidden='true' />
+            <TrashSimpleIcon aria-hidden='true' />
             Delete
             <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
             <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
-              {tasks.length}
+              {tasks.length} selected
             </Badge>
           </Button>
         </DrawerTrigger>
