@@ -1,28 +1,14 @@
 import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
-import { useCallback, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 
-import {
-  ActionBar,
-  ActionBarAction,
-  ActionBarSelection,
-} from '@/components/datatable'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  Separator,
-} from '@/components/ui'
-import { deleteTasks, updateTasks } from '@/features/app/tasks/lib/actions'
-import { priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schema'
+import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/datatable'
+import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
+import { Separator } from '@/components/ui/separator'
+import { useDeleteTasks, useUpdateTasks } from '@/features/app/tasks/hooks/useTasksMutations'
+import { priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/types'
 import { exportTableToCSV } from '@/lib/export'
-
-const actions = ['update-status', 'update-priority', 'export', 'delete'] as const
-
-type Action = (typeof actions)[number]
 
 interface TasksActionBarProps {
   table: Table<TaskSchema>
@@ -30,76 +16,50 @@ interface TasksActionBarProps {
 
 export const TasksAction = ({ table }: TasksActionBarProps) => {
   const rows = table.getFilteredSelectedRowModel().rows
-  const [isPending, startTransition] = useTransition()
-  const [currentAction, setCurrentAction] = useState<Action | null>(null)
+  const updateTasksMutation = useUpdateTasks({
+    onSuccess: () => table.toggleAllRowsSelected(false),
+  })
+  const deleteTasksMutation = useDeleteTasks({
+    onSuccess: () => table.toggleAllRowsSelected(false),
+  })
 
-  const getIsActionPending = useCallback((action: Action) =>
-    isPending && currentAction === action,
-    [isPending, currentAction]
-  )
-
-  const onTaskUpdate = useCallback(({
-    field,
-    value,
-  }: {
-    field: 'status' | 'priority'
-    value: TaskSchema['status'] | TaskSchema['priority']
-  }) => {
-    setCurrentAction((field) === 'status' ? 'update-status' : 'update-priority')
-    startTransition(async () => {
-      const { error } = await updateTasks({
-        ids: rows.map((row) => row.original.id),
-        [field]: value,
-      })
-
-      if (error) {
-        toast.error(error)
-        return
-      }
-
-      toast.success('Tasks updated')
+  const onTaskExport = () => {
+    exportTableToCSV(table, {
+      excludeColumns: ['select', 'actions'],
+      onlySelected: true,
     })
-  }, [rows])
+    toast.success('Tasks exported')
+  }
 
-  const onTaskExport = useCallback(() => {
-    setCurrentAction('export')
-    startTransition(() => {
-      exportTableToCSV(table, {
-        excludeColumns: ['select', 'actions'],
-        onlySelected: true,
-      })
+  const onUpdateStatus = (status: TaskSchema['status']) => {
+    updateTasksMutation.mutate({
+      ids: rows.map((row) => row.original.id),
+      status,
     })
-  }, [table])
+  }
 
-  const onTaskDelete = useCallback(() => {
-    setCurrentAction('delete')
-    startTransition(async () => {
-      const { error } = await deleteTasks({
-        ids: rows.map((row) => row.original.id),
-      })
-
-      if (error) {
-        toast.error(error)
-        return
-      }
-
-      table.toggleAllRowsSelected(false)
+  const onUpdatePriority = (priority: TaskSchema['priority']) => {
+    updateTasksMutation.mutate({
+      ids: rows.map((row) => row.original.id),
+      priority,
     })
-  }, [rows, table])
+  }
+
+  const onDelete = () => {
+    deleteTasksMutation.mutate(rows.map((row) => row.original.id))
+  }
 
   return (
     <ActionBar table={table} visible={rows.length > 0}>
       <ActionBarSelection table={table} />
       <Separator orientation='vertical' className='hidden data-[orientation=vertical]:h-5 sm:block' />
       <div className='flex flex-wrap items-center justify-center gap-1.5'>
-        <Select onValueChange={(value: TaskSchema['status']) => onTaskUpdate({
-          field: 'status', value
-        })}>
+        <Select onValueChange={onUpdateStatus}>
           <SelectTrigger asChild>
             <ActionBarAction
               size='icon'
               tooltip='Update status'
-              isPending={getIsActionPending('update-status')}>
+              disabled={updateTasksMutation.isPending}>
               <CircleDashedIcon />
             </ActionBarAction>
           </SelectTrigger>
@@ -113,14 +73,12 @@ export const TasksAction = ({ table }: TasksActionBarProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select onValueChange={(value: TaskSchema['priority']) => onTaskUpdate({
-          field: 'priority', value
-        })}>
+        <Select onValueChange={onUpdatePriority}>
           <SelectTrigger asChild>
             <ActionBarAction
               size='icon'
               tooltip='Update priority'
-              isPending={getIsActionPending('update-priority')}>
+              disabled={updateTasksMutation.isPending}>
               <ArrowUpIcon />
             </ActionBarAction>
           </SelectTrigger>
@@ -137,15 +95,15 @@ export const TasksAction = ({ table }: TasksActionBarProps) => {
         <ActionBarAction
           size='icon'
           tooltip='Export tasks'
-          isPending={getIsActionPending('export')}
+          disabled={false}
           onClick={onTaskExport}>
           <DownloadSimpleIcon />
         </ActionBarAction>
         <ActionBarAction
           size='icon'
           tooltip='Delete tasks'
-          isPending={getIsActionPending('delete')}
-          onClick={onTaskDelete}>
+          disabled={deleteTasksMutation.isPending}
+          onClick={onDelete}>
           <TrashSimpleIcon />
         </ActionBarAction>
       </div>

@@ -1,14 +1,6 @@
-import {
-  ArrowsDownUpIcon,
-  CalendarIcon,
-  CircleDashedIcon,
-  ClockIcon,
-  DotsThreeIcon,
-  TextAaIcon
-} from '@phosphor-icons/react'
+import { ArrowsDownUpIcon, CalendarIcon, CircleDashedIcon, ClockIcon, DotsThreeIcon, TextAaIcon, } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
-import { useTransition, type Dispatch, type SetStateAction } from 'react'
-import { toast } from 'sonner'
+import type { Dispatch, SetStateAction } from 'react'
 
 import { ColumnHeader } from '@/components/datatable'
 import { Badge } from '@/components/ui/badge'
@@ -27,8 +19,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { updateTask } from '@/features/app/tasks/lib/actions'
-import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schema'
+import { useUpdateTask } from '@/features/app/tasks/hooks/useTasksMutations'
+import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/types'
 import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/lib/utils'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/datatable'
@@ -130,7 +122,9 @@ export const TasksColumns = ({
     {
       id: 'priority',
       accessorKey: 'priority',
-      header: ({ column }) => <ColumnHeader column={column} title='Priority' />,
+      header: ({ column }) => (
+        <ColumnHeader column={column} title='Priority' />
+      ),
       cell: ({ cell }) => {
         const priority = priorities.find((priority) => priority === cell.getValue<TaskSchema['priority']>())
         if (!priority) return null
@@ -158,7 +152,9 @@ export const TasksColumns = ({
     {
       id: 'estimatedHours',
       accessorKey: 'estimatedHours',
-      header: ({ column }) => <ColumnHeader column={column} title='Est. Hours' />,
+      header: ({ column }) => (
+        <ColumnHeader column={column} title='Est. Hours' />
+      ),
       cell: ({ cell }) => {
         const estimatedHours = cell.getValue<number>()
         return <div className='w-20 text-right'>{estimatedHours}</div>
@@ -171,7 +167,11 @@ export const TasksColumns = ({
         icon: ClockIcon,
       },
       enableColumnFilter: true,
-      filterFn: (row, columnId, range: [number | undefined, number | undefined]) => {
+      filterFn: (
+        row,
+        columnId,
+        range: [number | undefined, number | undefined],
+      ) => {
         const val = row.getValue<number>(columnId)
         const [min, max] = range
         if (typeof val !== 'number') return false
@@ -183,7 +183,9 @@ export const TasksColumns = ({
     {
       id: 'createdAt',
       accessorKey: 'createdAt',
-      header: ({ column }) => <ColumnHeader column={column} title='Created At' />,
+      header: ({ column }) => (
+        <ColumnHeader column={column} title='Created At' />
+      ),
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
       meta: {
         label: 'Created At',
@@ -207,7 +209,7 @@ export const TasksColumns = ({
     {
       id: 'actions',
       cell: function Cell({ row }) {
-        const [isUpdatePending, startUpdateTransition] = useTransition()
+        const updateTaskMutation = useUpdateTask()
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -228,25 +230,16 @@ export const TasksColumns = ({
                   <DropdownMenuRadioGroup
                     value={row.original.label}
                     onValueChange={(value) => {
-                      startUpdateTransition(() => {
-                        toast.promise(
-                          updateTask({
-                            id: row.original.id,
-                            label: value as TaskSchema['label'],
-                          }),
-                          {
-                            loading: 'Updating...',
-                            success: 'Label updated',
-                            error: 'Update failed',
-                          },
-                        )
+                      updateTaskMutation.mutate({
+                        id: row.original.id,
+                        label: value as TaskSchema['label'],
                       })
                     }}>
                     {labels.map((label) => (
                       <DropdownMenuRadioItem
                         key={label}
                         value={label}
-                        disabled={isUpdatePending}>
+                        disabled={updateTaskMutation.isPending}>
                         {label}
                       </DropdownMenuRadioItem>
                     ))}

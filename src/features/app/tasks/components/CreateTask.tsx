@@ -1,6 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SpinnerGapIcon } from '@phosphor-icons/react'
-import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -15,41 +13,37 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { TaskForm } from '@/features/app/tasks/components'
-import { createTask } from '@/features/app/tasks/lib/actions'
-import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/schema'
+import { TaskForm } from '@/features/app/tasks/components/TaskForm'
+import { useCreateTask } from '@/features/app/tasks/hooks/useTasksMutations'
+import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/types'
 
 export const CreateTask = () => {
-  const [open, setOpen] = useState(false)
-  const [isPending, startTransition] = useTransition()
-
   const form = useForm<CreateTaskSchema>({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
       label: 'Feature',
       status: 'Todo',
       priority: 'Medium',
-      estimatedHours: 1
-    }
+      estimatedHours: 1,
+    },
   })
 
-  const onSubmit = (input: CreateTaskSchema) => {
-    startTransition(async () => {
-      const { error } = await createTask(input)
-
-      if (error) {
-        toast.error(error)
-        return
-      }
-
+  const createTaskMutation = useCreateTask({
+    onSuccess: () => {
       form.reset()
-      setOpen(false)
       toast.success('Task created')
-    })
-  }
+    },
+  })
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet
+      open={createTaskMutation.isSuccess ? false : undefined}
+      onOpenChange={(open) => {
+        if (!open) {
+          form.reset()
+          createTaskMutation.reset()
+        }
+      }}>
       <SheetTrigger asChild>
         <Button variant='default' size='sm'>
           New task
@@ -62,10 +56,9 @@ export const CreateTask = () => {
             Fill in the details below to create a new task
           </SheetDescription>
         </SheetHeader>
-        <TaskForm form={form} onSubmit={onSubmit}>
+        <TaskForm form={form} onSubmit={createTaskMutation.mutate}>
           <SheetFooter>
-            <Button disabled={isPending}>
-              {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
+            <Button>
               Continue
             </Button>
             <SheetClose asChild>

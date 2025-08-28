@@ -5,13 +5,13 @@ export const labels = ['Bug', 'Feature', 'Enhancement', 'Documentation'] as cons
 export const priorities = ['Low', 'Medium', 'High'] as const
 
 export const taskSchema = z.object({
-  id: z.string(),
-  code: z.string(),
+  id: z.string().min(1),
+  code: z.string().min(1),
   title: z.string({
     required_error: 'Title is required.',
     invalid_type_error: 'Title must be a string.',
   }).trim().min(1, { message: 'Title cannot be empty.' }),
-  estimatedHours: z.coerce.number({
+  estimatedHours: z.number({
     required_error: 'Estimated hours are required.',
     invalid_type_error: 'Estimated hours must be a number.',
   }).min(0, { message: 'Estimated hours must be greater than or equal to 0.' }),
@@ -27,20 +27,27 @@ export const taskSchema = z.object({
     required_error: 'Please select a priority.',
     invalid_type_error: 'Invalid priority.',
   }),
-  archived: z.coerce.boolean(),
+  archived: z.boolean().default(false),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
 
-export const createTaskSchema = taskSchema.omit({
-  id: true,
-  code: true,
-  createdAt: true,
-  updatedAt: true,
-  archived: true,
+export const createTaskSchema = z.object({
+  title: taskSchema.shape.title,
+  estimatedHours: taskSchema.shape.estimatedHours,
+  status: taskSchema.shape.status,
+  label: taskSchema.shape.label,
+  priority: taskSchema.shape.priority,
 })
 
-export const updateTaskSchema = taskSchema.partial()
+export const updateTaskSchema = z.object({
+  title: taskSchema.shape.title.optional(),
+  estimatedHours: taskSchema.shape.estimatedHours.optional(),
+  status: taskSchema.shape.status.optional(),
+  label: taskSchema.shape.label.optional(),
+  priority: taskSchema.shape.priority.optional(),
+  archived: taskSchema.shape.archived.optional(),
+})
 
 export type TaskSchema = z.infer<typeof taskSchema>
 export type CreateTaskSchema = z.infer<typeof createTaskSchema>

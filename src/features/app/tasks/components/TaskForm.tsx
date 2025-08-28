@@ -19,7 +19,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { labels, priorities, statuses } from '@/features/app/tasks/lib/schema'
+import { labels, priorities, statuses } from '@/features/app/tasks/lib/types'
 
 interface TaskFormProps<T extends FieldValues> extends Omit<ComponentPropsWithRef<'form'>, 'onSubmit'> {
   children: ReactNode

@@ -1,9 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SpinnerGapIcon } from '@phosphor-icons/react'
 import type { ComponentPropsWithRef } from 'react'
-import { useEffect, useTransition } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,21 +11,26 @@ import {
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetTitle
+  SheetTitle,
 } from '@/components/ui/sheet'
-import { TaskForm } from '@/features/app/tasks/components'
-import { updateTask } from '@/features/app/tasks/lib/actions'
-import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema, } from '@/features/app/tasks/lib/schema'
+import { TaskForm } from '@/features/app/tasks/components/TaskForm'
+import { useUpdateTask } from '@/features/app/tasks/hooks/useTasksMutations'
+import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema } from '@/features/app/tasks/lib/types'
 
 interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {
   task: TaskSchema | null
 }
 
 export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
-  const [isPending, startTransition] = useTransition()
-
   const form = useForm<UpdateTaskSchema>({
     resolver: zodResolver(updateTaskSchema),
+  })
+
+  const updateTaskMutation = useUpdateTask({
+    onSuccess: (data) => {
+      form.reset(data)
+      props.onOpenChange?.(false)
+    },
   })
 
   useEffect(() => {
@@ -43,20 +46,8 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
   }, [task, form])
 
   const onSubmit = (input: UpdateTaskSchema) => {
-    startTransition(async () => {
-      if (!task) return
-
-      const { error } = await updateTask({ id: task.id, ...input })
-
-      if (error) {
-        toast.error(error)
-        return
-      }
-
-      form.reset(input)
-      props.onOpenChange?.(false)
-      toast.success(`Task '${input.title ?? task.title}' updated`)
-    })
+    if (!task) return
+    updateTaskMutation.mutate({ id: task.id, ...input })
   }
 
   return (
@@ -70,8 +61,7 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
         </SheetHeader>
         <TaskForm form={form} onSubmit={onSubmit}>
           <SheetFooter>
-            <Button disabled={isPending}>
-              {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
+            <Button disabled={updateTaskMutation.isPending}>
               Continue
             </Button>
             <SheetClose asChild>

@@ -10,7 +10,7 @@ import {
 } from '@phosphor-icons/react'
 import { customAlphabet } from 'nanoid'
 
-import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schema'
+import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/types'
 import { generateId } from '@/lib/id'
 
 export const generateRandomTask = (): TaskSchema => ({

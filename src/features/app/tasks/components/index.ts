@@ -1,5 +1,5 @@
 export * from './CreateTask'
-export * from './DeleteTasks'
+export * from './DeleteTask'
 export * from './TaskForm'
 export * from './TasksAction'
 export * from './TasksColumns'

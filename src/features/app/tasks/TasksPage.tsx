@@ -1,4 +1,4 @@
-import { TasksTable } from '@/features/app/tasks/components'
+import { TasksTable } from '@/features/app/tasks/components/TasksTable'
 
 export const TasksPage = () => (
   <div className='flex flex-col gap-6 px-2'>
