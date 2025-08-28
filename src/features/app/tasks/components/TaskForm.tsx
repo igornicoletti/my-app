@@ -48,7 +48,7 @@ export const TaskForm = <T extends FieldValues>({
                   {...field}
                   autoFocus
                   placeholder='Do a kickflip'
-                  className='resize-none'
+                  className='text-sm resize-none'
                   aria-invalid={!!fieldState.error} />
               </FormControl>
               <FormMessage className='text-xs text-right' />

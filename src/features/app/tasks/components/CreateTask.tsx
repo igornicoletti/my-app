@@ -16,6 +16,7 @@ import {
 import { TaskForm } from '@/features/app/tasks/components/TaskForm'
 import { useCreateTask } from '@/features/app/tasks/hooks/useTasksMutations'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/types'
+import { SparkleIcon } from '@phosphor-icons/react'
 
 export const CreateTask = () => {
   const form = useForm<CreateTaskSchema>({
@@ -46,7 +47,8 @@ export const CreateTask = () => {
       }}>
       <SheetTrigger asChild>
         <Button variant='default' size='sm'>
-          New task
+          <SparkleIcon />
+          Add Task
         </Button>
       </SheetTrigger>
       <SheetContent className='w-full sm:max-w-md'>

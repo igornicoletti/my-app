@@ -34,7 +34,7 @@ export const Pagination = <TData,>({
       className,
     )}
     {...props}>
-    <div className='flex-1 whitespace-nowrap text-muted-foreground text-sm'>
+    <div className='flex-1 whitespace-nowrap text-muted-foreground text-sm truncate'>
       {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
     </div>
     <div className='flex flex-col-reverse items-center gap-2 sm:flex-row sm:gap-4 lg:gap-8'>

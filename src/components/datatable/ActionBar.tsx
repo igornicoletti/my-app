@@ -85,7 +85,11 @@ export const ActionBarAction = ({
     <Button
       variant='secondary'
       size={size}
-      className={cn(size === 'icon' ? 'size-7' : 'h-7', className)}
+      className={cn(
+        'gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5',
+        size === 'icon' ? 'size-7' : 'h-7',
+        className,
+      )}
       disabled={disabled || isPending}
       {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
@@ -114,7 +118,7 @@ export const ActionBarSelection = <TData,>({
   }, [table])
 
   return (
-    <div className='flex h-7 items-center rounded-md border pr-1 pl-2.5'>
+    <div className='flex h-8 items-center rounded-md border pr-1 pl-2.5'>
       <span className='whitespace-nowrap text-xs'>
         {table.getFilteredSelectedRowModel().rows.length} selected
       </span>

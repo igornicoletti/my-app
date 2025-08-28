@@ -16,11 +16,13 @@ interface TasksActionBarProps {
 
 export const TasksAction = ({ table }: TasksActionBarProps) => {
   const rows = table.getFilteredSelectedRowModel().rows
+
   const updateTasksMutation = useUpdateTasks({
-    onSuccess: () => table.toggleAllRowsSelected(false),
+    onSuccess: () => table.toggleAllRowsSelected(false)
   })
+
   const deleteTasksMutation = useDeleteTasks({
-    onSuccess: () => table.toggleAllRowsSelected(false),
+    onSuccess: () => table.toggleAllRowsSelected(false)
   })
 
   const onTaskExport = () => {

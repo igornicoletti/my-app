@@ -2,7 +2,6 @@ import { PlusCircleIcon, XCircleIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useId, useMemo, type ChangeEvent, type MouseEvent } from 'react'
 
-import { Label } from '@/components/ui'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,7 +27,10 @@ export const SliderFilter = <TData,>({
   column,
   title,
 }: SliderFilterProps<TData>) => {
-  const id = useId()
+  const baseId = useId()
+  const fromId = `${baseId}-from`
+  const toId = `${baseId}-to`
+  const sliderId = `${baseId}-slider`
 
   const columnFilterValue = getIsValidRange(column.getFilterValue())
     ? (column.getFilterValue() as RangeValue)
@@ -61,8 +63,7 @@ export const SliderFilter = <TData,>({
     return { min: minValue, max: maxValue, step }
   }, [column, defaultRange])
 
-  const range = useMemo<RangeValue>(() => {
-    if (min === max) return [0, max || 1]
+  const range = useMemo((): RangeValue => {
     return columnFilterValue ?? [min, max]
   }, [columnFilterValue, min, max])
 
@@ -147,12 +148,9 @@ export const SliderFilter = <TData,>({
       <PopoverContent align='start' className='flex w-auto flex-col gap-4 p-2'>
         <div className='flex flex-col gap-2'>
           <div className='flex items-center gap-4'>
-            <Label htmlFor={`${id}-from`} className='sr-only'>
-              From
-            </Label>
             <div className='relative'>
               <Input
-                id={`${id}-from`}
+                id={fromId}
                 type='number'
                 aria-valuemin={min}
                 aria-valuemax={max}
@@ -171,12 +169,9 @@ export const SliderFilter = <TData,>({
                 </span>
               )}
             </div>
-            <Label htmlFor={`${id}-to`} className='sr-only'>
-              To
-            </Label>
             <div className='relative'>
               <Input
-                id={`${id}-to`}
+                id={toId}
                 type='number'
                 aria-valuemin={min}
                 aria-valuemax={max}
@@ -196,11 +191,8 @@ export const SliderFilter = <TData,>({
               )}
             </div>
           </div>
-          <Label htmlFor={`${id}-slider`} className='sr-only'>
-            {title} slider
-          </Label>
           <Slider
-            id={`${id}-slider`}
+            id={sliderId}
             min={min}
             max={max}
             step={step}
