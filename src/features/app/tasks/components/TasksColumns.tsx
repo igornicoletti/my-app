@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUpdateTask } from '@/features/app/tasks/hooks/useTasksMutations'
+import { dateRangeFilter, rangeFilter } from '@/features/app/tasks/lib/filters'
 import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/types'
 import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/lib/utils'
 import { formatDate } from '@/lib/format'
@@ -167,18 +168,7 @@ export const TasksColumns = ({
         icon: ClockIcon,
       },
       enableColumnFilter: true,
-      filterFn: (
-        row,
-        columnId,
-        range: [number | undefined, number | undefined],
-      ) => {
-        const val = row.getValue<number>(columnId)
-        const [min, max] = range
-        if (typeof val !== 'number') return false
-        if (min != null && val < min) return false
-        if (max != null && val > max) return false
-        return true
-      },
+      filterFn: rangeFilter,
     },
     {
       id: 'createdAt',
@@ -193,18 +183,7 @@ export const TasksColumns = ({
         icon: CalendarIcon,
       },
       enableColumnFilter: true,
-      filterFn: (row, columnId, value: [Date?, Date?]) => {
-        const rowDate = row.getValue<Date>(columnId)
-        if (!rowDate) return false
-        const [from, to] = value
-        if (from && rowDate < from) return false
-        if (to) {
-          const endOfDay = new Date(to)
-          endOfDay.setHours(23, 59, 59, 999)
-          if (rowDate > endOfDay) return false
-        }
-        return true
-      },
+      filterFn: dateRangeFilter,
     },
     {
       id: 'actions',

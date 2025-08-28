@@ -52,17 +52,13 @@ export const getRangeValues = <T extends Record<string, any>>(
   items: T[],
   key: keyof T,
 ): [number, number] => {
-  if (items.length === 0) {
-    return [0, 0]
-  }
+  if (items.length === 0) return [0, 0]
 
   const numbers = items
     .map((item) => Number(item[key]))
     .filter((num) => Number.isFinite(num))
 
-  if (numbers.length === 0) {
-    return [0, 0]
-  }
+  if (numbers.length === 0) return [0, 0]
 
   const min = Math.min(...numbers)
   const max = Math.max(...numbers)
