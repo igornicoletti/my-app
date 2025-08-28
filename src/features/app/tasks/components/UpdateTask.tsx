@@ -72,7 +72,7 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
           <SheetFooter>
             <Button disabled={isPending}>
               {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
-              Save changes
+              Continue
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='outline'>

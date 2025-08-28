@@ -66,7 +66,7 @@ export const CreateTask = () => {
           <SheetFooter>
             <Button disabled={isPending}>
               {isPending && <SpinnerGapIcon className='animate-spin' aria-hidden='true' />}
-              Create new task
+              Continue
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='outline'>

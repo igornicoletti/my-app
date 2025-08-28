@@ -3,6 +3,7 @@ import type { Row } from '@tanstack/react-table'
 import { useTransition, type ComponentPropsWithoutRef } from 'react'
 import { toast } from 'sonner'
 
+import { Badge, Separator } from '@/components'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -66,7 +67,11 @@ export const DeleteTasks = ({
         <DialogTrigger asChild>
           <Button variant='outline' size='sm'>
             <TrashIcon aria-hidden='true' />
-            Delete ({tasks.length})
+            Delete
+            <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+            <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+              {tasks.length}
+            </Badge>
           </Button>
         </DialogTrigger>
       )}
@@ -100,7 +105,11 @@ export const DeleteTasks = ({
         <DrawerTrigger asChild>
           <Button variant='outline' size='sm'>
             <TrashIcon aria-hidden='true' />
-            Delete ({tasks.length})
+            Delete
+            <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+            <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+              {tasks.length}
+            </Badge>
           </Button>
         </DrawerTrigger>
       )}

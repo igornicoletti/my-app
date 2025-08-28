@@ -91,7 +91,7 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
     <ActionBar table={table} visible={rows.length > 0}>
       <ActionBarSelection table={table} />
       <Separator orientation='vertical' className='hidden data-[orientation=vertical]:h-5 sm:block' />
-      <div className='flex items-center gap-1.5'>
+      <div className='flex flex-wrap items-center justify-center gap-1.5'>
         <Select onValueChange={(value: TaskSchema['status']) => onTaskUpdate({
           field: 'status', value
         })}>

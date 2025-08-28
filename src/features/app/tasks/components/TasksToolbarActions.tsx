@@ -11,11 +11,11 @@ interface TasksToolbarActionsProps {
   table: Table<TaskSchema>
 }
 
-export function TasksToolbarActions({
+export const TasksToolbarActions = ({
   table
-}: TasksToolbarActionsProps) {
+}: TasksToolbarActionsProps) => {
   return (
-    <div className='flex items-center gap-2'>
+    <div className='flex flex-wrap items-center gap-2'>
       {table.getFilteredSelectedRowModel().rows.length > 0 ? (
         <DeleteTasks
           tasks={table.getFilteredSelectedRowModel().rows.map((row) => row.original)}

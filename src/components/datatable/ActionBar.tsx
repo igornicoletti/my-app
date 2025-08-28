@@ -85,10 +85,7 @@ export const ActionBarAction = ({
     <Button
       variant='secondary'
       size={size}
-      className={cn(
-        size === 'icon' ? 'size-7' : 'h-7',
-        className
-      )}
+      className={cn(size === 'icon' ? 'size-7' : 'h-7', className)}
       disabled={disabled || isPending}
       {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
