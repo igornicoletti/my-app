@@ -11,7 +11,7 @@ interface TasksToolbarActionsProps {
   table: Table<TaskSchema>
 }
 
-export const TasksToolbarActions = ({
+export const TasksToolbar = ({
   table
 }: TasksToolbarActionsProps) => {
   return (

@@ -28,7 +28,7 @@ interface TasksActionBarProps {
   table: Table<TaskSchema>
 }
 
-export const TasksActionBar = ({ table }: TasksActionBarProps) => {
+export const TasksAction = ({ table }: TasksActionBarProps) => {
   const rows = table.getFilteredSelectedRowModel().rows
   const [isPending, startTransition] = useTransition()
   const [currentAction, setCurrentAction] = useState<Action | null>(null)

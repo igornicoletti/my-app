@@ -11,27 +11,22 @@ export const taskSchema = z.object({
     required_error: 'Title is required.',
     invalid_type_error: 'Title must be a string.',
   }).trim().min(1, { message: 'Title cannot be empty.' }),
-
   estimatedHours: z.coerce.number({
     required_error: 'Estimated hours are required.',
     invalid_type_error: 'Estimated hours must be a number.',
   }).min(0, { message: 'Estimated hours must be greater than or equal to 0.' }),
-
   status: z.enum(statuses, {
     required_error: 'Please select a status.',
     invalid_type_error: 'Invalid status.',
   }),
-
   label: z.enum(labels, {
     required_error: 'Please select a label.',
     invalid_type_error: 'Invalid label.',
   }),
-
   priority: z.enum(priorities, {
     required_error: 'Please select a priority.',
     invalid_type_error: 'Invalid priority.',
   }),
-
   archived: z.coerce.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),

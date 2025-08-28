@@ -38,7 +38,7 @@ interface TasksColumnsProps {
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
 
-export const tasksColumns = ({
+export const TasksColumns = ({
   estimatedHoursRange,
   setRowAction,
 }: TasksColumnsProps): ColumnDef<TaskSchema>[] => {
