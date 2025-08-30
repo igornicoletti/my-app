@@ -91,7 +91,6 @@ export const DeleteTask = ({
             <Button variant='outline'>Cancel</Button>
           </Close>
           <Button
-            aria-label='Delete selected rows'
             variant='destructive'
             onClick={onDelete}
             disabled={deleteTasksMutation.isPending}>

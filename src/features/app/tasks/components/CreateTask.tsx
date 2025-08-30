@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SparkleIcon } from '@phosphor-icons/react'
+import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
@@ -16,8 +16,11 @@ import {
 import { TaskForm } from '@/features/app/tasks/components/TaskForm'
 import { useCreateTask } from '@/features/app/tasks/hooks/useTasksMutations'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/types'
+import { useState } from 'react'
 
 export const CreateTask = () => {
+  const [open, setOpen] = useState(false)
+
   const form = useForm<CreateTaskSchema>({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
@@ -29,18 +32,14 @@ export const CreateTask = () => {
   })
 
   const createTaskMutation = useCreateTask({
-    onSuccess: () => form.reset()
+    onSuccess: () => {
+      form.reset()
+      setOpen(false)
+    }
   })
 
   return (
-    <Sheet
-      open={createTaskMutation.isSuccess ? false : undefined}
-      onOpenChange={(open) => {
-        if (!open) {
-          form.reset()
-          createTaskMutation.reset()
-        }
-      }}>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant='default' size='sm'>
           <SparkleIcon />
@@ -55,9 +54,15 @@ export const CreateTask = () => {
           </SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={createTaskMutation.mutate}>
-          <SheetFooter>
-            <Button>
-              Continue
+          <SheetFooter className='mt-auto'>
+            <Button
+              type='submit'
+              disabled={createTaskMutation.isPending}>
+              {createTaskMutation.isPending ? (
+                <SpinnerGapIcon className='animate-spin' />
+              ) : (
+                'Create task'
+              )}
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='outline'>

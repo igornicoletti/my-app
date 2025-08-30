@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PaperPlaneTiltIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
-import { FieldControl } from '@/components/form'
+import { InputField } from '@/components/form'
 import { Button, Form } from '@/components/ui'
 import { forgotPasswordSchema, type ForgotPasswordSchema } from '@/features/auth'
 import { useSubmitForm, useToast } from '@/hooks'
@@ -26,7 +26,7 @@ export const ForgotPasswordPage = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='email'

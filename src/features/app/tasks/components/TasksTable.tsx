@@ -23,7 +23,8 @@ export const TasksTable = () => {
     : [0, 24]
 
   const columns = useMemo(() => TasksColumns({
-    estimatedHoursRange, setRowAction
+    estimatedHoursRange,
+    setRowAction
   }), [estimatedHoursRange, setRowAction])
 
   const { table } = useDataTable({

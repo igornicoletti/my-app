@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-interface FieldControlProps<T extends FieldValues> {
+interface InputFieldProps<T extends FieldValues> {
   name: FieldPath<T>
   control: Control<T>
   type: string
@@ -21,7 +21,7 @@ interface FieldControlProps<T extends FieldValues> {
   placeholder?: string
 }
 
-export const FieldControl = <T extends FieldValues>({
+export const InputField = <T extends FieldValues>({
   autoComplete,
   autoFocus,
   control,
@@ -29,7 +29,7 @@ export const FieldControl = <T extends FieldValues>({
   name,
   placeholder,
   type
-}: FieldControlProps<T>) => {
+}: InputFieldProps<T>) => {
   const [visible, setVisible] = useState(false)
 
   const isPassword = type === 'password'

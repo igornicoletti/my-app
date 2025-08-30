@@ -1,7 +1,6 @@
 import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
-import { toast } from 'sonner'
 
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/datatable'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
@@ -30,7 +29,6 @@ export const TasksAction = ({ table }: TasksActionBarProps) => {
       excludeColumns: ['select', 'actions'],
       onlySelected: true,
     })
-    toast.success('Tasks exported')
   }
 
   const onUpdateStatus = (status: TaskSchema['status']) => {

@@ -16,6 +16,7 @@ import {
 import { TaskForm } from '@/features/app/tasks/components/TaskForm'
 import { useUpdateTask } from '@/features/app/tasks/hooks/useTasksMutations'
 import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema } from '@/features/app/tasks/lib/types'
+import { SpinnerGapIcon } from '@phosphor-icons/react'
 
 interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {
   task: TaskSchema | null
@@ -61,8 +62,14 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
         </SheetHeader>
         <TaskForm form={form} onSubmit={onSubmit}>
           <SheetFooter>
-            <Button disabled={updateTaskMutation.isPending}>
-              Continue
+            <Button
+              type='submit'
+              disabled={updateTaskMutation.isPending}>
+              {updateTaskMutation.isPending ? (
+                <SpinnerGapIcon className='animate-spin' />
+              ) : (
+                'Save changes'
+              )}
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='outline'>

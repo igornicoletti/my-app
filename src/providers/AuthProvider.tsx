@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     user, isLoading
   }), [user, isLoading])
 
-  if (isLoading) return <LoadingSpinner message='Checking authentication...' />
+  if (isLoading) return <LoadingSpinner message='Checking Authentication...' />
 
   return (
     <AuthProviderContext.Provider value={value}>

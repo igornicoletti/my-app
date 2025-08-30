@@ -3,7 +3,7 @@ import { GoogleLogoIcon, SignInIcon, SpinnerGapIcon } from '@phosphor-icons/reac
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { FieldControl } from '@/components/form'
+import { InputField } from '@/components/form'
 import { Button, Form, Separator } from '@/components/ui'
 import { loginSchema, type LoginSchema } from '@/features/auth'
 import { useSubmitForm, useToast } from '@/hooks'
@@ -52,7 +52,7 @@ export const LoginPage = () => {
           <span className='text-sm text-muted-foreground'>or</span>
           <Separator />
         </div>
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='email'
@@ -62,7 +62,7 @@ export const LoginPage = () => {
         <Button asChild variant='link' className='h-auto ml-auto -mb-2 p-0 text-xs font-semibold'>
           <Link to='/forgot-password'>Forgot password?</Link>
         </Button>
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='password'

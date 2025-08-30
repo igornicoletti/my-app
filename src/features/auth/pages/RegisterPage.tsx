@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon, UserPlusIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
-import { FieldControl } from '@/components/form'
+import { InputField } from '@/components/form'
 import { Button, Form } from '@/components/ui'
 import { registerSchema, type RegisterSchema } from '@/features/auth'
 import { useSubmitForm, useToast } from '@/hooks'
@@ -29,7 +29,7 @@ export const RegisterPage = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='text'
@@ -37,21 +37,21 @@ export const RegisterPage = () => {
           placeholder='Username'
           autoComplete='given-name'
           autoFocus />
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='email'
           name='email'
           placeholder='Email'
           autoComplete='username' />
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='password'
           name='password'
           placeholder='Password'
           autoComplete='new-password' />
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='password'

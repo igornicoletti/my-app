@@ -3,7 +3,7 @@ import { ShieldStarIcon, SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
-import { FieldControl } from '@/components/form'
+import { InputField } from '@/components/form'
 import { Button, Form } from '@/components/ui'
 import { resetPasswordSchema, type ResetPasswordSchema } from '@/features/auth'
 import { useSubmitForm, useToast } from '@/hooks'
@@ -31,7 +31,7 @@ export const ResetPasswordPage = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='password'
@@ -39,7 +39,7 @@ export const ResetPasswordPage = () => {
           placeholder='New password'
           autoComplete='new-password'
           autoFocus />
-        <FieldControl
+        <InputField
           control={form.control}
           disabled={isLoading}
           type='password'
