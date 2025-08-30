@@ -18,20 +18,25 @@ export const TasksTable = () => {
   const { data: tasks } = useTasks()
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
 
-  const estimatedHoursRange: [number, number] =
-    tasks && tasks.length > 0 ? getRangeValues(tasks, 'estimatedHours') : [0, 24]
+  const estimatedHoursRange: [number, number] = tasks && tasks.length > 0
+    ? getRangeValues(tasks, 'estimatedHours')
+    : [0, 24]
 
-  const columns = useMemo(
-    () => TasksColumns({ estimatedHoursRange, setRowAction }),
-    [estimatedHoursRange, setRowAction],
-  )
+  const columns = useMemo(() => TasksColumns({
+    estimatedHoursRange, setRowAction
+  }), [estimatedHoursRange, setRowAction])
 
   const { table } = useDataTable({
     data: tasks ?? [],
     columns,
     initialState: {
-      sorting: [{ id: 'createdAt', desc: true }],
-      columnPinning: { right: ['actions'] },
+      sorting: [{
+        id: 'createdAt',
+        desc: true
+      }],
+      columnPinning: {
+        right: ['actions']
+      },
     },
     getRowId: (row) => row.id,
   })

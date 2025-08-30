@@ -1,4 +1,4 @@
-import { ArrowsDownUpIcon, CalendarIcon, CircleDashedIcon, ClockIcon, DotsThreeIcon, TextAaIcon, } from '@phosphor-icons/react'
+import { ArrowsDownUpIcon, CalendarBlankIcon, CircleDashedIcon, ClockIcon, DotsThreeIcon, TextAaIcon } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -13,11 +13,10 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useUpdateTask } from '@/features/app/tasks/hooks/useTasksMutations'
 import { dateRangeFilter, rangeFilter } from '@/features/app/tasks/lib/filters'
@@ -180,7 +179,7 @@ export const TasksColumns = ({
       meta: {
         label: 'Created At',
         variant: 'dateRange',
-        icon: CalendarIcon,
+        icon: CalendarBlankIcon,
       },
       enableColumnFilter: true,
       filterFn: dateRangeFilter,
@@ -200,6 +199,9 @@ export const TasksColumns = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-40'>
+              <DropdownMenuItem>
+                Details
+              </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
                 Edit
               </DropdownMenuItem>
@@ -226,9 +228,8 @@ export const TasksColumns = ({
                 </DropdownMenuSubContent>
               </DropdownMenuSub>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'delete' })}>
+              <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
                 Delete
-                <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

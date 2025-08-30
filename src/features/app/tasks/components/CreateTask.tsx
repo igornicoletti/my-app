@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { SparkleIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -16,7 +16,6 @@ import {
 import { TaskForm } from '@/features/app/tasks/components/TaskForm'
 import { useCreateTask } from '@/features/app/tasks/hooks/useTasksMutations'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/types'
-import { SparkleIcon } from '@phosphor-icons/react'
 
 export const CreateTask = () => {
   const form = useForm<CreateTaskSchema>({
@@ -26,14 +25,11 @@ export const CreateTask = () => {
       status: 'Todo',
       priority: 'Medium',
       estimatedHours: 1,
-    },
+    }
   })
 
   const createTaskMutation = useCreateTask({
-    onSuccess: () => {
-      form.reset()
-      toast.success('Task created')
-    },
+    onSuccess: () => form.reset()
   })
 
   return (

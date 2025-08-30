@@ -23,14 +23,7 @@ interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {
 
 export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
   const form = useForm<UpdateTaskSchema>({
-    resolver: zodResolver(updateTaskSchema),
-  })
-
-  const updateTaskMutation = useUpdateTask({
-    onSuccess: (data) => {
-      form.reset(data)
-      props.onOpenChange?.(false)
-    },
+    resolver: zodResolver(updateTaskSchema)
   })
 
   useEffect(() => {
@@ -44,6 +37,13 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
       })
     }
   }, [task, form])
+
+  const updateTaskMutation = useUpdateTask({
+    onSuccess: (data) => {
+      form.reset(data)
+      props.onOpenChange?.(false)
+    },
+  })
 
   const onSubmit = (input: UpdateTaskSchema) => {
     if (!task) return

@@ -1,4 +1,10 @@
-import { CheckSquareOffsetIcon, GearSixIcon, HouseSimpleIcon, UserIcon, UsersIcon } from '@phosphor-icons/react'
+import {
+  CheckSquareOffsetIcon,
+  GearSixIcon,
+  HouseSimpleIcon,
+  UserIcon,
+  UsersIcon
+} from '@phosphor-icons/react'
 import type { ElementType } from 'react'
 
 export interface NavigationItem {
@@ -22,9 +28,24 @@ export const routeNavigations: Navigation[] = [
   {
     label: 'Generate',
     items: [
-      { title: 'Dashboard', url: '/dashboard', icon: HouseSimpleIcon, items: [] },
-      { title: 'Tasks', url: '/tasks', icon: CheckSquareOffsetIcon, items: [] },
-      { title: 'Users', url: '/users', icon: UsersIcon, items: [] }
+      {
+        title: 'Dashboard',
+        url: '/dashboard',
+        icon: HouseSimpleIcon,
+        items: []
+      },
+      {
+        title: 'Tasks',
+        url: '/tasks',
+        icon: CheckSquareOffsetIcon,
+        items: []
+      },
+      {
+        title: 'Users',
+        url: '/users',
+        icon: UsersIcon,
+        items: []
+      }
     ]
   },
   {
@@ -35,7 +56,11 @@ export const routeNavigations: Navigation[] = [
         url: '#2',
         icon: GearSixIcon,
         items: [
-          { title: 'Profile', url: '#3', icon: UserIcon }
+          {
+            title: 'Profile',
+            url: '#3',
+            icon: UserIcon
+          }
         ]
       }
     ]

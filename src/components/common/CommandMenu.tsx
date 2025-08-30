@@ -10,7 +10,7 @@ import {
   CommandList,
   CommandSeparator
 } from '@/components/ui/command'
-import { useCommand } from '@/providers/CommandProvider'
+import { useCommand } from '@/providers'
 import { routeNavigations } from '@/routes'
 
 export const CommandMenu = () => {
@@ -24,15 +24,14 @@ export const CommandMenu = () => {
         {routeNavigations.map((group, i) => (
           <Fragment key={group.label}>
             <CommandGroup heading={group.label ?? 'Go to...'}>
-              {group.items.map((item) => (
-                !item.items || item.items.length === 0) ? (
+              {group.items.map((item) => (!item.items || item.items.length === 0) ? (
                 <CommandItem
                   asChild
                   key={item.url ?? item.title}
                   onSelect={() => setOpen(false)}>
                   <Link to={item.url}>
                     {item.icon && <item.icon />}
-                    <span>{item.title}</span>
+                    {item.title}
                   </Link>
                 </CommandItem>
               ) : (
@@ -43,11 +42,11 @@ export const CommandMenu = () => {
                     onSelect={() => setOpen(false)}>
                     <Link to={subItem.url}>
                       {subItem.icon && <subItem.icon />}
-                      <span>{subItem.title}</span>
+                      {subItem.title}
                     </Link>
                   </CommandItem>
-                )))
-              )}
+                ))
+              ))}
             </CommandGroup>
             {i !== routeNavigations.length - 1 && <CommandSeparator />}
           </Fragment>

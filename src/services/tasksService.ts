@@ -1,21 +1,29 @@
-import type { CreateTaskSchema, TaskSchema, UpdateTaskSchema } from '@/features/app/tasks/lib/types'
+import type {
+  CreateTaskSchema,
+  TaskSchema,
+  UpdateTaskSchema
+} from '@/features/app/tasks/lib/types'
 import { generateRandomTask } from '@/features/app/tasks/lib/utils'
 
 let tasks: TaskSchema[] = []
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export const taskService = {
+export const tasksService = {
   get: async (): Promise<TaskSchema[]> => {
     await delay(500)
     return tasks
   },
+
   seed: async (count: number): Promise<TaskSchema[]> => {
     await delay(500)
-    const seeded = Array.from({ length: count }, () => generateRandomTask())
+    const seeded = Array.from({
+      length: count
+    }, () => generateRandomTask())
     tasks = seeded
     return tasks
   },
+
   create: async (input: CreateTaskSchema): Promise<TaskSchema> => {
     await delay(500)
     const newTask: TaskSchema = {
@@ -26,6 +34,7 @@ export const taskService = {
     tasks = [newTask, ...tasks]
     return newTask
   },
+
   update: async (input: UpdateTaskSchema & { id: string }): Promise<TaskSchema> => {
     await delay(500)
     const index = tasks.findIndex((t) => t.id === input.id)
@@ -40,6 +49,7 @@ export const taskService = {
     tasks[index] = updated
     return updated
   },
+
   bulkUpdate: async (
     input: { ids: string[] } & (
       | { status: TaskSchema['status'] }
@@ -50,7 +60,11 @@ export const taskService = {
     const updatedTasks: TaskSchema[] = []
     tasks = tasks.map((t) => {
       if (input.ids.includes(t.id)) {
-        const updated = { ...t, ...input, updatedAt: new Date() }
+        const updated = {
+          ...t,
+          ...input,
+          updatedAt: new Date()
+        }
         updatedTasks.push(updated)
         return updated
       }
@@ -58,6 +72,7 @@ export const taskService = {
     })
     return updatedTasks
   },
+
   delete: async (id: string): Promise<void> => {
     await delay(500)
     const originalLength = tasks.length
@@ -66,6 +81,7 @@ export const taskService = {
       throw new Error('Task not found')
     }
   },
+
   bulkDelete: async (ids: string[]): Promise<void> => {
     await delay(500)
     tasks = tasks.filter((t) => !ids.includes(t.id))

@@ -52,21 +52,17 @@ export const errorCode = {
     title: 'Popup Request Failed',
     description: 'Another popup interrupted the login process. Please try again.',
   },
-  'firestore/document-not-found': {
-    title: 'Document Not Found',
-    description: 'The requested document could not be found.',
+  'task/task-add-error': {
+    title: 'Failed to Add Task',
+    description: 'An error occurred while creating the task. Please try again.',
   },
-  'firestore/write-failed': {
-    title: 'Data Save Error',
-    description: 'There was an issue saving your data. Please try again.',
+  'task/task-update-error': {
+    title: 'Failed to Update Task',
+    description: 'An error occurred while updating the task. Please try again.',
   },
-  'firestore/read-failed': {
-    title: 'Data Load Error',
-    description: 'There was an issue loading data. Please try again later.',
-  },
-  'firestore/invalid-data': {
-    title: 'Invalid Data',
-    description: 'The data provided is not in the correct format.',
+  'task/task-delete-error': {
+    title: 'Failed to Delete Task',
+    description: 'An error occurred while deleting the task. Please try again.',
   },
   default: {
     title: 'Something Went Wrong',
@@ -105,9 +101,17 @@ export const successCode = {
     title: 'Password Updated',
     description: 'Your password has been updated. You can now sign in with the new one.',
   },
-  'table/delete-success': {
-    title: 'Deletion Successful',
-    description: 'The selected item was removed from the table.',
+  'task/task-add-success': {
+    title: 'Task Added',
+    description: 'The new task was successfully created.',
+  },
+  'task/task-update-success': {
+    title: 'Task Updated',
+    description: 'The task was successfully updated.',
+  },
+  'task/task-delete-success': {
+    title: 'Task deleted',
+    description: 'The task was removed from the table.',
   },
   default: {
     title: 'Successfully',

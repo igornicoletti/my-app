@@ -19,13 +19,17 @@ export const BreadcrumbPath = () => {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem className='md:hidden'>
-          <BreadcrumbPage>{crumbs[crumbs.length - 1].name}</BreadcrumbPage>
+          <BreadcrumbPage>
+            {crumbs[crumbs.length - 1].name}
+          </BreadcrumbPage>
         </BreadcrumbItem>
         {crumbs.map((crumb) => (
           <Fragment key={crumb.path}>
             <BreadcrumbItem className='hidden md:inline-flex'>
               {crumb.isCurrent ? (
-                <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
+                <BreadcrumbPage>
+                  {crumb.name}
+                </BreadcrumbPage>
               ) : (
                 <BreadcrumbLink asChild>
                   <Link to={crumb.path}>

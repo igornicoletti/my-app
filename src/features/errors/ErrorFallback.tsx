@@ -72,7 +72,7 @@ export const ErrorFallback = () => {
       <div className='flex flex-1 flex-col items-center justify-center py-12'>
         <div className='w-full max-w-7xl flex flex-col gap-6 px-6'>
           <div className='grid gap-2 text-center'>
-            <h2 className='text-xl font-bold'>{title}</h2>
+            <h2 className='text-lg font-bold'>{title}</h2>
             <p className='text-sm text-muted-foreground'>{message}</p>
           </div>
           {stack && (

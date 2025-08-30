@@ -88,7 +88,7 @@ export const useToast = () => {
     toast.message(title, {
       description,
       classNames: {
-        title: '!text-success',
+        title: '!text-primary',
         description: '!text-foreground',
       },
     })

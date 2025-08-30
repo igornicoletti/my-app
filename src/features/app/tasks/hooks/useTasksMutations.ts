@@ -1,79 +1,84 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
 
-import { taskService } from '@/services/taskService'
+import { useToast } from '@/hooks'
+import { tasksService } from '@/services'
 
 export const useCreateTask = (options?: { onSuccess?: (data: any) => void }) => {
+  const { errorToast, successToast } = useToast()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: taskService.create,
+    mutationFn: tasksService.create,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      toast.success('Task created')
+      successToast('task/task-add-success')
       options?.onSuccess?.(data)
     },
     onError: () => {
-      toast.error('Failed to create task')
+      errorToast('task/task-add-error')
     },
   })
 }
 
 export const useUpdateTask = (options?: { onSuccess?: (data: any) => void }) => {
+  const { errorToast, successToast } = useToast()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: taskService.update,
+    mutationFn: tasksService.update,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      toast.success(`Task '${data.title}' updated`)
+      successToast('task/task-update-success')
       options?.onSuccess?.(data)
     },
     onError: () => {
-      toast.error('Failed to update task')
+      errorToast('task/task-update-error')
     },
   })
 }
 
 export const useUpdateTasks = (options?: { onSuccess?: (data: any) => void }) => {
+  const { errorToast, successToast } = useToast()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: taskService.bulkUpdate,
+    mutationFn: tasksService.bulkUpdate,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      toast.success(`${data.length} tasks updated`)
+      successToast('task/task-update-success')
       options?.onSuccess?.(data)
     },
     onError: () => {
-      toast.error('Failed to update tasks')
+      errorToast('task/task-update-error')
     },
   })
 }
 
 export const useDeleteTask = (options?: { onSuccess?: (data: any) => void }) => {
+  const { errorToast, successToast } = useToast()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: taskService.delete,
+    mutationFn: tasksService.delete,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      toast.success('Task deleted')
+      successToast('task/task-delete-success')
       options?.onSuccess?.(data)
     },
     onError: () => {
-      toast.error('Failed to delete task')
+      errorToast('task/task-delete-error')
     },
   })
 }
 
 export const useDeleteTasks = (options?: { onSuccess?: (data: any) => void }) => {
+  const { errorToast, successToast } = useToast()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: taskService.bulkDelete,
+    mutationFn: tasksService.bulkDelete,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      toast.success('Tasks deleted')
+      successToast('task/task-delete-success')
       options?.onSuccess?.(data)
     },
     onError: () => {
-      toast.error('Failed to delete tasks')
+      errorToast('task/task-delete-error')
     },
   })
 }
