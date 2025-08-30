@@ -43,7 +43,7 @@ export const CreateTask = () => {
       <SheetTrigger asChild>
         <Button variant='default' size='sm'>
           <SparkleIcon />
-          Add Task
+          New
         </Button>
       </SheetTrigger>
       <SheetContent className='w-full sm:max-w-md'>
@@ -61,7 +61,7 @@ export const CreateTask = () => {
               {createTaskMutation.isPending ? (
                 <SpinnerGapIcon className='animate-spin' />
               ) : (
-                'Create task'
+                'Create Task'
               )}
             </Button>
             <SheetClose asChild>

@@ -68,7 +68,7 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
               {updateTaskMutation.isPending ? (
                 <SpinnerGapIcon className='animate-spin' />
               ) : (
-                'Save changes'
+                'Save Changes'
               )}
             </Button>
             <SheetClose asChild>

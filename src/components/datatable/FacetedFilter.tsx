@@ -1,4 +1,4 @@
-import { PlusCircleIcon, XCircleIcon } from '@phosphor-icons/react'
+import { FunnelIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useMemo, useState, type MouseEvent } from 'react'
 
@@ -69,26 +69,26 @@ export const FacetedFilter = <TData, TValue>({
               aria-label={`Clear ${title} filter`}
               tabIndex={0}
               onClick={onReset}>
-              <XCircleIcon />
+              <XIcon />
             </div>
           ) : (
-            <PlusCircleIcon />
+            <FunnelIcon />
           )}
           {title}
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
+              <Badge variant='secondary' className='lg:hidden'>
                 {selectedValues.size}
               </Badge>
               <div className='hidden items-center gap-1 lg:flex'>
                 {selectedValues.size > 2 ? (
-                  <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+                  <Badge variant='secondary'>
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
                   options.filter(option => selectedValues.has(option.value)).map(option => (
-                    <Badge variant='secondary' key={option.value} className='rounded-sm px-1 font-normal'>
+                    <Badge variant='secondary' key={option.value}>
                       {option.label}
                     </Badge>
                   ))

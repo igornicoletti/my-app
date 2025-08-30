@@ -199,7 +199,7 @@ export const TasksColumns = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-40'>
-              <DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'view' })}>
                 View details
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>

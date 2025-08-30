@@ -1,4 +1,4 @@
-import { PlusCircleIcon, XCircleIcon } from '@phosphor-icons/react'
+import { FunnelIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useId, useMemo, type ChangeEvent, type MouseEvent } from 'react'
 
@@ -122,21 +122,16 @@ export const SliderFilter = <TData,>({
               aria-label={`Clear ${title} filter`}
               tabIndex={0}
               onClick={onReset}>
-              <XCircleIcon />
+              <XIcon />
             </div>
           ) : (
-            <PlusCircleIcon />
+            <FunnelIcon />
           )}
           {title}
           {columnFilterValue && (
             <>
-              <Separator
-                orientation='vertical'
-                className='mx-0.5 data-[orientation=vertical]:h-4'
-              />
-              <Badge
-                variant='secondary'
-                className='rounded-sm px-1 font-normal'>
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+              <Badge variant='secondary'>
                 {formatValue(columnFilterValue[0])} -{' '}
                 {formatValue(columnFilterValue[1])}
                 {unit ? ` ${unit}` : ''}

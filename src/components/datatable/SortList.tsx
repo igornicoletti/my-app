@@ -160,7 +160,7 @@ export const SortList = <TData,>({
             {sorting.length > 0 && (
               <>
                 <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-                <Badge variant='secondary' className='rounded-sm-sm px-1 font-normal'>
+                <Badge variant='secondary'>
                   {sorting.length}
                 </Badge>
               </>

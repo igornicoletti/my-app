@@ -2,7 +2,6 @@ import { TrashSimpleIcon } from '@phosphor-icons/react'
 import type { Row } from '@tanstack/react-table'
 import type { ComponentPropsWithoutRef } from 'react'
 
-import { Badge, Separator } from '@/components'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -65,15 +64,9 @@ export const DeleteTask = ({
     <Component {...props}>
       {showTrigger && (
         <Trigger asChild>
-          <Button variant='outline' size='sm'>
+          <Button variant='secondary' size='sm'>
             <TrashSimpleIcon aria-hidden='true' />
             Delete
-            <Separator
-              orientation='vertical'
-              className='mx-0.5 data-[orientation=vertical]:h-4' />
-            <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
-              {tasks.length}
-            </Badge>
           </Button>
         </Trigger>
       )}
