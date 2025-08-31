@@ -32,14 +32,7 @@ export const Toolbar = <TData,>({
   }, [table])
 
   return (
-    <div
-      role='toolbar'
-      aria-orientation='horizontal'
-      className={cn(
-        'flex w-full flex-wrap items-start justify-between gap-2 p-1',
-        className
-      )}
-      {...props}>
+    <div role='toolbar' aria-orientation='horizontal' className='flex w-full flex-wrap items-start justify-between gap-2 p-1' {...props}>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map((column) => (
           <ToolbarFilter key={column.id} column={column} />
@@ -78,32 +71,21 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
       case 'text':
         return (
           <Input
-            name={column.id}
             placeholder={columnMeta.placeholder ?? columnMeta.label}
             value={(column.getFilterValue() as string) ?? ''}
             onChange={(event) => column.setFilterValue(event.target.value)}
-            className={cn(
-              'h-8 min-w-max lg:w-56',
-              columnMeta.unit && 'pr-8'
-            )}
-          />
+            className={cn('h-8 min-w-max lg:w-56', columnMeta.unit && 'pr-8')} />
         )
-
       case 'number':
         return (
           <div className='relative'>
             <Input
-              name={column.id}
               type='number'
               inputMode='numeric'
               placeholder={columnMeta.placeholder ?? columnMeta.label}
               value={(column.getFilterValue() as string) ?? ''}
               onChange={(event) => column.setFilterValue(event.target.value)}
-              className={cn(
-                'h-8 w-full md:w-28',
-                columnMeta.unit && 'pr-8'
-              )}
-            />
+              className={cn('h-8 w-28', columnMeta.unit && 'pr-8')} />
             {columnMeta.unit && (
               <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>
                 {columnMeta.unit}
@@ -111,25 +93,20 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
             )}
           </div>
         )
-
       case 'range':
         return (
           <SliderFilter
             column={column}
-            title={columnMeta.label ?? column.id}
-          />
+            title={columnMeta.label ?? column.id} />
         )
-
       case 'date':
       case 'dateRange':
         return (
           <DateFilter
             column={column}
             title={columnMeta.label ?? column.id}
-            multiple={columnMeta.variant === 'dateRange'}
-          />
+            multiple={columnMeta.variant === 'dateRange'} />
         )
-
       case 'select':
       case 'multiSelect':
         return (
@@ -137,10 +114,8 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
             column={column}
             title={columnMeta.label ?? column.id}
             options={columnMeta.options ?? []}
-            multiple={columnMeta.variant === 'multiSelect'}
-          />
+            multiple={columnMeta.variant === 'multiSelect'} />
         )
-
       default:
         return null
     }

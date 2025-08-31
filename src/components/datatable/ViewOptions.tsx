@@ -12,7 +12,6 @@ import {
   CommandList
 } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
 
 interface ViewOptionsProps<TData> {
   table: Table<TData>
@@ -26,12 +25,7 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          aria-label='Toggle columns'
-          role='combobox'
-          variant='outline'
-          size='sm'
-          className='ml-auto hidden h-8 lg:flex'>
+        <Button aria-label='Toggle columns' role='combobox' variant='outline' size='sm' className='ml-auto hidden h-8 lg:flex'>
           <SlidersHorizontalIcon />
           View
         </Button>
@@ -43,11 +37,11 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
             <CommandEmpty>No columns found.</CommandEmpty>
             <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
               {columns.map((column) => (
-                <CommandItem key={column.id} onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
-                  <CheckIcon weight='bold' className={cn(column.getIsVisible() ? 'opacity-100' : 'opacity-0')} />
-                  <span className='truncate'>
-                    {column.columnDef.meta?.label ?? column.id}
-                  </span>
+                <CommandItem
+                  key={column.id}
+                  onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
+                  <CheckIcon weight='bold' className={`${column.getIsVisible() ? 'opacity-100' : 'opacity-0'}`} />
+                  <span className='truncate'>{column.columnDef.meta?.label ?? column.id}</span>
                 </CommandItem>
               ))}
             </CommandGroup>

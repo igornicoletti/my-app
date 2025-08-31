@@ -36,7 +36,7 @@ export const TaskForm = <T extends Partial<CreateTaskSchema> & FieldValues>({
                   {...field}
                   autoFocus
                   placeholder='Do a kickflip'
-                  className='resize-none'
+                  className='resize-none text-sm'
                   aria-invalid={!!fieldState.error}
                 />
               </FormControl>
@@ -44,28 +44,24 @@ export const TaskForm = <T extends Partial<CreateTaskSchema> & FieldValues>({
             </FormItem>
           )}
         />
-
         <SelectField
           form={form}
           name={'label' as FieldPath<T>}
           label='Label'
           placeholder='Select a label'
           options={labels} />
-
         <SelectField
           form={form}
           name={'status' as FieldPath<T>}
           label='Status'
           placeholder='Select a status'
           options={statuses} />
-
         <SelectField
           form={form}
           name={'priority' as FieldPath<T>}
           label='Priority'
           placeholder='Select a priority'
           options={priorities} />
-
         <FormField
           control={form.control}
           name={'estimatedHours' as FieldPath<T>}

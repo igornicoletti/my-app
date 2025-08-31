@@ -17,14 +17,16 @@ export const useTasks = () => {
       }
       return tasks
     },
-    initialData: [],
+    initialData: []
   })
 
   useEffect(() => {
     if (queryResult.isError) {
       const errorMessage = queryResult.error?.message || 'Unknown error occurred'
-      console.error('Failed to fetch tasks:', errorMessage)
-      errorToast('Failed to fetch tasks')
+      errorToast({
+        title: 'Failed to fetch tasks',
+        description: `${errorMessage}`
+      })
     }
   }, [queryResult.isError, queryResult.error])
 

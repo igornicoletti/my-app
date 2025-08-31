@@ -20,17 +20,6 @@ export const TasksAction = ({ table }: TasksActionBarProps) => {
     onSuccess: () => table.toggleAllRowsSelected(false)
   })
 
-  const deleteTasksMutation = useDeleteTasks({
-    onSuccess: () => table.toggleAllRowsSelected(false)
-  })
-
-  const onTaskExport = () => {
-    exportTableToCSV(table, {
-      excludeColumns: ['select', 'actions'],
-      onlySelected: true,
-    })
-  }
-
   const onUpdateStatus = (status: TaskSchema['status']) => {
     updateTasksMutation.mutate({
       ids: rows.map((row) => row.original.id),
@@ -45,8 +34,19 @@ export const TasksAction = ({ table }: TasksActionBarProps) => {
     })
   }
 
+  const deleteTasksMutation = useDeleteTasks({
+    onSuccess: () => table.toggleAllRowsSelected(false)
+  })
+
   const onDelete = () => {
     deleteTasksMutation.mutate(rows.map((row) => row.original.id))
+  }
+
+  const onExport = () => {
+    exportTableToCSV(table, {
+      excludeColumns: ['select', 'actions'],
+      onlySelected: true,
+    })
   }
 
   return (
@@ -96,7 +96,7 @@ export const TasksAction = ({ table }: TasksActionBarProps) => {
           size='icon'
           tooltip='Export tasks'
           disabled={false}
-          onClick={onTaskExport}>
+          onClick={onExport}>
           <DownloadSimpleIcon />
         </ActionBarAction>
         <ActionBarAction

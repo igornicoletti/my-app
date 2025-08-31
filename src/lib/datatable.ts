@@ -1,13 +1,6 @@
 import type { Column } from '@tanstack/react-table'
 import type { CSSProperties } from 'react'
 
-import { dataTableConfig } from '@/config/datatable'
-import type {
-  ExtendedColumnFilter,
-  FilterOperator,
-  FilterVariant
-} from '@/types/datatable'
-
 export const getCommonPinningStyles = <TData>({
   column,
   withBorder = false,
@@ -36,33 +29,3 @@ export const getCommonPinningStyles = <TData>({
     zIndex: isPinned ? 1 : 0,
   }
 }
-
-export const getFilterOperators = (filterVariant: FilterVariant) => {
-  const operatorMap: Record<FilterVariant, { label: string; value: FilterOperator }[]> = {
-    text: dataTableConfig.textOperators,
-    number: dataTableConfig.numericOperators,
-    range: dataTableConfig.numericOperators,
-    date: dataTableConfig.dateOperators,
-    dateRange: dataTableConfig.dateOperators,
-    boolean: dataTableConfig.booleanOperators,
-    select: dataTableConfig.selectOperators,
-    multiSelect: dataTableConfig.multiSelectOperators,
-  }
-
-  return operatorMap[filterVariant] ?? dataTableConfig.textOperators
-}
-
-export const getDefaultFilterOperator = (filterVariant: FilterVariant): FilterOperator => {
-  const operators = getFilterOperators(filterVariant)
-  return operators[0]?.value ?? (filterVariant === 'text' ? 'iLike' : 'eq')
-}
-
-export const getValidFilters = <TData>(filters: ExtendedColumnFilter<TData>[]): ExtendedColumnFilter<TData>[] =>
-  filters.filter(
-    (filter) =>
-      filter.operator === 'isEmpty' ||
-      filter.operator === 'isNotEmpty' ||
-      (Array.isArray(filter.value)
-        ? filter.value.length > 0
-        : filter.value !== '' && filter.value !== null && filter.value !== undefined),
-  )

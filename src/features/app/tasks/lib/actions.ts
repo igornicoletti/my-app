@@ -3,7 +3,6 @@ import { useCallback, useSyncExternalStore } from 'react'
 import type { CreateTaskSchema, TaskSchema, UpdateTaskSchema } from '@/features/app/tasks/lib/types'
 import { generateRandomTask } from '@/features/app/tasks/lib/utils'
 
-// ===== In-memory store =====
 let tasks: TaskSchema[] = []
 
 const listeners = new Set<() => void>()
@@ -27,7 +26,6 @@ export const useTasks = () => {
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 }
 
-// ===== Seed =====
 export const seedTasks = (input: { count?: number }) => {
   const count = input.count ?? 50
   const seeded = Array.from({ length: count }, () => generateRandomTask())
@@ -35,7 +33,6 @@ export const seedTasks = (input: { count?: number }) => {
   return seeded
 }
 
-// ===== CRUD =====
 export const createTask = async (input: CreateTaskSchema) => {
   const current = getAllTasks()
   const newTask: TaskSchema = {

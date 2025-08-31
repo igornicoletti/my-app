@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
@@ -16,7 +17,6 @@ import {
 import { TaskForm } from '@/features/app/tasks/components/TaskForm'
 import { useCreateTask } from '@/features/app/tasks/hooks/useTasksMutations'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/types'
-import { useState } from 'react'
 
 export const CreateTask = () => {
   const [open, setOpen] = useState(false)
