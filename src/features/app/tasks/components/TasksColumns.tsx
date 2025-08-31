@@ -202,6 +202,7 @@ export const TasksColumns = ({
               <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'view' })}>
                 View details
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
                 Edit
               </DropdownMenuItem>

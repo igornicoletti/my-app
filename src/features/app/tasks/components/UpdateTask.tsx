@@ -55,9 +55,9 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
     <Sheet {...props}>
       <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
-          <SheetTitle>Update task</SheetTitle>
+          <SheetTitle>Update Task</SheetTitle>
           <SheetDescription>
-            Update the task details and save the changes
+            Update the task details and save the changes.
           </SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={onSubmit}>

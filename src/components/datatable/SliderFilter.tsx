@@ -41,7 +41,7 @@ export const SliderFilter = <TData,>({
 
   const { min, max, step } = useMemo(() => {
     let minValue = 0
-    let maxValue = 100
+    let maxValue = 48
 
     if (defaultRange && getIsValidRange(defaultRange)) {
       ;[minValue, maxValue] = defaultRange
@@ -52,65 +52,44 @@ export const SliderFilter = <TData,>({
       }
     }
 
-    const rangeSize = maxValue - minValue
-    const step =
-      rangeSize <= 20
-        ? 1
-        : rangeSize <= 100
-          ? Math.ceil(rangeSize / 20)
-          : Math.ceil(rangeSize / 50)
-
-    return { min: minValue, max: maxValue, step }
+    return { min: minValue, max: maxValue, step: 1 }
   }, [column, defaultRange])
 
   const range = useMemo((): RangeValue => {
     return columnFilterValue ?? [min, max]
   }, [columnFilterValue, min, max])
 
-  const formatValue = useCallback(
-    (value: number) =>
-      value.toLocaleString(undefined, { maximumFractionDigits: 0 }),
-    []
-  )
+  const formatValue = useCallback((value: number) =>
+    value.toLocaleString(undefined, {
+      maximumFractionDigits: 0
+    }), [])
 
-  const onFromInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const numValue = Number(event.target.value)
-      if (!Number.isNaN(numValue) && numValue >= min && numValue <= range[1]) {
-        column.setFilterValue([numValue, range[1]])
-      }
-    },
-    [column, min, range]
-  )
+  const onFromInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const numValue = Number(event.target.value)
+    if (!Number.isNaN(numValue) && numValue >= min && numValue <= range[1]) {
+      column.setFilterValue([numValue, range[1]])
+    }
+  }, [column, min, range])
 
-  const onToInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const numValue = Number(event.target.value)
-      if (!Number.isNaN(numValue) && numValue <= max && numValue >= range[0]) {
-        column.setFilterValue([range[0], numValue])
-      }
-    },
-    [column, max, range]
-  )
+  const onToInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const numValue = Number(event.target.value)
+    if (!Number.isNaN(numValue) && numValue <= max && numValue >= range[0]) {
+      column.setFilterValue([range[0], numValue])
+    }
+  }, [column, max, range])
 
-  const onSliderValueChange = useCallback(
-    (value: RangeValue) => {
-      if (getIsValidRange(value)) {
-        column.setFilterValue(value)
-      }
-    },
-    [column]
-  )
+  const onSliderValueChange = useCallback((value: RangeValue) => {
+    if (getIsValidRange(value)) {
+      column.setFilterValue(value)
+    }
+  }, [column])
 
-  const onReset = useCallback(
-    (event: MouseEvent) => {
-      if (event.target instanceof HTMLDivElement) {
-        event.stopPropagation()
-      }
-      column.setFilterValue(undefined)
-    },
-    [column]
-  )
+  const onReset = useCallback((event: MouseEvent) => {
+    if (event.target instanceof HTMLDivElement) {
+      event.stopPropagation()
+    }
+    column.setFilterValue(undefined)
+  }, [column])
 
   return (
     <Popover>
@@ -147,6 +126,7 @@ export const SliderFilter = <TData,>({
               <Input
                 id={fromId}
                 type='number'
+                step={step}
                 aria-valuemin={min}
                 aria-valuemax={max}
                 inputMode='numeric'
@@ -168,6 +148,7 @@ export const SliderFilter = <TData,>({
               <Input
                 id={toId}
                 type='number'
+                step={step}
                 aria-valuemin={min}
                 aria-valuemax={max}
                 inputMode='numeric'

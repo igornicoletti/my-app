@@ -1,6 +1,5 @@
 import { DownloadSimpleIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
-import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { CreateTask } from '@/features/app/tasks/components/CreateTask'
@@ -20,7 +19,6 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
       filename: 'tasks',
       excludeColumns: ['select', 'actions'],
     })
-    toast.success('Tasks exported')
   }
 
   return (

@@ -17,7 +17,7 @@ export const generateRandomTask = (): TaskSchema => ({
   id: generateId('task'),
   code: `TASK-${customAlphabet('0123456789', 4)()}`,
   title: faker.hacker.phrase().replace(/^./, l => l.toUpperCase()),
-  estimatedHours: faker.number.int({ min: 1, max: 24 }),
+  estimatedHours: faker.number.int({ min: 1, max: 48 }),
   status: faker.helpers.arrayElement(statuses),
   label: faker.helpers.arrayElement(labels),
   priority: faker.helpers.arrayElement(priorities),
@@ -25,9 +25,6 @@ export const generateRandomTask = (): TaskSchema => ({
   createdAt: faker.date.past(),
   updatedAt: new Date(),
 })
-
-export const generateRandomTasks = (count = 10): TaskSchema[] =>
-  Array.from({ length: count }, generateRandomTask)
 
 export const getStatusIcon = (status: TaskSchema['status']) => {
   const statusIcons: Record<TaskSchema['status'], any> = {

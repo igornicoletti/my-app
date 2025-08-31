@@ -22,13 +22,7 @@ export const CreateTask = () => {
   const [open, setOpen] = useState(false)
 
   const form = useForm<CreateTaskSchema>({
-    resolver: zodResolver(createTaskSchema),
-    defaultValues: {
-      label: 'Feature',
-      status: 'Todo',
-      priority: 'Medium',
-      estimatedHours: 1,
-    }
+    resolver: zodResolver(createTaskSchema)
   })
 
   const createTaskMutation = useCreateTask({
@@ -48,9 +42,9 @@ export const CreateTask = () => {
       </SheetTrigger>
       <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
-          <SheetTitle>Create task</SheetTitle>
+          <SheetTitle>Create Task</SheetTitle>
           <SheetDescription>
-            Fill in the details below to create a new task
+            Fill in the details below to create a new task.
           </SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={createTaskMutation.mutate}>
@@ -61,7 +55,7 @@ export const CreateTask = () => {
               {createTaskMutation.isPending ? (
                 <SpinnerGapIcon className='animate-spin' />
               ) : (
-                'Create Task'
+                'Save Task'
               )}
             </Button>
             <SheetClose asChild>

@@ -13,7 +13,7 @@ export const useTasks = () => {
     queryFn: async () => {
       const tasks = await tasksService.get()
       if (tasks.length === 0) {
-        return await tasksService.seed(25)
+        return await tasksService.seed(50)
       }
       return tasks
     },

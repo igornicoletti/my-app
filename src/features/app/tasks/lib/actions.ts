@@ -29,7 +29,7 @@ export const useTasks = () => {
 
 // ===== Seed =====
 export const seedTasks = (input: { count?: number }) => {
-  const count = input.count ?? 100
+  const count = input.count ?? 50
   const seeded = Array.from({ length: count }, () => generateRandomTask())
   setAllTasks(seeded)
   return seeded

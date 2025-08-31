@@ -14,7 +14,7 @@ export const taskSchema = z.object({
   estimatedHours: z.number({
     required_error: 'Estimated hours are required.',
     invalid_type_error: 'Estimated hours must be a number.',
-  }).min(0, { message: 'Estimated hours must be greater than or equal to 0.' }),
+  }).min(1, { message: 'Estimated hours must be greater than or equal to 1.' }),
   status: z.enum(statuses, {
     required_error: 'Please select a status.',
     invalid_type_error: 'Invalid status.',
