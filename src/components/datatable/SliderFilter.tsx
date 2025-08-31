@@ -5,10 +5,16 @@ import { useCallback, useId, useMemo, type ChangeEvent, type MouseEvent } from '
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
+
+interface Range {
+  min: number
+  max: number
+}
 
 type RangeValue = [number, number]
 
@@ -27,42 +33,54 @@ export const SliderFilter = <TData,>({
   column,
   title,
 }: SliderFilterProps<TData>) => {
-  const baseId = useId()
-  const fromId = `${baseId}-from`
-  const toId = `${baseId}-to`
-  const sliderId = `${baseId}-slider`
+  const id = useId()
 
   const columnFilterValue = getIsValidRange(column.getFilterValue())
     ? (column.getFilterValue() as RangeValue)
     : undefined
 
-  const defaultRange = column.columnDef.meta?.range as RangeValue | undefined
+  const defaultRange = column.columnDef.meta?.range
   const unit = column.columnDef.meta?.unit
 
-  const { min, max, step } = useMemo(() => {
+  const { min, max, step } = useMemo<Range & { step: number }>(() => {
     let minValue = 0
-    let maxValue = 48
+    let maxValue = 100
 
     if (defaultRange && getIsValidRange(defaultRange)) {
       ;[minValue, maxValue] = defaultRange
     } else {
       const values = column.getFacetedMinMaxValues()
-      if (getIsValidRange(values)) {
-        ;[minValue, maxValue] = values
+      if (values && Array.isArray(values) && values.length === 2) {
+        const [facetMinValue, facetMaxValue] = values
+        if (
+          typeof facetMinValue === 'number' &&
+          typeof facetMaxValue === 'number'
+        ) {
+          minValue = facetMinValue
+          maxValue = facetMaxValue
+        }
       }
     }
 
-    return { min: minValue, max: maxValue, step: 1 }
+    const rangeSize = maxValue - minValue
+    const step =
+      rangeSize <= 20
+        ? 1
+        : rangeSize <= 100
+          ? Math.ceil(rangeSize / 20)
+          : Math.ceil(rangeSize / 50)
+
+    return { min: minValue, max: maxValue, step }
   }, [column, defaultRange])
 
   const range = useMemo((): RangeValue => {
     return columnFilterValue ?? [min, max]
   }, [columnFilterValue, min, max])
 
-  const formatValue = useCallback((value: number) =>
-    value.toLocaleString(undefined, {
-      maximumFractionDigits: 0
-    }), [])
+  const formatValue = useCallback(
+    (value: number) => value.toLocaleString(undefined, { maximumFractionDigits: 0 }),
+    []
+  )
 
   const onFromInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const numValue = Number(event.target.value)
@@ -79,7 +97,7 @@ export const SliderFilter = <TData,>({
   }, [column, max, range])
 
   const onSliderValueChange = useCallback((value: RangeValue) => {
-    if (getIsValidRange(value)) {
+    if (Array.isArray(value) && value.length === 2) {
       column.setFilterValue(value)
     }
   }, [column])
@@ -106,8 +124,8 @@ export const SliderFilter = <TData,>({
           ) : (
             <FunnelIcon />
           )}
-          {title}
-          {columnFilterValue && (
+          <span>{title}</span>
+          {columnFilterValue ? (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
               <Badge variant='secondary'>
@@ -116,17 +134,19 @@ export const SliderFilter = <TData,>({
                 {unit ? ` ${unit}` : ''}
               </Badge>
             </>
-          )}
+          ) : null}
         </Button>
       </PopoverTrigger>
       <PopoverContent align='start' className='flex w-auto flex-col gap-4 p-2'>
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-4'>
           <div className='flex items-center gap-4'>
+            <Label htmlFor={`${id}-from`} className='sr-only'>
+              From
+            </Label>
             <div className='relative'>
               <Input
-                id={fromId}
+                id={`${id}-from`}
                 type='number'
-                step={step}
                 aria-valuemin={min}
                 aria-valuemax={max}
                 inputMode='numeric'
@@ -134,7 +154,7 @@ export const SliderFilter = <TData,>({
                 placeholder={min.toString()}
                 min={min}
                 max={max}
-                value={range[0].toString()}
+                value={range[0]?.toString()}
                 onChange={onFromInputChange}
                 className={cn('h-8 w-24', unit && 'pr-8')}
               />
@@ -144,11 +164,13 @@ export const SliderFilter = <TData,>({
                 </span>
               )}
             </div>
+            <Label htmlFor={`${id}-to`} className='sr-only'>
+              to
+            </Label>
             <div className='relative'>
               <Input
-                id={toId}
+                id={`${id}-to`}
                 type='number'
-                step={step}
                 aria-valuemin={min}
                 aria-valuemax={max}
                 inputMode='numeric'
@@ -156,7 +178,7 @@ export const SliderFilter = <TData,>({
                 placeholder={max.toString()}
                 min={min}
                 max={max}
-                value={range[1].toString()}
+                value={range[1]?.toString()}
                 onChange={onToInputChange}
                 className={cn('h-8 w-24', unit && 'pr-8')}
               />
@@ -167,8 +189,11 @@ export const SliderFilter = <TData,>({
               )}
             </div>
           </div>
+          <Label htmlFor={`${id}-slider`} className='sr-only'>
+            {title} slider
+          </Label>
           <Slider
-            id={sliderId}
+            id={`${id}-slider`}
             min={min}
             max={max}
             step={step}
@@ -178,7 +203,7 @@ export const SliderFilter = <TData,>({
         </div>
         <Button
           aria-label={`Clear ${title} filter`}
-          variant='outline'
+          variant='secondary'
           size='sm'
           onClick={onReset}>
           Clear

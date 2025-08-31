@@ -72,7 +72,7 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
               )}
             </Button>
             <SheetClose asChild>
-              <Button type='button' variant='outline'>
+              <Button type='button' variant='secondary'>
                 Cancel
               </Button>
             </SheetClose>

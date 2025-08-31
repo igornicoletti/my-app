@@ -3,7 +3,10 @@ import type { ComponentPropsWithRef } from 'react'
 import { Badge } from '@/components'
 import {
   Dialog,
-  DialogContent
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import type { TaskSchema } from '@/features/app/tasks/lib/types'
@@ -18,15 +21,17 @@ export const ViewTask = ({ task, ...props }: ViewTaskProps) => {
   return (
     <Dialog {...props}>
       <DialogContent>
-        <div>
-          <h4 className='flex items-center gap-2'>
+        <DialogHeader>
+          <DialogTitle className='flex items-center gap-2'>
             {task.code}
             <Badge variant='secondary'>
               {task.label}
             </Badge>
-          </h4>
-          <p className='text-sm text-muted-foreground'>{task.title}</p>
-        </div>
+          </DialogTitle>
+          <DialogDescription className='text-left'>
+            {task.title}
+          </DialogDescription>
+        </DialogHeader>
         <Separator />
         <div className='grid grid-cols-2 gap-4'>
           <div>

@@ -81,7 +81,9 @@ export const DeleteTask = ({
         </Header>
         <Footer>
           <Close asChild>
-            <Button variant='outline'>Cancel</Button>
+            <Button type='button' variant='secondary'>
+              Cancel
+            </Button>
           </Close>
           <Button
             variant='destructive'

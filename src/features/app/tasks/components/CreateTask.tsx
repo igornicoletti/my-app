@@ -59,7 +59,7 @@ export const CreateTask = () => {
               )}
             </Button>
             <SheetClose asChild>
-              <Button type='button' variant='outline'>
+              <Button type='button' variant='secondary'>
                 Cancel
               </Button>
             </SheetClose>
