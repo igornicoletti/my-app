@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 
 import { DataTable } from '@/components/table/data-table'
 import { Toolbar } from '@/components/table/toolbar'
-import { DeleteTask } from '@/features/app/tasks/components/delete'
+import { DeleteTasks } from '@/features/app/tasks/components/delete'
 import { ViewTask } from '@/features/app/tasks/components/detail'
 import { TasksActionBar } from '@/features/app/tasks/components/table/action-bar'
 import { TasksColumns } from '@/features/app/tasks/components/table/columns'
@@ -61,7 +61,7 @@ export const TasksTable = () => {
         onOpenChange={() => setRowAction(null)}
         task={rowAction?.row.original ?? null}
       />
-      <DeleteTask
+      <DeleteTasks
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         tasks={rowAction?.row.original ? [rowAction?.row.original] : []}

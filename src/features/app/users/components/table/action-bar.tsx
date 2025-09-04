@@ -27,7 +27,7 @@ export const UsersActionBar = ({ table }: UsersActionBarProps) => {
     })
   }
 
-  const onUpdatePriority = (role: UserSchema['role']) => {
+  const onUpdateRole = (role: UserSchema['role']) => {
     updateUsersMutation.mutate({
       ids: rows.map((row) => row.original.id),
       role,
@@ -73,7 +73,7 @@ export const UsersActionBar = ({ table }: UsersActionBarProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select onValueChange={onUpdatePriority}>
+        <Select onValueChange={onUpdateRole}>
           <SelectTrigger asChild>
             <ActionBarAction
               size='icon'
