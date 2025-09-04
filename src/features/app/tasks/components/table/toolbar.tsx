@@ -1,0 +1,39 @@
+import { DownloadSimpleIcon } from '@phosphor-icons/react'
+import type { Table } from '@tanstack/react-table'
+
+import { Button } from '@/components/ui/button'
+import { CreateTask } from '@/features/app/tasks/components/create'
+import { DeleteTasks } from '@/features/app/tasks/components/delete'
+import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
+import { exportTableToCSV } from '@/lib/export'
+
+interface TasksToolbarActionsProps {
+  table: Table<TaskSchema>
+}
+
+export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
+  const selectedTasks = table.getFilteredSelectedRowModel().rows.map((row) => row.original)
+
+  const onExport = () => {
+    exportTableToCSV(table, {
+      filename: 'tasks',
+      excludeColumns: ['select', 'actions'],
+    })
+  }
+
+  return (
+    <div className='flex flex-wrap items-center gap-2'>
+      {selectedTasks.length > 0 ? (
+        <DeleteTasks
+          tasks={selectedTasks}
+          onSuccess={() => table.toggleAllRowsSelected(false)}
+        />
+      ) : null}
+      <Button variant='secondary' size='sm' onClick={onExport}>
+        <DownloadSimpleIcon />
+        Export
+      </Button>
+      <CreateTask />
+    </div>
+  )
+}

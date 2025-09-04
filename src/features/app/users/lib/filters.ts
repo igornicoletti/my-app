@@ -1,7 +1,7 @@
-import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
+import type { UserSchema } from '@/features/app/users/lib/schemas'
 import type { FilterFn } from '@tanstack/react-table'
 
-export const rangeFilter: FilterFn<TaskSchema> = (
+export const rangeFilter: FilterFn<UserSchema> = (
   row,
   columnId,
   range: [number | undefined, number | undefined],
@@ -16,7 +16,7 @@ export const rangeFilter: FilterFn<TaskSchema> = (
   return true
 }
 
-export const dateRangeFilter: FilterFn<TaskSchema> = (
+export const dateRangeFilter: FilterFn<UserSchema> = (
   row,
   columnId,
   value: [Date?, Date?],

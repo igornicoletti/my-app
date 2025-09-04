@@ -10,7 +10,7 @@ import {
 } from '@phosphor-icons/react'
 import { customAlphabet } from 'nanoid'
 
-import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/types'
+import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { generateId } from '@/lib/id'
 
 export const generateRandomTask = (): TaskSchema => ({
@@ -22,7 +22,7 @@ export const generateRandomTask = (): TaskSchema => ({
   label: faker.helpers.arrayElement(labels),
   priority: faker.helpers.arrayElement(priorities),
   archived: faker.datatype.boolean({ probability: 0.2 }),
-  createdAt: faker.date.past(),
+  createdAt: faker.date.past({ years: 2 }),
   updatedAt: new Date(),
 })
 
