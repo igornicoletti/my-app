@@ -28,14 +28,14 @@ export const userSchema = z.object({
 export const createUserSchema = z.object({
   name: userSchema.shape.name,
   email: userSchema.shape.email,
-  role: userSchema.shape.role,
+  roles: userSchema.shape.role,
   status: userSchema.shape.status,
 })
 
 export const updateUserSchema = z.object({
   name: userSchema.shape.name.optional(),
   email: userSchema.shape.email.optional(),
-  role: userSchema.shape.role.optional(),
+  roles: userSchema.shape.role.optional(),
   status: userSchema.shape.status.optional(),
 })
 

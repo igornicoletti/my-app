@@ -1,4 +1,4 @@
-import { ArrowsDownUpIcon, CalendarBlankIcon, CircleDashedIcon, DotsThreeIcon, TextAaIcon } from '@phosphor-icons/react'
+import { CalendarBlankIcon, CircleDashedIcon, DotsThreeIcon, ShieldIcon, TextAaIcon } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { dateRangeFilter } from '@/features/app/users/lib/filters'
 import { roles, statuses, type UserSchema } from '@/features/app/users/lib/schemas'
+import { getRolesIcon, getStatusIcon } from '@/features/app/users/lib/utils'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/data-table'
 
@@ -83,8 +84,10 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
       cell: ({ cell }) => {
         const role = roles.find((role) => role === cell.getValue<UserSchema['role']>())
         if (!role) return null
+        const Icon = getRolesIcon(role)
         return (
           <div className='flex items-center gap-2 [&>svg]:size-3'>
+            <Icon />
             {role}
           </div>
         )
@@ -96,7 +99,7 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
           label: role.charAt(0).toUpperCase() + role.slice(1),
           value: role,
         })),
-        icon: ArrowsDownUpIcon,
+        icon: ShieldIcon,
       },
       enableColumnFilter: true,
       filterFn: 'arrIncludesSome',
@@ -108,8 +111,10 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
       cell: ({ cell }) => {
         const status = statuses.find((status) => status === cell.getValue<UserSchema['status']>())
         if (!status) return null
+        const Icon = getStatusIcon(status)
         return (
           <div className='flex items-center gap-2 [&>svg]:size-3'>
+            <Icon />
             {status}
           </div>
         )
