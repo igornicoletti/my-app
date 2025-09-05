@@ -39,22 +39,17 @@ export const TasksColumns = ({
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label='Select all'
-          className='translate-y-0.5'
-        />
+          className='translate-y-0.5' />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label='Select row'
-          className='translate-y-0.5'
-        />
+          className='translate-y-0.5' />
       ),
       enableSorting: false,
       enableHiding: false,
@@ -100,8 +95,8 @@ export const TasksColumns = ({
         if (!status) return null
         const Icon = getStatusIcon(status)
         return (
-          <div className='flex items-center gap-2 [&>svg]:size-3'>
-            <Icon />
+          <div className='flex items-center gap-2'>
+            {Icon && <Icon />}
             {status}
           </div>
         )
@@ -122,16 +117,14 @@ export const TasksColumns = ({
     {
       id: 'priority',
       accessorKey: 'priority',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Priority' />
-      ),
+      header: ({ column }) => <ColumnHeader column={column} title='Priority' />,
       cell: ({ cell }) => {
         const priority = priorities.find((priority) => priority === cell.getValue<TaskSchema['priority']>())
         if (!priority) return null
         const Icon = getPriorityIcon(priority)
         return (
-          <div className='flex items-center gap-2 [&>svg]:size-3'>
-            <Icon />
+          <div className='flex items-center gap-2'>
+            {Icon && <Icon />}
             {priority}
           </div>
         )
@@ -152,13 +145,8 @@ export const TasksColumns = ({
     {
       id: 'estimatedHours',
       accessorKey: 'estimatedHours',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Est. Hours' />
-      ),
-      cell: ({ cell }) => {
-        const estimatedHours = cell.getValue<number>()
-        return <div className='w-20 text-right'>{estimatedHours}</div>
-      },
+      header: ({ column }) => <ColumnHeader column={column} title='Est. Hours' />,
+      cell: ({ cell }) => <div className='text-right'>{cell.getValue<number>()}</div>,
       meta: {
         label: 'Est. Hours',
         variant: 'range',
@@ -172,9 +160,7 @@ export const TasksColumns = ({
     {
       id: 'createdAt',
       accessorKey: 'createdAt',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Created At' />
-      ),
+      header: ({ column }) => <ColumnHeader column={column} title='Created At' />,
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
       meta: {
         label: 'Created At',
@@ -191,10 +177,7 @@ export const TasksColumns = ({
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                aria-label='Open menu'
-                variant='ghost'
-                className='flex size-8 p-0 data-[state=open]:bg-muted'>
+              <Button aria-label='Open menu' variant='ghost' className='flex size-8 p-0 data-[state=open]:bg-muted'>
                 <DotsThreeIcon aria-hidden='true' />
               </Button>
             </DropdownMenuTrigger>
@@ -208,19 +191,14 @@ export const TasksColumns = ({
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
-                  <DropdownMenuRadioGroup
-                    value={row.original.label}
-                    onValueChange={(value) => {
-                      updateTaskMutation.mutate({
-                        id: row.original.id,
-                        label: value as TaskSchema['label'],
-                      })
-                    }}>
+                  <DropdownMenuRadioGroup value={row.original.label} onValueChange={(value) => {
+                    updateTaskMutation.mutate({
+                      id: row.original.id,
+                      label: value as TaskSchema['label']
+                    })
+                  }}>
                     {labels.map((label) => (
-                      <DropdownMenuRadioItem
-                        key={label}
-                        value={label}
-                        disabled={updateTaskMutation.isPending}>
+                      <DropdownMenuRadioItem key={label} value={label} disabled={updateTaskMutation.isPending}>
                         {label}
                       </DropdownMenuRadioItem>
                     ))}

@@ -44,18 +44,15 @@ export const tasksService = {
       updatedAt: new Date(),
     }
 
-    tasks = tasks.map((task) => (task.id === input.id ? updatedTask : task))
+    tasks = tasks.map((t) => t.id === input.id ? updatedTask : t)
     return updatedTask
   },
 
-  bulkUpdate: async (
-    input: { ids: string[] } & (
-      | { status: TaskSchema['status'] }
-      | { priority: TaskSchema['priority'] }
-    ),
-  ): Promise<TaskSchema[]> => {
+  bulkUpdate: async (input: { ids: string[] } & (
+    | { status: TaskSchema['status'] }
+    | { priority: TaskSchema['priority'] }
+  )): Promise<TaskSchema[]> => {
     await delay(200)
-
     const { ids, ...updateData } = input
     const updatedTasks: TaskSchema[] = []
 

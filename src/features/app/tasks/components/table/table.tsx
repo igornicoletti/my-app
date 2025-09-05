@@ -1,5 +1,3 @@
-import { useMemo, useState } from 'react'
-
 import { DataTable } from '@/components/table/data-table'
 import { Toolbar } from '@/components/table/toolbar'
 import { DeleteTasks } from '@/features/app/tasks/components/delete'
@@ -9,17 +7,18 @@ import { TasksColumns } from '@/features/app/tasks/components/table/columns'
 import { TasksToolbar } from '@/features/app/tasks/components/table/toolbar'
 import { UpdateTask } from '@/features/app/tasks/components/update'
 import { useTasks } from '@/features/app/tasks/hooks/use-tasks'
+import { numberRangeFilter } from '@/features/app/tasks/lib/filters'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
-import { getRangeValues } from '@/features/app/tasks/lib/utils'
 import { useDataTable } from '@/hooks/use-data-table'
 import type { DataTableRowAction } from '@/types/data-table'
+import { useMemo, useState } from 'react'
 
 export const TasksTable = () => {
-  const { data: tasks } = useTasks()
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
+  const { data: tasks } = useTasks()
 
   const estimatedHoursRange: [number, number] = tasks && tasks.length > 0
-    ? getRangeValues(tasks, 'estimatedHours')
+    ? numberRangeFilter(tasks, 'estimatedHours')
     : [0, 48]
 
   const columns = useMemo(() => TasksColumns({
@@ -51,23 +50,23 @@ export const TasksTable = () => {
           <TasksToolbar table={table} />
         </Toolbar>
       </DataTable>
+
       <ViewTask
         open={!!rowAction && rowAction.variant === 'view'}
         onOpenChange={() => setRowAction(null)}
-        task={rowAction?.row.original ?? null}
-      />
+        task={rowAction?.row.original ?? null} />
+
       <UpdateTask
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
-        task={rowAction?.row.original ?? null}
-      />
+        task={rowAction?.row.original ?? null} />
+
       <DeleteTasks
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         tasks={rowAction?.row.original ? [rowAction?.row.original] : []}
         showTrigger={false}
-        onSuccess={() => rowAction?.row.toggleSelected(false)}
-      />
+        onSuccess={() => rowAction?.row.toggleSelected(false)} />
     </>
   )
 }

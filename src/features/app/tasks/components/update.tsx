@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { SpinnerGapIcon } from '@phosphor-icons/react'
 import type { ComponentPropsWithRef } from 'react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -16,7 +17,6 @@ import {
 import { TaskForm } from '@/features/app/tasks/components/form'
 import { useUpdateTask } from '@/features/app/tasks/hooks/use-tasks-mutations'
 import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema } from '@/features/app/tasks/lib/schemas'
-import { SpinnerGapIcon } from '@phosphor-icons/react'
 
 interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {
   task: TaskSchema | null
@@ -48,7 +48,10 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
 
   const onSubmit = (input: UpdateTaskSchema) => {
     if (!task) return
-    updateTaskMutation.mutate({ id: task.id, ...input })
+    updateTaskMutation.mutate({
+      id: task.id,
+      ...input
+    })
   }
 
   return (
@@ -62,14 +65,8 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
         </SheetHeader>
         <TaskForm form={form} onSubmit={onSubmit}>
           <SheetFooter>
-            <Button
-              type='submit'
-              disabled={updateTaskMutation.isPending}>
-              {updateTaskMutation.isPending ? (
-                <SpinnerGapIcon className='animate-spin' />
-              ) : (
-                'Save Changes'
-              )}
+            <Button disabled={updateTaskMutation.isPending} type='submit'>
+              {!updateTaskMutation.isPending ? 'Save Changes' : <SpinnerGapIcon className='animate-spin' />}
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='secondary'>

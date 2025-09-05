@@ -1,4 +1,4 @@
-import { FunnelIcon, XIcon } from '@phosphor-icons/react'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useMemo, useState, type MouseEvent } from 'react'
 
@@ -74,7 +74,7 @@ export const FacetedFilter = <TData, TValue>({
               <XIcon />
             </div>
           ) : (
-            <FunnelIcon />
+            <FunnelSimpleIcon />
           )}
           {title}
           {selectedValues?.size > 0 && (
@@ -100,7 +100,7 @@ export const FacetedFilter = <TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-48 p-0' align='start'>
+      <PopoverContent className='w-auto p-0' align='start'>
         <Command>
           <CommandInput placeholder={title ? `Filter ${title}...` : 'Filter...'} />
           <CommandList className='max-h-full'>
@@ -110,20 +110,19 @@ export const FacetedFilter = <TData, TValue>({
                 const count = facetedCounts.get(option.value) ?? 0
                 return (
                   <CommandItem key={option.value} onSelect={() => onItemSelect(option, selectedValues.has(option.value))}>
-                    <div className='flex items-center space-x-2'>
+                    <div className='w-full flex items-center gap-2'>
                       <Checkbox
                         checked={selectedValues.has(option.value)}
                         onCheckedChange={() => onItemSelect(option, selectedValues.has(option.value))}
-                        onClick={(e) => e.stopPropagation()}
-                      />
+                        onClick={(e) => e.stopPropagation()} />
                       {option.icon && <option.icon className='text-muted-foreground' />}
+                      <p className='max-w-48 truncate'>{option.label}</p>
+                      {count !== undefined && (
+                        <p className='ml-auto font-mono text-xs text-muted-foreground'>
+                          {count}
+                        </p>
+                      )}
                     </div>
-                    <span className='truncate'>{option.label}</span>
-                    {count !== undefined && (
-                      <span className='ml-auto font-mono text-xs text-muted-foreground'>
-                        {count}
-                      </span>
-                    )}
                   </CommandItem>
                 )
               })}

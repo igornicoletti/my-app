@@ -1,4 +1,4 @@
-import { FunnelIcon, XIcon } from '@phosphor-icons/react'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useMemo, type MouseEvent } from 'react'
 import type { DateRange } from 'react-day-picker'
@@ -168,7 +168,7 @@ export const DateFilter = <TData,>({
               <XIcon />
             </div>
           ) : (
-            <FunnelIcon />
+            <FunnelSimpleIcon />
           )}
           {label}
         </Button>

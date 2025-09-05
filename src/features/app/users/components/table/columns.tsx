@@ -27,22 +27,17 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
     id: 'select',
     header: ({ table }) => (
       <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label='Select all'
-        className='translate-y-0.5'
-      />
+        className='translate-y-0.5' />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label='Select row'
-        className='translate-y-0.5'
-      />
+        className='translate-y-0.5' />
     ),
     enableSorting: false,
     enableHiding: false,
@@ -52,27 +47,28 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
     id: 'name',
     accessorKey: 'name',
     header: ({ column }) => <ColumnHeader column={column} title='Name' />,
-    cell: ({ row }) => <span className='max-w-md truncate'>{row.getValue('name')}</span>,
+    cell: ({ row }) => <div className='max-w-md truncate'>{row.getValue('name')}</div>,
     meta: {
       label: 'Name',
       placeholder: 'Search names...',
       variant: 'text',
       icon: TextAaIcon,
     },
+    enableHiding: false,
     enableColumnFilter: true,
   },
   {
     id: 'email',
     accessorKey: 'email',
     header: ({ column }) => <ColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <span className='max-w-md truncate'>{row.getValue('email')}</span>,
+    cell: ({ row }) => <div className='max-w-md truncate'>{row.getValue('email')}</div>,
     enableColumnFilter: false,
   },
   {
     id: 'phone',
     accessorKey: 'phone',
     header: ({ column }) => <ColumnHeader column={column} title='Phone Number' />,
-    cell: ({ row }) => <span className='max-w-md truncate'>{row.getValue('phone')}</span>,
+    cell: ({ row }) => row.getValue('phone'),
     enableColumnFilter: false,
   },
   {
@@ -80,12 +76,12 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
     accessorKey: 'status',
     header: ({ column }) => <ColumnHeader column={column} title='Status' />,
     cell: ({ cell }) => {
-      const status = statuses.find((s) => s === cell.getValue<UserSchema['status']>())
+      const status = statuses.find((status) => status === cell.getValue<UserSchema['status']>())
       if (!status) return null
       const Icon = getStatusIcon(status)
       return (
-        <div className='flex items-center gap-2 [&>svg]:size-3'>
-          <Icon />
+        <div className='flex items-center gap-2'>
+          {Icon && <Icon />}
           {status}
         </div>
       )
@@ -108,12 +104,12 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
     accessorKey: 'role',
     header: ({ column }) => <ColumnHeader column={column} title='Role' />,
     cell: ({ cell }) => {
-      const role = roles.find((r) => r === cell.getValue<UserSchema['role']>())
+      const role = roles.find((role) => role === cell.getValue<UserSchema['role']>())
       if (!role) return null
       const Icon = getRoleIcon(role)
       return (
-        <div className='flex items-center gap-2 [&>svg]:size-3'>
-          <Icon />
+        <div className='flex items-center gap-2'>
+          {Icon && <Icon />}
           {role}
         </div>
       )
@@ -162,10 +158,7 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
     cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            aria-label='Open menu'
-            variant='ghost'
-            className='flex size-8 p-0 data-[state=open]:bg-muted'>
+          <Button aria-label='Open menu' variant='ghost' className='flex size-8 p-0 data-[state=open]:bg-muted'>
             <DotsThreeIcon aria-hidden='true' />
           </Button>
         </DropdownMenuTrigger>
@@ -177,9 +170,7 @@ export const UsersColumns = ({ setRowAction }: UsersColumnsProps): ColumnDef<Use
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            variant='destructive'
-            onSelect={() => setRowAction({ row, variant: 'delete' })}>
+          <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

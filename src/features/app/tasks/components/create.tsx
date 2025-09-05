@@ -43,9 +43,7 @@ export const CreateTask = () => {
       <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Create Task</SheetTitle>
-          <SheetDescription>
-            Fill in the details below to create a new task.
-          </SheetDescription>
+          <SheetDescription>Fill in the details below to create a new task.</SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={createTaskMutation.mutate}>
           <SheetFooter className='mt-auto'>

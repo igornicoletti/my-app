@@ -39,18 +39,15 @@ export const DeleteTasks = ({
   onSuccess,
   ...props
 }: DeleteTasksProps) => {
-  const deleteTasksMutation = useDeleteTasks({
+  const isDesktop = useMediaQuery('(min-width: 640px)')
+
+  const deleteTasks = useDeleteTasks({
     onSuccess: () => {
       onSuccess?.()
       props.onOpenChange?.(false)
-    },
+    }
   })
 
-  const onDelete = () => {
-    deleteTasksMutation.mutate(tasks.map((task) => task.id))
-  }
-
-  const isDesktop = useMediaQuery('(min-width: 640px)')
   const Component = isDesktop ? Dialog : Drawer
   const Trigger = isDesktop ? DialogTrigger : DrawerTrigger
   const Content = isDesktop ? DialogContent : DrawerContent
@@ -73,22 +70,16 @@ export const DeleteTasks = ({
       <Content>
         <Header>
           <Title>Are you absolutely sure?</Title>
-          <Description>
-            This action cannot be undone. This will permanently delete your{' '}
-            <span className='font-semibold'>{tasks.length}</span>
-            {tasks.length === 1 ? ' task' : ' tasks'} from our system.
-          </Description>
+          <Description>This action cannot be undone.</Description>
         </Header>
         <Footer>
           <Close asChild>
-            <Button type='button' variant='secondary'>
-              Cancel
-            </Button>
+            <Button variant='secondary'>Cancel</Button>
           </Close>
           <Button
             variant='destructive'
-            onClick={onDelete}
-            disabled={deleteTasksMutation.isPending}>
+            onClick={() => deleteTasks.mutate(tasks.map((task) => task.id))}
+            disabled={deleteTasks.isPending}>
             Delete
           </Button>
         </Footer>
