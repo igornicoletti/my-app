@@ -1,29 +1,27 @@
-import type { UserSchema } from '@/features/app/users/lib/schemas'
 import type { FilterFn } from '@tanstack/react-table'
+
+import type { UserSchema } from '@/features/app/users/lib/schemas'
 
 export const rangeFilter: FilterFn<UserSchema> = (
   row,
   columnId,
-  range: [number | undefined, number | undefined],
+  range: [number | undefined, number | undefined]
 ) => {
   const value = row.getValue<number>(columnId)
   if (typeof value !== 'number') return false
-
   const [min, max] = range
   if (min != null && value < min) return false
   if (max != null && value > max) return false
-
   return true
 }
 
 export const dateRangeFilter: FilterFn<UserSchema> = (
   row,
   columnId,
-  value: [Date?, Date?],
+  value: [Date?, Date?]
 ) => {
   const rowDate = row.getValue<Date>(columnId)
   if (!rowDate) return false
-
   const [from, to] = value
   if (from && rowDate < from) return false
   if (to) {

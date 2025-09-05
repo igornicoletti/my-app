@@ -64,7 +64,7 @@ export const TasksColumns = ({
       id: 'code',
       accessorKey: 'code',
       header: ({ column }) => <ColumnHeader column={column} title='Task' />,
-      cell: ({ row }) => row.getValue('code'),
+      cell: ({ row }) => <div className='w-20'>{row.getValue('code')}</div>,
       enableSorting: false,
       enableHiding: false,
     },

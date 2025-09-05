@@ -36,8 +36,7 @@ export const UserForm = <T extends Partial<CreateUserSchema> & FieldValues>({
                   type='text'
                   placeholder='Enter name'
                   value={field.value ?? ''}
-                  aria-invalid={!!fieldState.error}
-                />
+                  aria-invalid={!!fieldState.error} />
               </FormControl>
               <FormMessage className='text-xs text-right' />
             </FormItem>
@@ -54,7 +53,43 @@ export const UserForm = <T extends Partial<CreateUserSchema> & FieldValues>({
                   {...field}
                   type='email'
                   placeholder='email@example.com'
+                  value={field.value ?? ''}
+                  aria-invalid={!!fieldState.error} />
+              </FormControl>
+              <FormMessage className='text-xs text-right' />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={'phone' as FieldPath<T>}
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type='tel'
+                  placeholder='+99 (99) 9 9999 9999'
+                  value={field.value ?? ''}
                   aria-invalid={!!fieldState.error}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    let val = e.target.value.replace(/\D/g, '')
+                    const country = val.slice(0, 2)
+                    const area = val.slice(2, 4)
+                    const one = val.slice(4, 5)
+                    const first = val.slice(5, 9)
+                    const second = val.slice(9, 13)
+
+                    let formatted = ''
+                    if (country) formatted += '+' + country
+                    if (area) formatted += ' (' + area + ')'
+                    if (one) formatted += ' ' + one
+                    if (first) formatted += ' ' + first
+                    if (second) formatted += ' ' + second
+
+                    field.onChange(formatted)
+                  }}
                 />
               </FormControl>
               <FormMessage className='text-xs text-right' />
@@ -63,16 +98,16 @@ export const UserForm = <T extends Partial<CreateUserSchema> & FieldValues>({
         />
         <SelectField
           form={form}
-          name={'role' as FieldPath<T>}
-          label='Role'
-          placeholder='Select a role'
-          options={roles} />
-        <SelectField
-          form={form}
           name={'status' as FieldPath<T>}
           label='Status'
           placeholder='Select a status'
           options={statuses} />
+        <SelectField
+          form={form}
+          name={'role' as FieldPath<T>}
+          label='Role'
+          placeholder='Select a role'
+          options={roles} />
       </div>
       {children}
     </form>

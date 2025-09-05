@@ -27,7 +27,7 @@ export const taskSchema = z.object({
     required_error: 'Please select a priority.',
     invalid_type_error: 'Invalid priority.',
   }),
-  archived: z.boolean().default(false),
+  archived: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

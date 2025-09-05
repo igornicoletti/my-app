@@ -32,7 +32,8 @@ export const UpdateUser = ({ user, ...props }: UpdateUserProps) => {
       form.reset({
         name: user.name,
         email: user.email,
-        roles: user.role,
+        phone: user.phone,
+        role: user.role,
         status: user.status,
       })
     }

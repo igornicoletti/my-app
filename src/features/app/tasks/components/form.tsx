@@ -35,7 +35,7 @@ export const TaskForm = <T extends Partial<CreateTaskSchema> & FieldValues>({
                   {...field}
                   autoFocus
                   placeholder='Do a kickflip'
-                  className='resize-none text-sm'
+                  className='resize-none'
                   aria-invalid={!!fieldState.error}
                 />
               </FormControl>

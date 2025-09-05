@@ -23,16 +23,15 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
 
   return (
     <div className='flex flex-wrap items-center gap-2'>
-      {selectedTasks.length > 0 ? (
-        <DeleteTasks
-          tasks={selectedTasks}
-          onSuccess={() => table.toggleAllRowsSelected(false)}
-        />
-      ) : null}
       <Button variant='secondary' size='sm' onClick={onExport}>
         <DownloadSimpleIcon />
         Export
       </Button>
+      {selectedTasks.length > 0 ? (
+        <DeleteTasks
+          tasks={selectedTasks}
+          onSuccess={() => table.toggleAllRowsSelected(false)} />
+      ) : null}
       <CreateTask />
     </div>
   )

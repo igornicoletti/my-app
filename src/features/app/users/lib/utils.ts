@@ -1,16 +1,17 @@
 import { faker } from '@faker-js/faker'
+import { CheckCircleIcon, CircleDashedIcon, ClockIcon, CurrencyDollarSimpleIcon, ShieldIcon, UsersIcon, XCircleIcon } from '@phosphor-icons/react'
 
 import { roles, statuses, type UserSchema } from '@/features/app/users/lib/schemas'
 import { generateId } from '@/lib/id'
-import { CheckCircleIcon, CircleDashedIcon, ClockIcon, PencilSimpleIcon, ShieldIcon, ShieldStarIcon, UsersIcon, XCircleIcon } from '@phosphor-icons/react'
 
 export const generateRandomUser = (): UserSchema => ({
   id: generateId('user'),
   name: faker.person.fullName(),
   email: faker.internet.email(),
+  phone: faker.helpers.replaceSymbols('+## (##) # #### ####'),
   role: faker.helpers.arrayElement(roles),
   status: faker.helpers.arrayElement(statuses),
-  lastLogin: faker.datatype.boolean() ? faker.date.recent({ days: 30 }) : undefined,
+  lastLogin: faker.date.recent({ days: 30 }),
   createdAt: faker.date.past({ years: 2 }),
   updatedAt: new Date(),
 })
@@ -24,11 +25,11 @@ export const getStatusIcon = (status: UserSchema['status']) => {
   return statusIcons[status] || CircleDashedIcon
 }
 
-export const getRolesIcon = (roles: UserSchema['role']) => {
-  const rolesIcons: Record<UserSchema['role'], any> = {
-    Admin: ShieldStarIcon,
+export const getRoleIcon = (role: UserSchema['role']) => {
+  const roleIcons: Record<UserSchema['role'], any> = {
+    Superadmin: ShieldIcon,
     Manager: UsersIcon,
-    Editor: PencilSimpleIcon,
+    Cashier: CurrencyDollarSimpleIcon,
   }
-  return rolesIcons[roles] || ShieldIcon
+  return roleIcons[role] || ShieldIcon
 }

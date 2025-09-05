@@ -41,7 +41,9 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
                   key={column.id}
                   onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
                   <CheckIcon weight='bold' className={`${column.getIsVisible() ? 'opacity-100' : 'opacity-0'}`} />
-                  <span className='truncate'>{column.columnDef.meta?.label ?? column.id}</span>
+                  <span className='truncate capitalize'>
+                    {column.columnDef.meta?.label ?? column.id}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>

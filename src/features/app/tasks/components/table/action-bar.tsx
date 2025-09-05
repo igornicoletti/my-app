@@ -66,7 +66,10 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
           <SelectContent align='center'>
             <SelectGroup>
               {statuses.map((status) => (
-                <SelectItem key={status} value={status} className='capitalize'>
+                <SelectItem
+                  key={status}
+                  value={status}
+                  className='capitalize'>
                   {status}
                 </SelectItem>
               ))}
@@ -85,7 +88,10 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
           <SelectContent align='center'>
             <SelectGroup>
               {priorities.map((priority) => (
-                <SelectItem key={priority} value={priority} className='capitalize'>
+                <SelectItem
+                  key={priority}
+                  value={priority}
+                  className='capitalize'>
                   {priority}
                 </SelectItem>
               ))}

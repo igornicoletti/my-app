@@ -7,18 +7,18 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const usersService = {
   get: async (): Promise<UserSchema[]> => {
-    await delay(500)
+    await delay(200)
     return [...users]
   },
 
   seed: async (count: number): Promise<UserSchema[]> => {
-    await delay(500)
+    await delay(200)
     users = Array.from({ length: count }, () => generateRandomUser())
     return [...users]
   },
 
   create: async (input: CreateUserSchema): Promise<UserSchema> => {
-    await delay(500)
+    await delay(200)
     const newUser: UserSchema = {
       ...generateRandomUser(),
       ...input,
@@ -30,7 +30,7 @@ export const usersService = {
   },
 
   update: async (input: UpdateUserSchema & { id: string }): Promise<UserSchema> => {
-    await delay(500)
+    await delay(200)
     const userIndex = users.findIndex((u) => u.id === input.id)
 
     if (userIndex === -1) {
@@ -54,7 +54,7 @@ export const usersService = {
       | { role: UserSchema['role'] }
     ),
   ): Promise<UserSchema[]> => {
-    await delay(500)
+    await delay(200)
 
     const { ids, ...updateData } = input
     const updatedUsers: UserSchema[] = []
@@ -80,7 +80,7 @@ export const usersService = {
   },
 
   delete: async (id: string): Promise<void> => {
-    await delay(500)
+    await delay(200)
     const userIndex = users.findIndex((u) => u.id === id)
 
     if (userIndex === -1) {
@@ -91,7 +91,7 @@ export const usersService = {
   },
 
   bulkDelete: async (ids: string[]): Promise<void> => {
-    await delay(500)
+    await delay(200)
     users = users.filter((u) => !ids.includes(u.id))
   },
 }

@@ -18,7 +18,7 @@ const createUserMutation = <TData = unknown, TVariables = void>({
   mutationFn,
   successToastMessage,
   errorToastMessage,
-  invalidateQueryKey = ['users'], // Invalida a query de 'users'
+  invalidateQueryKey = ['users'],
 }: CreateUserMutationParams<TData, TVariables>) => {
   return (options?: UserMutationOptions<TData, TVariables>) => {
     const { successToast, errorToast } = useToast()

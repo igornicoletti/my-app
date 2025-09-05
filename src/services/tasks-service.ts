@@ -7,18 +7,18 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const tasksService = {
   get: async (): Promise<TaskSchema[]> => {
-    await delay(500)
+    await delay(200)
     return [...tasks]
   },
 
   seed: async (count: number): Promise<TaskSchema[]> => {
-    await delay(500)
+    await delay(200)
     tasks = Array.from({ length: count }, () => generateRandomTask())
     return [...tasks]
   },
 
   create: async (input: CreateTaskSchema): Promise<TaskSchema> => {
-    await delay(500)
+    await delay(200)
     const newTask: TaskSchema = {
       ...generateRandomTask(),
       ...input,
@@ -30,7 +30,7 @@ export const tasksService = {
   },
 
   update: async (input: UpdateTaskSchema & { id: string }): Promise<TaskSchema> => {
-    await delay(500)
+    await delay(200)
     const taskIndex = tasks.findIndex((t) => t.id === input.id)
 
     if (taskIndex === -1) {
@@ -54,7 +54,7 @@ export const tasksService = {
       | { priority: TaskSchema['priority'] }
     ),
   ): Promise<TaskSchema[]> => {
-    await delay(500)
+    await delay(200)
 
     const { ids, ...updateData } = input
     const updatedTasks: TaskSchema[] = []
@@ -80,7 +80,7 @@ export const tasksService = {
   },
 
   delete: async (id: string): Promise<void> => {
-    await delay(500)
+    await delay(200)
     const taskIndex = tasks.findIndex((t) => t.id === id)
 
     if (taskIndex === -1) {
@@ -91,7 +91,7 @@ export const tasksService = {
   },
 
   bulkDelete: async (ids: string[]): Promise<void> => {
-    await delay(500)
+    await delay(200)
     tasks = tasks.filter((t) => !ids.includes(t.id))
   },
 }
