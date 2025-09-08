@@ -47,15 +47,13 @@ export const UsersTable = () => {
       <UpdateUser
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
-        user={rowAction?.row.original ?? null}
-      />
+        user={rowAction?.row.original ?? null} />
       <DeleteUsers
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         users={rowAction?.row.original ? [rowAction?.row.original] : []}
         showTrigger={false}
-        onSuccess={() => rowAction?.row.toggleSelected(false)}
-      />
+        onSuccess={() => rowAction?.row.toggleSelected(false)} />
     </>
   )
 }

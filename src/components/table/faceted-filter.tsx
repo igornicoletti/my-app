@@ -90,7 +90,7 @@ export const FacetedFilter = <TData, TValue>({
                   </Badge>
                 ) : (
                   options.filter(option => selectedValues.has(option.value)).map(option => (
-                    <Badge variant='secondary' key={option.value}>
+                    <Badge key={option.value} variant='secondary'>
                       {option.label}
                     </Badge>
                   ))

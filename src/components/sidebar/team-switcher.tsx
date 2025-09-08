@@ -37,7 +37,7 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
               <Avatar className='rounded-lg'>
-                <AvatarFallback className='text-sidebar-primary rounded-lg'>
+                <AvatarFallback className='rounded-lg'>
                   {activeTeam.logo
                     ? <activeTeam.logo className='size-6' />
                     : activeTeam.name[0]}
@@ -61,7 +61,7 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
             {teams.map((team, index) => (
               <DropdownMenuItem key={team.name} onClick={() => setActiveTeam(team)} className='gap-2 p-2'>
                 <Avatar className='size-6 rounded-sm'>
-                  <AvatarFallback className='bg-transparent rounded-sm'>
+                  <AvatarFallback className='rounded-sm'>
                     {team.logo ? <team.logo /> : team.name[0]}
                   </AvatarFallback>
                 </Avatar>

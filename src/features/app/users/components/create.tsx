@@ -59,7 +59,7 @@ export const CreateUser = () => {
               )}
             </Button>
             <SheetClose asChild>
-              <Button type='button' variant='secondary'>
+              <Button type='button' variant='outline'>
                 Cancel
               </Button>
             </SheetClose>
