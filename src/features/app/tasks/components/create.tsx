@@ -35,29 +35,23 @@ export const CreateTask = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='default' size='sm'>
+        <Button variant='secondary' size='sm'>
           <SparkleIcon />
           Create
         </Button>
       </SheetTrigger>
       <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
-          <SheetTitle>Create Task</SheetTitle>
+          <SheetTitle>Create task</SheetTitle>
           <SheetDescription>Fill in the details below to create a new task.</SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={createTaskMutation.mutate}>
-          <SheetFooter className='mt-auto'>
-            <Button
-              type='submit'
-              disabled={createTaskMutation.isPending}>
-              {createTaskMutation.isPending ? (
-                <SpinnerGapIcon className='animate-spin' />
-              ) : (
-                'Save Task'
-              )}
+          <SheetFooter>
+            <Button disabled={createTaskMutation.isPending} type='submit'>
+              {!createTaskMutation.isPending ? 'Save' : <SpinnerGapIcon className='animate-spin' />}
             </Button>
             <SheetClose asChild>
-              <Button type='button' variant='secondary'>
+              <Button type='button' variant='outline'>
                 Cancel
               </Button>
             </SheetClose>

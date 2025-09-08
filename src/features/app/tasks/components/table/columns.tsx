@@ -146,7 +146,7 @@ export const TasksColumns = ({
       id: 'estimatedHours',
       accessorKey: 'estimatedHours',
       header: ({ column }) => <ColumnHeader column={column} title='Est. Hours' />,
-      cell: ({ cell }) => <div className='text-right'>{cell.getValue<number>()}</div>,
+      cell: ({ cell }) => <div className=''>{cell.getValue<number>()}</div>,
       meta: {
         label: 'Est. Hours',
         variant: 'range',

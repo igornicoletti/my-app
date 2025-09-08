@@ -58,18 +58,16 @@ export const UpdateTask = ({ task, ...props }: UpdateTaskProps) => {
     <Sheet {...props}>
       <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
-          <SheetTitle>Update Task</SheetTitle>
-          <SheetDescription>
-            Update the task details and save the changes.
-          </SheetDescription>
+          <SheetTitle>Update task</SheetTitle>
+          <SheetDescription>Update the task details and save the changes.</SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={onSubmit}>
           <SheetFooter>
             <Button disabled={updateTaskMutation.isPending} type='submit'>
-              {!updateTaskMutation.isPending ? 'Save Changes' : <SpinnerGapIcon className='animate-spin' />}
+              {!updateTaskMutation.isPending ? 'Save' : <SpinnerGapIcon className='animate-spin' />}
             </Button>
             <SheetClose asChild>
-              <Button type='button' variant='secondary'>
+              <Button type='button' variant='outline'>
                 Cancel
               </Button>
             </SheetClose>

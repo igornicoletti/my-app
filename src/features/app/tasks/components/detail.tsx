@@ -1,6 +1,5 @@
 import type { ComponentPropsWithRef } from 'react'
 
-import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
   DialogContent,
@@ -8,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
 
 interface ViewTaskProps extends ComponentPropsWithRef<typeof Dialog> {
@@ -21,50 +19,32 @@ export const ViewTask = ({ task, ...props }: ViewTaskProps) => {
   return (
     <Dialog {...props}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle className='flex items-center gap-2'>
-            {task.code}
-            <Badge variant='secondary'>
-              {task.label}
-            </Badge>
-          </DialogTitle>
-          <DialogDescription className='text-left'>
-            {task.title}
-          </DialogDescription>
+        <DialogHeader className='sm:text-center'>
+          <DialogTitle>{task.code}</DialogTitle>
+          <DialogDescription>{task.title}</DialogDescription>
         </DialogHeader>
-        <Separator />
-        <div className='grid grid-cols-2 gap-4'>
-          <div>
-            <h4 className='text-sm'>Status</h4>
-            <p className='text-sm text-muted-foreground'>{task.status}</p>
-          </div>
-          <div>
-            <h4 className='text-sm'>Priority</h4>
-            <p className='text-sm text-muted-foreground'>{task.priority}</p>
-          </div>
-          <div>
-            <h4 className='text-sm'>Estimated Hours</h4>
-            <p className='text-sm text-muted-foreground'>{task.estimatedHours}</p>
-          </div>
-          <div>
-            <h4 className='text-sm'>Archived</h4>
-            <p className='text-sm text-muted-foreground'>
-              {task.archived ? 'Yes' : 'No'}
-            </p>
-          </div>
-        </div>
-        <Separator />
-        <div>
-          <h4 className='text-sm'>Created At</h4>
-          <p className='text-sm text-muted-foreground'>
-            {task.createdAt.toLocaleString()}
-          </p>
-        </div>
-        <div>
-          <h4 className='text-sm'>Updated At</h4>
-          <p className='text-sm text-muted-foreground'>
-            {task.updatedAt.toLocaleString()}
-          </p>
+        <div className='grid gap-2'>
+          <h4 className='text-sm'>Label:{' '}
+            <span className='text-muted-foreground'>{task.label}</span>
+          </h4>
+          <h4 className='text-sm'>Status:{' '}
+            <span className='text-muted-foreground'>{task.status}</span>
+          </h4>
+          <h4 className='text-sm'>Priority:{' '}
+            <span className='text-muted-foreground'>{task.priority}</span>
+          </h4>
+          <h4 className='text-sm'>Estimated Hours:{' '}
+            <span className='text-muted-foreground'>{task.estimatedHours}</span>
+          </h4>
+          <h4 className='text-sm'>Archived:{' '}
+            <span className='text-muted-foreground'>{task.archived ? 'Yes' : 'No'}</span>
+          </h4>
+          <h4 className='text-sm'>Created At:{' '}
+            <span className='text-muted-foreground'>{task.createdAt.toLocaleString()}</span>
+          </h4>
+          <h4 className='text-sm'>Updated At:{' '}
+            <span className='text-muted-foreground'>{task.updatedAt.toLocaleString()}</span>
+          </h4>
         </div>
       </DialogContent>
     </Dialog>
