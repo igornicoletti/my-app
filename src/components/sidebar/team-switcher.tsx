@@ -37,7 +37,7 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
               <Avatar className='rounded-lg'>
-                <AvatarFallback className='bg-sidebar-primary text-sidebar-primary-foreground rounded-lg'>
+                <AvatarFallback className='text-sidebar-primary rounded-lg'>
                   {activeTeam.logo
                     ? <activeTeam.logo className='size-6' />
                     : activeTeam.name[0]}

@@ -35,7 +35,7 @@ export const CreateUser = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='default' size='sm'>
+        <Button variant='secondary' size='sm'>
           <SparkleIcon />
           Create
         </Button>
