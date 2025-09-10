@@ -27,7 +27,7 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
       <PopoverTrigger asChild>
         <Button aria-label='Toggle columns' role='combobox' variant='outline' size='sm' className='ml-auto hidden h-8 lg:flex'>
           <SlidersHorizontalIcon />
-          Columns
+          View
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-48 p-0' align='end'>

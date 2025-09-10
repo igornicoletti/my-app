@@ -1,71 +1,57 @@
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import type { UserSchema } from '@/features/app/users/lib/schemas'
 import type { ComponentPropsWithRef } from 'react'
 
-import { Badge } from '@/components/ui/badge'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
-import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
-
-interface ViewTaskProps extends ComponentPropsWithRef<typeof Dialog> {
-  task: TaskSchema | null
+interface ViewUserProps extends ComponentPropsWithRef<typeof Dialog> {
+  user: UserSchema | null
 }
 
-export const ViewTask = ({ task, ...props }: ViewTaskProps) => {
-  if (!task) return null
+export const ViewUser = ({ user, ...props }: ViewUserProps) => {
+  if (!user) return null
 
   return (
     <Dialog {...props}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className='flex items-center gap-2'>
-            {task.code}
-            <Badge variant='secondary'>
-              {task.label}
-            </Badge>
-          </DialogTitle>
-          <DialogDescription className='text-left'>
-            {task.title}
+          <DialogTitle>User Details</DialogTitle>
+          <DialogDescription>
+            Detailed information about the selected user
           </DialogDescription>
         </DialogHeader>
-        <Separator />
-        <div className='grid grid-cols-2 gap-4'>
+        <dl className='grid gap-3 sm:grid-cols-2'>
           <div>
-            <h4 className='text-sm'>Status</h4>
-            <p className='text-sm text-muted-foreground'>{task.status}</p>
+            <dt className='text-sm font-medium'>Name</dt>
+            <dd className='text-sm text-muted-foreground'>{user.name}</dd>
           </div>
           <div>
-            <h4 className='text-sm'>Priority</h4>
-            <p className='text-sm text-muted-foreground'>{task.priority}</p>
+            <dt className='text-sm font-medium'>Email</dt>
+            <dd className='text-sm text-muted-foreground'>{user.email}</dd>
           </div>
           <div>
-            <h4 className='text-sm'>Estimated Hours</h4>
-            <p className='text-sm text-muted-foreground'>{task.estimatedHours}</p>
+            <dt className='text-sm font-medium'>Phone</dt>
+            <dd className='text-sm text-muted-foreground'>{user.phone}</dd>
           </div>
           <div>
-            <h4 className='text-sm'>Archived</h4>
-            <p className='text-sm text-muted-foreground'>
-              {task.archived ? 'Yes' : 'No'}
-            </p>
+            <dt className='text-sm font-medium'>Status</dt>
+            <dd className='text-sm text-muted-foreground'>{user.status}</dd>
           </div>
-        </div>
-        <Separator />
-        <div>
-          <h4 className='text-sm'>Created At</h4>
-          <p className='text-sm text-muted-foreground'>
-            {task.createdAt.toLocaleString()}
-          </p>
-        </div>
-        <div>
-          <h4 className='text-sm'>Updated At</h4>
-          <p className='text-sm text-muted-foreground'>
-            {task.updatedAt.toLocaleString()}
-          </p>
-        </div>
+          <div>
+            <dt className='text-sm font-medium'>Role</dt>
+            <dd className='text-sm text-muted-foreground'>{user.role}</dd>
+          </div>
+          <div>
+            <dt className='text-sm font-medium'>Created At</dt>
+            <dd className='text-sm text-muted-foreground'>
+              {user.createdAt.toLocaleString()}
+            </dd>
+          </div>
+          <div>
+            <dt className='text-sm font-medium'>Updated At</dt>
+            <dd className='text-sm text-muted-foreground'>
+              {user.updatedAt.toLocaleString()}
+            </dd>
+          </div>
+        </dl>
       </DialogContent>
     </Dialog>
   )

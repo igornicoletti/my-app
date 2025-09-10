@@ -154,6 +154,7 @@ export const TasksColumns = ({
         unit: 'hr',
         icon: ClockIcon,
       },
+      enableColumnFilter: true,
       filterFn: rangeFilter,
     },
     {

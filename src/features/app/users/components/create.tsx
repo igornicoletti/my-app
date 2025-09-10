@@ -1,8 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -17,6 +12,10 @@ import {
 import { UserForm } from '@/features/app/users/components/form'
 import { useCreateUser } from '@/features/app/users/hooks/use-users-mutations'
 import { createUserSchema, type CreateUserSchema } from '@/features/app/users/lib/schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 export const CreateUser = () => {
   const [open, setOpen] = useState(false)
@@ -49,14 +48,8 @@ export const CreateUser = () => {
         </SheetHeader>
         <UserForm form={form} onSubmit={createUserMutation.mutate}>
           <SheetFooter className='mt-auto'>
-            <Button
-              type='submit'
-              disabled={createUserMutation.isPending}>
-              {createUserMutation.isPending ? (
-                <SpinnerGapIcon className='animate-spin' />
-              ) : (
-                'Save User'
-              )}
+            <Button disabled={createUserMutation.isPending} type='submit'>
+              {!createUserMutation.isPending ? 'Save' : <SpinnerGapIcon className='animate-spin' />}
             </Button>
             <SheetClose asChild>
               <Button type='button' variant='outline'>

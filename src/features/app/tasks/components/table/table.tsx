@@ -50,17 +50,14 @@ export const TasksTable = () => {
           <TasksToolbar table={table} />
         </Toolbar>
       </DataTable>
-
       <ViewTask
         open={!!rowAction && rowAction.variant === 'view'}
         onOpenChange={() => setRowAction(null)}
         task={rowAction?.row.original ?? null} />
-
       <UpdateTask
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
         task={rowAction?.row.original ?? null} />
-
       <DeleteTasks
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}

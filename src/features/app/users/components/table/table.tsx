@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react'
-
 import { DataTable } from '@/components/table/data-table'
 import { Toolbar } from '@/components/table/toolbar'
 import { DeleteUsers } from '@/features/app/users/components/delete'
+import { ViewUser } from '@/features/app/users/components/detail'
 import { UsersActionBar } from '@/features/app/users/components/table/action-bar'
 import { UsersColumns } from '@/features/app/users/components/table/columns'
 import { UsersToolbar } from '@/features/app/users/components/table/toolbar'
@@ -11,6 +10,7 @@ import { useUsers } from '@/features/app/users/hooks/use-users'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { useDataTable } from '@/hooks/use-data-table'
 import type { DataTableRowAction } from '@/types/data-table'
+import { useMemo, useState } from 'react'
 
 export const UsersTable = () => {
   const { data: users } = useUsers()
@@ -44,6 +44,10 @@ export const UsersTable = () => {
           <UsersToolbar table={table} />
         </Toolbar>
       </DataTable>
+      <ViewUser
+        open={!!rowAction && rowAction.variant === 'view'}
+        onOpenChange={() => setRowAction(null)}
+        user={rowAction?.row.original ?? null} />
       <UpdateUser
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}

@@ -1,7 +1,3 @@
-import { TrashSimpleIcon } from '@phosphor-icons/react'
-import type { Row } from '@tanstack/react-table'
-import type { ComponentPropsWithoutRef } from 'react'
-
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -26,6 +22,9 @@ import {
 import { useDeleteUsers } from '@/features/app/users/hooks/use-users-mutations'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { TrashSimpleIcon } from '@phosphor-icons/react'
+import type { Row } from '@tanstack/react-table'
+import type { ComponentPropsWithoutRef } from 'react'
 
 interface DeleteUsersProps extends ComponentPropsWithoutRef<typeof Dialog> {
   users: Row<UserSchema>['original'][]
@@ -73,11 +72,7 @@ export const DeleteUsers = ({
       <Content>
         <Header>
           <Title>Are you absolutely sure?</Title>
-          <Description>
-            This action cannot be undone. This will permanently delete your{' '}
-            <span className='font-semibold'>{users.length}</span>
-            {users.length === 1 ? ' user' : ' users'} from our system.
-          </Description>
+          <Description>This action cannot be undone.</Description>
         </Header>
         <Footer>
           <Close asChild>

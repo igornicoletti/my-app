@@ -1,11 +1,10 @@
-import { DownloadSimpleIcon } from '@phosphor-icons/react'
-import type { Table } from '@tanstack/react-table'
-
 import { Button } from '@/components/ui/button'
 import { CreateUser } from '@/features/app/users/components/create'
 import { DeleteUsers } from '@/features/app/users/components/delete'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
+import { DownloadSimpleIcon } from '@phosphor-icons/react'
+import type { Table } from '@tanstack/react-table'
 
 interface UsersToolbarActionsProps {
   table: Table<UserSchema>
@@ -30,8 +29,7 @@ export const UsersToolbar = ({ table }: UsersToolbarActionsProps) => {
       {selectedUsers.length > 0 ? (
         <DeleteUsers
           users={selectedUsers}
-          onSuccess={() => table.toggleAllRowsSelected(false)}
-        />
+          onSuccess={() => table.toggleAllRowsSelected(false)} />
       ) : null}
       <CreateUser />
     </div>

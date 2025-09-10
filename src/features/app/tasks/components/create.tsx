@@ -1,8 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -17,6 +12,10 @@ import {
 import { TaskForm } from '@/features/app/tasks/components/form'
 import { useCreateTask } from '@/features/app/tasks/hooks/use-tasks-mutations'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 export const CreateTask = () => {
   const [open, setOpen] = useState(false)
@@ -35,7 +34,7 @@ export const CreateTask = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='secondary' size='sm'>
+        <Button variant='default' size='sm'>
           <SparkleIcon />
           Create
         </Button>
@@ -43,7 +42,9 @@ export const CreateTask = () => {
       <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>Create task</SheetTitle>
-          <SheetDescription>Fill in the details below to create a new task.</SheetDescription>
+          <SheetDescription>
+            Fill in the details below to create a new task.
+          </SheetDescription>
         </SheetHeader>
         <TaskForm form={form} onSubmit={createTaskMutation.mutate}>
           <SheetFooter>

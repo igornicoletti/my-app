@@ -1,7 +1,3 @@
-import { TrashSimpleIcon } from '@phosphor-icons/react'
-import type { Row } from '@tanstack/react-table'
-import type { ComponentPropsWithoutRef } from 'react'
-
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -26,6 +22,9 @@ import {
 import { useDeleteTasks } from '@/features/app/tasks/hooks/use-tasks-mutations'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { TrashSimpleIcon } from '@phosphor-icons/react'
+import type { Row } from '@tanstack/react-table'
+import type { ComponentPropsWithoutRef } from 'react'
 
 interface DeleteTasksProps extends ComponentPropsWithoutRef<typeof Dialog> {
   tasks: Row<TaskSchema>['original'][]
