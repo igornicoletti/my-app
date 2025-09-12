@@ -73,13 +73,12 @@ export const DeleteTasks = ({
         </Header>
         <Footer>
           <Close asChild>
-            <Button variant='secondary'>Cancel</Button>
+            <Button variant='outline'>Cancel</Button>
           </Close>
           <Button
-            variant='destructive'
             onClick={() => deleteTasks.mutate(tasks.map((task) => task.id))}
             disabled={deleteTasks.isPending}>
-            Delete
+            Continue
           </Button>
         </Footer>
       </Content>

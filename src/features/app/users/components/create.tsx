@@ -1,14 +1,5 @@
 import { Button } from '@/components/ui/button'
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { UserForm } from '@/features/app/users/components/form'
 import { useCreateUser } from '@/features/app/users/lib/hooks'
 import { createUserSchema, type CreateUserSchema } from '@/features/app/users/lib/schemas'
@@ -31,6 +22,10 @@ export const CreateUser = () => {
     }
   })
 
+  const onSubmit = () => {
+    createUserMutation.mutate
+  }
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -46,7 +41,7 @@ export const CreateUser = () => {
             Fill in the details below to create a new user.
           </SheetDescription>
         </SheetHeader>
-        <UserForm form={form} onSubmit={createUserMutation.mutate}>
+        <UserForm form={form} onSubmit={onSubmit}>
           <SheetFooter className='mt-auto'>
             <Button disabled={createUserMutation.isPending} type='submit'>
               {!createUserMutation.isPending ? 'Save' : <SpinnerGapIcon className='animate-spin' />}

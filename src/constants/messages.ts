@@ -52,6 +52,7 @@ export const errorCode = {
     title: 'Popup Request Failed',
     description: 'Another popup interrupted the login process. Please try again.',
   },
+  // TASKS
   'task/task-add-error': {
     title: 'Failed to Add Task',
     description: 'An error occurred while creating the task. Please try again.',
@@ -63,6 +64,27 @@ export const errorCode = {
   'task/task-delete-error': {
     title: 'Failed to Delete Task',
     description: 'An error occurred while deleting the task. Please try again.',
+  },
+  'task/fetch-error': {
+    title: 'Failed to Fetch Tasks',
+    description: 'We could not load the tasks. Please refresh or try again later.',
+  },
+  // USERS
+  'user/user-add-error': {
+    title: 'Failed to Add User',
+    description: 'An error occurred while creating the user. Please try again.',
+  },
+  'user/user-update-error': {
+    title: 'Failed to Update User',
+    description: 'An error occurred while updating the user. Please try again.',
+  },
+  'user/user-delete-error': {
+    title: 'Failed to Delete User',
+    description: 'An error occurred while deleting the user. Please try again.',
+  },
+  'user/fetch-error': {
+    title: 'Failed to Fetch Users',
+    description: 'We could not load the users. Please refresh or try again later.',
   },
   default: {
     title: 'Something Went Wrong',
@@ -101,6 +123,7 @@ export const successCode = {
     title: 'Password Updated',
     description: 'Your password has been updated. You can now sign in with the new one.',
   },
+  // TASKS
   'task/task-add-success': {
     title: 'Task Added',
     description: 'The new task was successfully created.',
@@ -110,8 +133,21 @@ export const successCode = {
     description: 'The task was successfully updated.',
   },
   'task/task-delete-success': {
-    title: 'Task deleted',
-    description: 'The task was removed from the table.',
+    title: 'Task Deleted',
+    description: 'The task was successfully deleted.',
+  },
+  // USERS
+  'user/user-add-success': {
+    title: 'User Added',
+    description: 'The new user was successfully created.',
+  },
+  'user/user-update-success': {
+    title: 'User Updated',
+    description: 'The user was successfully updated.',
+  },
+  'user/user-delete-success': {
+    title: 'User Deleted',
+    description: 'The user was successfully deleted.',
   },
   default: {
     title: 'Successfully',

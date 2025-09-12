@@ -76,15 +76,14 @@ export const DeleteUsers = ({
         </Header>
         <Footer>
           <Close asChild>
-            <Button type='button' variant='secondary'>
+            <Button type='button' variant='outline'>
               Cancel
             </Button>
           </Close>
           <Button
-            variant='destructive'
             onClick={onDelete}
             disabled={deleteUsersMutation.isPending}>
-            Delete
+            Continue
           </Button>
         </Footer>
       </Content>

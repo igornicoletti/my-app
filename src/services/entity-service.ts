@@ -1,10 +1,17 @@
+import { z } from 'zod'
+
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export const createEntityService = <T extends {
-  id: string
-  createdAt?: Date
-  updatedAt?: Date
-}>(entityName: string, generateRandom: () => T) => {
+export const createEntityService = <
+  T extends { id: string; createdAt?: Date; updatedAt?: Date },
+  TCreate extends Record<string, unknown>,
+  TUpdate extends Record<string, unknown>
+>(
+  entityName: string,
+  generateRandom: () => T,
+  createSchema: z.ZodType<TCreate>,
+  updateSchema: z.ZodType<TUpdate>
+) => {
   let items: T[] = []
 
   return {
@@ -19,26 +26,30 @@ export const createEntityService = <T extends {
       return [...items]
     },
 
-    create: async (input: Partial<T>): Promise<T> => {
+    create: async (input: TCreate): Promise<T> => {
       await delay(200)
+      const parsed = createSchema.parse(input)
+
       const newItem: T = {
         ...generateRandom(),
-        ...input,
+        ...parsed,
         createdAt: new Date(),
       }
       items = [newItem, ...items]
       return newItem
     },
 
-    update: async (input: Partial<T> & { id: string }): Promise<T> => {
+    update: async (input: TUpdate & { id: string }): Promise<T> => {
       await delay(200)
       const index = items.findIndex((i) => i.id === input.id)
       if (index === -1) throw new Error(`${entityName} not found`)
 
+      const parsed = updateSchema.parse(input)
+
       const original = items[index]
       const updated: T = {
         ...original,
-        ...input,
+        ...parsed,
         updatedAt: new Date(),
       }
 
@@ -46,16 +57,15 @@ export const createEntityService = <T extends {
       return updated
     },
 
-    bulkUpdate: async (input: {
-      ids: string[]
-    } & Record<string, unknown>): Promise<T[]> => {
+    bulkUpdate: async (input: { ids: string[]; fields: TUpdate }): Promise<T[]> => {
       await delay(200)
-      const { ids, ...updateData } = input
+      const { ids, fields } = input
+      const parsed = updateSchema.parse(fields)
       const updatedItems: T[] = []
 
       items = items.map((i) => {
         if (ids.includes(i.id)) {
-          const updated = { ...i, ...updateData, updatedAt: new Date() }
+          const updated = { ...i, ...parsed, updatedAt: new Date() }
           updatedItems.push(updated as T)
           return updated as T
         }
