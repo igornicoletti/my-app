@@ -19,7 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { useDeleteTasks } from '@/features/app/tasks/hooks/use-tasks-mutations'
+import { useDeleteTasks } from '@/features/app/tasks/lib/hooks'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { TrashSimpleIcon } from '@phosphor-icons/react'

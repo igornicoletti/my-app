@@ -5,7 +5,7 @@ import type { Table } from '@tanstack/react-table'
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/table/action-bar'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useDeleteTasks, useUpdateTasks } from '@/features/app/tasks/hooks/use-tasks-mutations'
+import { useDeleteTasks, useUpdateTasks } from '@/features/app/tasks/lib/hooks'
 import { priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
 

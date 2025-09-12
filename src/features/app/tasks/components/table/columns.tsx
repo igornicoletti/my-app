@@ -18,8 +18,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { useUpdateTask } from '@/features/app/tasks/hooks/use-tasks-mutations'
 import { dateRangeFilter, rangeFilter } from '@/features/app/tasks/lib/filters'
+import { useUpdateTask } from '@/features/app/tasks/lib/hooks'
 import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { getPriorityIcon, getStatusIcon } from '@/features/app/tasks/lib/utils'
 import { formatDate } from '@/lib/format'
@@ -71,7 +71,7 @@ export const TasksColumns = ({
         const label = labels.find((label) => label === row.original.label)
         return (
           <div className='flex items-center gap-2'>
-            {label && <Badge variant='secondary'>{label}</Badge>}
+            {label && <Badge variant='outline'>{label}</Badge>}
             <span className='max-w-md truncate'>
               {row.getValue('title')}
             </span>

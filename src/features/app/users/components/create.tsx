@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { UserForm } from '@/features/app/users/components/form'
-import { useCreateUser } from '@/features/app/users/hooks/use-users-mutations'
+import { useCreateUser } from '@/features/app/users/lib/hooks'
 import { createUserSchema, type CreateUserSchema } from '@/features/app/users/lib/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'

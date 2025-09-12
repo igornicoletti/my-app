@@ -5,7 +5,7 @@ import type { Table } from '@tanstack/react-table'
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/table/action-bar'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useDeleteUsers, useUpdateUsers } from '@/features/app/users/hooks/use-users-mutations'
+import { useDeleteUsers, useUpdateUsers } from '@/features/app/users/lib/hooks'
 import { roles, statuses, type UserSchema } from '@/features/app/users/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
 

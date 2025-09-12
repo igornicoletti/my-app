@@ -37,7 +37,7 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
               <Avatar className='rounded-lg'>
-                <AvatarFallback className='rounded-lg'>
+                <AvatarFallback className='rounded-lg text-sidebar-accent bg-sidebar-accent-foreground'>
                   {activeTeam.logo
                     ? <activeTeam.logo className='size-6' />
                     : activeTeam.name[0]}
@@ -71,7 +71,7 @@ export const TeamSwitcher = ({ teams }: { teams: Teams[] }) => {
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className='gap-2 p-2'>
-              <div className='flex size-6 items-center justify-center rounded-sm border bg-transparent'>
+              <div className='flex size-6 items-center justify-center rounded-sm border bg-muted'>
                 <PlusIcon className='size-4' />
               </div>
               <div className='text-muted-foreground font-medium'>Add Workspace</div>

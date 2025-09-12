@@ -2,45 +2,46 @@ import { useToast } from '@/hooks/use-toast'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
-interface UseEntityQueryProps<T> {
+type EntityQueryHookOptions<T> = {
   queryKey: string[]
   service: {
     get: () => Promise<T[]>
-    seed?: (count: number) => Promise<T[]>
+    seed: (count: number) => Promise<T[]>
   }
   seedCount?: number
-  entityName: string
+  errorTitle: string
 }
 
-export const useEntityQuery = <T>({
+export const createEntityQueryHook = <T>({
   queryKey,
   service,
   seedCount = 50,
-  entityName,
-}: UseEntityQueryProps<T>) => {
-  const { errorToast } = useToast()
+  errorTitle,
+}: EntityQueryHookOptions<T>) => {
+  return () => {
+    const { errorToast } = useToast()
 
-  const queryResult = useQuery<T[], Error>({
-    queryKey,
-    queryFn: async () => {
-      const data = await service.get()
-      if (data.length === 0 && service.seed) {
-        return await service.seed(seedCount)
+    const queryResult = useQuery<T[], Error>({
+      queryKey,
+      queryFn: async () => {
+        const data = await service.get()
+        if (data.length === 0) {
+          return await service.seed(seedCount)
+        }
+        return data
+      },
+      initialData: [],
+    })
+
+    useEffect(() => {
+      if (queryResult.isError) {
+        errorToast({
+          title: errorTitle,
+          description: queryResult.error?.message || 'Unknown error occurred',
+        })
       }
-      return data
-    },
-    initialData: [],
-  })
+    }, [queryResult.isError, queryResult.error])
 
-  useEffect(() => {
-    if (queryResult.isError) {
-      const errorMessage = queryResult.error?.message || 'Unknown error occurred'
-      errorToast({
-        title: `Failed to fetch ${entityName}`,
-        description: `${errorMessage}`,
-      })
-    }
-  }, [queryResult.isError, queryResult.error])
-
-  return queryResult
+    return queryResult
+  }
 }

@@ -1,4 +1,4 @@
-import { FunnelIcon, XIcon } from '@phosphor-icons/react'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useId, useMemo, type ChangeEvent, type MouseEvent } from 'react'
 
@@ -122,7 +122,7 @@ export const SliderFilter = <TData,>({
               <XIcon />
             </div>
           ) : (
-            <FunnelIcon />
+            <FunnelSimpleIcon />
           )}
           <span>{title}</span>
           {columnFilterValue ? (

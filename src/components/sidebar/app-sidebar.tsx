@@ -15,9 +15,9 @@ import { routeNavigations } from '@/routes/config/navigation-routes'
 
 const data = {
   user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: 'https://github.com/sswadashadcn.png',
+    name: 'Igor Nicoletti',
+    email: 'igor93nicoletti@gmail.com',
+    avatar: 'https://github.com/igornicoletti.png',
   },
   teams: [
     {

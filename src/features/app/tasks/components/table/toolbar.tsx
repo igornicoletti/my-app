@@ -23,7 +23,7 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
 
   return (
     <div className='flex flex-wrap items-center gap-2'>
-      <Button variant='secondary' size='sm' onClick={onExport}>
+      <Button variant='outline' size='sm' onClick={onExport}>
         <DownloadSimpleIcon />
         Export
       </Button>

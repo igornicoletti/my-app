@@ -9,7 +9,7 @@ export const KeyboardShortcut = () => {
 
   useShortcut(['meta+j', 'ctrl+j'], toggleTheme)
   useShortcut(['meta+k', 'ctrl+k'], openCommand)
-  useShortcut(['meta+q', 'ctrl+q'], () => authService.signOut())
+  useShortcut(['shift+meta+q', 'shift+ctrl+q'], () => authService.signOut())
 
   return null
 }

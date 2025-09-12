@@ -1,22 +1,24 @@
 import { useToast } from '@/hooks/use-toast'
 import { useMutation, useQueryClient, type MutationFunction } from '@tanstack/react-query'
 
-interface CreateEntityMutationParams<TData, TVariables> {
+type MutationOptions<TData, TVariables> = {
+  onSuccess?: (data: TData, variables: TVariables, context: unknown) => void
+}
+
+interface EntityMutationParams<TData, TVariables> {
   mutationFn: MutationFunction<TData, TVariables>
   successToastMessage: string
   errorToastMessage: string
   invalidateQueryKey: string[]
 }
 
-export const createEntityMutation = <TData = unknown, TVariables = void>({
+export const createEntityMutationHook = <TData = unknown, TVariables = void>({
   mutationFn,
   successToastMessage,
   errorToastMessage,
   invalidateQueryKey,
-}: CreateEntityMutationParams<TData, TVariables>) => {
-  return (options?: {
-    onSuccess?: (data: TData, variables: TVariables, context: unknown) => void
-  }) => {
+}: EntityMutationParams<TData, TVariables>) => {
+  return (options?: MutationOptions<TData, TVariables>) => {
     const { successToast, errorToast } = useToast()
     const queryClient = useQueryClient()
 

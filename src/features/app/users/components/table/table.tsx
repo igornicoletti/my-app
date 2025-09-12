@@ -6,7 +6,7 @@ import { UsersActionBar } from '@/features/app/users/components/table/action-bar
 import { UsersColumns } from '@/features/app/users/components/table/columns'
 import { UsersToolbar } from '@/features/app/users/components/table/toolbar'
 import { UpdateUser } from '@/features/app/users/components/update'
-import { useUsers } from '@/features/app/users/hooks/use-users'
+import { useUsers } from '@/features/app/users/lib/hooks'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { useDataTable } from '@/hooks/use-data-table'
 import type { DataTableRowAction } from '@/types/data-table'

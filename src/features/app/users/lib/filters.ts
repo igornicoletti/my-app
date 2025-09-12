@@ -1,6 +1,5 @@
-import type { FilterFn } from '@tanstack/react-table'
-
 import type { UserSchema } from '@/features/app/users/lib/schemas'
+import type { FilterFn } from '@tanstack/react-table'
 
 export const rangeFilter: FilterFn<UserSchema> = (
   row,

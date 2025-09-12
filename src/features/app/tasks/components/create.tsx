@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { TaskForm } from '@/features/app/tasks/components/form'
-import { useCreateTask } from '@/features/app/tasks/hooks/use-tasks-mutations'
+import { useCreateTask } from '@/features/app/tasks/lib/hooks'
 import { createTaskSchema, type CreateTaskSchema } from '@/features/app/tasks/lib/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SparkleIcon, SpinnerGapIcon } from '@phosphor-icons/react'

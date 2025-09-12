@@ -19,7 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { useDeleteUsers } from '@/features/app/users/hooks/use-users-mutations'
+import { useDeleteUsers } from '@/features/app/users/lib/hooks'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { TrashSimpleIcon } from '@phosphor-icons/react'

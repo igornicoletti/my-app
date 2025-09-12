@@ -15,7 +15,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { TaskForm } from '@/features/app/tasks/components/form'
-import { useUpdateTask } from '@/features/app/tasks/hooks/use-tasks-mutations'
+import { useUpdateTask } from '@/features/app/tasks/lib/hooks'
 import { updateTaskSchema, type TaskSchema, type UpdateTaskSchema } from '@/features/app/tasks/lib/schemas'
 
 interface UpdateTaskProps extends ComponentPropsWithRef<typeof Sheet> {

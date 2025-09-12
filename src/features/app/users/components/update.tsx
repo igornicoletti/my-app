@@ -14,7 +14,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { UserForm } from '@/features/app/users/components/form'
-import { useUpdateUser } from '@/features/app/users/hooks/use-users-mutations'
+import { useUpdateUser } from '@/features/app/users/lib/hooks'
 import { updateUserSchema, type UpdateUserSchema, type UserSchema } from '@/features/app/users/lib/schemas'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
 
