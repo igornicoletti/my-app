@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
-import { CreateUser } from '@/features/app/users/components/create'
 import { DeleteUsers } from '@/features/app/users/components/delete'
+import { UserSheet } from '@/features/app/users/components/user-sheet'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
-import { DownloadSimpleIcon } from '@phosphor-icons/react'
+import { DownloadSimpleIcon, SparkleIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 
 interface UsersToolbarActionsProps {
@@ -31,7 +31,14 @@ export const UsersToolbar = ({ table }: UsersToolbarActionsProps) => {
           users={selectedUsers}
           onSuccess={() => table.toggleAllRowsSelected(false)} />
       ) : null}
-      <CreateUser />
+      <UserSheet
+        trigger={
+          <Button variant='default' size='sm'>
+            <SparkleIcon />
+            Create
+          </Button>
+        }
+      />
     </div>
   )
 }

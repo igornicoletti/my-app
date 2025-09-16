@@ -5,7 +5,7 @@ import { ViewTask } from '@/features/app/tasks/components/detail'
 import { TasksActionBar } from '@/features/app/tasks/components/table/action-bar'
 import { TasksColumns } from '@/features/app/tasks/components/table/columns'
 import { TasksToolbar } from '@/features/app/tasks/components/table/toolbar'
-import { UpdateTask } from '@/features/app/tasks/components/update'
+import { TaskSheet } from '@/features/app/tasks/components/task-sheet'
 import { numberRangeFilter } from '@/features/app/tasks/lib/filters'
 import { useTasks } from '@/features/app/tasks/lib/hooks'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
@@ -54,10 +54,11 @@ export const TasksTable = () => {
         open={!!rowAction && rowAction.variant === 'view'}
         onOpenChange={() => setRowAction(null)}
         task={rowAction?.row.original ?? null} />
-      <UpdateTask
+      <TaskSheet
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
-        task={rowAction?.row.original ?? null} />
+        task={rowAction?.variant === 'update' ? rowAction.row.original : null}
+      />
       <DeleteTasks
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}

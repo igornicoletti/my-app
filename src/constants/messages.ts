@@ -1,103 +1,98 @@
-interface Messages {
+interface Message {
   title: string
   description?: string
 }
 
-export const errorCode = {
+const createEntityMessages = (entity: string, plural?: string) => {
+  const singular = entity.charAt(0).toUpperCase() + entity.slice(1)
+  const pluralized = plural ?? `${singular}s`
+
+  return {
+    // Errors
+    [`${entity}/${entity}-add-error`]: {
+      title: `Failed to Add ${singular}`,
+      description: `An error occurred while creating the ${entity}.`,
+    },
+    [`${entity}/${entity}-update-error`]: {
+      title: `Failed to Update ${singular}`,
+      description: `An error occurred while updating the ${entity}.`,
+    },
+    [`${entity}/${entity}-delete-error`]: {
+      title: `Failed to Delete ${singular}`,
+      description: `An error occurred while deleting the ${entity}.`,
+    },
+    [`${entity}/fetch-error`]: {
+      title: `Failed to Fetch ${pluralized}`,
+      description: `We could not load the ${pluralized.toLowerCase()}.`,
+    },
+
+    // Success
+    [`${entity}/${entity}-add-success`]: {
+      title: `${singular} Added`,
+      description: `The new ${entity} was successfully created.`,
+    },
+    [`${entity}/${entity}-update-success`]: {
+      title: `${singular} Updated`,
+      description: `The ${entity} was successfully updated.`,
+    },
+    [`${entity}/${entity}-delete-success`]: {
+      title: `${singular} Deleted`,
+      description: `The ${entity} was successfully deleted.`,
+    },
+  }
+}
+
+const authMessages: Record<string, Message> = {
+  // Errors
   'auth/invalid-credential': {
     title: 'Invalid Credentials',
-    description: 'The credentials you entered are incorrect. Please try again.',
+    description: 'The credentials you entered are incorrect.',
   },
   'auth/invalid-login-credentials': {
     title: 'Invalid Login Credentials',
-    description: 'Your email or password is incorrect. Please verify and try again.',
+    description: 'Your email or password is incorrect.',
   },
   'auth/email-already-in-use': {
     title: 'Email Already in Use',
-    description: 'This email is already linked to another account. Try logging in or use a different email.',
-  },
-  'auth/missing-password': {
-    title: 'Password Required',
-    description: 'Password is required to continue. Please enter your password.',
+    description: 'This email is already linked to another account.',
   },
   'auth/unverified-email': {
     title: 'Email Not Verified',
-    description: 'Please verify your email address before logging in. Check your inbox for the verification email.',
+    description: 'Verify your email address before logging in.',
   },
   'auth/too-many-requests': {
     title: 'Too Many Attempts',
-    description: 'You’ve attempted to log in too many times. Please wait and try again later.',
+    description: 'You’ve attempted to log in too many times.',
   },
   'auth/popup-blocked': {
     title: 'Popup Blocked',
-    description: 'Your browser blocked the login popup. Enable popups for this site and try again.',
+    description: 'Your browser blocked the login popup.',
   },
   'auth/popup-closed-by-user': {
     title: 'Popup Closed',
-    description: 'The popup was closed before completing login. Please try again.',
+    description: 'The popup was closed before completing login.',
   },
   'auth/expired-action-code': {
     title: 'Link Expired',
-    description: 'The link you used has expired. Please request a new one.',
+    description: 'The link you used has expired.',
   },
   'auth/invalid-action-code': {
     title: 'Invalid Link',
-    description: 'The link is invalid or corrupted. Please try again with a valid one.',
+    description: 'The link is invalid or corrupted.',
   },
   'auth/requires-recent-login': {
     title: 'Re-authentication Required',
-    description: 'For security reasons, please log in again to complete this action.',
+    description: 'For security reasons, log in again to complete this action.',
   },
   'auth/cancelled-popup-request': {
     title: 'Popup Request Failed',
-    description: 'Another popup interrupted the login process. Please try again.',
+    description: 'Another popup interrupted the login process.',
   },
-  // TASKS
-  'task/task-add-error': {
-    title: 'Failed to Add Task',
-    description: 'An error occurred while creating the task. Please try again.',
-  },
-  'task/task-update-error': {
-    title: 'Failed to Update Task',
-    description: 'An error occurred while updating the task. Please try again.',
-  },
-  'task/task-delete-error': {
-    title: 'Failed to Delete Task',
-    description: 'An error occurred while deleting the task. Please try again.',
-  },
-  'task/fetch-error': {
-    title: 'Failed to Fetch Tasks',
-    description: 'We could not load the tasks. Please refresh or try again later.',
-  },
-  // USERS
-  'user/user-add-error': {
-    title: 'Failed to Add User',
-    description: 'An error occurred while creating the user. Please try again.',
-  },
-  'user/user-update-error': {
-    title: 'Failed to Update User',
-    description: 'An error occurred while updating the user. Please try again.',
-  },
-  'user/user-delete-error': {
-    title: 'Failed to Delete User',
-    description: 'An error occurred while deleting the user. Please try again.',
-  },
-  'user/fetch-error': {
-    title: 'Failed to Fetch Users',
-    description: 'We could not load the users. Please refresh or try again later.',
-  },
-  default: {
-    title: 'Something Went Wrong',
-    description: 'An error occurred while processing your request. Contact support if the problem persists.',
-  },
-} satisfies Record<string, Messages>
 
-export type ErrorKey = keyof typeof errorCode
-
-export const successCode = {
+  // Success
   'auth/account-created': {
     title: 'Account Created',
-    description: 'Your account was created successfully. Please check your email to verify before logging in.',
+    description: 'Your account was created successfully. Please verify your email before logging in.',
   },
   'auth/email-verification-sent': {
     title: 'Verification Email Sent',
@@ -123,36 +118,24 @@ export const successCode = {
     title: 'Password Updated',
     description: 'Your password has been updated. You can now sign in with the new one.',
   },
-  // TASKS
-  'task/task-add-success': {
-    title: 'Task Added',
-    description: 'The new task was successfully created.',
+}
+
+const defaultMessages: Record<string, Message> = {
+  defaultError: {
+    title: 'Something Went Wrong',
+    description: 'An error occurred while processing your request. Contact support if the problem persists.',
   },
-  'task/task-update-success': {
-    title: 'Task Updated',
-    description: 'The task was successfully updated.',
-  },
-  'task/task-delete-success': {
-    title: 'Task Deleted',
-    description: 'The task was successfully deleted.',
-  },
-  // USERS
-  'user/user-add-success': {
-    title: 'User Added',
-    description: 'The new user was successfully created.',
-  },
-  'user/user-update-success': {
-    title: 'User Updated',
-    description: 'The user was successfully updated.',
-  },
-  'user/user-delete-success': {
-    title: 'User Deleted',
-    description: 'The user was successfully deleted.',
-  },
-  default: {
-    title: 'Successfully',
+  defaultSuccess: {
+    title: 'Success',
     description: 'The action was completed successfully.',
   },
-} satisfies Record<string, Messages>
+}
 
-export type SuccessKey = keyof typeof successCode
+export const messages = {
+  ...authMessages,
+  ...createEntityMessages('task', 'Tasks'),
+  ...createEntityMessages('user', 'Users'),
+  ...defaultMessages,
+} satisfies Record<string, Message>
+
+export type MessageKey = keyof typeof messages

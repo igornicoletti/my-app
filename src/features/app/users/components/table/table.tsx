@@ -5,7 +5,7 @@ import { ViewUser } from '@/features/app/users/components/detail'
 import { UsersActionBar } from '@/features/app/users/components/table/action-bar'
 import { UsersColumns } from '@/features/app/users/components/table/columns'
 import { UsersToolbar } from '@/features/app/users/components/table/toolbar'
-import { UpdateUser } from '@/features/app/users/components/update'
+import { UserSheet } from '@/features/app/users/components/user-sheet'
 import { useUsers } from '@/features/app/users/lib/hooks'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { useDataTable } from '@/hooks/use-data-table'
@@ -48,7 +48,7 @@ export const UsersTable = () => {
         open={!!rowAction && rowAction.variant === 'view'}
         onOpenChange={() => setRowAction(null)}
         user={rowAction?.row.original ?? null} />
-      <UpdateUser
+      <UserSheet
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
         user={rowAction?.row.original ?? null} />

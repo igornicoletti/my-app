@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
+import { authService } from '@/services/auth-service'
 
 interface User {
   name: string
@@ -79,7 +80,7 @@ export const NavUser = ({ user }: { user: User }) => {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => authService.signOut()}>
               <SignOutIcon />
               Log out
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

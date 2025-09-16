@@ -1,11 +1,5 @@
+import { messages, type MessageKey } from '@/constants/messages'
 import { toast } from 'sonner'
-
-import {
-  errorCode,
-  successCode,
-  type ErrorKey,
-  type SuccessKey,
-} from '@/constants/messages'
 
 interface CustomMessage {
   title: string
@@ -26,11 +20,8 @@ const getErrorCode = (error: unknown): string => {
   if (typeof error === 'string') return error
   if (isFirebaseError(error)) return error.code
   if (error instanceof Error && error.message) return error.message
-  return 'default'
+  return 'defaultError'
 }
-
-const isErrorKey = (key: string): key is ErrorKey => key in errorCode
-const isSuccessKey = (key: string): key is SuccessKey => key in successCode
 
 const isCustomMessage = (payload: unknown): payload is CustomMessage =>
   typeof payload === 'object' &&
@@ -38,61 +29,40 @@ const isCustomMessage = (payload: unknown): payload is CustomMessage =>
   'title' in payload &&
   typeof (payload as CustomMessage).title === 'string'
 
-
 export const useToast = () => {
-  const errorToast = (payload: unknown) => {
-    let title: string
+  const showToast = (
+    payload: unknown,
+    type: 'error' | 'success' = 'success'
+  ) => {
+    let title = ''
     let description: string | undefined
 
     if (isCustomMessage(payload)) {
-      title = payload.title
-      description = payload.description
+      ; ({ title, description } = payload)
     } else {
-      const code = getErrorCode(payload)
+      const code =
+        typeof payload === 'string' ? payload : getErrorCode(payload)
 
-      if (isErrorKey(code)) {
-        ({ title, description } = errorCode[code])
-      } else {
-        if (code === 'default') {
-          ({ title, description } = errorCode.default)
-        } else {
-          title = code
-          description = undefined
-        }
-      }
+      const fallback: MessageKey =
+        type === 'error' ? 'defaultError' : 'defaultSuccess'
+
+      const key: MessageKey =
+        code in messages ? (code as MessageKey) : fallback
+
+        ; ({ title, description } = messages[key])
     }
 
     toast.message(title, {
       description,
       classNames: {
-        title: '!text-destructive',
-        description: '!text-foreground',
+        title: type === 'error' ? '!text-destructive' : '!text-primary',
+        description: '!text-muted-foreground',
       },
     })
   }
 
-  const successToast = (payload: SuccessKey | string | CustomMessage) => {
-    let title: string
-    let description: string | undefined
-
-    if (isCustomMessage(payload)) {
-      title = payload.title
-      description = payload.description
-    } else if (isSuccessKey(payload)) {
-      ({ title, description } = successCode[payload])
-    } else {
-      title = payload
-      description = undefined
-    }
-
-    toast.message(title, {
-      description,
-      classNames: {
-        title: '!text-primary',
-        description: '!text-foreground',
-      },
-    })
-  }
+  const errorToast = (payload: unknown) => showToast(payload, 'error')
+  const successToast = (payload: unknown) => showToast(payload, 'success')
 
   return { errorToast, successToast }
 }

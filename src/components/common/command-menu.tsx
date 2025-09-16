@@ -1,17 +1,8 @@
-import { Link } from 'react-router-dom'
-import { Fragment } from 'react/jsx-runtime'
-
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator
-} from '@/components/ui/command'
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
 import { useCommand } from '@/providers/command-provider'
 import { routeNavigations } from '@/routes/config/navigation-routes'
+import { Link } from 'react-router-dom'
+import { Fragment } from 'react/jsx-runtime'
 
 export const CommandMenu = () => {
   const { open, setOpen } = useCommand()

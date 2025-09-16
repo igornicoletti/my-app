@@ -15,6 +15,6 @@ export const RootLayout = () => (
     <ProgressBar />
     <Outlet />
     <CommandMenu />
-    <Toaster />
+    <Toaster position='top-center' />
   </Suspense>
 )
