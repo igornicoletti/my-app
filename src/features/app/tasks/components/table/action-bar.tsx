@@ -1,13 +1,12 @@
-import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
-import { SelectTrigger } from '@radix-ui/react-select'
-import type { Table } from '@tanstack/react-table'
-
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/table/action-bar'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { useDeleteTasks, useUpdateTasks } from '@/features/app/tasks/lib/hooks'
 import { priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
+import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
+import { SelectTrigger } from '@radix-ui/react-select'
+import type { Table } from '@tanstack/react-table'
 
 interface TasksActionBarProps {
   table: Table<TaskSchema>
@@ -23,14 +22,14 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
   const onUpdateStatus = (status: TaskSchema['status']) => {
     updateTasksMutation.mutate({
       ids: rows.map((row) => row.original.id),
-      status,
+      fields: { status },
     })
   }
 
   const onUpdatePriority = (priority: TaskSchema['priority']) => {
     updateTasksMutation.mutate({
       ids: rows.map((row) => row.original.id),
-      priority,
+      fields: { priority },
     })
   }
 

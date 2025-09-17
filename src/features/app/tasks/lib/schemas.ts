@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-export const statuses = ['Todo', 'In progress', 'Done', 'Canceled'] as const
-export const labels = ['Bug', 'Feature', 'Enhancement', 'Documentation'] as const
-export const priorities = ['Low', 'Medium', 'High'] as const
+export const statuses = ['Canceled', 'Done', 'In progress', 'Todo'] as const
+export const labels = ['Bug', 'Documentation', 'Enhancement', 'Feature'] as const
+export const priorities = ['High', 'Low', 'Medium'] as const
 
 export const taskSchema = z.object({
   id: z.string().min(1),

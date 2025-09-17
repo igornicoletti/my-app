@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { DeleteTasks } from '@/features/app/tasks/components/delete'
-import { TaskSheet } from '@/features/app/tasks/components/task-sheet'
+import { TaskSheet } from '@/features/app/tasks/components/sheet'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
-import { DownloadSimpleIcon, SparkleIcon } from '@phosphor-icons/react'
+import { DownloadSimpleIcon, SparkleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 
 interface TasksToolbarActionsProps {
@@ -26,19 +26,25 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
         <DownloadSimpleIcon />
         Export
       </Button>
-      {selectedTasks.length > 0 ? (
+      {selectedTasks.length > 0 && (
         <DeleteTasks
           tasks={selectedTasks}
-          onSuccess={() => table.toggleAllRowsSelected(false)} />
-      ) : null}
+          trigger={
+            <Button variant='secondary' size='sm'>
+              <TrashSimpleIcon />
+              Delete
+            </Button>
+          }
+          onConfirm={() => table.toggleAllRowsSelected(false)}
+        />
+      )}
       <TaskSheet
         trigger={
           <Button variant='default' size='sm'>
             <SparkleIcon />
             Create
           </Button>
-        }
-      />
+        } />
     </div>
   )
 }

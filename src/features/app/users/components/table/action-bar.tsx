@@ -1,13 +1,12 @@
-import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
-import { SelectTrigger } from '@radix-ui/react-select'
-import type { Table } from '@tanstack/react-table'
-
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/table/action-bar'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { useDeleteUsers, useUpdateUsers } from '@/features/app/users/lib/hooks'
 import { roles, statuses, type UserSchema } from '@/features/app/users/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
+import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
+import { SelectTrigger } from '@radix-ui/react-select'
+import type { Table } from '@tanstack/react-table'
 
 interface UsersActionBarProps {
   table: Table<UserSchema>
@@ -23,14 +22,14 @@ export const UsersActionBar = ({ table }: UsersActionBarProps) => {
   const onUpdateStatus = (status: UserSchema['status']) => {
     updateUsersMutation.mutate({
       ids: rows.map((row) => row.original.id),
-      status,
+      fields: { status },
     })
   }
 
   const onUpdateRole = (role: UserSchema['role']) => {
     updateUsersMutation.mutate({
       ids: rows.map((row) => row.original.id),
-      role,
+      fields: { role },
     })
   }
 

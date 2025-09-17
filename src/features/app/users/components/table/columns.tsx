@@ -1,22 +1,15 @@
-import { CalendarBlankIcon, CircleDashedIcon, DotsThreeIcon, ShieldIcon, TextAaIcon } from '@phosphor-icons/react'
-import type { ColumnDef } from '@tanstack/react-table'
-import type { Dispatch, SetStateAction } from 'react'
-
 import { ColumnHeader } from '@/components/table/column-header'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { dateRangeFilter } from '@/features/app/users/lib/filters'
 import { roles, statuses, type UserSchema } from '@/features/app/users/lib/schemas'
 import { getRoleIcon, getStatusIcon } from '@/features/app/users/lib/utils'
 import { formatDate } from '@/lib/format'
 import type { DataTableRowAction } from '@/types/data-table'
+import { CalendarBlankIcon, CircleDashedIcon, DotsThreeIcon, ShieldIcon, TextAaIcon } from '@phosphor-icons/react'
+import type { ColumnDef } from '@tanstack/react-table'
+import type { Dispatch, SetStateAction } from 'react'
 
 interface UsersColumnsProps {
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<UserSchema> | null>>

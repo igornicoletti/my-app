@@ -2,10 +2,10 @@ import { DataTable } from '@/components/table/data-table'
 import { Toolbar } from '@/components/table/toolbar'
 import { DeleteUsers } from '@/features/app/users/components/delete'
 import { ViewUser } from '@/features/app/users/components/detail'
+import { UserSheet } from '@/features/app/users/components/sheet'
 import { UsersActionBar } from '@/features/app/users/components/table/action-bar'
 import { UsersColumns } from '@/features/app/users/components/table/columns'
 import { UsersToolbar } from '@/features/app/users/components/table/toolbar'
-import { UserSheet } from '@/features/app/users/components/user-sheet'
 import { useUsers } from '@/features/app/users/lib/hooks'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import { useDataTable } from '@/hooks/use-data-table'
@@ -56,8 +56,7 @@ export const UsersTable = () => {
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         users={rowAction?.row.original ? [rowAction?.row.original] : []}
-        showTrigger={false}
-        onSuccess={() => rowAction?.row.toggleSelected(false)} />
+        onConfirm={() => rowAction?.row.toggleSelected(false)} />
     </>
   )
 }

@@ -2,10 +2,10 @@ import { DataTable } from '@/components/table/data-table'
 import { Toolbar } from '@/components/table/toolbar'
 import { DeleteTasks } from '@/features/app/tasks/components/delete'
 import { ViewTask } from '@/features/app/tasks/components/detail'
+import { TaskSheet } from '@/features/app/tasks/components/sheet'
 import { TasksActionBar } from '@/features/app/tasks/components/table/action-bar'
 import { TasksColumns } from '@/features/app/tasks/components/table/columns'
 import { TasksToolbar } from '@/features/app/tasks/components/table/toolbar'
-import { TaskSheet } from '@/features/app/tasks/components/task-sheet'
 import { numberRangeFilter } from '@/features/app/tasks/lib/filters'
 import { useTasks } from '@/features/app/tasks/lib/hooks'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
@@ -57,14 +57,12 @@ export const TasksTable = () => {
       <TaskSheet
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
-        task={rowAction?.variant === 'update' ? rowAction.row.original : null}
-      />
+        task={rowAction?.variant === 'update' ? rowAction.row.original : null} />
       <DeleteTasks
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         tasks={rowAction?.row.original ? [rowAction?.row.original] : []}
-        showTrigger={false}
-        onSuccess={() => rowAction?.row.toggleSelected(false)} />
+        onConfirm={() => rowAction?.row.toggleSelected(false)} />
     </>
   )
 }
