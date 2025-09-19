@@ -1,13 +1,12 @@
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
 import { SpinnerGapIcon, XIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useLayoutEffect, useState, type ComponentProps } from 'react'
 import { createPortal } from 'react-dom'
-
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
 
 interface ActionBarProps<TData> extends ComponentProps<typeof motion.div> {
   table: Table<TData>
@@ -85,10 +84,7 @@ export const ActionBarAction = ({
     <Button
       variant='secondary'
       size={size}
-      className={cn(
-        size === 'icon' ? 'size-7' : 'h-7',
-        className,
-      )}
+      className={cn(size === 'icon' ? 'size-7' : 'h-7', className)}
       disabled={disabled || isPending}
       {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
@@ -124,22 +120,11 @@ export const ActionBarSelection = <TData,>({
       <Separator orientation='vertical' className='mr-1 ml-2 data-[orientation=vertical]:h-4' />
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant='ghost'
-            size='icon'
-            className='size-5'
-            onClick={onClearSelection}>
+          <Button variant='ghost' className='size-5' onClick={onClearSelection}>
             <XIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent>
-          Clear selection
-          <kbd className='ml-2 select-none rounded border bg-primary-foreground/25 px-1 py-px text-[0.675rem] shadow-xs'>
-            <abbr title='Escape' className='no-underline'>
-              Esc
-            </abbr>
-          </kbd>
-        </TooltipContent>
+        <TooltipContent>Clear selection</TooltipContent>
       </Tooltip>
     </div>
   )

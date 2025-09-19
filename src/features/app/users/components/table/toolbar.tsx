@@ -29,13 +29,13 @@ export const UsersToolbar = ({ table }: UsersToolbarActionsProps) => {
       {selectedUsers.length > 0 && (
         <DeleteUsers
           users={selectedUsers}
+          onConfirm={() => table.toggleAllRowsSelected(false)}
           trigger={
             <Button variant='secondary' size='sm'>
               <TrashSimpleIcon />
               Delete
             </Button>
           }
-          onConfirm={() => table.toggleAllRowsSelected(false)}
         />
       )}
       <UserSheet

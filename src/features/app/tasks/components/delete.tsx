@@ -21,7 +21,6 @@ export const DeleteTasks = ({ tasks, trigger, onSuccess, ...props }: DeleteTasks
     <ConfirmDialog
       {...props}
       trigger={trigger}
-      onConfirm={() => deleteTasks.mutate(tasks.map((t) => t.id))}
-    />
+      onConfirm={() => deleteTasks.mutate(tasks.map((t) => t.id))} />
   )
 }

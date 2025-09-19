@@ -55,20 +55,14 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
       <div className='flex flex-wrap items-center justify-center gap-1.5'>
         <Select onValueChange={onUpdateStatus}>
           <SelectTrigger asChild>
-            <ActionBarAction
-              size='icon'
-              tooltip='Update status'
-              disabled={updateTasksMutation.isPending}>
+            <ActionBarAction size='icon' tooltip='Update status'>
               <CircleDashedIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
               {statusList.map((status) => (
-                <SelectItem
-                  key={status}
-                  value={status}
-                  className='capitalize'>
+                <SelectItem key={status} value={status} className='capitalize'>
                   {status}
                 </SelectItem>
               ))}
@@ -77,38 +71,24 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
         </Select>
         <Select onValueChange={onUpdatePriority}>
           <SelectTrigger asChild>
-            <ActionBarAction
-              size='icon'
-              tooltip='Update priority'
-              disabled={updateTasksMutation.isPending}>
+            <ActionBarAction size='icon' tooltip='Update priority'>
               <ArrowUpIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
               {priorityList.map((priority) => (
-                <SelectItem
-                  key={priority}
-                  value={priority}
-                  className='capitalize'>
+                <SelectItem key={priority} value={priority} className='capitalize'>
                   {priority}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <ActionBarAction
-          size='icon'
-          tooltip='Export tasks'
-          disabled={false}
-          onClick={onExport}>
+        <ActionBarAction size='icon' tooltip='Export tasks' onClick={onExport}>
           <DownloadSimpleIcon />
         </ActionBarAction>
-        <ActionBarAction
-          size='icon'
-          tooltip='Delete tasks'
-          disabled={deleteTasksMutation.isPending}
-          onClick={onDelete}>
+        <ActionBarAction size='icon' tooltip='Delete tasks' onClick={onDelete}>
           <TrashSimpleIcon />
         </ActionBarAction>
       </div>

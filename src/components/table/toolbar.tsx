@@ -1,7 +1,3 @@
-import { ArrowsClockwiseIcon } from '@phosphor-icons/react'
-import type { Column, Table } from '@tanstack/react-table'
-import { useCallback, useMemo, type ComponentProps } from 'react'
-
 import { DateFilter } from '@/components/table/date-filter'
 import { FacetedFilter } from '@/components/table/faceted-filter'
 import { SliderFilter } from '@/components/table/slider-filter'
@@ -9,6 +5,9 @@ import { ViewOptions } from '@/components/table/view-options'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
+import { ArrowsClockwiseIcon } from '@phosphor-icons/react'
+import type { Column, Table } from '@tanstack/react-table'
+import { useCallback, useMemo, type ComponentProps } from 'react'
 
 interface ToolbarProps<TData> extends ComponentProps<'div'> {
   table: Table<TData>

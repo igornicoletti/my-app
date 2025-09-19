@@ -1,7 +1,3 @@
-import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
-import type { Column } from '@tanstack/react-table'
-import { useCallback, useId, useMemo, type ChangeEvent, type MouseEvent } from 'react'
-
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,11 +5,20 @@ import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
+import type { Column } from '@tanstack/react-table'
+import { useCallback, useId, useMemo, type ChangeEvent, type MouseEvent } from 'react'
 
 interface Range {
   min: number
   max: number
+}
+
+interface SliderFilterProps<TData> {
+  column: Column<TData, unknown>
+  title?: string
 }
 
 type RangeValue = [number, number]
@@ -23,11 +28,6 @@ const getIsValidRange = (value: unknown): value is RangeValue =>
   value.length === 2 &&
   typeof value[0] === 'number' &&
   typeof value[1] === 'number'
-
-interface SliderFilterProps<TData> {
-  column: Column<TData, unknown>
-  title?: string
-}
 
 export const SliderFilter = <TData,>({
   column,
@@ -77,10 +77,9 @@ export const SliderFilter = <TData,>({
     return columnFilterValue ?? [min, max]
   }, [columnFilterValue, min, max])
 
-  const formatValue = useCallback(
-    (value: number) => value.toLocaleString(undefined, { maximumFractionDigits: 0 }),
-    []
-  )
+  const formatValue = useCallback((value: number) => value.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  }), [])
 
   const onFromInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const numValue = Number(event.target.value)
@@ -114,13 +113,18 @@ export const SliderFilter = <TData,>({
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='border-dashed'>
           {columnFilterValue ? (
-            <div
-              role='button'
-              aria-label={`Clear ${title} filter`}
-              tabIndex={0}
-              onClick={onReset}>
-              <XIcon />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  role='button'
+                  aria-label={`Clear ${title} Filter`}
+                  tabIndex={0}
+                  onClick={onReset}>
+                  <XIcon />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Clear {title} Filter</TooltipContent>
+            </Tooltip>
           ) : (
             <FunnelSimpleIcon />
           )}
@@ -137,12 +141,10 @@ export const SliderFilter = <TData,>({
           ) : null}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align='start' className='flex w-auto flex-col gap-4 p-2'>
+      <PopoverContent align='start' className='flex w-auto flex-col gap-4 p-2 pb-4'>
         <div className='flex flex-col gap-4'>
           <div className='flex items-center gap-4'>
-            <Label htmlFor={`${id}-from`} className='sr-only'>
-              From
-            </Label>
+            <Label htmlFor={`${id}-from`} className='sr-only'>From</Label>
             <div className='relative'>
               <Input
                 id={`${id}-from`}
@@ -164,9 +166,7 @@ export const SliderFilter = <TData,>({
                 </span>
               )}
             </div>
-            <Label htmlFor={`${id}-to`} className='sr-only'>
-              to
-            </Label>
+            <Label htmlFor={`${id}-to`} className='sr-only'>to</Label>
             <div className='relative'>
               <Input
                 id={`${id}-to`}
@@ -189,9 +189,7 @@ export const SliderFilter = <TData,>({
               )}
             </div>
           </div>
-          <Label htmlFor={`${id}-slider`} className='sr-only'>
-            {title} slider
-          </Label>
+          <Label htmlFor={`${id}-slider`} className='sr-only'>{title} slider</Label>
           <Slider
             id={`${id}-slider`}
             min={min}
@@ -201,13 +199,15 @@ export const SliderFilter = <TData,>({
             onValueChange={onSliderValueChange}
           />
         </div>
-        <Button
-          aria-label={`Clear ${title} filter`}
-          variant='secondary'
-          size='sm'
-          onClick={onReset}>
-          Clear
-        </Button>
+        {columnFilterValue && (
+          <Button
+            aria-label={`Clear ${title} filter`}
+            variant='secondary'
+            size='sm'
+            onClick={onReset}>
+            Clear filter
+          </Button>
+        )}
       </PopoverContent>
     </Popover>
   )

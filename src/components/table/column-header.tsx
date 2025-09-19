@@ -1,16 +1,9 @@
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 import { ArrowDownIcon, ArrowsClockwiseIcon, ArrowsDownUpIcon, ArrowUpIcon, EyeSlashIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import type { ComponentProps } from 'react'
-
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { cn } from '@/lib/utils'
 
 interface ColumnHeaderProps<TData, TValue> extends ComponentProps<typeof DropdownMenuTrigger> {
   column: Column<TData, TValue>
@@ -30,7 +23,7 @@ export const ColumnHeader = <TData, TValue>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='sm' className={cn('-ml-2 [&_svg]:text-muted-foreground', className)} {...props}>
+        <Button variant='none' size='sm' className={cn('-ml-2 [&_svg]:text-muted-foreground', className)} {...props}>
           {title}
           {column.getCanSort() &&
             (column.getIsSorted() === 'desc' ? (

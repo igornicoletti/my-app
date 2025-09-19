@@ -1,21 +1,9 @@
-import {
-  CaretDoubleLeftIcon,
-  CaretDoubleRightIcon,
-  CaretLeftIcon,
-  CaretRightIcon
-} from '@phosphor-icons/react'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
+import { CaretDoubleLeftIcon, CaretDoubleRightIcon, CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import type { ComponentProps } from 'react'
-
-import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { cn } from '@/lib/utils'
 
 interface PaginationProps<TData> extends ComponentProps<'div'> {
   table: Table<TData>
@@ -29,11 +17,7 @@ export const Pagination = <TData,>({
   ...props
 }: PaginationProps<TData>) => (
   <div
-    className={cn(
-      'flex w-full flex-col-reverse items-center justify-between gap-2 overflow-auto p-1 sm:flex-row sm:gap-8',
-      className,
-    )}
-    {...props}>
+    className={cn('flex w-full flex-col-reverse items-center justify-between gap-2 overflow-auto p-1 sm:flex-row sm:gap-8', className)} {...props}>
     <div className='flex-1 whitespace-nowrap text-muted-foreground text-sm truncate'>
       {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
     </div>

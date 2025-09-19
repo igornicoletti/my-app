@@ -1,14 +1,14 @@
-import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
-import type { Column } from '@tanstack/react-table'
-import { useCallback, useMemo, useState, type MouseEvent } from 'react'
-
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { Option } from '@/types/data-table'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
+import type { Column } from '@tanstack/react-table'
+import { useCallback, useMemo, useState, type MouseEvent } from 'react'
 
 interface FacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
@@ -66,13 +66,18 @@ export const FacetedFilter = <TData, TValue>({
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='border-dashed'>
           {selectedValues?.size > 0 ? (
-            <div
-              role='button'
-              aria-label={`Clear ${title} filter`}
-              tabIndex={0}
-              onClick={onReset}>
-              <XIcon />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  role='button'
+                  aria-label={`Clear ${title} Filter`}
+                  tabIndex={0}
+                  onClick={onReset}>
+                  <XIcon />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Clear {title} Filter</TooltipContent>
+            </Tooltip>
           ) : (
             <FunnelSimpleIcon />
           )}
@@ -118,9 +123,7 @@ export const FacetedFilter = <TData, TValue>({
                       {option.icon && <option.icon className='text-muted-foreground' />}
                       <p className='max-w-48 truncate'>{option.label}</p>
                       {count !== undefined && (
-                        <p className='ml-auto font-mono text-xs text-muted-foreground'>
-                          {count}
-                        </p>
+                        <p className='ml-auto font-mono text-xs text-muted-foreground'>{count}</p>
                       )}
                     </div>
                   </CommandItem>
@@ -132,7 +135,7 @@ export const FacetedFilter = <TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem onSelect={() => onReset()} className='justify-center text-center'>
-                    Clear filters
+                    Clear filter
                   </CommandItem>
                 </CommandGroup>
               </>

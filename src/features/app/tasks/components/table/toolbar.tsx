@@ -29,14 +29,13 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
       {selectedTasks.length > 0 && (
         <DeleteTasks
           tasks={selectedTasks}
+          onConfirm={() => table.toggleAllRowsSelected(false)}
           trigger={
             <Button variant='secondary' size='sm'>
               <TrashSimpleIcon />
               Delete
             </Button>
-          }
-          onConfirm={() => table.toggleAllRowsSelected(false)}
-        />
+          } />
       )}
       <TaskSheet
         trigger={

@@ -1,14 +1,14 @@
-import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
-import type { Column } from '@tanstack/react-table'
-import { useCallback, useMemo, type MouseEvent } from 'react'
-import type { DateRange } from 'react-day-picker'
-
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { formatDate } from '@/lib/format'
+import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
+import type { Column } from '@tanstack/react-table'
+import { useCallback, useMemo, type MouseEvent } from 'react'
+import type { DateRange } from 'react-day-picker'
 
 type DateSelection = Date[] | DateRange
 
@@ -124,9 +124,7 @@ export const DateFilter = <TData,>({
           {hasSelectedDates && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='secondary'>
-                {dateText}
-              </Badge>
+              <Badge variant='secondary'>{dateText}</Badge>
             </>
           )}
         </span>
@@ -146,9 +144,7 @@ export const DateFilter = <TData,>({
         {hasSelectedDate && (
           <>
             <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-            <Badge variant='secondary'>
-              {dateText}
-            </Badge>
+            <Badge variant='secondary'>{dateText}</Badge>
           </>
         )}
       </span>
@@ -160,13 +156,18 @@ export const DateFilter = <TData,>({
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='border-dashed'>
           {hasValue ? (
-            <div
-              role='button'
-              aria-label={`Clear ${title} Filter`}
-              tabIndex={0}
-              onClick={onReset}>
-              <XIcon />
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div
+                  role='button'
+                  aria-label={`Clear ${title} Filter`}
+                  tabIndex={0}
+                  onClick={onReset}>
+                  <XIcon />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Clear {title} Filter</TooltipContent>
+            </Tooltip>
           ) : (
             <FunnelSimpleIcon />
           )}
@@ -178,24 +179,17 @@ export const DateFilter = <TData,>({
           <Calendar
             captionLayout='dropdown'
             mode='range'
-            selected={
-              getIsDateRange(selectedDates)
-                ? selectedDates
-                : { from: undefined, to: undefined }
-            }
-            onSelect={onSelect}
-          />
+            selected={getIsDateRange(selectedDates) ? selectedDates : {
+              from: undefined,
+              to: undefined
+            }}
+            onSelect={onSelect} />
         ) : (
           <Calendar
             captionLayout='dropdown'
             mode='single'
-            selected={
-              !getIsDateRange(selectedDates)
-                ? selectedDates[0]
-                : undefined
-            }
-            onSelect={onSelect}
-          />
+            selected={!getIsDateRange(selectedDates) ? selectedDates[0] : undefined}
+            onSelect={onSelect} />
         )}
       </PopoverContent>
     </Popover>

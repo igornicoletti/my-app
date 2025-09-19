@@ -54,7 +54,11 @@ export const EntitySheet = <T,>({
       <SheetContent className='w-full sm:max-w-md'>
         <SheetHeader>
           <SheetTitle>{currentMode.title}</SheetTitle>
-          {currentMode.description && <SheetDescription>{currentMode.description}</SheetDescription>}
+          {currentMode.description && (
+            <SheetDescription>
+              {currentMode.description}
+            </SheetDescription>
+          )}
         </SheetHeader>
         {injectedForm}
       </SheetContent>

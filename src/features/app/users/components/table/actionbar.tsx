@@ -55,20 +55,14 @@ export const UsersActionBar = ({ table }: UsersActionBarProps) => {
       <div className='flex flex-wrap items-center justify-center gap-1.5'>
         <Select onValueChange={onUpdateStatus}>
           <SelectTrigger asChild>
-            <ActionBarAction
-              size='icon'
-              tooltip='Update status'
-              disabled={updateUsersMutation.isPending}>
+            <ActionBarAction size='icon' tooltip='Update status'>
               <CircleDashedIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
               {statusList.map((status) => (
-                <SelectItem
-                  key={status}
-                  value={status}
-                  className='capitalize'>
+                <SelectItem key={status} value={status} className='capitalize'>
                   {status}
                 </SelectItem>
               ))}
@@ -77,38 +71,24 @@ export const UsersActionBar = ({ table }: UsersActionBarProps) => {
         </Select>
         <Select onValueChange={onUpdateRole}>
           <SelectTrigger asChild>
-            <ActionBarAction
-              size='icon'
-              tooltip='Update role'
-              disabled={updateUsersMutation.isPending}>
+            <ActionBarAction size='icon' tooltip='Update role'>
               <ArrowUpIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
               {roleList.map((role) => (
-                <SelectItem
-                  key={role}
-                  value={role}
-                  className='capitalize'>
+                <SelectItem key={role} value={role} className='capitalize'>
                   {role}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <ActionBarAction
-          size='icon'
-          tooltip='Export users'
-          disabled={false}
-          onClick={onExport}>
+        <ActionBarAction size='icon' tooltip='Export users' onClick={onExport}>
           <DownloadSimpleIcon />
         </ActionBarAction>
-        <ActionBarAction
-          size='icon'
-          tooltip='Delete users'
-          disabled={deleteUsersMutation.isPending}
-          onClick={onDelete}>
+        <ActionBarAction size='icon' tooltip='Delete users' onClick={onDelete}>
           <TrashSimpleIcon />
         </ActionBarAction>
       </div>
