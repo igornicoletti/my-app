@@ -1,31 +1,35 @@
 import { z } from 'zod'
 
-export const roles = ['Superadmin', 'Manager', 'Cashier'] as const
-export const statuses = ['Active', 'Inactive', 'Pending'] as const
+export const roles = {
+  superadmin: 'Superadmin',
+  manager: 'Manager',
+  cashier: 'Cashier',
+} as const
+
+export const statuses = {
+  active: 'Active',
+  inactive: 'Inactive',
+  pending: 'Pending',
+} as const
+
+export type Role = typeof roles[keyof typeof roles]
+export type Status = typeof statuses[keyof typeof statuses]
+
+export const roleList: Role[] = Object.values(roles)
+export const statusList: Status[] = Object.values(statuses)
 
 export const userSchema = z.object({
   id: z.string().min(1),
-  name: z.string({
-    required_error: 'Name is required.',
-    invalid_type_error: 'Name must be a string.',
-  }).trim().min(2, { message: 'Name must be at least 2 characters long.' }),
-  email: z.string({
-    required_error: 'Email is required.',
-  }).email({ message: 'Invalid email address.' }),
-  phone: z.string({
-    required_error: 'Phone is required.',
-    invalid_type_error: 'Phone must be a string.',
-  }).trim().regex(/^\+\d{2} \(\d{2}\) \d{1} \d{4} \d{4}$/, {
-    message: 'Phone must be in the format +XX (XX) X XXXX XXXX',
-  }),
-  role: z.enum(roles, {
-    required_error: 'Please select a role.',
-    invalid_type_error: 'Invalid role.',
-  }),
-  status: z.enum(statuses, {
-    required_error: 'Please select a status.',
-    invalid_type_error: 'Invalid status.',
-  }),
+  name: z.string().trim().min(2, { message: 'Name must be at least 2 characters long.' }),
+  email: z.string().email({ message: 'Invalid email address.' }),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^\+\d{2} \(\d{2}\) \d{1} \d{4} \d{4}$/, {
+      message: 'Phone must be in the format +XX (XX) X XXXX XXXX',
+    }),
+  role: z.enum(Object.values(roles) as [Role, ...Role[]]),
+  status: z.enum(Object.values(statuses) as [Status, ...Status[]]),
   createdAt: z.date(),
   lastLogin: z.date().optional(),
   updatedAt: z.date(),

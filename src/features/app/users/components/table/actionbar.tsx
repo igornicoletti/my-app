@@ -1,44 +1,44 @@
 import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/table/action-bar'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useDeleteTasks, useUpdateTasks } from '@/features/app/tasks/lib/hooks'
-import { priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schemas'
+import { useDeleteUsers, useUpdateUsers } from '@/features/app/users/lib/hooks'
+import { roleList, statusList, type UserSchema } from '@/features/app/users/lib/schemas'
 import { exportTableToCSV } from '@/lib/export'
 import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
 
-interface TasksActionBarProps {
-  table: Table<TaskSchema>
+interface UsersActionBarProps {
+  table: Table<UserSchema>
 }
 
-export const TasksActionBar = ({ table }: TasksActionBarProps) => {
+export const UsersActionBar = ({ table }: UsersActionBarProps) => {
   const rows = table.getFilteredSelectedRowModel().rows
 
-  const updateTasksMutation = useUpdateTasks({
+  const updateUsersMutation = useUpdateUsers({
     onSuccess: () => table.toggleAllRowsSelected(false)
   })
 
-  const onUpdateStatus = (status: TaskSchema['status']) => {
-    updateTasksMutation.mutate({
+  const onUpdateStatus = (status: UserSchema['status']) => {
+    updateUsersMutation.mutate({
       ids: rows.map((row) => row.original.id),
       fields: { status },
     })
   }
 
-  const onUpdatePriority = (priority: TaskSchema['priority']) => {
-    updateTasksMutation.mutate({
+  const onUpdateRole = (role: UserSchema['role']) => {
+    updateUsersMutation.mutate({
       ids: rows.map((row) => row.original.id),
-      fields: { priority },
+      fields: { role },
     })
   }
 
-  const deleteTasksMutation = useDeleteTasks({
+  const deleteUsersMutation = useDeleteUsers({
     onSuccess: () => table.toggleAllRowsSelected(false)
   })
 
   const onDelete = () => {
-    deleteTasksMutation.mutate(rows.map((row) => row.original.id))
+    deleteUsersMutation.mutate(rows.map((row) => row.original.id))
   }
 
   const onExport = () => {
@@ -58,13 +58,13 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
             <ActionBarAction
               size='icon'
               tooltip='Update status'
-              disabled={updateTasksMutation.isPending}>
+              disabled={updateUsersMutation.isPending}>
               <CircleDashedIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
-              {statuses.map((status) => (
+              {statusList.map((status) => (
                 <SelectItem
                   key={status}
                   value={status}
@@ -75,23 +75,23 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select onValueChange={onUpdatePriority}>
+        <Select onValueChange={onUpdateRole}>
           <SelectTrigger asChild>
             <ActionBarAction
               size='icon'
-              tooltip='Update priority'
-              disabled={updateTasksMutation.isPending}>
+              tooltip='Update role'
+              disabled={updateUsersMutation.isPending}>
               <ArrowUpIcon />
             </ActionBarAction>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
-              {priorities.map((priority) => (
+              {roleList.map((role) => (
                 <SelectItem
-                  key={priority}
-                  value={priority}
+                  key={role}
+                  value={role}
                   className='capitalize'>
-                  {priority}
+                  {role}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -99,15 +99,15 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
         </Select>
         <ActionBarAction
           size='icon'
-          tooltip='Export tasks'
+          tooltip='Export users'
           disabled={false}
           onClick={onExport}>
           <DownloadSimpleIcon />
         </ActionBarAction>
         <ActionBarAction
           size='icon'
-          tooltip='Delete tasks'
-          disabled={deleteTasksMutation.isPending}
+          tooltip='Delete users'
+          disabled={deleteUsersMutation.isPending}
           onClick={onDelete}>
           <TrashSimpleIcon />
         </ActionBarAction>

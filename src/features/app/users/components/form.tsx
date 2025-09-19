@@ -1,10 +1,9 @@
-import type { ComponentPropsWithRef, ReactNode } from 'react'
-import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
-
 import { SelectField } from '@/components/form/select-field'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { type CreateUserSchema, roles, statuses } from '@/features/app/users/lib/schemas'
+import { type CreateUserSchema, roleList, statusList } from '@/features/app/users/lib/schemas'
+import type { ComponentPropsWithRef, ReactNode } from 'react'
+import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
 
 interface UserFormProps<T extends Partial<CreateUserSchema> & FieldValues>
   extends Omit<ComponentPropsWithRef<'form'>, 'onSubmit'> {
@@ -101,13 +100,13 @@ export const UserForm = <T extends Partial<CreateUserSchema> & FieldValues>({
           name={'status' as FieldPath<T>}
           label='Status'
           placeholder='Select a status'
-          options={statuses} />
+          options={statusList} />
         <SelectField
           form={form}
           name={'role' as FieldPath<T>}
           label='Role'
           placeholder='Select a role'
-          options={roles} />
+          options={roleList} />
       </div>
       {children}
     </form>

@@ -1,35 +1,44 @@
 import { z } from 'zod'
 
-export const statuses = ['Canceled', 'Done', 'In progress', 'Todo'] as const
-export const labels = ['Bug', 'Documentation', 'Enhancement', 'Feature'] as const
-export const priorities = ['High', 'Low', 'Medium'] as const
+export const statuses = {
+  canceled: 'Canceled',
+  done: 'Done',
+  inProgress: 'In progress',
+  todo: 'Todo',
+} as const
+
+export const labels = {
+  bug: 'Bug',
+  documentation: 'Documentation',
+  enhancement: 'Enhancement',
+  feature: 'Feature',
+} as const
+
+export const priorities = {
+  high: 'High',
+  low: 'Low',
+  medium: 'Medium',
+} as const
+
+export type Status = typeof statuses[keyof typeof statuses]
+export type Label = typeof labels[keyof typeof labels]
+export type Priority = typeof priorities[keyof typeof priorities]
+
+export const statusList: Status[] = Object.values(statuses)
+export const labelList: Label[] = Object.values(labels)
+export const priorityList: Priority[] = Object.values(priorities)
 
 export const taskSchema = z.object({
   id: z.string().min(1),
   code: z.string().min(1),
-  title: z.string({
-    required_error: 'Title is required.',
-    invalid_type_error: 'Title must be a string.',
-  }).trim().min(1, { message: 'Title cannot be empty.' }),
-  estimatedHours: z.number({
-    required_error: 'Estimated hours are required.',
-    invalid_type_error: 'Estimated hours must be a number.',
-  }).min(1, { message: 'Estimated hours must be greater than or equal to 1.' }),
-  status: z.enum(statuses, {
-    required_error: 'Please select a status.',
-    invalid_type_error: 'Invalid status.',
-  }),
-  label: z.enum(labels, {
-    required_error: 'Please select a label.',
-    invalid_type_error: 'Invalid label.',
-  }),
-  priority: z.enum(priorities, {
-    required_error: 'Please select a priority.',
-    invalid_type_error: 'Invalid priority.',
-  }),
-  archived: z.boolean(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  title: z.string().trim().min(1, { message: 'Title cannot be empty.' }),
+  estimatedHours: z.number().min(1, { message: 'Estimated hours must be >= 1.' }),
+  status: z.enum(statusList as [Status, ...Status[]]),
+  label: z.enum(labelList as [Label, ...Label[]]),
+  priority: z.enum(priorityList as [Priority, ...Priority[]]),
+  archived: z.boolean().default(false),
+  createdAt: z.date().max(new Date(), { message: 'Created date cannot be in the future.' }),
+  updatedAt: z.date().max(new Date(), { message: 'Updated date cannot be in the future.' }),
 })
 
 export const createTaskSchema = z.object({
@@ -38,6 +47,7 @@ export const createTaskSchema = z.object({
   status: taskSchema.shape.status,
   label: taskSchema.shape.label,
   priority: taskSchema.shape.priority,
+  archived: taskSchema.shape.archived.optional(),
 })
 
 export const updateTaskSchema = z.object({

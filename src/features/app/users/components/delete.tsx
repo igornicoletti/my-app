@@ -21,7 +21,7 @@ export const DeleteUsers = ({ users, trigger, onSuccess, ...props }: DeleteUsers
     <ConfirmDialog
       {...props}
       trigger={trigger}
-      onConfirm={() => deleteUsers.mutate(users.map(u => u.id))}
+      onConfirm={() => deleteUsers.mutate(users.map((u) => u.id))}
     />
   )
 }

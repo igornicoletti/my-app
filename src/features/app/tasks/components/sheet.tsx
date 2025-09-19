@@ -23,18 +23,20 @@ export const TaskSheet = ({ task, ...props }: TaskSheetProps) => {
     formComponent: <CreateTask />,
   }
 
-  const updateMode = isEditMode
-    ? {
-      data: task,
-      title: 'Update task',
-      description: 'Update the task details and save the changes.',
-      formComponent: <UpdateTask task={task!} />,
-    }
-    : undefined
+  const updateMode = isEditMode ? {
+    data: task,
+    title: 'Update task',
+    description: 'Update the task details and save the changes.',
+    formComponent: <UpdateTask task={task!} />,
+  } : undefined
 
   const onModeSuccess = () => {
     props.onOpenChange?.(false)
   }
 
-  return <EntitySheet {...commonProps} createMode={createMode} updateMode={updateMode} onModeSuccess={onModeSuccess} />
+  return <EntitySheet
+    {...commonProps}
+    createMode={createMode}
+    updateMode={updateMode}
+    onModeSuccess={onModeSuccess} />
 }

@@ -3,22 +3,22 @@ import { Toolbar } from '@/components/table/toolbar'
 import { DeleteTasks } from '@/features/app/tasks/components/delete'
 import { ViewTask } from '@/features/app/tasks/components/detail'
 import { TaskSheet } from '@/features/app/tasks/components/sheet'
-import { TasksActionBar } from '@/features/app/tasks/components/table/action-bar'
+import { TasksActionBar } from '@/features/app/tasks/components/table/actionbar'
 import { TasksColumns } from '@/features/app/tasks/components/table/columns'
 import { TasksToolbar } from '@/features/app/tasks/components/table/toolbar'
-import { numberRangeFilter } from '@/features/app/tasks/lib/filters'
 import { useTasks } from '@/features/app/tasks/lib/hooks'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { useDataTable } from '@/hooks/use-data-table'
+import { getNumberRange } from '@/lib/filter-fn'
 import type { DataTableRowAction } from '@/types/data-table'
 import { useMemo, useState } from 'react'
 
 export const TasksTable = () => {
-  const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
   const { data: tasks } = useTasks()
+  const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
 
   const estimatedHoursRange: [number, number] = tasks && tasks.length > 0
-    ? numberRangeFilter(tasks, 'estimatedHours')
+    ? getNumberRange(tasks, 'estimatedHours')
     : [0, 48]
 
   const columns = useMemo(() => TasksColumns({
@@ -57,7 +57,7 @@ export const TasksTable = () => {
       <TaskSheet
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
-        task={rowAction?.variant === 'update' ? rowAction.row.original : null} />
+        task={rowAction?.row.original ?? null} />
       <DeleteTasks
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}

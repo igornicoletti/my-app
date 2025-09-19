@@ -23,18 +23,20 @@ export const UserSheet = ({ user, ...props }: UserSheetProps) => {
     formComponent: <CreateUser />,
   }
 
-  const updateMode = isEditMode
-    ? {
-      data: user,
-      title: 'Update user',
-      description: 'Update the user details and save the changes.',
-      formComponent: <UpdateUser user={user!} />,
-    }
-    : undefined
+  const updateMode = isEditMode ? {
+    data: user,
+    title: 'Update user',
+    description: 'Update the user details and save the changes.',
+    formComponent: <UpdateUser user={user!} />,
+  } : undefined
 
   const onModeSuccess = () => {
     props.onOpenChange?.(false)
   }
 
-  return <EntitySheet {...commonProps} createMode={createMode} updateMode={updateMode} onModeSuccess={onModeSuccess} />
+  return <EntitySheet
+    {...commonProps}
+    createMode={createMode}
+    updateMode={updateMode}
+    onModeSuccess={onModeSuccess} />
 }

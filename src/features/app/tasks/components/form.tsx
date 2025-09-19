@@ -2,7 +2,7 @@ import { SelectField } from '@/components/form/select-field'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { type CreateTaskSchema, labels, priorities, statuses } from '@/features/app/tasks/lib/schemas'
+import { type CreateTaskSchema, labelList, priorityList, statusList } from '@/features/app/tasks/lib/schemas'
 import type { ComponentPropsWithRef, ReactNode } from 'react'
 import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
 
@@ -19,7 +19,9 @@ export const TaskForm = <T extends Partial<CreateTaskSchema> & FieldValues>({
   children,
 }: TaskFormProps<T>) => (
   <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className='flex min-h-0 flex-1 flex-col'>
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className='flex min-h-0 flex-1 flex-col'>
       <div className='flex flex-col gap-4 px-4 overflow-y-auto py-2 flex-1'>
         <FormField
           control={form.control}
@@ -45,19 +47,19 @@ export const TaskForm = <T extends Partial<CreateTaskSchema> & FieldValues>({
           name={'label' as FieldPath<T>}
           label='Label'
           placeholder='Select a label'
-          options={labels} />
+          options={labelList} />
         <SelectField
           form={form}
           name={'status' as FieldPath<T>}
           label='Status'
           placeholder='Select a status'
-          options={statuses} />
+          options={statusList} />
         <SelectField
           form={form}
           name={'priority' as FieldPath<T>}
           label='Priority'
           placeholder='Select a priority'
-          options={priorities} />
+          options={priorityList} />
         <FormField
           control={form.control}
           name={'estimatedHours' as FieldPath<T>}
