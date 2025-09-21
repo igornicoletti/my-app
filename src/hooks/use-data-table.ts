@@ -7,22 +7,22 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   type TableOptions,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table'
 
-interface UseDataTableProps<TData> extends Omit<TableOptions<TData>, 'getCoreRowModel'> { }
+type UseDataTableOptions<TData> = Omit<TableOptions<TData>, 'getCoreRowModel'>
 
-export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
-  const { columns, ...tableProps } = props
-
+export const useDataTable = <TData,>({ columns, ...options }: UseDataTableOptions<TData>) => {
   const table = useReactTable({
-    ...tableProps,
-    columns,
     defaultColumn: {
-      ...tableProps.defaultColumn,
       enableColumnFilter: false,
     },
     enableRowSelection: true,
+    manualFiltering: false,
+    manualPagination: false,
+    manualSorting: false,
+    ...options,
+    columns,
     getCoreRowModel: getCoreRowModel(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
     getFacetedRowModel: getFacetedRowModel(),
@@ -30,9 +30,6 @@ export const useDataTable = <TData,>(props: UseDataTableProps<TData>) => {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    manualFiltering: false,
-    manualPagination: false,
-    manualSorting: false,
   })
 
   return { table }

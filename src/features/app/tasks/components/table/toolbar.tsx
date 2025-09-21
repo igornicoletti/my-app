@@ -31,7 +31,7 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
           tasks={selectedTasks}
           onConfirm={() => table.toggleAllRowsSelected(false)}
           trigger={
-            <Button variant='secondary' size='sm'>
+            <Button variant='outline' size='sm'>
               <TrashSimpleIcon />
               Delete
             </Button>
@@ -39,7 +39,7 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
       )}
       <TaskSheet
         trigger={
-          <Button variant='default' size='sm'>
+          <Button variant='secondary' size='sm'>
             <SparkleIcon />
             Create
           </Button>

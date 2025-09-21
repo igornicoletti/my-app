@@ -5,56 +5,53 @@ import { cn } from '@/lib/utils'
 import { SpinnerGapIcon, XIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'motion/react'
-import { useCallback, useEffect, useLayoutEffect, useState, type ComponentProps } from 'react'
+import { useCallback, useEffect, useState, type ComponentProps } from 'react'
 import { createPortal } from 'react-dom'
 
 interface ActionBarProps<TData> extends ComponentProps<typeof motion.div> {
   table: Table<TData>
-  visible?: boolean
   container?: Element | DocumentFragment | null
 }
 
 export const ActionBar = <TData,>({
   table,
-  visible: visibleProp,
   container: containerProp,
   children,
   className,
   ...props
 }: ActionBarProps<TData>) => {
-  const [mounted, setMounted] = useState(false)
-
-  useLayoutEffect(() => {
-    setMounted(true)
-  }, [])
+  const [isMounted, setIsMounted] = useState(false)
+  useEffect(() => setIsMounted(true), [])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') table.toggleAllRowsSelected(false)
+      if (event.key === 'Escape') {
+        table.toggleAllRowsSelected(false)
+      }
     }
-
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
   }, [table])
 
-  const container = containerProp ?? (mounted ? globalThis.document?.body : null)
+  const isVisible = table.getFilteredSelectedRowModel().rows.length > 0
+  const container = containerProp ?? (isMounted ? document.body : null)
 
-  if (!container) return null
-
-  const visible = visibleProp ?? table.getFilteredSelectedRowModel().rows.length > 0
+  if (!container) {
+    return null
+  }
 
   return createPortal(
     <AnimatePresence>
-      {visible && (
+      {isVisible && (
         <motion.div
           role='toolbar'
-          aria-orientation='horizontal'
-          initial={{ opacity: 0, y: 20 }}
+          aria-label='Action Bar'
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
+          exit={{ opacity: 0, y: 25 }}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
           className={cn(
-            'fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm',
+            'fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit items-center gap-2 rounded-lg border bg-background p-2 shadow-lg',
             className,
           )}
           {...props}>
@@ -66,61 +63,60 @@ export const ActionBar = <TData,>({
   )
 }
 
-interface ActionBarActionProps extends ComponentProps<typeof Button> {
+interface ActionProps extends ComponentProps<typeof Button> {
   tooltip?: string
   isPending?: boolean
 }
 
 export const ActionBarAction = ({
-  size = 'sm',
   tooltip,
   isPending,
   disabled,
   className,
   children,
   ...props
-}: ActionBarActionProps) => {
-  const trigger = (
+}: ActionProps) => {
+  const actionButton = (
     <Button
       variant='secondary'
-      size={size}
-      className={cn(size === 'icon' ? 'size-7' : 'h-7', className)}
+      size='sm'
+      className={cn('h-8', className)}
       disabled={disabled || isPending}
       {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
     </Button>
   )
 
-  if (!tooltip) return trigger
+  if (!tooltip) {
+    return actionButton
+  }
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{trigger}</TooltipTrigger>
+      <TooltipTrigger asChild>{actionButton}</TooltipTrigger>
       <TooltipContent>{tooltip}</TooltipContent>
     </Tooltip>
   )
 }
 
-interface ActionBarSelectionProps<TData> {
+interface SelectionProps<TData> {
   table: Table<TData>
 }
 
-export const ActionBarSelection = <TData,>({
-  table
-}: ActionBarSelectionProps<TData>) => {
+export const ActionBarSelection = <TData,>({ table }: SelectionProps<TData>) => {
   const onClearSelection = useCallback(() => {
     table.toggleAllRowsSelected(false)
   }, [table])
 
+  const selectedRowCount = table.getFilteredSelectedRowModel().rows.length
+
   return (
-    <div className='flex h-8 items-center rounded-md border pr-1 pl-2.5'>
-      <span className='whitespace-nowrap text-xs'>
-        {table.getFilteredSelectedRowModel().rows.length} selected
-      </span>
-      <Separator orientation='vertical' className='mr-1 ml-2 data-[orientation=vertical]:h-4' />
+    <div className='flex h-8 items-center rounded-md border border-dashed pr-1 pl-2.5'>
+      <span className='text-sm font-medium'>{selectedRowCount} selected</span>
+      <Separator orientation='vertical' className='ml-2 data-[orientation=vertical]:h-4' />
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant='ghost' className='size-5' onClick={onClearSelection}>
+          <Button aria-label='Clear selection' variant='ghost' size='icon' className='size-6' onClick={onClearSelection}>
             <XIcon />
           </Button>
         </TooltipTrigger>

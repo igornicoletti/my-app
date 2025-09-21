@@ -3,193 +3,135 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { formatDate } from '@/lib/format'
 import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
-import { useCallback, useMemo, type MouseEvent } from 'react'
+import { useMemo, useState, type MouseEvent } from 'react'
 import type { DateRange } from 'react-day-picker'
-
-type DateSelection = Date[] | DateRange
-
-const getIsDateRange = (value: DateSelection): value is DateRange =>
-  value && typeof value === 'object' && !Array.isArray(value)
-
-const parseAsDate = (timestamp: number | string | undefined): Date | undefined => {
-  if (!timestamp) return undefined
-  const numericTimestamp = typeof timestamp === 'string' ? Number(timestamp) : timestamp
-  const date = new Date(numericTimestamp)
-  return !Number.isNaN(date.getTime()) ? date : undefined
-}
-
-const parseColumnFilterValue = (value: unknown) => {
-  if (value === null || value === undefined) return []
-
-  if (Array.isArray(value)) {
-    return value.map(item => {
-      if (typeof item === 'number' || typeof item === 'string') {
-        return item
-      }
-      return undefined
-    })
-  }
-
-  if (typeof value === 'string' || typeof value === 'number') {
-    return [value]
-  }
-
-  return []
-}
 
 interface DateFilterProps<TData> {
   column: Column<TData, unknown>
-  title?: string
-  multiple?: boolean
+  title: string
+  mode?: 'single' | 'range'
+}
+
+const isDate = (value: unknown): value is Date =>
+  value instanceof Date && !isNaN(value.getTime())
+
+const isDateRange = (value: unknown): value is DateRange =>
+  typeof value === 'object' && value !== null && ('from' in value || 'to' in value)
+
+const parseDate = (value: unknown): Date | undefined => {
+  if (typeof value === 'string' || typeof value === 'number') {
+    const date = new Date(value)
+    return isNaN(date.getTime()) ? undefined : date
+  }
+  return undefined
+}
+
+interface FilterTriggerProps {
+  title: string
+  value: Date | DateRange | undefined
+  onReset: (event: MouseEvent) => void
+}
+
+const FilterTrigger = ({ title, value, onReset }: FilterTriggerProps) => {
+  const formatLabel = () => {
+    if (!value) return title
+
+    if (isDateRange(value)) {
+      if (value.from && value.to) return `${formatDate(value.from)} - ${formatDate(value.to)}`
+      if (value.from) return `From ${formatDate(value.from)}`
+      if (value.to) return `Until ${formatDate(value.to)}`
+      return title
+    }
+    if (isDate(value)) return formatDate(value)
+    return title
+  }
+
+  const hasValue = isDateRange(value) ? value.from || value.to : isDate(value)
+  const label = formatLabel()
+
+  return (
+    <Button variant='outline' size='sm' className='h-8 border-dashed'>
+      {hasValue ? (
+        <div role='button' aria-label={`Clear ${title} filter`} tabIndex={0} onClick={onReset}>
+          <XIcon />
+        </div>
+      ) : (
+        <FunnelSimpleIcon />
+      )}
+      <span>{title}</span>
+      {hasValue && (
+        <>
+          <Separator orientation='vertical' className='data-[orientation=vertical]:h-4' />
+          <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+            {label}
+          </Badge>
+        </>
+      )}
+    </Button>
+  )
 }
 
 export const DateFilter = <TData,>({
   column,
   title,
-  multiple
+  mode = 'single',
 }: DateFilterProps<TData>) => {
-  const columnFilterValue = column.getFilterValue()
+  const [open, setOpen] = useState(false)
 
-  const selectedDates = useMemo<DateSelection>(() => {
-    if (!columnFilterValue) {
-      return multiple ? { from: undefined, to: undefined } : []
+  const selectedValue = useMemo(() => {
+    const filterValue = column.getFilterValue()
+    if (mode === 'range' && Array.isArray(filterValue)) {
+      return { from: parseDate(filterValue[0]), to: parseDate(filterValue[1]) }
     }
-
-    if (multiple) {
-      const timestamps = parseColumnFilterValue(columnFilterValue)
-      return {
-        from: parseAsDate(timestamps[0]),
-        to: parseAsDate(timestamps[1])
-      }
+    if (mode === 'single' && !Array.isArray(filterValue)) {
+      return parseDate(filterValue)
     }
+    return undefined
+  }, [column, mode])
 
-    const timestamps = parseColumnFilterValue(columnFilterValue)
-    const date = parseAsDate(timestamps[0])
-    return date ? [date] : []
-  }, [columnFilterValue, multiple])
-
-  const onSelect = useCallback((date: Date | DateRange | undefined) => {
-    if (!date) {
-      column.setFilterValue(undefined)
-      return
-    }
-
-    if (multiple && !('getTime' in date)) {
+  const handleSelect = (date: Date | DateRange | undefined) => {
+    if (mode === 'range' && isDateRange(date)) {
       const from = date.from?.getTime()
       const to = date.to?.getTime()
       column.setFilterValue(from || to ? [from, to] : undefined)
-    } else if (!multiple && 'getTime' in date) {
+    } else if (mode === 'single' && isDate(date)) {
       column.setFilterValue(date.getTime())
+    } else {
+      column.setFilterValue(undefined)
     }
-  }, [column, multiple])
+    setOpen(false)
+  }
 
-  const onReset = useCallback((event: MouseEvent) => {
+  const handleClear = (event: MouseEvent) => {
     event.stopPropagation()
     column.setFilterValue(undefined)
-  }, [column])
-
-  const hasValue = useMemo(() => {
-    if (multiple) {
-      if (!getIsDateRange(selectedDates)) return false
-      return selectedDates.from || selectedDates.to
-    }
-    if (!Array.isArray(selectedDates)) return false
-    return selectedDates.length > 0
-  }, [multiple, selectedDates])
-
-  const formatDateRange = useCallback((range: DateRange) => {
-    if (!range.from && !range.to) return ''
-    if (range.from && range.to) {
-      return `${formatDate(range.from)} - ${formatDate(range.to)}`
-    }
-    return formatDate(range.from ?? range.to)
-  }, [])
-
-  const label = useMemo(() => {
-    if (multiple) {
-      if (!getIsDateRange(selectedDates)) return null
-
-      const hasSelectedDates = selectedDates.from || selectedDates.to
-      const dateText = hasSelectedDates
-        ? formatDateRange(selectedDates)
-        : 'Select date range'
-
-      return (
-        <span className='flex items-center gap-2'>
-          <span>{title}</span>
-          {hasSelectedDates && (
-            <>
-              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='secondary'>{dateText}</Badge>
-            </>
-          )}
-        </span>
-      )
-    }
-
-    if (getIsDateRange(selectedDates)) return null
-
-    const hasSelectedDate = selectedDates.length > 0
-    const dateText = hasSelectedDate
-      ? formatDate(selectedDates[0])
-      : 'Select date'
-
-    return (
-      <span className='flex items-center gap-2'>
-        <span>{title}</span>
-        {hasSelectedDate && (
-          <>
-            <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-            <Badge variant='secondary'>{dateText}</Badge>
-          </>
-        )}
-      </span>
-    )
-  }, [selectedDates, multiple, formatDateRange, title])
+    setOpen(false)
+  }
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='border-dashed'>
-          {hasValue ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div
-                  role='button'
-                  aria-label={`Clear ${title} Filter`}
-                  tabIndex={0}
-                  onClick={onReset}>
-                  <XIcon />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Clear {title} Filter</TooltipContent>
-            </Tooltip>
-          ) : (
-            <FunnelSimpleIcon />
-          )}
-          {label}
-        </Button>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger>
+        <FilterTrigger title={title} value={selectedValue} onReset={handleClear} />
       </PopoverTrigger>
       <PopoverContent className='w-auto p-0' align='start'>
-        {multiple ? (
+        {mode === 'range' ? (
           <Calendar
-            captionLayout='dropdown'
             mode='range'
-            selected={getIsDateRange(selectedDates) ? selectedDates : {
-              from: undefined,
-              to: undefined
-            }}
-            onSelect={onSelect} />
+            captionLayout='dropdown'
+            required={false}
+            selected={isDateRange(selectedValue) ? selectedValue : undefined}
+            onSelect={handleSelect}
+          />
         ) : (
           <Calendar
-            captionLayout='dropdown'
             mode='single'
-            selected={!getIsDateRange(selectedDates) ? selectedDates[0] : undefined}
-            onSelect={onSelect} />
+            captionLayout='dropdown'
+            selected={isDate(selectedValue) ? selectedValue : undefined}
+            onSelect={handleSelect}
+          />
         )}
       </PopoverContent>
     </Popover>
