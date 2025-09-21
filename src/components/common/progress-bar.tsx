@@ -1,7 +1,6 @@
+import { Progress } from '@/components/ui/progress'
 import { useEffect, useState } from 'react'
 import { useNavigation } from 'react-router-dom'
-
-import { Progress } from '@/components/ui/progress'
 
 export const ProgressBar = () => {
   const [progress, setProgress] = useState(0)

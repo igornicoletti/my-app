@@ -1,15 +1,7 @@
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { useBreadcrumb } from '@/hooks/use-breadcrumb'
 import { Link } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
-
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator
-} from '@/components/ui/breadcrumb'
-import { useBreadcrumb } from '@/hooks/use-breadcrumb'
 
 export const BreadcrumbPath = () => {
   const crumbs = useBreadcrumb()
