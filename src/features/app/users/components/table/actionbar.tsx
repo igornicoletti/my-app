@@ -49,7 +49,7 @@ export const UsersActionBar = ({ table }: UsersActionBarProps) => {
   }
 
   return (
-    <ActionBar table={table} visible={rows.length > 0}>
+    <ActionBar table={table}>
       <ActionBarSelection table={table} />
       <Separator orientation='vertical' className='hidden data-[orientation=vertical]:h-5 sm:block' />
       <div className='flex flex-wrap items-center justify-center gap-1.5'>
