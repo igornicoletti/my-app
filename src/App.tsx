@@ -1,22 +1,22 @@
 import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider } from 'react-router-dom'
 
-import { AuthProvider } from '@/providers/auth-provider'
-import { CommandProvider } from '@/providers/command-provider'
-import { ConfirmProvider } from '@/providers/confirm-provider'
-import { ThemeProvider } from '@/providers/theme-provider'
+import { ProviderAuth } from '@/providers/auth'
+import { ProviderCommand } from '@/providers/command'
+import { ProviderConfirm } from '@/providers/confirm'
+import { ProviderTheme } from '@/providers/theme'
 import { router } from '@/routes/router'
 
 export const App = () => (
   <HelmetProvider>
-    <ThemeProvider>
-      <AuthProvider>
-        <ConfirmProvider>
-          <CommandProvider>
+    <ProviderTheme>
+      <ProviderAuth>
+        <ProviderConfirm>
+          <ProviderCommand>
             <RouterProvider router={router} />
-          </CommandProvider>
-        </ConfirmProvider>
-      </AuthProvider>
-    </ThemeProvider>
+          </ProviderCommand>
+        </ProviderConfirm>
+      </ProviderAuth>
+    </ProviderTheme>
   </HelmetProvider>
 )

@@ -1,8 +1,4 @@
-import type {
-  ColumnSort,
-  Row,
-  RowData
-} from '@tanstack/react-table'
+import type { ColumnSort, Row, RowData } from '@tanstack/react-table'
 import type { ElementType } from 'react'
 
 declare module '@tanstack/react-table' {

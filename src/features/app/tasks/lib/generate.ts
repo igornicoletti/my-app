@@ -1,5 +1,5 @@
 import { labels, priorities, statuses, type TaskSchema } from '@/features/app/tasks/lib/schemas'
-import { generateId } from '@/lib/id'
+import { generateId } from '@/libs/id'
 import { faker } from '@faker-js/faker'
 import { customAlphabet } from 'nanoid'
 

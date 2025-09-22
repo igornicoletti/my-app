@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
+import { cn } from '@/libs/utils'
 import { SpinnerGapIcon, XIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'motion/react'

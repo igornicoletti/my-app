@@ -2,9 +2,9 @@ import { generateRandomTask } from '@/features/app/tasks/lib/generate'
 import { createTaskSchema, updateTaskSchema, type TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { createEntityMutationHook } from '@/hooks/use-entity-mutation'
 import { createEntityQueryHook } from '@/hooks/use-entity-query'
-import { createEntityService } from '@/services/entity-service'
+import { ServiceEntity } from '@/services/entity'
 
-export const tasks = createEntityService<TaskSchema, typeof createTaskSchema._input, typeof updateTaskSchema._input>(
+export const tasks = ServiceEntity<TaskSchema, typeof createTaskSchema._input, typeof updateTaskSchema._input>(
   'Task',
   generateRandomTask,
   createTaskSchema,

@@ -2,9 +2,9 @@ import { generateRandomUser } from '@/features/app/users/lib/generate'
 import { createUserSchema, updateUserSchema, type UserSchema } from '@/features/app/users/lib/schemas'
 import { createEntityMutationHook } from '@/hooks/use-entity-mutation'
 import { createEntityQueryHook } from '@/hooks/use-entity-query'
-import { createEntityService } from '@/services/entity-service'
+import { ServiceEntity } from '@/services/entity'
 
-export const users = createEntityService<UserSchema, typeof createUserSchema._input, typeof updateUserSchema._input>(
+export const users = ServiceEntity<UserSchema, typeof createUserSchema._input, typeof updateUserSchema._input>(
   'User',
   generateRandomUser,
   createUserSchema,

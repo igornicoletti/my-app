@@ -1,10 +1,10 @@
-import { EntitySheet } from '@/components/common/entity-sheet'
+import { CommonEntity } from '@/components/common/entity'
 import { CreateUser } from '@/features/app/users/components/create'
 import { UpdateUser } from '@/features/app/users/components/update'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
 import type { ComponentPropsWithoutRef } from 'react'
 
-type UserSheetProps = Omit<ComponentPropsWithoutRef<typeof EntitySheet<UserSchema>>, 'createMode' | 'updateMode'> & {
+type UserSheetProps = Omit<ComponentPropsWithoutRef<typeof CommonEntity<UserSchema>>, 'createMode' | 'updateMode'> & {
   user?: UserSchema | null
 }
 
@@ -34,7 +34,7 @@ export const UserSheet = ({ user, ...props }: UserSheetProps) => {
     props.onOpenChange?.(false)
   }
 
-  return <EntitySheet
+  return <CommonEntity
     {...commonProps}
     createMode={createMode}
     updateMode={updateMode}

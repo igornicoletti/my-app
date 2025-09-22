@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { DeleteUsers } from '@/features/app/users/components/delete'
 import { UserSheet } from '@/features/app/users/components/sheet'
 import type { UserSchema } from '@/features/app/users/lib/schemas'
-import { exportTableToCSV } from '@/lib/export'
+import { exportTableToCSV } from '@/libs/export'
 import { DownloadSimpleIcon, SparkleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 

@@ -1,10 +1,5 @@
-import {
-  useCallback,
-  useEffect,
-  useRef
-} from 'react'
-
 import { useCallbackRef } from '@/hooks/use-callback-ref'
+import { useCallback, useEffect, useRef } from 'react'
 
 export const useDebouncedCallback = <T extends (...args: never[]) => unknown>(
   callback: T,

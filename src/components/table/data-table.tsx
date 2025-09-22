@@ -1,7 +1,7 @@
 import { Pagination } from '@/components/table/pagination'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { getCommonPinningStyles } from '@/lib/column-styles'
-import { cn } from '@/lib/utils'
+import { getCommonPinningStyles } from '@/libs/column-styles'
+import { cn } from '@/libs/utils'
 import { flexRender, type HeaderGroup, type Row, type Table as TanstackTable } from '@tanstack/react-table'
 import type { ComponentProps, ReactNode } from 'react'
 

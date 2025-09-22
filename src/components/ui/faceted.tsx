@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
+import { cn } from "@/libs/utils"
 
 type FacetedValue<Multiple extends boolean> = Multiple extends true
   ? string[]

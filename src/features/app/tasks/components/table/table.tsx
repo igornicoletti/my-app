@@ -9,7 +9,7 @@ import { TasksToolbar } from '@/features/app/tasks/components/table/toolbar'
 import { useTasks } from '@/features/app/tasks/lib/hooks'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
 import { useDataTable } from '@/hooks/use-data-table'
-import { getNumberRange } from '@/lib/filter-fn'
+import { getNumberRange } from '@/libs/filter-fn'
 import type { DataTableRowAction } from '@/types/data-table'
 import { useMemo, useState } from 'react'
 

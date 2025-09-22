@@ -1,4 +1,4 @@
-import { messages, type MessageKey } from '@/constants/messages'
+import { messages, type MessageKey } from '@/constants/message'
 import { toast } from 'sonner'
 
 interface CustomMessage {

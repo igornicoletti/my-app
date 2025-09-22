@@ -1,4 +1,4 @@
-import { SelectField } from '@/components/form/select-field'
+import { FormSelect } from '@/components/form/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { type CreateUserSchema, roleList, statusList } from '@/features/app/users/lib/schemas'
@@ -95,13 +95,13 @@ export const UserForm = <T extends Partial<CreateUserSchema> & FieldValues>({
             </FormItem>
           )}
         />
-        <SelectField
+        <FormSelect
           form={form}
           name={'status' as FieldPath<T>}
           label='Status'
           placeholder='Select a status'
           options={statusList} />
-        <SelectField
+        <FormSelect
           form={form}
           name={'role' as FieldPath<T>}
           label='Role'

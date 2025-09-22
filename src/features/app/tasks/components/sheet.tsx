@@ -1,10 +1,10 @@
-import { EntitySheet } from '@/components/common/entity-sheet'
+import { CommonEntity } from '@/components/common/entity'
 import { CreateTask } from '@/features/app/tasks/components/create'
 import { UpdateTask } from '@/features/app/tasks/components/update'
 import type { TaskSchema } from '@/features/app/tasks/lib/schemas'
 import type { ComponentPropsWithoutRef } from 'react'
 
-type TaskSheetProps = Omit<ComponentPropsWithoutRef<typeof EntitySheet<TaskSchema>>, 'createMode' | 'updateMode'> & {
+type TaskSheetProps = Omit<ComponentPropsWithoutRef<typeof CommonEntity<TaskSchema>>, 'createMode' | 'updateMode'> & {
   task?: TaskSchema | null
 }
 
@@ -34,7 +34,7 @@ export const TaskSheet = ({ task, ...props }: TaskSheetProps) => {
     props.onOpenChange?.(false)
   }
 
-  return <EntitySheet
+  return <CommonEntity
     {...commonProps}
     createMode={createMode}
     updateMode={updateMode}

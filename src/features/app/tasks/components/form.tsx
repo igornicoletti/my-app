@@ -1,4 +1,4 @@
-import { SelectField } from '@/components/form/select-field'
+import { FormSelect } from '@/components/form/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -42,19 +42,19 @@ export const TaskForm = <T extends Partial<CreateTaskSchema> & FieldValues>({
             </FormItem>
           )}
         />
-        <SelectField
+        <FormSelect
           form={form}
           name={'label' as FieldPath<T>}
           label='Label'
           placeholder='Select a label'
           options={labelList} />
-        <SelectField
+        <FormSelect
           form={form}
           name={'status' as FieldPath<T>}
           label='Status'
           placeholder='Select a status'
           options={statusList} />
-        <SelectField
+        <FormSelect
           form={form}
           name={'priority' as FieldPath<T>}
           label='Priority'

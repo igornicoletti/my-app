@@ -1,6 +1,5 @@
-import { useLocation } from 'react-router-dom'
-
 import { authHero, type AuthHero, type AuthKey } from '@/features/auth/lib/hero'
+import { useLocation } from 'react-router-dom'
 
 const authKey = (key: string): key is AuthKey => {
   return key in authHero

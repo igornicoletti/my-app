@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/
 import { Separator } from '@/components/ui/separator'
 import { useDeleteTasks, useUpdateTasks } from '@/features/app/tasks/lib/hooks'
 import { priorityList, statusList, type TaskSchema } from '@/features/app/tasks/lib/schemas'
-import { exportTableToCSV } from '@/lib/export'
+import { exportTableToCSV } from '@/libs/export'
 import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'

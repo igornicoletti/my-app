@@ -40,8 +40,8 @@ import { Slot } from "@radix-ui/react-slot"
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 
-import { useComposedRefs } from "@/lib/compose-refs"
-import { cn } from "@/lib/utils"
+import { useComposedRefs } from "@/libs/compose-refs"
+import { cn } from "@/libs/utils"
 
 const orientationConfig = {
   vertical: {

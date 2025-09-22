@@ -1,5 +1,5 @@
 import { roles, statuses, type UserSchema } from '@/features/app/users/lib/schemas'
-import { generateId } from '@/lib/id'
+import { generateId } from '@/libs/id'
 import { faker } from '@faker-js/faker'
 
 export const generateRandomUser = (): UserSchema => ({

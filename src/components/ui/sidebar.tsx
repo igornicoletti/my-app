@@ -21,7 +21,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useMediaQuery } from '@/hooks/use-media-query'
-import { cn } from '@/lib/utils'
+import { cn } from '@/libs/utils'
 import { useLocation } from 'react-router-dom'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'

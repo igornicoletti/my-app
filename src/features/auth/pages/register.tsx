@@ -1,16 +1,15 @@
+import { FormInput } from '@/components/form/input'
+import { Button } from '@/components/ui/button'
+import { Form } from '@/components/ui/form'
+import { registerSchema, type RegisterSchema } from '@/features/auth/lib/schemas'
+import { useSubmit } from '@/hooks/use-submit'
+import { useToast } from '@/hooks/use-toast'
+import { ServiceAuth } from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon, UserPlusIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
-import { InputField } from '@/components/form/input-field'
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
-import { registerSchema, type RegisterSchema } from '@/features/auth/lib/schemas'
-import { useSubmitForm } from '@/hooks/use-submit-form'
-import { useToast } from '@/hooks/use-toast'
-import { authService } from '@/services/auth-service'
-
-export const RegisterPage = () => {
+export const PageRegister = () => {
   const { successToast } = useToast()
 
   const form = useForm<RegisterSchema>({
@@ -23,15 +22,15 @@ export const RegisterPage = () => {
     }
   })
 
-  const { onSubmit, isLoading } = useSubmitForm(async (data: RegisterSchema) => {
-    await authService.createUserWithEmail(data.email, data.password, data.displayName)
+  const { onSubmit, isLoading } = useSubmit(async (data: RegisterSchema) => {
+    await ServiceAuth.createUserWithEmail(data.email, data.password, data.displayName)
     successToast('auth/account-created')
   }, `/login`)
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className='grid gap-4'>
-        <InputField
+        <FormInput
           control={form.control}
           disabled={isLoading}
           type='text'
@@ -39,21 +38,21 @@ export const RegisterPage = () => {
           placeholder='Username'
           autoComplete='given-name'
           autoFocus />
-        <InputField
+        <FormInput
           control={form.control}
           disabled={isLoading}
           type='email'
           name='email'
           placeholder='Email'
           autoComplete='username' />
-        <InputField
+        <FormInput
           control={form.control}
           disabled={isLoading}
           type='password'
           name='password'
           placeholder='Password'
           autoComplete='new-password' />
-        <InputField
+        <FormInput
           control={form.control}
           disabled={isLoading}
           type='password'
