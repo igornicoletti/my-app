@@ -1,28 +1,34 @@
 import { Button } from '@/components/ui/button'
 import { useAuthHero } from '@/hooks/use-auth-hero'
+import { useAuth } from '@/providers/auth'
 import { FireIcon } from '@phosphor-icons/react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Navigate, Outlet } from 'react-router-dom'
 
 export const LayoutAuth = () => {
+  const { user } = useAuth()
   const { hero } = useAuthHero()
+
+  if (user && user.emailVerified) {
+    return <Navigate to='/dashboard' replace />
+  }
 
   return (
     <div className='relative flex min-h-svh flex-col'>
       <div className='flex flex-1 flex-col items-center justify-center py-12'>
         <div className='w-full max-w-md flex flex-col gap-6 px-6'>
           <header className='grid gap-2 text-center'>
-            <FireIcon className='mx-auto size-8 text-primary' />
+            <FireIcon className='mx-auto size-8' />
             <h2 className='text-xl font-bold'>{hero.heading}</h2>
             <p className='text-sm text-muted-foreground'>{hero.subheading}</p>
           </header>
           <Outlet />
           <footer className='text-center'>
-            <p className='text-sm text-muted-foreground'>
+            <div className='text-sm text-muted-foreground'>
               {hero.question}{' '}
               <Button asChild variant='link' className='p-0 font-semibold'>
                 <Link to={hero.linkTo}>{hero.linkLabel}</Link>
               </Button>
-            </p>
+            </div>
           </footer>
         </div>
       </div>

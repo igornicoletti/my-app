@@ -29,51 +29,6 @@ const parseDate = (value: unknown): Date | undefined => {
   return undefined
 }
 
-interface FilterTriggerProps {
-  title: string
-  value: Date | DateRange | undefined
-  onReset: (event: MouseEvent) => void
-}
-
-const FilterTrigger = ({ title, value, onReset }: FilterTriggerProps) => {
-  const formatLabel = () => {
-    if (!value) return title
-
-    if (isDateRange(value)) {
-      if (value.from && value.to) return `${formatDate(value.from)} - ${formatDate(value.to)}`
-      if (value.from) return `From ${formatDate(value.from)}`
-      if (value.to) return `Until ${formatDate(value.to)}`
-      return title
-    }
-    if (isDate(value)) return formatDate(value)
-    return title
-  }
-
-  const hasValue = isDateRange(value) ? value.from || value.to : isDate(value)
-  const label = formatLabel()
-
-  return (
-    <Button variant='outline' size='sm' className='h-8 border-dashed'>
-      {hasValue ? (
-        <div role='button' aria-label={`Clear ${title} filter`} tabIndex={0} onClick={onReset}>
-          <XIcon />
-        </div>
-      ) : (
-        <FunnelSimpleIcon />
-      )}
-      <span>{title}</span>
-      {hasValue && (
-        <>
-          <Separator orientation='vertical' className='data-[orientation=vertical]:h-4' />
-          <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
-            {label}
-          </Badge>
-        </>
-      )}
-    </Button>
-  )
-}
-
 export const DateFilter = <TData,>({
   column,
   title,
@@ -111,12 +66,54 @@ export const DateFilter = <TData,>({
     setOpen(false)
   }
 
+  const formatLabel = () => {
+    if (!selectedValue) return title
+
+    if (isDateRange(selectedValue)) {
+      if (selectedValue.from && selectedValue.to) {
+        return `${formatDate(selectedValue.from)} - ${formatDate(selectedValue.to)}`
+      }
+      if (selectedValue.from) return `From ${formatDate(selectedValue.from)}`
+      if (selectedValue.to) return `Until ${formatDate(selectedValue.to)}`
+      return title
+    }
+    if (isDate(selectedValue)) return formatDate(selectedValue)
+    return title
+  }
+
+  const hasValue = isDateRange(selectedValue)
+    ? selectedValue.from || selectedValue.to
+    : isDate(selectedValue)
+
+  const label = formatLabel()
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
-        <FilterTrigger title={title} value={selectedValue} onReset={handleClear} />
+      <PopoverTrigger asChild>
+        <Button variant='outline' size='sm' className='h-8 border-dashed'>
+          {hasValue ? (
+            <div
+              role='button'
+              aria-label={`Clear ${title} filter`}
+              tabIndex={0}
+              onClick={handleClear}>
+              <XIcon />
+            </div>
+          ) : (
+            <FunnelSimpleIcon />
+          )}
+          <span>{title}</span>
+          {hasValue && (
+            <>
+              <Separator orientation='vertical' className='data-[orientation=vertical]:h-4' />
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
+                {label}
+              </Badge>
+            </>
+          )}
+        </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0' align='start'>
+      <PopoverContent align='start' className='w-auto p-0'>
         {mode === 'range' ? (
           <Calendar
             mode='range'

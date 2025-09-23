@@ -1,0 +1,19 @@
+import { labels, priorities, statuses, type TaskSchema } from '@/features/app/task/lib/schemas'
+import { generateId } from '@/libs/id'
+import { faker } from '@faker-js/faker'
+import { customAlphabet } from 'nanoid'
+
+export const generateTaskCode = () => `TASK-${customAlphabet('0123456789', 4)()}`
+
+export const generateRandomTask = (options?: { archivedProb?: number }): TaskSchema => ({
+  id: generateId('task'),
+  code: generateTaskCode(),
+  title: faker.hacker.phrase().replace(/^./, l => l.toUpperCase()),
+  estimatedHours: faker.number.int({ min: 1, max: 48 }),
+  status: faker.helpers.arrayElement(Object.values(statuses)),
+  label: faker.helpers.arrayElement(Object.values(labels)),
+  priority: faker.helpers.arrayElement(Object.values(priorities)),
+  archived: faker.datatype.boolean({ probability: options?.archivedProb ?? 0.2 }),
+  createdAt: faker.date.past({ years: 2 }),
+  updatedAt: new Date(),
+})

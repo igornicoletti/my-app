@@ -1,36 +1,64 @@
+import { routeLazy } from '@/routes/lazy'
+import { routeMetadata } from '@/routes/metadata'
 import { createBrowserRouter } from 'react-router-dom'
-
-import { AppGuardRoute } from '@/features/guard/app'
-import { AuthGuardRoute } from '@/features/guard/auth'
-import { CallbackRoute } from '@/features/guard/callback'
-import { RedirectRoute } from '@/features/guard/redirect'
-import { routeLazy } from '@/routes/config/lazy'
-import { getProtectedRoutes, getPublicRoutes } from '@/routes/config/root'
 
 export const router = createBrowserRouter([
   {
     element: <routeLazy.LayoutRoot />,
-    errorElement: <routeLazy.ErrorFallback />,
+    errorElement: <routeLazy.RootFallback />,
     children: [
       {
         path: '/',
-        element: <RedirectRoute />,
+        element: <routeLazy.RootRedirect />,
       },
       {
         path: 'callback',
-        element: <CallbackRoute />,
+        element: <routeLazy.RootCallback />,
       },
       {
-        element: <AuthGuardRoute />,
-        children: getProtectedRoutes(),
+        element: <routeLazy.LayoutAuth />,
+        children: [
+          {
+            path: 'login',
+            element: <routeLazy.AuthLogin />,
+            handle: routeMetadata.login,
+          },
+          {
+            path: 'register',
+            element: <routeLazy.AuthRegister />,
+            handle: routeMetadata.register,
+          },
+          {
+            path: 'forgot-password',
+            element: <routeLazy.AuthForgot />,
+            handle: routeMetadata.forgotPassword,
+          },
+          {
+            path: 'reset-password',
+            element: <routeLazy.AuthReset />,
+            handle: routeMetadata.resetPassword,
+          },
+        ],
       },
       {
-        element: <AppGuardRoute />,
-        children: getPublicRoutes(),
-      },
-      {
-        path: '*',
-        element: <routeLazy.NotFoundPage />,
+        element: <routeLazy.LayoutApp />,
+        children: [
+          {
+            path: 'dashboard',
+            element: <routeLazy.AppDashboard />,
+            handle: routeMetadata.dashboard,
+          },
+          {
+            path: 'tasks',
+            element: <routeLazy.AppTask />,
+            handle: routeMetadata.tasks,
+          },
+          {
+            path: 'users',
+            element: <routeLazy.AppUser />,
+            handle: routeMetadata.users,
+          },
+        ],
       },
     ],
   },

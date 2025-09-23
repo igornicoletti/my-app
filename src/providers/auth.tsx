@@ -24,7 +24,8 @@ export const ProviderAuth = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const value = useMemo(() => ({
-    user, isLoading
+    user,
+    isLoading
   }), [user, isLoading])
 
   if (isLoading) return <CommonLoading message='Checking Authentication...' />

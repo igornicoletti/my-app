@@ -3,15 +3,21 @@ import { SidebarApp } from '@/components/sidebar/app'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { useAuth } from '@/providers/auth'
 import { useCommand } from '@/providers/command'
 import { useTheme } from '@/providers/theme'
 import { ServiceAuth } from '@/services/auth'
 import { MagnifyingGlassIcon, MoonIcon, SignOutIcon, SunIcon } from '@phosphor-icons/react'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
 export const LayoutApp = () => {
+  const { user } = useAuth()
   const { openCommand } = useCommand()
   const { theme, toggleTheme } = useTheme()
+
+  if (!user || !user.emailVerified) {
+    return <Navigate to='/login' replace />
+  }
 
   return (
     <SidebarProvider>
@@ -19,10 +25,8 @@ export const LayoutApp = () => {
       <SidebarInset>
         <header className='flex h-16 shrink-0 items-center gap-2 p-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
           <div className='flex flex-1 items-center gap-2'>
-            <SidebarTrigger className='-ml-1' />
-            <Separator
-              orientation='vertical'
-              className='mr-2 data-[orientation=vertical]:h-4' />
+            <SidebarTrigger />
+            <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-4' />
             <CommonBreadcrumb />
           </div>
           <div className='ml-auto'>

@@ -27,7 +27,7 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
           View
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0'>
+      <PopoverContent align='end' className='w-48 p-0'>
         <Command>
           <CommandInput placeholder='Search columns...' />
           <CommandList>

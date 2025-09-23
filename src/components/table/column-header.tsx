@@ -8,7 +8,7 @@ import type { HTMLAttributes } from 'react'
 const SortIndicator = ({ sortDirection }: { sortDirection: 'asc' | 'desc' | false }) => {
   if (sortDirection === 'desc') return <ArrowDownIcon />
   if (sortDirection === 'asc') return <ArrowUpIcon />
-  return <ArrowsDownUpIcon />
+  return <ArrowsDownUpIcon className='text-muted-foreground/70' />
 }
 
 const SortMenuItems = <TData, TValue>({ column }: { column: Column<TData, TValue> }) => (
@@ -21,6 +21,10 @@ const SortMenuItems = <TData, TValue>({ column }: { column: Column<TData, TValue
       <ArrowDownIcon className='text-muted-foreground/70' />
       Desc
     </DropdownMenuItem>
+    <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+      <EyeSlashIcon className='text-muted-foreground/70' />
+      Hide
+    </DropdownMenuItem>
     {column.getIsSorted() && (
       <>
         <DropdownMenuSeparator />
@@ -30,16 +34,6 @@ const SortMenuItems = <TData, TValue>({ column }: { column: Column<TData, TValue
         </DropdownMenuItem>
       </>
     )}
-  </>
-)
-
-const HideMenuItem = <TData, TValue>({ column }: { column: Column<TData, TValue> }) => (
-  <>
-    <DropdownMenuSeparator />
-    <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-      <EyeSlashIcon className='text-muted-foreground/70' />
-      Hide
-    </DropdownMenuItem>
   </>
 )
 
@@ -54,9 +48,8 @@ export const ColumnHeader = <TData, TValue>({
   className,
 }: ColumnHeaderProps<TData, TValue>) => {
   const canSort = column.getCanSort()
-  const canHide = column.getCanHide()
 
-  if (!canSort && !canHide) {
+  if (!canSort) {
     return <div className={cn('text-sm font-medium', className)}>{title}</div>
   }
 
@@ -68,14 +61,13 @@ export const ColumnHeader = <TData, TValue>({
             aria-label={canSort ? 'Sort by ' + title : title}
             variant='ghost'
             size='sm'
-            className='-ml-3 h-8 data-[state=open]:bg-accent'>
-            <span className='text-sm font-medium'>{title}</span>
+            className='-ml-3 h-8'>
+            <span>{title}</span>
             {canSort && <SortIndicator sortDirection={column.getIsSorted()} />}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='start'>
           {canSort && <SortMenuItems column={column} />}
-          {canHide && <HideMenuItem column={column} />}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
