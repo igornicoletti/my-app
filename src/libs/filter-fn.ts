@@ -17,18 +17,28 @@ export const numberRangeFilterFn: FilterFn<any> = (
 export const dateRangeFilterFn: FilterFn<any> = (
   row,
   columnId,
-  value: [Date?, Date?],
+  filterValue: [number | undefined, number | undefined],
 ) => {
-  const rowDate = row.getValue<Date>(columnId)
-  if (!rowDate) return false
+  const rowDateValue = row.getValue<Date | string | number | null | undefined>(columnId)
+  if (!rowDateValue) return false
 
-  const [from, to] = value
-  if (from && rowDate < from) return false
-  if (to) {
+  const rowDateTime = new Date(rowDateValue as string | number | Date).getTime()
+  if (isNaN(rowDateTime)) return false
+
+  const [from, to] = filterValue
+
+  if (typeof from === 'number' && rowDateTime < from) {
+    return false
+  }
+
+  if (typeof to === 'number') {
     const endOfDay = new Date(to)
     endOfDay.setHours(23, 59, 59, 999)
-    if (rowDate > endOfDay) return false
+    if (rowDateTime > endOfDay.getTime()) {
+      return false
+    }
   }
+
   return true
 }
 
