@@ -7,11 +7,11 @@ import { Separator } from '@/components/ui/separator'
 import type { Option } from '@/types/data-table'
 import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 interface FacetedFilterProps<TData, TValue> {
-  column: Column<TData, TValue>
-  title: string
+  column?: Column<TData, TValue>
+  title?: string
   options: Option[]
   multiple?: boolean
 }
@@ -24,102 +24,103 @@ export const FacetedFilter = <TData, TValue>({
 }: FacetedFilterProps<TData, TValue>) => {
   const [open, setOpen] = useState(false)
 
-  const selectedValues = useMemo(() => {
-    const columnFilterValue = column.getFilterValue()
-    if (Array.isArray(columnFilterValue)) return new Set(columnFilterValue)
-    if (typeof columnFilterValue === 'string') return new Set([columnFilterValue])
-    return new Set<string>()
-  }, [column, column.getFilterValue()])
+  const columnFilterValue = column?.getFilterValue()
+  const selectedValues = useMemo(() => new Set(Array.isArray(columnFilterValue)
+    ? columnFilterValue
+    : []
+  ), [columnFilterValue])
 
-  const facetedCounts = column.getFacetedUniqueValues()
-
-  const handleSelect = (optionValue: string) => {
-    const newSelectedValues = new Set(selectedValues)
-    if (newSelectedValues.has(optionValue)) {
-      newSelectedValues.delete(optionValue)
-    } else {
-      newSelectedValues.add(optionValue)
-    }
-    const filterValue = Array.from(newSelectedValues)
+  const onItemSelect = useCallback((option: Option, isSelected: boolean) => {
+    if (!column) return
 
     if (multiple) {
-      column.setFilterValue(filterValue.length ? filterValue : undefined)
+      const newSelectedValues = new Set(selectedValues)
+      if (isSelected) {
+        newSelectedValues.delete(option.value)
+      } else {
+        newSelectedValues.add(option.value)
+      }
+      const filterValues = Array.from(newSelectedValues)
+      column.setFilterValue(filterValues.length ? filterValues : undefined)
     } else {
-      column.setFilterValue(filterValue.length ? filterValue[0] : undefined)
+      column.setFilterValue(isSelected ? undefined : [option.value])
       setOpen(false)
     }
-  }
+  }, [column, multiple, selectedValues])
 
-  const handleClear = () => {
-    column.setFilterValue(undefined)
-    setOpen(false)
-  }
+  const onReset = useCallback((event?: React.MouseEvent) => {
+    event?.stopPropagation()
+    column?.setFilterValue(undefined)
+  }, [column])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='h-8 border-dashed'>
+        <Button variant='outline' size='sm' className='border-dashed'>
           {selectedValues.size > 0 ? (
             <div
               role='button'
               aria-label={`Clear ${title} filter`}
               tabIndex={0}
-              onClick={handleClear}>
+              onClick={onReset}>
               <XIcon />
             </div>
           ) : (
             <FunnelSimpleIcon />
           )}
-          <span>{title}</span>
+          {title}
           {selectedValues.size > 0 && (
             <>
-              <Separator orientation='vertical' className='data-[orientation=vertical]:h-4' />
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
               <Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
                 {selectedValues.size}
               </Badge>
-              <div className='hidden space-x-1 lg:flex'>
+              <div className='hidden items-center gap-1 lg:flex'>
                 {selectedValues.size > 2 ? (
                   <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
-                  options
-                    .filter((option) => selectedValues.has(option.value))
-                    .map((option) => (
-                      <Badge key={option.value} variant='secondary' className='rounded-sm px-1 font-normal'>
-                        {option.label}
-                      </Badge>
-                    ))
+                  options.filter((option) => selectedValues.has(option.value)).map((option) => (
+                    <Badge variant='secondary' key={option.value} className='rounded-sm px-1 font-normal'>
+                      {option.label}
+                    </Badge>
+                  ))
                 )}
               </div>
             </>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align='start' className='w-48 p-0'>
+      <PopoverContent className='w-48 p-0' align='start'>
         <Command>
           <CommandInput placeholder={title} />
-          <CommandList>
+          <CommandList className='max-h-full'>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => (
-                <CommandItem key={option.value} onSelect={() => handleSelect(option.value)}>
-                  <Checkbox checked={selectedValues.has(option.value)} />
-                  {option.icon && <option.icon className='text-muted-foreground' />}
-                  <span className='flex-1 truncate'>{option.label}</span>
-                  {facetedCounts.has(option.value) && (
-                    <span className='ml-auto flex items-center justify-center font-mono text-xs'>
-                      {facetedCounts.get(option.value)}
-                    </span>
-                  )}
-                </CommandItem>
-              ))}
+            <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
+              {options.map((option) => {
+                const isSelected = selectedValues.has(option.value)
+                return (
+                  <CommandItem
+                    key={option.value}
+                    onSelect={() => onItemSelect(option, isSelected)}>
+                    <Checkbox checked={isSelected} />
+                    {option.icon && <option.icon />}
+                    <span className='truncate'>{option.label}</span>
+                    {option.count && (
+                      <span className='ml-auto font-mono text-xs'>
+                        {option.count}
+                      </span>
+                    )}
+                  </CommandItem>
+                )
+              })}
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <CommandItem onSelect={handleClear} className='justify-center text-center'>
+                  <CommandItem onSelect={() => onReset()} className='justify-center text-center'>
                     Clear filters
                   </CommandItem>
                 </CommandGroup>

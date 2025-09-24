@@ -5,9 +5,15 @@ import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
+import { cn } from '@/libs/utils'
 import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
-import { useId, useMemo, type MouseEvent } from 'react'
+import { useCallback, useId, useMemo } from 'react'
+
+interface Range {
+  min: number
+  max: number
+}
 
 type RangeValue = [number, number]
 
@@ -17,120 +23,174 @@ const getIsValidRange = (value: unknown): value is RangeValue =>
   typeof value[0] === 'number' &&
   typeof value[1] === 'number'
 
-const useRange = (column: Column<any, unknown>) => {
-  return useMemo(() => {
-    const defaultRange = column.columnDef.meta?.range
-    let min = 0
-    let max = 100
+interface SliderFilterProps<TData> {
+  column: Column<TData, unknown>
+  title?: string
+}
 
-    if (getIsValidRange(defaultRange)) {
-      ;[min, max] = defaultRange
+export const SliderFilter = <TData,>({
+  column,
+  title,
+}: SliderFilterProps<TData>) => {
+  const id = useId()
+
+  const columnFilterValue = getIsValidRange(column.getFilterValue())
+    ? (column.getFilterValue() as RangeValue)
+    : undefined
+
+  const defaultRange = column.columnDef.meta?.range
+  const unit = column.columnDef.meta?.unit
+
+  const { min, max, step } = useMemo<Range & { step: number }>(() => {
+    let minValue = 0
+    let maxValue = 100
+
+    if (defaultRange && getIsValidRange(defaultRange)) {
+      [minValue, maxValue] = defaultRange
     } else {
-      const facetedMinMax = column.getFacetedMinMaxValues()
-      if (facetedMinMax && getIsValidRange(facetedMinMax)) {
-        ;[min, max] = facetedMinMax
+      const values = column.getFacetedMinMaxValues()
+      if (values && Array.isArray(values) && values.length === 2) {
+        const [facetMinValue, facetMaxValue] = values
+        if (typeof facetMinValue === 'number' && typeof facetMaxValue === 'number') {
+          minValue = facetMinValue
+          maxValue = facetMaxValue
+        }
       }
     }
 
-    const rangeSize = max - min
-    const step =
-      rangeSize <= 20 ? 1 : rangeSize <= 100 ? Math.ceil(rangeSize / 20) : Math.ceil(rangeSize / 50)
+    const rangeSize = maxValue - minValue
+    const step = rangeSize <= 20
+      ? 1
+      : rangeSize <= 100
+        ? Math.ceil(rangeSize / 20)
+        : Math.ceil(rangeSize / 50)
 
-    return { min, max, step }
+    return { min: minValue, max: maxValue, step }
+  }, [column, defaultRange])
+
+  const range = useMemo<RangeValue>(() =>
+    columnFilterValue ?? [min, max], [columnFilterValue, min, max])
+
+  const formatValue = useCallback((value: number) => value.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  }), [])
+
+  const onFromInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const numValue = Number(event.target.value)
+    if (!Number.isNaN(numValue) && numValue >= min && numValue <= range[1]) {
+      column.setFilterValue([numValue, range[1]])
+    }
+  }, [column, min, range])
+
+  const onToInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const numValue = Number(event.target.value)
+    if (!Number.isNaN(numValue) && numValue <= max && numValue >= range[0]) {
+      column.setFilterValue([range[0], numValue])
+    }
+  }, [column, max, range])
+
+  const onSliderValueChange = useCallback((value: RangeValue) => {
+    if (Array.isArray(value) && value.length === 2) {
+      column.setFilterValue(value)
+    }
   }, [column])
-}
 
-interface SliderFilterProps<TData> {
-  column: Column<TData, unknown>
-  title: string
-}
-
-export const SliderFilter = <TData,>({ column, title }: SliderFilterProps<TData>) => {
-  const id = useId()
-  const { min, max, step } = useRange(column)
-  const unit = column.columnDef.meta?.unit
-
-  const columnFilterValue = column.getFilterValue()
-  const value = getIsValidRange(columnFilterValue) ? columnFilterValue : undefined
-  const range = value ?? [min, max]
-
-  const handleRangeChange = (newRange: RangeValue) => {
-    column.setFilterValue(newRange)
-  }
-
-  const handleReset = (event: MouseEvent) => {
-    event.stopPropagation()
+  const onReset = useCallback((event: React.MouseEvent) => {
+    if (event.target instanceof HTMLDivElement) {
+      event.stopPropagation()
+    }
     column.setFilterValue(undefined)
-  }
+  }, [column])
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant='outline' size='sm' className='h-8 border-dashed'>
-          {value ? (
+        <Button variant='outline' size='sm' className='border-dashed'>
+          {columnFilterValue ? (
             <div
               role='button'
               aria-label={`Clear ${title} filter`}
               tabIndex={0}
-              onClick={handleReset}>
+              onClick={onReset}>
               <XIcon />
             </div>
           ) : (
             <FunnelSimpleIcon />
           )}
           <span>{title}</span>
-          {value && (
+          {columnFilterValue && (
             <>
-              <Separator orientation='vertical' className='data-[orientation=vertical]:h-4' />
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
               <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
-                {`${value[0]} - ${value[1]}${unit ? ` ${unit}` : ''}`}
+                {formatValue(columnFilterValue[0])} - {formatValue(columnFilterValue[1])}
+                {unit ? ` ${unit}` : ''}
               </Badge>
             </>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align='start' className='w-48 space-y-4 p-4'>
-        <div className='grid grid-cols-2 gap-4'>
-          {[
-            {
-              id: `${id}-from`,
-              value: range[0],
-              label: 'From',
-              handler: (v: number) => handleRangeChange([v, range[1]]),
-            },
-            {
-              id: `${id}-to`,
-              value: range[1],
-              label: 'To',
-              handler: (v: number) => handleRangeChange([range[0], v]),
-            },
-          ].map((input) => (
-            <div key={input.id} className='relative'>
-              <Label htmlFor={input.id} className='sr-only'>
-                {input.label}
-              </Label>
+      <PopoverContent align='start' className='flex w-auto flex-col gap-4'>
+        <div className='flex flex-col gap-4'>
+          <div className='flex items-center gap-4'>
+            <Label htmlFor={`${id}-from`} className='sr-only'>From</Label>
+            <div className='relative'>
               <Input
-                id={input.id}
+                id={`${id}-from`}
                 type='number'
+                aria-valuemin={min}
+                aria-valuemax={max}
                 inputMode='numeric'
-                value={input.value}
+                pattern='[0-9]*'
+                placeholder={min.toString()}
                 min={min}
                 max={max}
-                onChange={(e) => input.handler(Number(e.target.value))}
-                className='h-8'
-              />
+                value={range[0]?.toString()}
+                onChange={onFromInputChange}
+                className={cn('h-8 w-24', unit && 'pr-8')} />
+              {unit && (
+                <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>
+                  {unit}
+                </span>
+              )}
             </div>
-          ))}
+            <Label htmlFor={`${id}-to`} className='sr-only'>to</Label>
+            <div className='relative'>
+              <Input
+                id={`${id}-to`}
+                type='number'
+                aria-valuemin={min}
+                aria-valuemax={max}
+                inputMode='numeric'
+                pattern='[0-9]*'
+                placeholder={max.toString()}
+                min={min}
+                max={max}
+                value={range[1]?.toString()}
+                onChange={onToInputChange}
+                className={cn('h-8 w-24', unit && 'pr-8')} />
+              {unit && (
+                <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>
+                  {unit}
+                </span>
+              )}
+            </div>
+          </div>
+          <Label htmlFor={`${id}-slider`} className='sr-only'>{title} slider</Label>
+          <Slider
+            id={`${id}-slider`}
+            min={min}
+            max={max}
+            step={step}
+            value={range}
+            onValueChange={onSliderValueChange} />
         </div>
-        <Label htmlFor={`${id}-slider`} className='sr-only'>{`${title} slider`}</Label>
-        <Slider
-          id={`${id}-slider`}
-          min={min}
-          max={max}
-          step={step}
-          value={range}
-          onValueChange={(val) => handleRangeChange(val as RangeValue)}
-        />
+        <Button
+          aria-label={`Clear ${title} filter`}
+          variant='outline'
+          size='sm'
+          onClick={onReset}>
+          Clear
+        </Button>
       </PopoverContent>
     </Popover>
   )

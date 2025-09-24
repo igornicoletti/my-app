@@ -10,19 +10,22 @@ interface ViewOptionsProps<TData> {
   table: Table<TData>
 }
 
-export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
-  const hideableColumns = useMemo(() => table.getAllLeafColumns().filter((column) =>
-    column.getCanHide()
-  ), [table.getAllLeafColumns()])
+export const ViewOptions = <TData,>({
+  table,
+}: ViewOptionsProps<TData>) => {
+  const columns = useMemo(() => table.getAllColumns().filter((column) =>
+    typeof column.accessorFn !== 'undefined' && column.getCanHide()
+  ), [table])
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           aria-label='Toggle columns'
+          role='combobox'
           variant='outline'
           size='sm'
-          className='ml-auto hidden h-8 text-sm lg:flex'>
+          className='ml-auto hidden h-8 lg:flex'>
           <SlidersHorizontalIcon />
           View
         </Button>
@@ -31,12 +34,14 @@ export const ViewOptions = <TData,>({ table }: ViewOptionsProps<TData>) => {
         <Command>
           <CommandInput placeholder='Search columns...' />
           <CommandList>
-            <CommandEmpty>No column found.</CommandEmpty>
+            <CommandEmpty>No columns found.</CommandEmpty>
             <CommandGroup>
-              {hideableColumns.map((column) => (
+              {columns.map(column => (
                 <CommandItem key={column.id} onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
                   <Checkbox checked={column.getIsVisible()} />
-                  <span className='truncate capitalize'>{column.columnDef.meta?.label ?? column.id}</span>
+                  <span className='truncate capitalize'>
+                    {column.columnDef.meta?.label ?? column.id}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>

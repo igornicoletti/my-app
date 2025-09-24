@@ -91,7 +91,7 @@ export const createTasksColumns = ({
     {
       accessorKey: 'code',
       header: ({ column }) => <ColumnHeader column={column} title='Task' />,
-      cell: ({ row }) => <div className='w-20 font-mono'>{row.getValue('code')}</div>,
+      cell: ({ row }) => <div className='w-20'>{row.getValue('code')}</div>,
     },
     {
       accessorKey: 'title',

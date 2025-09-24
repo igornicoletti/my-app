@@ -22,7 +22,7 @@ export const UsersToolbar = ({ table }: UsersToolbarActionsProps) => {
 
   return (
     <div className='flex flex-wrap items-center gap-2'>
-      <Button variant='outline' size='sm' onClick={onExport}>
+      <Button variant='secondary' size='sm' onClick={onExport}>
         <DownloadSimpleIcon />
         Export
       </Button>
@@ -40,7 +40,7 @@ export const UsersToolbar = ({ table }: UsersToolbarActionsProps) => {
       )}
       <UserEntity
         trigger={
-          <Button variant='default' size='sm'>
+          <Button variant='secondary' size='sm'>
             <SparkleIcon />
             Create
           </Button>
