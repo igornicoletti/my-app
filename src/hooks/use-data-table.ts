@@ -1,8 +1,21 @@
-import { getCoreRowModel, getFacetedMinMaxValues, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, type TableOptions, useReactTable } from '@tanstack/react-table'
+import {
+  getCoreRowModel,
+  getFacetedMinMaxValues,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type TableOptions,
+  useReactTable
+} from '@tanstack/react-table'
 
 type UseDataTableOptions<TData> = Omit<TableOptions<TData>, 'getCoreRowModel'>
 
-export const useDataTable = <TData,>({ columns, ...options }: UseDataTableOptions<TData>) => {
+export const useDataTable = <TData,>({
+  columns,
+  ...options
+}: UseDataTableOptions<TData>) => {
   const table = useReactTable({
     defaultColumn: {
       enableColumnFilter: false,
