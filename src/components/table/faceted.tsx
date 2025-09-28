@@ -67,10 +67,10 @@ export const TableFaceted = <TData, TValue>({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="border-dashed">
+        <Button variant='outline' size='sm' className='border-dashed'>
           {selectedValues.size > 0 ? (
             <div
-              role="button"
+              role='button'
               aria-label={`Clear ${title} filter`}
               tabIndex={0}
               onClick={onReset}>
@@ -82,20 +82,20 @@ export const TableFaceted = <TData, TValue>({
           {title}
           {selectedValues.size > 0 && (
             <>
-              <Separator orientation="vertical" className="mx-0.5 data-[orientation=vertical]:h-4" />
-              <Badge variant="secondary" className="rounded-sm px-1 font-normal lg:hidden">
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal lg:hidden'>
                 {selectedValues.size}
               </Badge>
-              <div className="hidden items-center gap-1 lg:flex">
+              <div className='hidden items-center gap-1 lg:flex'>
                 {selectedValues.size > 2 ? (
-                  <Badge variant="secondary" className="rounded-sm px-1 font-normal">
+                  <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
                   dynamicOptions
                     .filter((option) => selectedValues.has(option.value))
                     .map((option) => (
-                      <Badge variant="secondary" key={option.value} className="rounded-sm px-1 font-normal">
+                      <Badge variant='secondary' key={option.value} className='rounded-sm px-1 font-normal'>
                         {option.label}
                       </Badge>
                     ))
@@ -105,12 +105,12 @@ export const TableFaceted = <TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-48 p-0" align="start">
+      <PopoverContent className='w-48 p-0' align='start'>
         <Command>
           <CommandInput placeholder={`${title}...`} />
-          <CommandList className="max-h-full">
+          <CommandList className='max-h-full'>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup className="max-h-72 overflow-y-auto overflow-x-hidden">
+            <CommandGroup className='max-h-72 overflow-y-auto overflow-x-hidden'>
               {dynamicOptions.map((option) => {
                 const isSelected = selectedValues.has(option.value)
                 return (
@@ -119,9 +119,9 @@ export const TableFaceted = <TData, TValue>({
                     onSelect={() => onItemSelect(option, isSelected)}>
                     <Checkbox checked={isSelected} />
                     {option.icon && <option.icon />}
-                    <span className="truncate">{option.label}</span>
+                    <span className='truncate'>{option.label}</span>
                     {option.count !== undefined && (
-                      <span className="ml-auto font-mono text-xs">
+                      <span className='ml-auto font-mono text-xs'>
                         {option.count}
                       </span>
                     )}
@@ -133,7 +133,7 @@ export const TableFaceted = <TData, TValue>({
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <CommandItem onSelect={() => onReset()} className="justify-center text-center">
+                  <CommandItem onSelect={() => onReset()} className='justify-center text-center'>
                     Clear filters
                   </CommandItem>
                 </CommandGroup>

@@ -116,7 +116,7 @@ export const TableDate = <TData,>({
           {hasSelectedDates && (
             <>
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant="secondary" className="rounded-sm px-1 font-normal">
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
                 {dateText}
               </Badge>
             </>
@@ -136,7 +136,7 @@ export const TableDate = <TData,>({
         {hasSelectedDate && (
           <>
             <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-            <Badge variant="secondary" className="rounded-sm px-1 font-normal">
+            <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
               {dateText}
             </Badge>
           </>
