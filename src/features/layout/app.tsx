@@ -1,14 +1,35 @@
 import { CommonBreadcrumb } from '@/components/common/breadcrumb'
-import { SidebarApp } from '@/components/sidebar/app'
+import { SidebarNavigation } from '@/components/sidebar/navigation'
+import { SidebarTeam } from '@/components/sidebar/team'
+import { SidebarUser } from '@/components/sidebar/user'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from '@/components/ui/sidebar'
 import { useAuth } from '@/providers/auth'
 import { useCommand } from '@/providers/command'
 import { useTheme } from '@/providers/theme'
+import { routeNavigations } from '@/routes/config/navigation'
 import { ServiceAuth } from '@/services/auth'
-import { MagnifyingGlassIcon, MoonIcon, SignOutIcon, SunIcon } from '@phosphor-icons/react'
+import { CircuitryIcon, CpuIcon, MagnifyingGlassIcon, MemoryIcon, MoonIcon, SignOutIcon, SunIcon } from '@phosphor-icons/react'
 import { Navigate, Outlet } from 'react-router-dom'
+
+const teams = [
+  {
+    name: 'Lorem Ipsum',
+    logo: CircuitryIcon,
+    plan: 'Business',
+  },
+  {
+    name: 'Dolor Sit Amet',
+    logo: CpuIcon,
+    plan: 'Pro',
+  },
+  {
+    name: 'Consectetur Adipiscing',
+    logo: MemoryIcon,
+    plan: 'Plus',
+  },
+]
 
 export const LayoutApp = () => {
   const { user } = useAuth()
@@ -21,7 +42,19 @@ export const LayoutApp = () => {
 
   return (
     <SidebarProvider>
-      <SidebarApp />
+      <Sidebar collapsible='icon'>
+        <SidebarHeader>
+          <SidebarTeam teams={teams} />
+        </SidebarHeader>
+        <SidebarContent>
+          {routeNavigations.map((group) => (
+            <SidebarNavigation key={group.label} label={group.label} items={group.items} />))}
+        </SidebarContent>
+        <SidebarFooter>
+          <SidebarUser user={user} />
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
       <SidebarInset>
         <header className='flex h-16 shrink-0 items-center gap-2 p-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
           <div className='flex flex-1 items-center gap-2'>

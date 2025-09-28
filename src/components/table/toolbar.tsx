@@ -33,7 +33,7 @@ export const TableToolbar = <TData,>({
     <div
       role='toolbar'
       aria-orientation='horizontal'
-      className={cn('flex w-full items-start justify-between gap-2', className)}
+      className={cn('flex w-full flex-wrap items-end justify-between gap-2', className)}
       {...props}>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
         {columns.map(column => <TableToolbarFilter key={column.id} column={column} />)}
@@ -75,7 +75,7 @@ const TableToolbarFilter = <TData,>({ column }: TableToolbarFilterProps<TData>) 
             placeholder={columnMeta.placeholder ?? columnMeta.label}
             value={(column.getFilterValue() as string) ?? ''}
             onChange={event => column.setFilterValue(event.target.value)}
-            className='h-8 w-40 lg:w-56' />
+            className='h-8 min-w-max lg:w-56' />
         )
 
       case 'number':
