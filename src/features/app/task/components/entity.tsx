@@ -1,7 +1,7 @@
 import { CommonEntity } from '@/components/common/entity'
-import { CreateTask } from '@/features/app/task/components/create'
-import { UpdateTask } from '@/features/app/task/components/update'
-import type { TaskSchema } from '@/features/app/task/lib/schemas'
+import { TaskCreate } from '@/features/app/task/components/create'
+import { TaskUpdate } from '@/features/app/task/components/update'
+import type { TaskSchema } from '@/features/app/task/lib/schema'
 import type { ComponentPropsWithoutRef } from 'react'
 
 type TaskEntityProps = Omit<ComponentPropsWithoutRef<typeof CommonEntity<TaskSchema>>, 'createMode' | 'updateMode'> & {
@@ -20,14 +20,14 @@ export const TaskEntity = ({ task, ...props }: TaskEntityProps) => {
   const createMode = {
     title: 'Create task',
     description: 'Fill in the details below to create a new task.',
-    formComponent: <CreateTask />,
+    formComponent: <TaskCreate />,
   }
 
   const updateMode = isEditMode ? {
     data: task,
     title: 'Update task',
     description: 'Update the task details and save the changes.',
-    formComponent: <UpdateTask task={task!} />,
+    formComponent: <TaskUpdate task={task!} />,
   } : undefined
 
   const onModeSuccess = () => {

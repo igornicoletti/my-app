@@ -1,16 +1,16 @@
 import { Button } from '@/components/ui/button'
-import { DeleteUsers } from '@/features/app/user/components/delete'
+import { UserDelete } from '@/features/app/user/components/delete'
 import { UserEntity } from '@/features/app/user/components/entity'
-import type { UserSchema } from '@/features/app/user/lib/schemas'
+import type { UserSchema } from '@/features/app/user/lib/schema'
 import { exportTableToCSV } from '@/libs/export'
 import { DownloadSimpleIcon, SparkleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 
-interface UsersToolbarActionsProps {
+interface UserTableToolbarProps {
   table: Table<UserSchema>
 }
 
-export const UsersToolbar = ({ table }: UsersToolbarActionsProps) => {
+export const UserTableToolbar = ({ table }: UserTableToolbarProps) => {
   const selectedUsers = table.getFilteredSelectedRowModel().rows.map((row) => row.original)
 
   const onExport = () => {
@@ -27,7 +27,7 @@ export const UsersToolbar = ({ table }: UsersToolbarActionsProps) => {
         Export
       </Button>
       {selectedUsers.length > 0 && (
-        <DeleteUsers
+        <UserDelete
           users={selectedUsers}
           onConfirm={() => table.toggleAllRowsSelected(false)}
           trigger={

@@ -35,17 +35,17 @@ const parseColumnFilterValue = (value: unknown) => {
   return []
 }
 
-interface DateFilterProps<TData> {
+interface TableDateProps<TData> {
   column: Column<TData, unknown>
   title?: string
   multiple?: boolean
 }
 
-export const DateFilter = <TData,>({
+export const TableDate = <TData,>({
   column,
   title,
   multiple,
-}: DateFilterProps<TData>) => {
+}: TableDateProps<TData>) => {
   const columnFilterValue = column.getFilterValue()
 
   const selectedDates = useMemo<DateSelection>(() => {

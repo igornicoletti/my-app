@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
 export const statuses = {
-  canceled: 'Canceled',
-  done: 'Done',
-  inProgress: 'In progress',
   todo: 'Todo',
+  inProgress: 'In progress',
+  done: 'Done',
+  canceled: 'Canceled',
 } as const
 
 export const labels = {
@@ -15,9 +15,9 @@ export const labels = {
 } as const
 
 export const priorities = {
-  high: 'High',
   low: 'Low',
   medium: 'Medium',
+  high: 'High',
 } as const
 
 export type Status = typeof statuses[keyof typeof statuses]
@@ -41,7 +41,7 @@ export const taskSchema = z.object({
   updatedAt: z.date().max(new Date(), { message: 'Updated date cannot be in the future.' }),
 })
 
-export const createTaskSchema = z.object({
+export const taskSchemaCreate = z.object({
   title: taskSchema.shape.title,
   estimatedHours: taskSchema.shape.estimatedHours,
   status: taskSchema.shape.status,
@@ -50,7 +50,7 @@ export const createTaskSchema = z.object({
   archived: taskSchema.shape.archived.optional(),
 })
 
-export const updateTaskSchema = z.object({
+export const taskSchemaUpdate = z.object({
   title: taskSchema.shape.title.optional(),
   estimatedHours: taskSchema.shape.estimatedHours.optional(),
   status: taskSchema.shape.status.optional(),
@@ -60,5 +60,5 @@ export const updateTaskSchema = z.object({
 })
 
 export type TaskSchema = z.infer<typeof taskSchema>
-export type CreateTaskSchema = z.infer<typeof createTaskSchema>
-export type UpdateTaskSchema = z.infer<typeof updateTaskSchema>
+export type TaskSchemaCreate = z.infer<typeof taskSchemaCreate>
+export type TaskSchemaUpdate = z.infer<typeof taskSchemaUpdate>

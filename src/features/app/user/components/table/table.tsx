@@ -1,22 +1,22 @@
-import { DataTable } from '@/components/table/data-table'
-import { Toolbar } from '@/components/table/toolbar'
-import { DeleteUsers } from '@/features/app/user/components/delete'
-import { ViewUser } from '@/features/app/user/components/detail'
+import { DataTable } from '@/components/table/datatable'
+import { TableToolbar } from '@/components/table/toolbar'
+import { UserDelete } from '@/features/app/user/components/delete'
+import { UserDetail } from '@/features/app/user/components/detail'
 import { UserEntity } from '@/features/app/user/components/entity'
-import { UsersActionBar } from '@/features/app/user/components/table/actionbar'
-import { UsersColumns } from '@/features/app/user/components/table/columns'
-import { UsersToolbar } from '@/features/app/user/components/table/toolbar'
-import { useUsers } from '@/features/app/user/lib/hooks'
-import type { UserSchema } from '@/features/app/user/lib/schemas'
+import { UserTableAction } from '@/features/app/user/components/table/action'
+import { UserTableColumn } from '@/features/app/user/components/table/column'
+import { UserTableToolbar } from '@/features/app/user/components/table/toolbar'
+import { useUser } from '@/features/app/user/lib/hook'
+import type { UserSchema } from '@/features/app/user/lib/schema'
 import { useDataTable } from '@/hooks/use-data-table'
 import type { DataTableRowAction } from '@/types/data-table'
 import { useMemo, useState } from 'react'
 
-export const UsersTable = () => {
-  const { data: users } = useUsers()
+export const UserTable = () => {
+  const { data: users } = useUser()
   const [rowAction, setRowAction] = useState<DataTableRowAction<UserSchema> | null>(null)
 
-  const columns = useMemo(() => UsersColumns({
+  const columns = useMemo(() => UserTableColumn({
     setRowAction
   }), [setRowAction])
 
@@ -24,27 +24,20 @@ export const UsersTable = () => {
     data: users ?? [],
     columns,
     initialState: {
-      sorting: [{
-        id: 'createdAt',
-        desc: true
-      }],
-      columnPinning: {
-        right: ['actions']
-      },
+      sorting: [{ id: 'createdAt', desc: true }],
+      columnPinning: { right: ['actions'] },
     },
     getRowId: (row) => row.id,
   })
 
   return (
     <>
-      <DataTable
-        table={table}
-        actionBar={<UsersActionBar table={table} />}>
-        <Toolbar table={table}>
-          <UsersToolbar table={table} />
-        </Toolbar>
+      <DataTable table={table} actionBar={<UserTableAction table={table} />}>
+        <TableToolbar table={table}>
+          <UserTableToolbar table={table} />
+        </TableToolbar>
       </DataTable>
-      <ViewUser
+      <UserDetail
         open={!!rowAction && rowAction.variant === 'view'}
         onOpenChange={() => setRowAction(null)}
         user={rowAction?.row.original ?? null} />
@@ -52,7 +45,7 @@ export const UsersTable = () => {
         open={!!rowAction && rowAction.variant === 'update'}
         onOpenChange={() => setRowAction(null)}
         user={rowAction?.row.original ?? null} />
-      <DeleteUsers
+      <UserDelete
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         users={rowAction?.row.original ? [rowAction?.row.original] : []}

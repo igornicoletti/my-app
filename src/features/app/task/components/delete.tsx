@@ -1,17 +1,17 @@
 import { CommonConfirm } from '@/components/common/confirm'
-import { useDeleteTasks } from '@/features/app/task/lib/hooks'
-import type { TaskSchema } from '@/features/app/task/lib/schemas'
+import { useTaskDelete } from '@/features/app/task/lib/hook'
+import type { TaskSchema } from '@/features/app/task/lib/schema'
 import type { Row } from '@tanstack/react-table'
 import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 
-interface DeleteTasksProps extends Omit<ComponentPropsWithoutRef<typeof CommonConfirm>, 'children'> {
+interface TaskDeleteProps extends Omit<ComponentPropsWithoutRef<typeof CommonConfirm>, 'children'> {
   tasks: Row<TaskSchema>['original'][]
   trigger?: ReactNode
   onSuccess?: () => void
 }
 
-export const DeleteTasks = ({ tasks, trigger, onSuccess, ...props }: DeleteTasksProps) => {
-  const deleteTasks = useDeleteTasks({
+export const TaskDelete = ({ tasks, trigger, onSuccess, ...props }: TaskDeleteProps) => {
+  const deleteTasks = useTaskDelete({
     onSuccess: () => {
       onSuccess?.()
     },

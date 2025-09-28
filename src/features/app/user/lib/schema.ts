@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const roles = {
   superadmin: 'Superadmin',
   manager: 'Manager',
-  cashier: 'Cashier',
+  viewer: 'Viewer',
 } as const
 
 export const statuses = {
@@ -35,7 +35,7 @@ export const userSchema = z.object({
   updatedAt: z.date(),
 })
 
-export const createUserSchema = z.object({
+export const userSchemaCreate = z.object({
   name: userSchema.shape.name,
   email: userSchema.shape.email,
   phone: userSchema.shape.phone,
@@ -43,7 +43,7 @@ export const createUserSchema = z.object({
   status: userSchema.shape.status,
 })
 
-export const updateUserSchema = z.object({
+export const userSchemaUpdate = z.object({
   name: userSchema.shape.name.optional(),
   email: userSchema.shape.email.optional(),
   phone: userSchema.shape.phone.optional(),
@@ -52,5 +52,5 @@ export const updateUserSchema = z.object({
 })
 
 export type UserSchema = z.infer<typeof userSchema>
-export type CreateUserSchema = z.infer<typeof createUserSchema>
-export type UpdateUserSchema = z.infer<typeof updateUserSchema>
+export type UserSchemaCreate = z.infer<typeof userSchemaCreate>
+export type UserSchemaUpdate = z.infer<typeof userSchemaUpdate>

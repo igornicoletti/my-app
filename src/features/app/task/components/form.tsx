@@ -2,26 +2,24 @@ import { FormSelect } from '@/components/form/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { type CreateTaskSchema, labelList, priorityList, statusList } from '@/features/app/task/lib/schemas'
+import { type TaskSchemaCreate, labelList, priorityList, statusList } from '@/features/app/task/lib/schema'
 import type { ComponentPropsWithRef, ReactNode } from 'react'
 import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
 
-interface TaskFormProps<T extends Partial<CreateTaskSchema> & FieldValues>
+interface TaskFormProps<T extends Partial<TaskSchemaCreate> & FieldValues>
   extends Omit<ComponentPropsWithRef<'form'>, 'onSubmit'> {
   children: ReactNode
   form: UseFormReturn<T>
   onSubmit: (data: T) => void
 }
 
-export const TaskForm = <T extends Partial<CreateTaskSchema> & FieldValues>({
+export const TaskForm = <T extends Partial<TaskSchemaCreate> & FieldValues>({
   form,
   onSubmit,
   children,
 }: TaskFormProps<T>) => (
   <Form {...form}>
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className='flex min-h-0 flex-1 flex-col'>
+    <form onSubmit={form.handleSubmit(onSubmit)} className='flex min-h-0 flex-1 flex-col'>
       <div className='flex flex-col gap-4 px-4 overflow-y-auto py-2 flex-1'>
         <FormField
           control={form.control}

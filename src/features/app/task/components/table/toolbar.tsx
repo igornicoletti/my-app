@@ -1,16 +1,16 @@
 import { Button } from '@/components/ui/button'
-import { DeleteTasks } from '@/features/app/task/components/delete'
+import { TaskDelete } from '@/features/app/task/components/delete'
 import { TaskEntity } from '@/features/app/task/components/entity'
-import type { TaskSchema } from '@/features/app/task/lib/schemas'
+import type { TaskSchema } from '@/features/app/task/lib/schema'
 import { exportTableToCSV } from '@/libs/export'
 import { DownloadSimpleIcon, SparkleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 
-interface TasksToolbarActionsProps {
+interface TaskToolbarProps {
   table: Table<TaskSchema>
 }
 
-export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
+export const TaskToolbar = ({ table }: TaskToolbarProps) => {
   const selectedTasks = table.getFilteredSelectedRowModel().rows.map((row) => row.original)
 
   const onExport = () => {
@@ -22,28 +22,27 @@ export const TasksToolbar = ({ table }: TasksToolbarActionsProps) => {
 
   return (
     <div className='flex flex-wrap items-center gap-2'>
-      <Button variant='outline' size='sm' onClick={onExport}>
+      <Button variant='secondary' size='sm' onClick={onExport}>
         <DownloadSimpleIcon />
         Export
       </Button>
       {selectedTasks.length > 0 && (
-        <DeleteTasks
+        <TaskDelete
           tasks={selectedTasks}
           onConfirm={() => table.toggleAllRowsSelected(false)}
           trigger={
-            <Button variant='outline' size='sm'>
+            <Button variant='secondary' size='sm'>
               <TrashSimpleIcon />
               Delete
             </Button>
           } />
       )}
-      <TaskEntity
-        trigger={
-          <Button variant='secondary' size='sm'>
-            <SparkleIcon />
-            Create
-          </Button>
-        } />
+      <TaskEntity trigger={
+        <Button variant='secondary' size='sm'>
+          <SparkleIcon />
+          Create
+        </Button>
+      } />
     </div>
   )
 }

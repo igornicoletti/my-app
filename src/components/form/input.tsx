@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react'
 import { useState } from 'react'
@@ -9,6 +9,7 @@ interface FormInputProps<T extends FieldValues> {
   name: FieldPath<T>
   control: Control<T>
   type: string
+  label?: string
   autoComplete?: string
   autoFocus?: boolean
   disabled?: boolean
@@ -21,6 +22,7 @@ export const FormInput = <T extends FieldValues>({
   control,
   disabled,
   name,
+  label,
   placeholder,
   type
 }: FormInputProps<T>) => {
@@ -35,6 +37,7 @@ export const FormInput = <T extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => (
         <FormItem>
+          {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <div className='relative'>
               <Input

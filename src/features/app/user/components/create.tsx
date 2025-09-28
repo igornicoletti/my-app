@@ -1,28 +1,28 @@
 import { Button } from '@/components/ui/button'
 import { SheetClose, SheetFooter } from '@/components/ui/sheet'
 import { UserForm } from '@/features/app/user/components/form'
-import { useCreateUser } from '@/features/app/user/lib/hooks'
-import type { CreateUserSchema } from '@/features/app/user/lib/schemas'
-import { createUserSchema } from '@/features/app/user/lib/schemas'
+import { useUserCreate } from '@/features/app/user/lib/hook'
+import type { UserSchemaCreate } from '@/features/app/user/lib/schema'
+import { userSchemaCreate } from '@/features/app/user/lib/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
 import type { FieldValues } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
-interface CreateUserProps {
+interface UserCreateProps {
   onSuccess?: () => void
 }
 
-export const CreateUser = ({ onSuccess }: CreateUserProps) => {
-  const form = useForm<CreateUserSchema>({
-    resolver: zodResolver(createUserSchema),
+export const UserCreate = ({ onSuccess }: UserCreateProps) => {
+  const form = useForm<UserSchemaCreate>({
+    resolver: zodResolver(userSchemaCreate),
     defaultValues: {
       role: 'Manager',
       status: 'Pending',
     },
   })
 
-  const { mutate: createUser, isPending } = useCreateUser({
+  const { mutate: createUser, isPending } = useUserCreate({
     onSuccess: () => {
       form.reset()
       onSuccess?.()

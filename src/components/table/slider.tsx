@@ -23,15 +23,15 @@ const getIsValidRange = (value: unknown): value is RangeValue =>
   typeof value[0] === 'number' &&
   typeof value[1] === 'number'
 
-interface SliderFilterProps<TData> {
+interface TableSliderProps<TData> {
   column: Column<TData, unknown>
   title?: string
 }
 
-export const SliderFilter = <TData,>({
+export const TableSlider = <TData,>({
   column,
   title,
-}: SliderFilterProps<TData>) => {
+}: TableSliderProps<TData>) => {
   const id = useId()
 
   const columnFilterValue = getIsValidRange(column.getFilterValue())
@@ -184,13 +184,6 @@ export const SliderFilter = <TData,>({
             value={range}
             onValueChange={onSliderValueChange} />
         </div>
-        <Button
-          aria-label={`Clear ${title} filter`}
-          variant='outline'
-          size='sm'
-          onClick={onReset}>
-          Clear
-        </Button>
       </PopoverContent>
     </Popover>
   )

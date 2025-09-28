@@ -1,4 +1,4 @@
-import { UsersTable } from '@/features/app/user/components/table/table'
+import { UserTable } from '@/features/app/user/components/table/table'
 
 export const AppUser = () => (
   <div className='flex flex-col gap-6 p-2'>
@@ -8,6 +8,6 @@ export const AppUser = () => (
         Manage application users, assign roles, and control access permissions.
       </p>
     </div>
-    <UsersTable />
+    <UserTable />
   </div>
 )

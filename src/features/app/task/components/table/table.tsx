@@ -1,44 +1,20 @@
-import { DataTable } from '@/components/table/data-table'
-import { Toolbar } from '@/components/table/toolbar'
-import { DeleteTasks } from '@/features/app/task/components/delete'
-import { ViewTask } from '@/features/app/task/components/detail'
+import { DataTable } from '@/components/table/datatable'
+import { TableToolbar } from '@/components/table/toolbar'
+import { TaskDelete } from '@/features/app/task/components/delete'
+import { TaskDetail } from '@/features/app/task/components/detail'
 import { TaskEntity } from '@/features/app/task/components/entity'
-import { TasksActionBar } from '@/features/app/task/components/table/actionbar'
-import { createTasksColumns } from '@/features/app/task/components/table/columns'
-import { TasksToolbar } from '@/features/app/task/components/table/toolbar'
-import { useTasks } from '@/features/app/task/lib/hooks'
-import type { TaskSchema } from '@/features/app/task/lib/schemas'
+import { TaskTableAction } from '@/features/app/task/components/table/action'
+import { TaskTableColumn } from '@/features/app/task/components/table/column'
+import { TaskToolbar } from '@/features/app/task/components/table/toolbar'
+import { useTask } from '@/features/app/task/lib/hook'
+import type { TaskSchema } from '@/features/app/task/lib/schema'
 import { useDataTable } from '@/hooks/use-data-table'
 import { getNumberRange } from '@/libs/filter-fn'
 import type { DataTableRowAction } from '@/types/data-table'
 import { useMemo, useState } from 'react'
 
-const TaskActionsHandler = ({
-  action,
-  onClear,
-}: {
-  action: DataTableRowAction<TaskSchema> | null
-  onClear: () => void
-}) => {
-  if (!action) return null
-  const task = action.row.original
-
-  return (
-    <>
-      <ViewTask open={action.variant === 'view'} onOpenChange={onClear} task={task} />
-      <TaskEntity open={action.variant === 'update'} onOpenChange={onClear} task={task} />
-      <DeleteTasks
-        open={action.variant === 'delete'}
-        onOpenChange={onClear}
-        tasks={task ? [task] : []}
-        onConfirm={() => action.row.toggleSelected(false)}
-      />
-    </>
-  )
-}
-
-export const TasksTable = () => {
-  const { data: tasks } = useTasks()
+export const TaskTable = () => {
+  const { data: tasks } = useTask()
   const [rowAction, setRowAction] = useState<DataTableRowAction<TaskSchema> | null>(null)
 
   const estimatedHoursRange: [number, number] = useMemo(() => (
@@ -47,9 +23,9 @@ export const TasksTable = () => {
       : [0, 48]
   ), [tasks])
 
-  const columns = useMemo(() => createTasksColumns({
+  const columns = useMemo(() => TaskTableColumn({
     estimatedHoursRange,
-    setRowAction
+    setRowAction,
   }), [estimatedHoursRange, setRowAction])
 
   const { table } = useDataTable({
@@ -64,12 +40,24 @@ export const TasksTable = () => {
 
   return (
     <>
-      <DataTable table={table} actionBar={<TasksActionBar table={table} />}>
-        <Toolbar table={table}>
-          <TasksToolbar table={table} />
-        </Toolbar>
+      <DataTable table={table} actionBar={<TaskTableAction table={table} />}>
+        <TableToolbar table={table}>
+          <TaskToolbar table={table} />
+        </TableToolbar>
       </DataTable>
-      <TaskActionsHandler action={rowAction} onClear={() => setRowAction(null)} />
+      <TaskDetail
+        open={!!rowAction && rowAction.variant === 'view'}
+        onOpenChange={() => setRowAction(null)}
+        task={rowAction?.row.original ?? null} />
+      <TaskEntity
+        open={!!rowAction && rowAction.variant === 'update'}
+        onOpenChange={() => setRowAction(null)}
+        task={rowAction?.row.original ?? null} />
+      <TaskDelete
+        open={!!rowAction && rowAction.variant === 'delete'}
+        onOpenChange={() => setRowAction(null)}
+        tasks={rowAction?.row.original ? [rowAction?.row.original] : []}
+        onConfirm={() => rowAction?.row.toggleSelected(false)} />
     </>
   )
 }

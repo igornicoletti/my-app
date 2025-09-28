@@ -5,7 +5,7 @@ import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
 interface FormSelectProps<T extends FieldValues> {
   form: UseFormReturn<T>
   name: FieldPath<T>
-  label: string
+  label?: string
   placeholder: string
   options: readonly string[]
 }
@@ -23,11 +23,13 @@ export const FormSelect = <T extends FieldValues>({
       name={name}
       render={({ field, fieldState }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {label && <FormLabel>{label}</FormLabel>}
           <Select onValueChange={field.onChange} value={field.value ?? ''}>
             <FormControl>
               <SelectTrigger className='w-full'>
-                <SelectValue placeholder={placeholder} aria-invalid={!!fieldState.error} />
+                <SelectValue
+                  placeholder={placeholder}
+                  aria-invalid={!!fieldState.error} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>

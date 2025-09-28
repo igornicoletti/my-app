@@ -1,18 +1,18 @@
 import { FormSelect } from '@/components/form/select'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { type CreateUserSchema, roleList, statusList } from '@/features/app/user/lib/schemas'
+import { type UserSchemaCreate, roleList, statusList } from '@/features/app/user/lib/schema'
 import type { ComponentPropsWithRef, ReactNode } from 'react'
 import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
 
-interface UserFormProps<T extends Partial<CreateUserSchema> & FieldValues>
+interface UserFormProps<T extends Partial<UserSchemaCreate> & FieldValues>
   extends Omit<ComponentPropsWithRef<'form'>, 'onSubmit'> {
   children: ReactNode
   form: UseFormReturn<T>
   onSubmit: (data: T) => void
 }
 
-export const UserForm = <T extends Partial<CreateUserSchema> & FieldValues>({
+export const UserForm = <T extends Partial<UserSchemaCreate> & FieldValues>({
   form,
   onSubmit,
   children,

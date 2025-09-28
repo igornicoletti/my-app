@@ -1,12 +1,12 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import type { TaskSchema } from '@/features/app/task/lib/schemas'
+import type { TaskSchema } from '@/features/app/task/lib/schema'
 import type { ComponentPropsWithRef } from 'react'
 
-interface ViewTaskProps extends ComponentPropsWithRef<typeof Dialog> {
+interface TaskDetailProps extends ComponentPropsWithRef<typeof Dialog> {
   task: TaskSchema | null
 }
 
-export const ViewTask = ({ task, ...props }: ViewTaskProps) => {
+export const TaskDetail = ({ task, ...props }: TaskDetailProps) => {
   if (!task) return null
 
   return (

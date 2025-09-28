@@ -1,7 +1,7 @@
 import { CommonEntity } from '@/components/common/entity'
-import { CreateUser } from '@/features/app/user/components/create'
-import { UpdateUser } from '@/features/app/user/components/update'
-import type { UserSchema } from '@/features/app/user/lib/schemas'
+import { UserCreate } from '@/features/app/user/components/create'
+import { UserUpdate } from '@/features/app/user/components/update'
+import type { UserSchema } from '@/features/app/user/lib/schema'
 import type { ComponentPropsWithoutRef } from 'react'
 
 type UserEntityProps = Omit<ComponentPropsWithoutRef<typeof CommonEntity<UserSchema>>, 'createMode' | 'updateMode'> & {
@@ -20,14 +20,14 @@ export const UserEntity = ({ user, ...props }: UserEntityProps) => {
   const createMode = {
     title: 'Create user',
     description: 'Fill in the details below to create a new user.',
-    formComponent: <CreateUser />,
+    formComponent: <UserCreate />,
   }
 
   const updateMode = isEditMode ? {
     data: user,
     title: 'Update user',
     description: 'Update the user details and save the changes.',
-    formComponent: <UpdateUser user={user!} />,
+    formComponent: <UserUpdate user={user!} />,
   } : undefined
 
   const onModeSuccess = () => {

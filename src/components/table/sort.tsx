@@ -4,18 +4,18 @@ import { CaretDownIcon, CaretUpDownIcon, CaretUpIcon, EyeSlashIcon, XIcon } from
 import type { Column } from '@tanstack/react-table'
 import type { ComponentProps } from 'react'
 
-interface ColumnHeaderProps<TData, TValue>
+interface TableSortProps<TData, TValue>
   extends ComponentProps<typeof DropdownMenuTrigger> {
   column: Column<TData, TValue>
   title: string
 }
 
-export const ColumnHeader = <TData, TValue>({
+export const TableSort = <TData, TValue>({
   column,
   title,
   className,
   ...props
-}: ColumnHeaderProps<TData, TValue>) => {
+}: TableSortProps<TData, TValue>) => {
   if (!column.getCanSort() && !column.getCanHide()) {
     return <div className={cn(className)}>{title}</div>
   }

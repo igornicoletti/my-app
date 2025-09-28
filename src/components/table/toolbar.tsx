@@ -1,7 +1,7 @@
-import { DateFilter } from '@/components/table/date-filter'
-import { FacetedFilter } from '@/components/table/faceted-filter'
-import { SliderFilter } from '@/components/table/slider-filter'
-import { ViewOptions } from '@/components/table/view-options'
+import { TableDate } from '@/components/table/date'
+import { TableFaceted } from '@/components/table/faceted'
+import { TableSlider } from '@/components/table/slider'
+import { TableView } from '@/components/table/view'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/libs/utils'
@@ -9,19 +9,19 @@ import { ArrowsClockwiseIcon } from '@phosphor-icons/react'
 import type { Column, Table } from '@tanstack/react-table'
 import { useCallback, useMemo, type ComponentProps } from 'react'
 
-interface ToolbarProps<TData> extends ComponentProps<'div'> {
+interface TableToolbarProps<TData> extends ComponentProps<'div'> {
   table: Table<TData>
 }
 
-export const Toolbar = <TData,>({
+export const TableToolbar = <TData,>({
   table,
   children,
   className,
   ...props
-}: ToolbarProps<TData>) => {
-  const isFiltered = useMemo(() => table.getState().columnFilters.length > 0, [table])
+}: TableToolbarProps<TData>) => {
+  const isFiltered = table.getState().columnFilters.length > 0
 
-  const columns = useMemo(() => table.getAllColumns().filter(column =>
+  const columns = useMemo(() => table.getAllColumns().filter((column) =>
     column.getCanFilter()
   ), [table])
 
@@ -30,9 +30,13 @@ export const Toolbar = <TData,>({
   }, [table])
 
   return (
-    <div role='toolbar' aria-orientation='horizontal' className={cn('flex w-full items-start justify-between gap-2', className)} {...props}>
+    <div
+      role='toolbar'
+      aria-orientation='horizontal'
+      className={cn('flex w-full items-start justify-between gap-2', className)}
+      {...props}>
       <div className='flex flex-1 flex-wrap items-center gap-2'>
-        {columns.map(column => <ToolbarFilter key={column.id} column={column} />)}
+        {columns.map(column => <TableToolbarFilter key={column.id} column={column} />)}
         {isFiltered && (
           <Button
             aria-label='Reset filters'
@@ -46,18 +50,18 @@ export const Toolbar = <TData,>({
         )}
       </div>
       <div className='flex items-center gap-2'>
-        <ViewOptions table={table} />
+        <TableView table={table} />
         {children}
       </div>
     </div>
   )
 }
 
-interface ToolbarFilterProps<TData> {
+interface TableToolbarFilterProps<TData> {
   column: Column<TData>
 }
 
-const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
+const TableToolbarFilter = <TData,>({ column }: TableToolbarFilterProps<TData>) => {
   const columnMeta = column.columnDef.meta
 
   const onFilterRender = useCallback(() => {
@@ -67,6 +71,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
       case 'text':
         return (
           <Input
+            id={`${column.id}-text`}
             placeholder={columnMeta.placeholder ?? columnMeta.label}
             value={(column.getFilterValue() as string) ?? ''}
             onChange={event => column.setFilterValue(event.target.value)}
@@ -77,6 +82,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
         return (
           <div className='relative'>
             <Input
+              id={`${column.id}-number`}
               type='number'
               inputMode='numeric'
               placeholder={columnMeta.placeholder ?? columnMeta.label}
@@ -93,7 +99,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
 
       case 'range':
         return (
-          <SliderFilter
+          <TableSlider
             column={column}
             title={columnMeta.label ?? column.id} />
         )
@@ -101,7 +107,7 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
       case 'date':
       case 'dateRange':
         return (
-          <DateFilter
+          <TableDate
             column={column}
             title={columnMeta.label ?? column.id}
             multiple={columnMeta.variant === 'dateRange'} />
@@ -110,14 +116,15 @@ const ToolbarFilter = <TData,>({ column }: ToolbarFilterProps<TData>) => {
       case 'select':
       case 'multiSelect':
         return (
-          <FacetedFilter
+          <TableFaceted
             column={column}
             title={columnMeta.label ?? column.id}
             options={columnMeta.options ?? []}
             multiple={columnMeta.variant === 'multiSelect'} />
         )
 
-      default: return null
+      default:
+        return null
     }
   }, [column, columnMeta])
 

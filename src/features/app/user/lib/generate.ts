@@ -1,8 +1,8 @@
-import { roles, statuses, type UserSchema } from '@/features/app/user/lib/schemas'
+import { roles, statuses, type UserSchema } from '@/features/app/user/lib/schema'
 import { generateId } from '@/libs/id'
 import { faker } from '@faker-js/faker'
 
-export const generateRandomUser = (): UserSchema => ({
+export const userGenerate = (): UserSchema => ({
   id: generateId('user'),
   name: faker.person.fullName(),
   email: faker.internet.email(),

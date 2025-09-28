@@ -1,44 +1,44 @@
-import { ActionBar, ActionBarAction, ActionBarSelection } from '@/components/table/action-bar'
+import { TableAction, TableActionButton, TableActionSelection } from '@/components/table/action'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useDeleteTasks, useUpdateTasks } from '@/features/app/task/lib/hooks'
-import { priorityList, statusList, type TaskSchema } from '@/features/app/task/lib/schemas'
+import { useUserDelete, useUserUpdates } from '@/features/app/user/lib/hook'
+import { roleList, statusList, type UserSchema } from '@/features/app/user/lib/schema'
 import { exportTableToCSV } from '@/libs/export'
 import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import { SelectTrigger } from '@radix-ui/react-select'
 import type { Table } from '@tanstack/react-table'
 
-interface TasksActionBarProps {
-  table: Table<TaskSchema>
+interface UserTableActionProps {
+  table: Table<UserSchema>
 }
 
-export const TasksActionBar = ({ table }: TasksActionBarProps) => {
+export const UserTableAction = ({ table }: UserTableActionProps) => {
   const rows = table.getFilteredSelectedRowModel().rows
 
-  const updateTasksMutation = useUpdateTasks({
+  const updateUsersMutation = useUserUpdates({
     onSuccess: () => table.toggleAllRowsSelected(false)
   })
 
-  const onUpdateStatus = (status: TaskSchema['status']) => {
-    updateTasksMutation.mutate({
+  const onUpdateStatus = (status: UserSchema['status']) => {
+    updateUsersMutation.mutate({
       ids: rows.map((row) => row.original.id),
       fields: { status },
     })
   }
 
-  const onUpdatePriority = (priority: TaskSchema['priority']) => {
-    updateTasksMutation.mutate({
+  const onUpdateRole = (role: UserSchema['role']) => {
+    updateUsersMutation.mutate({
       ids: rows.map((row) => row.original.id),
-      fields: { priority },
+      fields: { role },
     })
   }
 
-  const deleteTasksMutation = useDeleteTasks({
+  const deleteUsersMutation = useUserDelete({
     onSuccess: () => table.toggleAllRowsSelected(false)
   })
 
   const onDelete = () => {
-    deleteTasksMutation.mutate(rows.map((row) => row.original.id))
+    deleteUsersMutation.mutate(rows.map((row) => row.original.id))
   }
 
   const onExport = () => {
@@ -49,15 +49,15 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
   }
 
   return (
-    <ActionBar table={table}>
-      <ActionBarSelection table={table} />
+    <TableAction table={table}>
+      <TableActionSelection table={table} />
       <Separator orientation='vertical' className='hidden data-[orientation=vertical]:h-5 sm:block' />
       <div className='flex flex-wrap items-center justify-center gap-1.5'>
         <Select onValueChange={onUpdateStatus}>
           <SelectTrigger asChild>
-            <ActionBarAction size='icon' tooltip='Update status'>
+            <TableActionButton size='icon' tooltip='Update status'>
               <CircleDashedIcon />
-            </ActionBarAction>
+            </TableActionButton>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
@@ -69,29 +69,29 @@ export const TasksActionBar = ({ table }: TasksActionBarProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select onValueChange={onUpdatePriority}>
+        <Select onValueChange={onUpdateRole}>
           <SelectTrigger asChild>
-            <ActionBarAction size='icon' tooltip='Update priority'>
+            <TableActionButton size='icon' tooltip='Update role'>
               <ArrowUpIcon />
-            </ActionBarAction>
+            </TableActionButton>
           </SelectTrigger>
           <SelectContent align='center'>
             <SelectGroup>
-              {priorityList.map((priority) => (
-                <SelectItem key={priority} value={priority} className='capitalize'>
-                  {priority}
+              {roleList.map((role) => (
+                <SelectItem key={role} value={role} className='capitalize'>
+                  {role}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <ActionBarAction size='icon' tooltip='Export tasks' onClick={onExport}>
+        <TableActionButton size='icon' tooltip='Export users' onClick={onExport}>
           <DownloadSimpleIcon />
-        </ActionBarAction>
-        <ActionBarAction size='icon' tooltip='Delete tasks' onClick={onDelete}>
+        </TableActionButton>
+        <TableActionButton size='icon' tooltip='Delete users' onClick={onDelete}>
           <TrashSimpleIcon />
-        </ActionBarAction>
+        </TableActionButton>
       </div>
-    </ActionBar>
+    </TableAction>
   )
 }

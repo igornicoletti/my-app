@@ -1,12 +1,12 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import type { UserSchema } from '@/features/app/user/lib/schemas'
+import type { UserSchema } from '@/features/app/user/lib/schema'
 import type { ComponentPropsWithRef } from 'react'
 
-interface ViewUserProps extends ComponentPropsWithRef<typeof Dialog> {
+interface UserDetailProps extends ComponentPropsWithRef<typeof Dialog> {
   user: UserSchema | null
 }
 
-export const ViewUser = ({ user, ...props }: ViewUserProps) => {
+export const UserDetail = ({ user, ...props }: UserDetailProps) => {
   if (!user) return null
 
   return (

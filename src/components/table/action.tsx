@@ -8,21 +8,21 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-interface ActionBarProps<TData>
+interface TableActionProps<TData>
   extends React.ComponentProps<typeof motion.div> {
   table: Table<TData>
   visible?: boolean
   container?: Element | DocumentFragment | null
 }
 
-const ActionBar = <TData,>({
+const TableAction = <TData,>({
   table,
   visible: visibleProp,
   container: containerProp,
   children,
   className,
   ...props
-}: ActionBarProps<TData>) => {
+}: TableActionProps<TData>) => {
   const [mounted, setMounted] = useState(false)
 
   useLayoutEffect(() => {
@@ -66,13 +66,13 @@ const ActionBar = <TData,>({
   )
 }
 
-interface ActionBarActionProps
+interface TableActionButtonProps
   extends React.ComponentProps<typeof Button> {
   tooltip?: string
   isPending?: boolean
 }
 
-const ActionBarAction = ({
+const TableActionButton = ({
   size = 'sm',
   tooltip,
   isPending,
@@ -80,13 +80,13 @@ const ActionBarAction = ({
   className,
   children,
   ...props
-}: ActionBarActionProps) => {
+}: TableActionButtonProps) => {
   const trigger = (
     <Button
       variant='secondary'
       size={size}
       className={cn(
-        'gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5',
+        'gap-1.5 border border-border bg-popover [&>svg]:size-3.5',
         size === 'icon' ? 'size-7' : 'h-7', className
       )}
       disabled={disabled || isPending}
@@ -105,13 +105,13 @@ const ActionBarAction = ({
   )
 }
 
-interface ActionBarSelectionProps<TData> {
+interface TableActionSelectionProps<TData> {
   table: Table<TData>
 }
 
-const ActionBarSelection = <TData,>({
+const TableActionSelection = <TData,>({
   table,
-}: ActionBarSelectionProps<TData>) => {
+}: TableActionSelectionProps<TData>) => {
   const onClearSelection = useCallback(() => {
     table.toggleAllRowsSelected(false)
   }, [table])
@@ -136,7 +136,7 @@ const ActionBarSelection = <TData,>({
           sideOffset={10}
           className='flex items-center gap-2'>
           <p>Clear selection</p>
-          <kbd className='select-none rounded border bg-background px-1.5 py-px font-mono font-normal text-[0.7rem] text-foreground shadow-xs'>
+          <kbd className='select-none rounded bg-muted-foreground px-1.5 py-px font-mono font-normal text-[0.7rem]'>
             <abbr title='Escape' className='no-underline'>
               Esc
             </abbr>
@@ -147,8 +147,4 @@ const ActionBarSelection = <TData,>({
   )
 }
 
-export {
-  ActionBar,
-  ActionBarAction,
-  ActionBarSelection
-}
+export { TableAction, TableActionButton, TableActionSelection }

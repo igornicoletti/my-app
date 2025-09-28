@@ -10,7 +10,7 @@ interface PaginationProps<TData> extends ComponentProps<'div'> {
   pageSizeOptions?: number[]
 }
 
-export const Pagination = <TData,>({
+export const TablePagination = <TData,>({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50],
   className,

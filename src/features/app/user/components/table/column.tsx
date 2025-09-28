@@ -1,9 +1,9 @@
-import { ColumnHeader } from '@/components/table/column-header'
+import { TableSort } from '@/components/table/sort'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { roleList, statusList, type UserSchema } from '@/features/app/user/lib/schemas'
-import { roleIcons, statusIcons } from '@/features/app/user/lib/utils'
+import { roleList, statusList, type UserSchema } from '@/features/app/user/lib/schema'
+import { roleIcons, statusIcons } from '@/features/app/user/lib/util'
 import { dateRangeFilterFn } from '@/libs/filter-fn'
 import { formatDate } from '@/libs/format'
 import type { DataTableRowAction } from '@/types/data-table'
@@ -11,13 +11,13 @@ import { CalendarBlankIcon, CircleDashedIcon, DotsThreeIcon, ShieldIcon, TextAaI
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 
-interface UsersColumnsProps {
+interface UserTableColumnProps {
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<UserSchema> | null>>
 }
 
-export const UsersColumns = ({
+export const UserTableColumn = ({
   setRowAction
-}: UsersColumnsProps): ColumnDef<UserSchema>[] => [
+}: UserTableColumnProps): ColumnDef<UserSchema>[] => [
     {
       id: 'select',
       header: ({ table }) => (
@@ -42,7 +42,7 @@ export const UsersColumns = ({
     {
       id: 'name',
       accessorKey: 'name',
-      header: ({ column }) => <ColumnHeader column={column} title='Name' />,
+      header: ({ column }) => <TableSort column={column} title='Name' />,
       cell: ({ row }) => <div className='max-w-md truncate'>{row.getValue('name')}</div>,
       meta: {
         label: 'Name',
@@ -57,7 +57,7 @@ export const UsersColumns = ({
     {
       id: 'email',
       accessorKey: 'email',
-      header: ({ column }) => <ColumnHeader column={column} title='Email' />,
+      header: ({ column }) => <TableSort column={column} title='Email' />,
       cell: ({ row }) => <div className='max-w-md truncate'>{row.getValue('email')}</div>,
       enableColumnFilter: false,
     },
@@ -65,14 +65,14 @@ export const UsersColumns = ({
     {
       id: 'phone',
       accessorKey: 'phone',
-      header: ({ column }) => <ColumnHeader column={column} title='Phone Number' />,
+      header: ({ column }) => <TableSort column={column} title='Phone Number' />,
       cell: ({ row }) => row.getValue('phone'),
       enableColumnFilter: false,
     },
 
     {
       accessorKey: 'status',
-      header: ({ column }) => <ColumnHeader column={column} title='Status' />,
+      header: ({ column }) => <TableSort column={column} title='Status' />,
       cell: ({ cell }) => {
         const value = cell.getValue<UserSchema['status']>()
         const Icon = value ? statusIcons[value] : null
@@ -100,7 +100,7 @@ export const UsersColumns = ({
     {
       id: 'role',
       accessorKey: 'role',
-      header: ({ column }) => <ColumnHeader column={column} title='Role' />,
+      header: ({ column }) => <TableSort column={column} title='Role' />,
       cell: ({ cell }) => {
         const value = cell.getValue<UserSchema['role']>()
         const Icon = value ? roleIcons[value] : null
@@ -127,7 +127,7 @@ export const UsersColumns = ({
 
     {
       accessorKey: 'createdAt',
-      header: ({ column }) => <ColumnHeader column={column} title='Registered Date' />,
+      header: ({ column }) => <TableSort column={column} title='Registered Date' />,
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
       meta: {
         label: 'Registered',
@@ -140,7 +140,7 @@ export const UsersColumns = ({
 
     {
       accessorKey: 'lastLogin',
-      header: ({ column }) => <ColumnHeader column={column} title='Last Login Date' />,
+      header: ({ column }) => <TableSort column={column} title='Last Login Date' />,
       cell: ({ cell }) => formatDate(cell.getValue<Date>()),
       meta: {
         label: 'Last Login',

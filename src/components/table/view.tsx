@@ -6,13 +6,13 @@ import { SlidersHorizontalIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 
-interface ViewOptionsProps<TData> {
+interface TableViewProps<TData> {
   table: Table<TData>
 }
 
-export const ViewOptions = <TData,>({
+export const TableView = <TData,>({
   table,
-}: ViewOptionsProps<TData>) => {
+}: TableViewProps<TData>) => {
   const columns = useMemo(() => table.getAllColumns().filter((column) =>
     typeof column.accessorFn !== 'undefined' && column.getCanHide()
   ), [table])
@@ -32,7 +32,7 @@ export const ViewOptions = <TData,>({
       </PopoverTrigger>
       <PopoverContent align='end' className='w-48 p-0'>
         <Command>
-          <CommandInput placeholder='Search columns...' />
+          <CommandInput placeholder='Columns...' />
           <CommandList>
             <CommandEmpty>No columns found.</CommandEmpty>
             <CommandGroup>
