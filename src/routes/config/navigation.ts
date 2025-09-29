@@ -20,7 +20,7 @@ export interface Navigation {
 
 export const routeNavigations: Navigation[] = [
   {
-    label: '',
+    label: 'App',
     items: [
       {
         title: 'Dashboard',
@@ -43,7 +43,7 @@ export const routeNavigations: Navigation[] = [
     ]
   },
   {
-    label: 'Other',
+    label: 'General',
     items: [
       {
         title: 'Settings',

@@ -25,7 +25,7 @@ export const TableView = <TData,>({
           role='combobox'
           variant='outline'
           size='sm'
-          className='ml-auto hidden h-8 lg:flex'>
+          className='hidden h-8 lg:flex'>
           <SlidersHorizontalIcon />
           View
         </Button>

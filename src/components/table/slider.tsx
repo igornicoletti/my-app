@@ -148,7 +148,7 @@ export const TableSlider = <TData,>({
                 onChange={onFromInputChange}
                 className={cn('h-8 w-24', unit && 'pr-8')} />
               {unit && (
-                <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>
+                <span className='absolute top-0 right-0 bottom-0 flex items-center px-2 text-muted-foreground text-sm'>
                   {unit}
                 </span>
               )}
@@ -169,7 +169,7 @@ export const TableSlider = <TData,>({
                 onChange={onToInputChange}
                 className={cn('h-8 w-24', unit && 'pr-8')} />
               {unit && (
-                <span className='absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm'>
+                <span className='absolute top-0 right-0 bottom-0 flex items-center px-2 text-muted-foreground text-sm'>
                   {unit}
                 </span>
               )}
@@ -184,6 +184,15 @@ export const TableSlider = <TData,>({
             value={range}
             onValueChange={onSliderValueChange} />
         </div>
+        {columnFilterValue && (
+          <Button
+            aria-label={`Clear ${title} filter`}
+            variant="outline"
+            size="sm"
+            onClick={onReset}>
+            Clear {title} Filter
+          </Button>
+        )}
       </PopoverContent>
     </Popover>
   )

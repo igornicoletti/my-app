@@ -20,7 +20,7 @@ export const TaskTable = () => {
   const estimatedHoursRange: [number, number] = useMemo(() => (
     tasks && tasks.length > 0
       ? getNumberRange(tasks, 'estimatedHours')
-      : [0, 48]
+      : [1, 48]
   ), [tasks])
 
   const columns = useMemo(() => TaskTableColumn({

@@ -33,9 +33,9 @@ export const TableToolbar = <TData,>({
     <div
       role='toolbar'
       aria-orientation='horizontal'
-      className={cn('flex w-full flex-wrap items-end justify-between gap-2', className)}
+      className={cn('flex w-full flex-wrap items-center justify-between gap-2', className)}
       {...props}>
-      <div className='flex flex-1 flex-wrap items-center gap-2'>
+      <div className='flex flex-wrap items-center gap-2'>
         {columns.map(column => <TableToolbarFilter key={column.id} column={column} />)}
         {isFiltered && (
           <Button
@@ -49,7 +49,7 @@ export const TableToolbar = <TData,>({
           </Button>
         )}
       </div>
-      <div className='flex items-center gap-2'>
+      <div className='flex flex-wrap items-center gap-2'>
         <TableView table={table} />
         {children}
       </div>

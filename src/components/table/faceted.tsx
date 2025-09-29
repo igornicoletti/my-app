@@ -134,7 +134,7 @@ export const TableFaceted = <TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem onSelect={() => onReset()} className='justify-center text-center'>
-                    Clear filters
+                    Clear {title} Filter
                   </CommandItem>
                 </CommandGroup>
               </>
