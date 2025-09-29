@@ -1,12 +1,11 @@
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
-import { CaretUpDownIcon } from '@phosphor-icons/react'
+import { CaretUpDownIcon, PlusIcon } from '@phosphor-icons/react'
 import { useState, type ElementType } from 'react'
 
 interface SidebarTeamProps {
   name: string
-  logo?: ElementType
+  logo: ElementType
   plan?: string
 }
 
@@ -22,13 +21,9 @@ export const SidebarTeam = ({ teams }: { teams: SidebarTeamProps[] }) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
-              <Avatar className='rounded-lg'>
-                <AvatarFallback className='rounded-lg'>
-                  {activeTeam.logo
-                    ? <activeTeam.logo className='size-6' />
-                    : activeTeam.name[0]}
-                </AvatarFallback>
-              </Avatar>
+              <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 p-1 items-center justify-center rounded-lg border'>
+                <activeTeam.logo className='size-full' />
+              </div>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-medium'>{activeTeam.name}</span>
                 <span className='truncate text-xs'>{activeTeam.plan}</span>
@@ -41,27 +36,26 @@ export const SidebarTeam = ({ teams }: { teams: SidebarTeamProps[] }) => {
             sideOffset={4}
             side={isMobile ? 'bottom' : 'right'}
             className='w-(--radix-dropdown-menu-trigger-width) min-w-56 origin-[var(--radix-dropdown-menu-content-transform-origin)]'>
+            <DropdownMenuLabel className='text-muted-foreground text-xs'>
+              Teams
+            </DropdownMenuLabel>
             <DropdownMenuGroup>
               {teams.map((team, index) => (
-                <DropdownMenuItem key={team.name} onSelect={() => setActiveTeam(team)} className='gap-2 p-2'>
-                  <Avatar className='rounded-lg'>
-                    <AvatarFallback className='rounded-lg bg-transparent border-2'>
-                      {team.logo
-                        ? <team.logo className='size-6' />
-                        : team.name[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className='grid flex-1 text-left text-sm leading-tight'>
-                    <span className='truncate font-medium'>{team.name}</span>
-                    <span className='truncate text-xs'>{team.plan}</span>
+                <DropdownMenuItem key={team.name} onSelect={() => setActiveTeam(team)} className='gap-2'>
+                  <div className='flex size-6 p-1 items-center justify-center rounded-md border'>
+                    <team.logo className='size-full shrink-0' />
                   </div>
+                  {team.name}
                   <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Add Workspace
+            <DropdownMenuItem className='gap-2'>
+              <div className='flex size-6 items-center justify-center rounded-md border bg-transparent'>
+                <PlusIcon className='size-4' />
+              </div>
+              <div className='text-muted-foreground font-medium'>Add team</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
