@@ -2,7 +2,7 @@ import { SidebarNavigation } from '@/components/sidebar/navigation'
 import { SidebarTeam } from '@/components/sidebar/team'
 import { SidebarUser } from '@/components/sidebar/user'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
-import { routeNavigations } from '@/routes/config/navigation'
+import { navigation } from '@/routes/config/navigation'
 import { CodaLogoIcon, LastfmLogoIcon, NyTimesLogoIcon } from '@phosphor-icons/react'
 import type { User } from 'firebase/auth'
 import type { ComponentProps } from 'react'
@@ -25,13 +25,7 @@ export const SidebarApp = ({
         <SidebarTeam teams={teams} />
       </SidebarHeader>
       <SidebarContent>
-        {routeNavigations.map((group) => (
-          <SidebarNavigation
-            key={group.label}
-            label={group.label}
-            items={group.items}
-          />
-        ))}
+        <SidebarNavigation navigation={navigation} />
       </SidebarContent>
       <SidebarFooter>
         <SidebarUser user={user} />

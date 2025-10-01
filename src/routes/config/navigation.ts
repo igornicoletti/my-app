@@ -18,7 +18,7 @@ export interface Navigation {
   items: NavigationItem[]
 }
 
-export const routeNavigations: Navigation[] = [
+export const navigation: Navigation[] = [
   {
     label: 'App',
     items: [
