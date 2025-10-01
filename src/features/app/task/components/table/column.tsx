@@ -9,7 +9,7 @@ import { priorityIcons, statusIcons } from '@/features/app/task/lib/util'
 import { dateRangeFilterFn, numberRangeFilterFn } from '@/libs/filter-fn'
 import { formatDate } from '@/libs/format'
 import type { DataTableRowAction } from '@/types/data-table'
-import { ArrowsDownUpIcon, CalendarBlankIcon, CircleDashedIcon, ClockIcon, DotsThreeIcon, TextAaIcon } from '@phosphor-icons/react'
+import { ArrowsDownUpIcon, CalendarBlankIcon, CircleDashedIcon, ClockIcon, DotsThreeVerticalIcon, TextAaIcon } from '@phosphor-icons/react'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -158,7 +158,7 @@ export const TaskTableColumn = ({
                 aria-label='Open menu'
                 variant='ghost'
                 className='data-[state=open]:bg-muted'>
-                <DotsThreeIcon aria-hidden='true' />
+                <DotsThreeVerticalIcon weight='bold' aria-hidden='true' />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-48'>
