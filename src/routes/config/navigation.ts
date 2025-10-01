@@ -43,7 +43,7 @@ export const navigation: Navigation[] = [
     ]
   },
   {
-    label: 'General',
+    label: 'Platform',
     items: [
       {
         title: 'Settings',
