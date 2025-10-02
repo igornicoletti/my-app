@@ -27,8 +27,8 @@ export const TaskUpdate = ({ task, onSuccess }: TaskUpdateProps) => {
   })
 
   const { mutate: updateTask, isPending } = useTaskUpdate({
-    onSuccess: (data) => {
-      onSuccess?.(data)
+    onSuccess: () => {
+      onSuccess?.()
     },
   })
 

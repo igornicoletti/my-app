@@ -26,7 +26,7 @@ export const TaskTable = () => {
   const columns = useMemo(() => TaskTableColumn({
     estimatedHoursRange,
     setRowAction,
-  }), [estimatedHoursRange, setRowAction])
+  }), [estimatedHoursRange])
 
   const { table } = useDataTable({
     data: tasks ?? [],
@@ -57,7 +57,7 @@ export const TaskTable = () => {
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         tasks={rowAction?.row.original ? [rowAction?.row.original] : []}
-        onConfirm={() => rowAction?.row.toggleSelected(false)} />
+        onSuccess={() => rowAction?.row.toggleSelected(false)} />
     </>
   )
 }

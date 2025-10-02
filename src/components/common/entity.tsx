@@ -1,5 +1,5 @@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { cloneElement, type ReactElement, type ReactNode, useState } from 'react'
+import { type ReactElement, type ReactNode, useState } from 'react'
 
 type WithOnSuccess<T = any> = {
   onSuccess?: () => void
@@ -15,17 +15,19 @@ type Mode<T = any> = {
 
 interface CommonEntityProps<T = any> {
   trigger?: ReactNode
-  createMode: Mode<T>
-  updateMode?: Mode<T>
+  createMode: Omit<Mode<T>, 'formComponent'>
+  updateMode?: Omit<Mode<T>, 'formComponent'>
   onModeSuccess?: () => void
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  children: (props: { onSuccess: () => void; data: T | null | undefined }) => ReactNode
 }
 
 export const CommonEntity = <T,>({
   trigger,
   createMode,
   updateMode,
+  children,
   open,
   onOpenChange,
   onModeSuccess,
@@ -43,11 +45,6 @@ export const CommonEntity = <T,>({
     onModeSuccess?.()
   }
 
-  const injectedForm = cloneElement(currentMode.formComponent, {
-    onSuccess: handleInjectedSuccess,
-    data: currentMode.data,
-  } as WithOnSuccess<T>)
-
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       {trigger && <SheetTrigger asChild>{trigger}</SheetTrigger>}
@@ -60,7 +57,10 @@ export const CommonEntity = <T,>({
             </SheetDescription>
           )}
         </SheetHeader>
-        {injectedForm}
+        {children({
+          onSuccess: handleInjectedSuccess,
+          data: currentMode.data,
+        })}
       </SheetContent>
     </Sheet>
   )

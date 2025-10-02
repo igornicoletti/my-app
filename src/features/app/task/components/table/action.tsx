@@ -91,6 +91,14 @@ export const TaskTableAction = ({ table }: TaskTableActionProps) => {
         <TableActionButton size='icon' tooltip='Delete tasks' onClick={onDelete}>
           <TrashSimpleIcon />
         </TableActionButton>
+        {/*  <TaskDelete
+          tasks={rows.map(r => r.original)}
+          onSuccess={() => table.toggleAllPageRowsSelected(false)}
+          trigger={
+            <TableActionButton size='icon' tooltip='Delete tasks'>
+              <TrashSimpleIcon />
+            </TableActionButton>
+          } /> */}
       </div>
     </TableAction>
   )

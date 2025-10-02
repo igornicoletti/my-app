@@ -1,4 +1,6 @@
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { TaskDelete } from '@/features/app/task/components/delete'
 import { TaskEntity } from '@/features/app/task/components/entity'
 import type { TaskSchema } from '@/features/app/task/lib/schema'
@@ -29,18 +31,22 @@ export const TaskToolbar = ({ table }: TaskToolbarProps) => {
       {selectedTasks.length > 0 && (
         <TaskDelete
           tasks={selectedTasks}
-          onConfirm={() => table.toggleAllRowsSelected(false)}
+          onSuccess={() => table.toggleAllRowsSelected(false)}
           trigger={
             <Button variant='secondary' size='sm'>
               <TrashSimpleIcon />
-              Delete
+              <span>Delete</span>
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+              <Badge variant='outline' className='rounded-sm px-1 font-normal'>
+                {selectedTasks.length}
+              </Badge>
             </Button>
           } />
       )}
       <TaskEntity trigger={
         <Button variant='secondary' size='sm'>
           <SparkleIcon />
-          Create
+          Create Task
         </Button>
       } />
     </div>
