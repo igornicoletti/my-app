@@ -9,7 +9,7 @@ import { Outlet } from 'react-router-dom'
 
 export const LayoutRoot = () => (
   <Suspense fallback={
-    <CommonLoading message='Loading...' />
+    <CommonLoading message='Loading' />
   }>
     <CommonMetadata />
     <CommonShortcut />

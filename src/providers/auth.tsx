@@ -28,7 +28,7 @@ export const ProviderAuth = ({ children }: { children: ReactNode }) => {
     isLoading
   }), [user, isLoading])
 
-  if (isLoading) return <CommonLoading message='Checking Authentication...' />
+  if (isLoading) return <CommonLoading message='Authenticating' />
 
   return (
     <ProviderAuthContext.Provider value={value}>
