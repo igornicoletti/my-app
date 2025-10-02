@@ -1,4 +1,6 @@
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { UserDelete } from '@/features/app/user/components/delete'
 import { UserEntity } from '@/features/app/user/components/entity'
 import type { UserSchema } from '@/features/app/user/lib/schema'
@@ -21,7 +23,7 @@ export const UserTableToolbar = ({ table }: UserTableToolbarProps) => {
   }
 
   return (
-    <div className='flex flex-wrap items-center gap-2'>
+    <div className='flex items-center gap-2'>
       <Button variant='secondary' size='sm' onClick={onExport}>
         <DownloadSimpleIcon />
         Export
@@ -29,22 +31,24 @@ export const UserTableToolbar = ({ table }: UserTableToolbarProps) => {
       {selectedUsers.length > 0 && (
         <UserDelete
           users={selectedUsers}
-          onConfirm={() => table.toggleAllRowsSelected(false)}
+          onSuccess={() => table.toggleAllRowsSelected(false)}
           trigger={
             <Button variant='secondary' size='sm'>
               <TrashSimpleIcon />
-              Delete
+              <span>Delete</span>
+              <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
+              <Badge variant='outline' className='rounded-sm px-1 font-normal'>
+                {selectedUsers.length}
+              </Badge>
             </Button>
-          }
-        />
+          } />
       )}
-      <UserEntity
-        trigger={
-          <Button variant='secondary' size='sm'>
-            <SparkleIcon />
-            Create
-          </Button>
-        }
+      <UserEntity trigger={
+        <Button variant='secondary' size='sm'>
+          <SparkleIcon />
+          Add User
+        </Button>
+      }
       />
     </div>
   )

@@ -27,8 +27,8 @@ export const UserUpdate = ({ user, onSuccess }: UserUpdateProps) => {
   })
 
   const { mutate: updateUser, isPending } = useUserUpdate({
-    onSuccess: (data) => {
-      onSuccess?.(data)
+    onSuccess: () => {
+      onSuccess?.()
     },
   })
 

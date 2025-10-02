@@ -18,9 +18,7 @@ export const UserForm = <T extends Partial<UserSchemaCreate> & FieldValues>({
   children,
 }: UserFormProps<T>) => (
   <Form {...form}>
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className='flex min-h-0 flex-1 flex-col'>
+    <form onSubmit={form.handleSubmit(onSubmit)} className='flex min-h-0 flex-1 flex-col'>
       <div className='flex flex-col gap-4 px-4 overflow-y-auto py-2 flex-1'>
         <FormField
           control={form.control}
