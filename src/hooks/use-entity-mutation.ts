@@ -3,6 +3,7 @@ import { useMutation, useQueryClient, type MutationFunction } from '@tanstack/re
 
 type MutationOptions<TData, TVariables> = {
   onSuccess?: (data: TData, variables: TVariables, context: unknown) => void
+  onMutate?: ((variables: TVariables) => unknown) | undefined
 }
 
 interface EntityMutationParams<TData, TVariables> {
@@ -33,6 +34,7 @@ export const createEntityMutationHook = <TData = unknown, TVariables = void>({
         console.error(error.message)
         errorToast(errorToastMessage)
       },
+      onMutate: options?.onMutate,
     })
   }
 }

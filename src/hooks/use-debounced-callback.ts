@@ -10,14 +10,11 @@ export const useDebouncedCallback = <T extends (...args: never[]) => unknown>(
 
   useEffect(() => () => window.clearTimeout(debounceTimerRef.current), [])
 
-  return useCallback(
-    (...args: Parameters<T>) => {
-      window.clearTimeout(debounceTimerRef.current)
-      debounceTimerRef.current = window.setTimeout(
-        () => handleCallback(...args),
-        delay
-      )
-    },
-    [handleCallback, delay]
-  )
+  return useCallback((...args: Parameters<T>) => {
+    window.clearTimeout(debounceTimerRef.current)
+    debounceTimerRef.current = window.setTimeout(() =>
+      handleCallback(...args),
+      delay
+    )
+  }, [handleCallback, delay])
 }
