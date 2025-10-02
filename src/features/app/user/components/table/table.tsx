@@ -49,7 +49,7 @@ export const UserTable = () => {
         open={!!rowAction && rowAction.variant === 'delete'}
         onOpenChange={() => setRowAction(null)}
         users={rowAction?.row.original ? [rowAction?.row.original] : []}
-        onConfirm={() => rowAction?.row.toggleSelected(false)} />
+        onSuccess={() => rowAction?.row.toggleSelected(false)} />
     </>
   )
 }
