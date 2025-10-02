@@ -21,10 +21,11 @@ const actionCode: ActionCodeSettings = {
   handleCodeInApp: true,
 }
 
+const provider = new GoogleAuthProvider()
+
 export const ServiceAuth = {
   // Sign in
   signInWithGoogle: async (): Promise<User> => {
-    const provider = new GoogleAuthProvider()
     const { user } = await signInWithPopup(auth, provider)
     return user
   },
