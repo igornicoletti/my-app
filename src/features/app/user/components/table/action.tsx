@@ -1,7 +1,8 @@
 import { TableAction, TableActionButton, TableActionSelection } from '@/components/table/action'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useUserDelete, useUserUpdates } from '@/features/app/user/lib/hook'
+import { UserDelete } from '@/features/app/user/components/delete'
+import { useUserUpdates } from '@/features/app/user/lib/hook'
 import { roleList, statusList, type UserSchema } from '@/features/app/user/lib/schema'
 import { exportTableToCSV } from '@/libs/export'
 import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
@@ -33,14 +34,6 @@ export const UserTableAction = ({ table }: UserTableActionProps) => {
     })
   }
 
-  const deleteUsersMutation = useUserDelete({
-    onSuccess: () => table.toggleAllRowsSelected(false)
-  })
-
-  const onDelete = () => {
-    deleteUsersMutation.mutate(rows.map((row) => row.original.id))
-  }
-
   const onExport = () => {
     exportTableToCSV(table, {
       excludeColumns: ['select', 'actions'],
@@ -55,7 +48,7 @@ export const UserTableAction = ({ table }: UserTableActionProps) => {
       <div className='flex flex-wrap items-center justify-center gap-1.5'>
         <Select onValueChange={onUpdateStatus}>
           <SelectTrigger asChild>
-            <TableActionButton size='icon' tooltip='Update status'>
+            <TableActionButton size='icon' tooltip='Update Status'>
               <CircleDashedIcon />
             </TableActionButton>
           </SelectTrigger>
@@ -71,7 +64,7 @@ export const UserTableAction = ({ table }: UserTableActionProps) => {
         </Select>
         <Select onValueChange={onUpdateRole}>
           <SelectTrigger asChild>
-            <TableActionButton size='icon' tooltip='Update role'>
+            <TableActionButton size='icon' tooltip='Update Role'>
               <ArrowUpIcon />
             </TableActionButton>
           </SelectTrigger>
@@ -85,12 +78,17 @@ export const UserTableAction = ({ table }: UserTableActionProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <TableActionButton size='icon' tooltip='Export users' onClick={onExport}>
+        <TableActionButton size='icon' tooltip='Export Users' onClick={onExport}>
           <DownloadSimpleIcon />
         </TableActionButton>
-        <TableActionButton size='icon' tooltip='Delete users' onClick={onDelete}>
-          <TrashSimpleIcon />
-        </TableActionButton>
+        <UserDelete
+          users={rows.map(r => r.original)}
+          onSuccess={() => table.toggleAllPageRowsSelected(false)}
+          trigger={
+            <TableActionButton size='icon' tooltip='Delete Users'>
+              <TrashSimpleIcon />
+            </TableActionButton>
+          } />
       </div>
     </TableAction>
   )

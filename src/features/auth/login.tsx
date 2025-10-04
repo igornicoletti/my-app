@@ -61,7 +61,7 @@ export const AuthLogin = () => {
           name='email'
           placeholder='Email'
           autoComplete='username' />
-        <Button asChild variant='link' className='h-auto ml-auto -mb-2 p-0 text-xs font-semibold'>
+        <Button asChild variant='link' className='h-auto ml-auto -mb-2 p-0 text-xs font-medium'>
           <Link to='/forgot-password'>Forgot password?</Link>
         </Button>
         <FormInput

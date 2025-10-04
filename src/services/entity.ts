@@ -16,18 +16,18 @@ export const ServiceEntity = <
 
   return {
     get: async (): Promise<T[]> => {
-      await delay(200)
+      await delay(50)
       return [...items]
     },
 
     seed: async (count: number): Promise<T[]> => {
-      await delay(200)
+      await delay(50)
       items = Array.from({ length: count }, () => generateRandom())
       return [...items]
     },
 
     create: async (input: TCreate): Promise<T> => {
-      await delay(200)
+      await delay(50)
       const parsed = createSchema.parse(input)
 
       const newItem: T = {
@@ -40,7 +40,7 @@ export const ServiceEntity = <
     },
 
     update: async (input: TUpdate & { id: string }): Promise<T> => {
-      await delay(200)
+      await delay(50)
       const index = items.findIndex((i) => i.id === input.id)
       if (index === -1) throw new Error(`${entityName} not found`)
 
@@ -58,7 +58,7 @@ export const ServiceEntity = <
     },
 
     bulkUpdate: async (input: { ids: string[]; fields: TUpdate }): Promise<T[]> => {
-      await delay(200)
+      await delay(50)
       const { ids, fields } = input
       const parsed = updateSchema.parse(fields)
       const updatedItems: T[] = []
@@ -80,14 +80,14 @@ export const ServiceEntity = <
     },
 
     delete: async (id: string): Promise<void> => {
-      await delay(200)
+      await delay(50)
       const exists = items.some((i) => i.id === id)
       if (!exists) throw new Error(`${entityName} not found`)
       items = items.filter((i) => i.id !== id)
     },
 
     bulkDelete: async (ids: string[]): Promise<void> => {
-      await delay(200)
+      await delay(50)
       items = items.filter((i) => !ids.includes(i.id))
     },
   }

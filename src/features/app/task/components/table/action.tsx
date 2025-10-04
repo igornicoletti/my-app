@@ -1,7 +1,8 @@
 import { TableAction, TableActionButton, TableActionSelection } from '@/components/table/action'
 import { Select, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useTaskDelete, useTaskUpdates } from '@/features/app/task/lib/hook'
+import { TaskDelete } from '@/features/app/task/components/delete'
+import { useTaskUpdates } from '@/features/app/task/lib/hook'
 import { priorityList, statusList, type TaskSchema } from '@/features/app/task/lib/schema'
 import { exportTableToCSV } from '@/libs/export'
 import { ArrowUpIcon, CircleDashedIcon, DownloadSimpleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
@@ -33,14 +34,6 @@ export const TaskTableAction = ({ table }: TaskTableActionProps) => {
     })
   }
 
-  const deleteTasksMutation = useTaskDelete({
-    onSuccess: () => table.toggleAllRowsSelected(false)
-  })
-
-  const onDelete = () => {
-    deleteTasksMutation.mutate(rows.map((row) => row.original.id))
-  }
-
   const onExport = () => {
     exportTableToCSV(table, {
       excludeColumns: ['select', 'actions'],
@@ -55,7 +48,7 @@ export const TaskTableAction = ({ table }: TaskTableActionProps) => {
       <div className='flex flex-wrap items-center justify-center gap-1.5'>
         <Select onValueChange={onUpdateStatus}>
           <SelectTrigger asChild>
-            <TableActionButton size='icon' tooltip='Update status'>
+            <TableActionButton size='icon' tooltip='Update Status'>
               <CircleDashedIcon />
             </TableActionButton>
           </SelectTrigger>
@@ -71,7 +64,7 @@ export const TaskTableAction = ({ table }: TaskTableActionProps) => {
         </Select>
         <Select onValueChange={onUpdatePriority}>
           <SelectTrigger asChild>
-            <TableActionButton size='icon' tooltip='Update priority'>
+            <TableActionButton size='icon' tooltip='Update Priority'>
               <ArrowUpIcon />
             </TableActionButton>
           </SelectTrigger>
@@ -85,20 +78,17 @@ export const TaskTableAction = ({ table }: TaskTableActionProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <TableActionButton size='icon' tooltip='Export tasks' onClick={onExport}>
+        <TableActionButton size='icon' tooltip='Export Tasks' onClick={onExport}>
           <DownloadSimpleIcon />
         </TableActionButton>
-        <TableActionButton size='icon' tooltip='Delete tasks' onClick={onDelete}>
-          <TrashSimpleIcon />
-        </TableActionButton>
-        {/*  <TaskDelete
+        <TaskDelete
           tasks={rows.map(r => r.original)}
           onSuccess={() => table.toggleAllPageRowsSelected(false)}
           trigger={
-            <TableActionButton size='icon' tooltip='Delete tasks'>
+            <TableActionButton size='icon' tooltip='Delete Tasks'>
               <TrashSimpleIcon />
             </TableActionButton>
-          } /> */}
+          } />
       </div>
     </TableAction>
   )

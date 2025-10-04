@@ -19,7 +19,7 @@ export const TaskDelete = ({ tasks, trigger, onSuccess, ...props }: TaskDeletePr
 
   const taskCount = tasks.length
   const title = `Are you absolutely sure?`
-  const description = `This action cannot be undone. It will permanently delete your ${taskCount > 1 ? `${taskCount} tasks` : 'task'} from our server.`
+  const description = `This action cannot be undone. This will permanently delete ${taskCount} ${taskCount > 1 ? `tasks` : `task`} and remove your data from our servers.`
 
   const handleConfirm = () => {
     const taskIds = tasks.map((t) => t.id)

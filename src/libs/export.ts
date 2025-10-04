@@ -29,7 +29,7 @@ export const exportTableToCSV = <TData>(
         .map((header) => {
           const cellValue = row.getValue(header)
           return typeof cellValue === 'string'
-            ? `"${cellValue.replace(/"/g, '""')}"`
+            ? `'${cellValue.replace(/'/g, "''")}'`
             : cellValue
         })
         .join(',')

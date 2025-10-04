@@ -23,8 +23,8 @@ export const TaskToolbar = ({ table }: TaskToolbarProps) => {
   }
 
   return (
-    <div className='flex items-center gap-2'>
-      <Button variant='secondary' size='sm' onClick={onExport}>
+    <div className='flex flex-wrap items-center gap-2'>
+      <Button variant='outline' size='sm' onClick={onExport}>
         <DownloadSimpleIcon />
         Export
       </Button>
@@ -33,18 +33,18 @@ export const TaskToolbar = ({ table }: TaskToolbarProps) => {
           tasks={selectedTasks}
           onSuccess={() => table.toggleAllRowsSelected(false)}
           trigger={
-            <Button variant='secondary' size='sm'>
+            <Button variant='outline' size='sm'>
               <TrashSimpleIcon />
-              <span>Delete</span>
+              Delete
               <Separator orientation='vertical' className='mx-0.5 data-[orientation=vertical]:h-4' />
-              <Badge variant='outline' className='rounded-sm px-1 font-normal'>
+              <Badge variant='secondary' className='rounded-sm px-1 font-normal'>
                 {selectedTasks.length}
               </Badge>
             </Button>
           } />
       )}
       <TaskEntity trigger={
-        <Button variant='secondary' size='sm'>
+        <Button variant='default' size='sm'>
           <SparkleIcon />
           Create Task
         </Button>

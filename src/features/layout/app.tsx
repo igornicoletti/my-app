@@ -41,7 +41,7 @@ export const LayoutApp = () => {
             </div>
           </div>
         </header>
-        <div className='@container/main flex flex-1 flex-col p-2'>
+        <div className='@container/main flex flex-1 flex-col p-2 pb-6'>
           <Outlet />
         </div>
       </SidebarInset>
