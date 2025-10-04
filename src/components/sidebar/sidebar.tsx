@@ -20,7 +20,7 @@ export const SidebarApp = ({
   user: User
 }) => {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar variant='sidebar' {...props}>
       <SidebarHeader>
         <SidebarTeam teams={teams} />
       </SidebarHeader>
