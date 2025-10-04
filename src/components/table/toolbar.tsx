@@ -13,12 +13,7 @@ interface TableToolbarProps<TData> extends ComponentProps<'div'> {
   table: Table<TData>
 }
 
-export const TableToolbar = <TData,>({
-  table,
-  children,
-  className,
-  ...props
-}: TableToolbarProps<TData>) => {
+export const TableToolbar = <TData,>({ table, children, className, ...props }: TableToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0
 
   const columns = useMemo(() => table.getAllColumns().filter((column) =>
@@ -33,7 +28,7 @@ export const TableToolbar = <TData,>({
     <div
       role='toolbar'
       aria-orientation='horizontal'
-      className={cn('flex w-full flex-wrap items-center justify-between gap-2', className)}
+      className={cn('flex w-full flex-wrap items-start justify-between gap-2', className)}
       {...props}>
       <div className='flex flex-wrap items-center gap-2'>
         {columns.map(column => <TableToolbarFilter key={column.id} column={column} />)}

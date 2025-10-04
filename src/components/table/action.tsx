@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Kbd } from '@/components/ui/kbd'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/libs/utils'
@@ -132,15 +133,10 @@ const TableActionSelection = <TData,>({
             <XIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent
-          sideOffset={10}
-          className='flex items-center gap-2'>
-          <p>Clear selection</p>
-          <kbd className='select-none rounded bg-muted-foreground px-1.5 py-px font-mono font-normal text-[0.7rem]'>
-            <abbr title='Escape' className='no-underline'>
-              Esc
-            </abbr>
-          </kbd>
+        <TooltipContent sideOffset={10}>
+          <div className="flex items-center gap-2">
+            Clear Selection <Kbd>Esc</Kbd>
+          </div>
         </TooltipContent>
       </Tooltip>
     </div>

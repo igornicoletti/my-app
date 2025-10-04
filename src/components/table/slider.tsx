@@ -187,8 +187,8 @@ export const TableSlider = <TData,>({
         {columnFilterValue && (
           <Button
             aria-label={`Clear ${title} filter`}
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={onReset}>
             Clear {title} Filter
           </Button>

@@ -14,26 +14,18 @@ export const CommonCommand = () => {
         <CommandEmpty>No results found.</CommandEmpty>
         {navigation.map((group, i) => (
           <Fragment key={group.label}>
-            <CommandGroup heading={group.label ?? 'Go to...'}>
+            <CommandGroup>
               {group.items.map((item) => (!item.items || item.items.length === 0) ? (
-                <CommandItem
-                  asChild
-                  key={item.url ?? item.title}
-                  onSelect={() => setOpen(false)}>
+                <CommandItem asChild key={item.url ?? item.title} onSelect={() => setOpen(false)}>
                   <Link to={item.url}>
-                    {item.icon && <item.icon />}
-                    {item.title}
+                    {item.icon && <item.icon />} {item.title}
                   </Link>
                 </CommandItem>
               ) : (
                 item.items.map((subItem) => (
-                  <CommandItem
-                    asChild
-                    key={subItem.url ?? subItem.title}
-                    onSelect={() => setOpen(false)}>
+                  <CommandItem asChild key={subItem.url ?? subItem.title} onSelect={() => setOpen(false)}>
                     <Link to={subItem.url}>
-                      {subItem.icon && <subItem.icon />}
-                      {subItem.title}
+                      {subItem.icon && <subItem.icon />} {subItem.title}
                     </Link>
                   </CommandItem>
                 ))

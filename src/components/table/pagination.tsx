@@ -34,7 +34,7 @@ export const TablePagination = <TData,>({
             <SelectTrigger className='h-8 [&[data-size]]:h-8'>
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
-            <SelectContent side='top'>
+            <SelectContent side='top' className='w-(--radix-select-trigger-width) min-w-full origin-[var(--radix-select-content-transform-origin)]'>
               {pageSizeOptions.map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
@@ -43,7 +43,7 @@ export const TablePagination = <TData,>({
             </SelectContent>
           </Select>
         </div>
-        <div className='flex items-center justify-center text-sm font-medium'>
+        <div className='whitespace-nowrap text-sm font-medium'>
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
         <div className='flex items-center space-x-2'>
@@ -51,7 +51,7 @@ export const TablePagination = <TData,>({
             aria-label='Go to first page'
             variant='outline'
             size='icon'
-            className='hidden size-8 lg:flex'
+            className='size-8 lg:flex'
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}>
             <CaretDoubleLeftIcon />
@@ -78,7 +78,7 @@ export const TablePagination = <TData,>({
             aria-label='Go to last page'
             variant='outline'
             size='icon'
-            className='hidden size-8 lg:flex'
+            className='size-8 lg:flex'
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}>
             <CaretDoubleRightIcon />

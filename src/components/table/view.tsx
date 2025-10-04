@@ -1,8 +1,7 @@
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { SlidersHorizontalIcon } from '@phosphor-icons/react'
+import { CheckIcon, SlidersHorizontalIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 
@@ -38,10 +37,11 @@ export const TableView = <TData,>({
             <CommandGroup>
               {columns.map(column => (
                 <CommandItem key={column.id} onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
-                  <Checkbox checked={column.getIsVisible()} />
+                  <CheckIcon className={column.getIsVisible() ? 'opacity-100' : 'opacity-0'} />
                   <span className='truncate capitalize'>
                     {column.columnDef.meta?.label ?? column.id}
                   </span>
+
                 </CommandItem>
               ))}
             </CommandGroup>

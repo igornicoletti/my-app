@@ -37,7 +37,6 @@ export const CommonEntity = <T,>({
 
   const isOpen = open ?? internalOpen
   const setIsOpen = onOpenChange ?? setInternalOpen
-
   const currentMode = isEditMode ? updateMode! : createMode
 
   const handleInjectedSuccess = () => {
@@ -59,7 +58,7 @@ export const CommonEntity = <T,>({
         </SheetHeader>
         {children({
           onSuccess: handleInjectedSuccess,
-          data: currentMode.data,
+          data: currentMode.data
         })}
       </SheetContent>
     </Sheet>

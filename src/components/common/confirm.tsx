@@ -57,7 +57,7 @@ export const CommonConfirm = ({
   return (
     <Component open={isOpen} onOpenChange={setIsOpen} {...props}>
       {trigger && <TriggerComp asChild>{trigger}</TriggerComp>}
-      <Content autoFocus>
+      <Content>
         <Header>
           <TitleComp>{title}</TitleComp>
           <DescriptionComp>{description}</DescriptionComp>
