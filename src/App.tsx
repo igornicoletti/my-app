@@ -1,6 +1,5 @@
 import { ProviderAuth } from '@/providers/auth'
 import { ProviderCommand } from '@/providers/command'
-import { ProviderConfirm } from '@/providers/confirm'
 import { ProviderTheme } from '@/providers/theme'
 import { router } from '@/routes/router'
 import { HelmetProvider } from 'react-helmet-async'
@@ -10,11 +9,9 @@ export const App = () => (
   <HelmetProvider>
     <ProviderTheme>
       <ProviderAuth>
-        <ProviderConfirm>
-          <ProviderCommand>
-            <RouterProvider router={router} />
-          </ProviderCommand>
-        </ProviderConfirm>
+        <ProviderCommand>
+          <RouterProvider router={router} />
+        </ProviderCommand>
       </ProviderAuth>
     </ProviderTheme>
   </HelmetProvider>
