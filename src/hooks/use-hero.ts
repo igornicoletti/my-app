@@ -5,7 +5,7 @@ const authKey = (key: string): key is AuthKey => {
   return key in authHero
 }
 
-export const useAuthHero = (): { hero: AuthHero; key: AuthKey } => {
+export const useHero = (): { hero: AuthHero; key: AuthKey } => {
   const { pathname } = useLocation()
 
   const segment = pathname.split('/').filter(Boolean).pop() ?? ''

@@ -12,20 +12,15 @@ import {
 
 type UseDataTableOptions<TData> = Omit<TableOptions<TData>, 'getCoreRowModel'>
 
-export const useDataTable = <TData,>({
-  columns,
-  ...options
-}: UseDataTableOptions<TData>) => {
+export const useDataTable = <TData,>({ columns, ...options }: UseDataTableOptions<TData>) => {
   const table = useReactTable({
-    defaultColumn: {
-      enableColumnFilter: false,
-    },
+    defaultColumn: { enableColumnFilter: false },
     enableRowSelection: true,
     manualFiltering: false,
     manualPagination: false,
     manualSorting: false,
-    ...options,
     columns,
+    ...options,
     getCoreRowModel: getCoreRowModel(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
     getFacetedRowModel: getFacetedRowModel(),

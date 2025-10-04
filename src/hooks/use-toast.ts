@@ -55,8 +55,8 @@ export const useToast = () => {
     toast.message(title, {
       description,
       classNames: {
-        title: type === 'error' ? '!text-destructive' : '!text-success',
-        description: '!text-primary',
+        title: type === 'error' ? '!text-destructive' : '!text-primary',
+        description: '!text-popover-foreground',
       },
     })
   }

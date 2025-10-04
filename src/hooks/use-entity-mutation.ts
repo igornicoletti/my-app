@@ -26,7 +26,9 @@ export const createEntityMutationHook = <TData = unknown, TVariables = void>({
     return useMutation<TData, Error, TVariables>({
       mutationFn,
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries({ queryKey: invalidateQueryKey })
+        queryClient.invalidateQueries({
+          queryKey: invalidateQueryKey
+        })
         successToast(successToastMessage)
         options?.onSuccess?.(data, variables, context)
       },
