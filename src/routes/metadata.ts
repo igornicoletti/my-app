@@ -6,12 +6,12 @@ interface RouteMetadataProps {
 
 export const routeMetadata: Record<string, RouteMetadataProps> = {
   login: {
-    title: 'Login',
+    title: 'Login to Your Account',
     description: 'Access your account securely with your email and password.',
   },
   register: {
     title: 'Create Account',
-    description: 'Sign up to create your account and start using the platform.',
+    description: 'Create your account and start using the platform.',
   },
   forgotPassword: {
     title: 'Recover Password',
@@ -22,19 +22,15 @@ export const routeMetadata: Record<string, RouteMetadataProps> = {
     description: 'Choose a new password to access your account.',
   },
   dashboard: {
-    crumb: 'Dashboard',
     title: 'Dashboard',
-    description:
-      'Overview of your activity, performance, and quick access to key features.',
-  },
-  users: {
-    crumb: 'Users',
-    title: 'Users',
-    description: 'Manage and view all users in the system.',
+    description: 'Overview of your activity, performance, and quick access to key features.',
   },
   tasks: {
-    crumb: 'Tasks',
-    title: 'Tasks',
+    title: 'Tasks Management',
     description: 'Track and manage all your tasks efficiently.',
+  },
+  users: {
+    title: 'Users Management',
+    description: 'Manage and view all users in the system.',
   },
 }

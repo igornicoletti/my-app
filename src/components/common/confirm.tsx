@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
 import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { useState } from 'react'
@@ -26,7 +26,7 @@ export const CommonConfirm = ({
   cancelText = 'Cancel',
   ...props
 }: CommonConfirmProps) => {
-  const isDesktop = useMediaQuery('(min-width: 640px)')
+  const isDesktop = useBreakpoint('(min-width: 640px)')
   const [internalOpen, setInternalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 

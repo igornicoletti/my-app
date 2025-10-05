@@ -11,9 +11,7 @@ const SidebarAvatar = ({ user }: { user: User }) => (
   <div className='flex items-center gap-2 text-left'>
     <Avatar className='rounded-lg'>
       <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? undefined} />
-      <AvatarFallback className='rounded-lg'>
-        {user.displayName?.[0] ?? user.email?.[0] ?? '?'}
-      </AvatarFallback>
+      <AvatarFallback className='rounded-lg'>{user.displayName?.[0] ?? user.email?.[0] ?? '?'}</AvatarFallback>
     </Avatar>
     <div className='grid flex-1 text-left text-sm leading-tight'>
       <span className='truncate font-medium'>{user.displayName}</span>

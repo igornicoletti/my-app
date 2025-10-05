@@ -7,16 +7,19 @@ export const CommonBreadcrumb = () => {
   const crumbs = useBreadcrumb()
   if (!crumbs.length) return null
 
+  const lastCrumb = crumbs[crumbs.length - 1]
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem className='md:hidden'>
-          <BreadcrumbPage>{crumbs[crumbs.length - 1].name}</BreadcrumbPage>
+        <BreadcrumbItem className="md:hidden">
+          <BreadcrumbPage>{lastCrumb.name}</BreadcrumbPage>
         </BreadcrumbItem>
-        {crumbs.map((crumb) => (
-          <Fragment key={crumb.path}>
-            <BreadcrumbItem className='hidden md:inline-flex'>
-              {crumb.isCurrent ? (
+
+        {crumbs.map((crumb, index) => (
+          <Fragment key={crumb.name + index}>
+            <BreadcrumbItem className="hidden md:inline-flex">
+              {crumb.isCurrent || !crumb.path ? (
                 <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
               ) : (
                 <BreadcrumbLink asChild>
@@ -24,7 +27,9 @@ export const CommonBreadcrumb = () => {
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>
-            {!crumb.isCurrent && <BreadcrumbSeparator className='hidden md:inline-flex' />}
+            {index < crumbs.length - 1 && (
+              <BreadcrumbSeparator className="hidden md:inline-flex" />
+            )}
           </Fragment>
         ))}
       </BreadcrumbList>
