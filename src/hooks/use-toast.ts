@@ -1,4 +1,4 @@
-import { messages, type MessageKey } from '@/constants/message'
+import { messages, type MessageKey } from '@/constants/messages'
 import { toast } from 'sonner'
 
 interface CustomMessage {
@@ -40,16 +40,10 @@ export const useToast = () => {
     if (isCustomMessage(payload)) {
       ; ({ title, description } = payload)
     } else {
-      const code =
-        typeof payload === 'string' ? payload : getErrorCode(payload)
-
-      const fallback: MessageKey =
-        type === 'error' ? 'defaultError' : 'defaultSuccess'
-
-      const key: MessageKey =
-        code in messages ? (code as MessageKey) : fallback
-
-        ; ({ title, description } = messages[key])
+      const code = typeof payload === 'string' ? payload : getErrorCode(payload)
+      const fallback: MessageKey = type === 'error' ? 'defaultError' : 'defaultSuccess'
+      const key: MessageKey = code in messages ? (code as MessageKey) : fallback;
+      ({ title, description } = messages[key])
     }
 
     toast.message(title, {

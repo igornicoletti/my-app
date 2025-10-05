@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export const useMediaQuery = (query: string) => {
+export const useBreakpoint = (query: string) => {
   const [value, setValue] = useState(false)
 
   useEffect(() => {
@@ -8,9 +8,9 @@ export const useMediaQuery = (query: string) => {
       setValue(event.matches)
     }
 
-    const result = matchMedia(query)
-    result.addEventListener('change', onChange)
+    const result = window.matchMedia(query)
     setValue(result.matches)
+    result.addEventListener('change', onChange)
 
     return () => result.removeEventListener('change', onChange)
   }, [query])

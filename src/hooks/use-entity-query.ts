@@ -30,7 +30,7 @@ export const createEntityQueryHook = <T>({
         }
         return data
       },
-      initialData: [],
+      initialData: []
     })
 
     useEffect(() => {
