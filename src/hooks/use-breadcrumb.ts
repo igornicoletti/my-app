@@ -1,4 +1,4 @@
-import { navigation, type NavigationItem } from '@/routes/config/navigation'
+import { navigation, type NavigationItem } from '@/constants/navigation'
 import { useLocation } from 'react-router-dom'
 
 export interface Breadcrumb {
