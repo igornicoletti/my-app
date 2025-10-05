@@ -3,15 +3,19 @@ import { SidebarApp } from '@/components/sidebar/sidebar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { appHero } from '@/constants/heroes'
+import { useHero } from '@/hooks/use-hero'
 import { useAuth } from '@/providers/auth'
 import { useCommand } from '@/providers/command'
+import { ProviderHero } from '@/providers/hero'
 import { useTheme } from '@/providers/theme'
 import { ServiceAuth } from '@/services/auth'
 import { MagnifyingGlassIcon, MoonIcon, SignOutIcon, SunIcon } from '@phosphor-icons/react'
 import { Navigate, Outlet } from 'react-router-dom'
 
-export const LayoutApp = () => {
+const AppContent = () => {
   const { user } = useAuth()
+  const { hero } = useHero()
   const { openCommand } = useCommand()
   const { theme, toggleTheme } = useTheme()
 
@@ -41,10 +45,22 @@ export const LayoutApp = () => {
             </div>
           </div>
         </header>
-        <div className='@container/main flex flex-1 flex-col p-2 pb-6'>
+        <div className='@container/main flex flex-1 flex-col gap-2 p-2 pb-6'>
+          <div className='max-w-2xl flex flex-col gap-2 p-2'>
+            <h2 className='text-xl font-medium'>{hero?.heading}</h2>
+            <p className='text-sm text-muted-foreground'>{hero?.subheading}</p>
+          </div>
           <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>
+  )
+}
+
+export const LayoutApp = () => {
+  return (
+    <ProviderHero collection={appHero}>
+      <AppContent />
+    </ProviderHero>
   )
 }

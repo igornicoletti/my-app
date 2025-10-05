@@ -1,7 +1,7 @@
 import { FormInput } from '@/components/form/input'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { forgotPasswordSchema, type ForgotPasswordSchema } from '@/features/auth/lib/schemas'
+import { forgotPasswordSchema, type ForgotPasswordSchema } from '@/features/auth/lib/schema'
 import { useSubmit } from '@/hooks/use-submit'
 import { useToast } from '@/hooks/use-toast'
 import { ServiceAuth } from '@/services/auth'
@@ -41,7 +41,7 @@ export const AuthForgot = () => {
           ) : (
             <PaperPlaneTiltIcon />
           )}
-          {!isLoading && 'Send reset email'}
+          {!isLoading && 'Send Reset Link'}
         </Button>
       </form>
     </Form>

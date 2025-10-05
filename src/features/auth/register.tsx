@@ -1,7 +1,7 @@
 import { FormInput } from '@/components/form/input'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { registerSchema, type RegisterSchema } from '@/features/auth/lib/schemas'
+import { registerSchema, type RegisterSchema } from '@/features/auth/lib/schema'
 import { useSubmit } from '@/hooks/use-submit'
 import { useToast } from '@/hooks/use-toast'
 import { ServiceAuth } from '@/services/auth'
@@ -65,7 +65,7 @@ export const AuthRegister = () => {
           ) : (
             <UserPlusIcon />
           )}
-          {!isLoading && 'Create account'}
+          {!isLoading && 'Create Account'}
         </Button>
       </form>
     </Form>
