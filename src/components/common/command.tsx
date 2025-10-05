@@ -1,6 +1,6 @@
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command'
+import { navigation } from '@/constants/navigation'
 import { useCommand } from '@/providers/command'
-import { navigation } from '@/routes/config/navigation'
 import { Link } from 'react-router-dom'
 import { Fragment } from 'react/jsx-runtime'
 

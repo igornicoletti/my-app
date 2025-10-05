@@ -27,31 +27,39 @@ const AppContent = () => {
     <SidebarProvider>
       <SidebarApp collapsible='icon' user={user} />
       <SidebarInset>
-        <header className='flex h-16 shrink-0 items-center gap-2 p-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
+        <header className='flex h-16 items-center gap-2 p-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
           <div className='flex flex-1 items-center gap-2 p-2'>
             <SidebarTrigger className='-ml-1' />
-            <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-4' />
+
+            <Separator orientation='vertical' className='mr-2 data-[orientation=vertical]:h-6' />
+
             <CommonBreadcrumb />
-            <div className='ml-auto'>
-              <Button onClick={openCommand} size='icon' variant='ghost'>
+
+            <div className='ml-auto flex items-center gap-1'>
+              <Button onClick={openCommand} size='icon' variant='ghost' title='Search (Ctrl+K)'>
                 <MagnifyingGlassIcon />
               </Button>
-              <Button onClick={toggleTheme} size='icon' variant='ghost'>
+              <Button onClick={toggleTheme} size='icon' variant='ghost' title='Toggle Theme'>
                 {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
               </Button>
-              <Button onClick={() => ServiceAuth.signOut()} size='icon' variant='ghost'>
+              <Button onClick={() => ServiceAuth.signOut()} size='icon' variant='ghost' title='Sign Out'>
                 <SignOutIcon />
               </Button>
             </div>
           </div>
         </header>
-        <div className='@container/main flex flex-1 flex-col gap-2 p-2 pb-6'>
-          <div className='max-w-2xl flex flex-col gap-2 p-2'>
-            <h2 className='text-xl font-medium'>{hero?.heading}</h2>
-            <p className='text-sm text-muted-foreground'>{hero?.subheading}</p>
+
+        <main className='@container/main flex flex-1 flex-col p-4'>
+
+          <div className='max-w-3xl space-y-1 pb-4'>
+            <h1 className='text-2xl font-semibold tracking-tight'>{hero?.heading}</h1>
+            <p className='text-muted-foreground text-sm text-balance'>{hero?.subheading}</p>
           </div>
-          <Outlet />
-        </div>
+
+          <div className='flex flex-1'>
+            <Outlet />
+          </div>
+        </main>
       </SidebarInset>
     </SidebarProvider>
   )

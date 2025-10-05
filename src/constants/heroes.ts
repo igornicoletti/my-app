@@ -2,31 +2,31 @@ import type { AppHero, AuthHero } from '@/types/hero'
 
 export const authHero = {
   'login': {
-    heading: 'Login to Your Account',
-    subheading: 'Access your account securely with your email and password.',
+    heading: 'Sign in to your account',
+    subheading: 'Welcome back! Please sign in to continue',
     question: 'Don’t have an account?',
     linkLabel: 'Sign up',
     linkTo: '/register',
   },
   'register': {
-    heading: 'Create Account',
-    subheading: 'Create your account and start using the platform.',
+    heading: 'Create your account',
+    subheading: 'Welcome! Please fill in the details to get started',
     question: 'Already have an account?',
-    linkLabel: 'Log in',
+    linkLabel: 'Sign in',
     linkTo: '/login',
   },
   'forgot-password': {
-    heading: 'Recover Password',
-    subheading: 'Enter your email to receive a password reset link.',
+    heading: 'Recover password',
+    subheading: 'Enter your email to receive a password reset link',
     question: 'Back to',
-    linkLabel: 'Log in',
+    linkLabel: 'Sign in',
     linkTo: '/login',
   },
   'reset-password': {
     heading: 'Set New Password',
-    subheading: 'Choose a new password to access your account.',
+    subheading: 'Choose a new password to access your account',
     question: 'Back to',
-    linkLabel: 'Log in',
+    linkLabel: 'Sign in',
     linkTo: '/login',
   },
 } satisfies Record<string, AuthHero>
@@ -36,11 +36,11 @@ export type AuthKey = keyof typeof authHero
 export const appHero = {
   'dashboard': {
     heading: 'Dashboard',
-    subheading: 'Overview of your activity, performance, and quick access to key features.',
+    subheading: 'Overview of your activity, performance, and quick access to key features',
   },
   'tasks': {
     heading: 'Tasks Management',
-    subheading: 'Track and manage all your tasks efficiently.',
+    subheading: 'Track and manage all your tasks efficiently',
   },
   'users': {
     heading: 'Users Management',

@@ -6,7 +6,6 @@ import { Fragment } from 'react/jsx-runtime'
 export const CommonBreadcrumb = () => {
   const crumbs = useBreadcrumb()
   if (!crumbs.length) return null
-
   const lastCrumb = crumbs[crumbs.length - 1]
 
   return (
@@ -15,7 +14,6 @@ export const CommonBreadcrumb = () => {
         <BreadcrumbItem className="md:hidden">
           <BreadcrumbPage>{lastCrumb.name}</BreadcrumbPage>
         </BreadcrumbItem>
-
         {crumbs.map((crumb, index) => (
           <Fragment key={crumb.name + index}>
             <BreadcrumbItem className="hidden md:inline-flex">
