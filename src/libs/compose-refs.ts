@@ -38,8 +38,6 @@ const composeRefs = <T>(...refs: PossibleRef<T>[]): RefCallback<T> => {
   }
 }
 
-const useComposedRefs = <T>(...refs: PossibleRef<T>[]): RefCallback<T> => {
+export const useComposedRefs = <T>(...refs: PossibleRef<T>[]): RefCallback<T> => {
   return useCallback(composeRefs(...refs), refs)
 }
-
-export { composeRefs, useComposedRefs }

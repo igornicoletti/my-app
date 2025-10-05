@@ -1,7 +1,7 @@
 import type { Column } from '@tanstack/react-table'
 import type { CSSProperties } from 'react'
 
-export const getCommonPinningStyles = <TData>({
+export const getPinning = <TData>({
   column,
   withBorder = false,
 }: {
