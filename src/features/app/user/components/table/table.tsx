@@ -1,4 +1,4 @@
-import { DataTable } from '@/components/table/datatable'
+import { DataTable } from '@/components/table/table'
 import { TableToolbar } from '@/components/table/toolbar'
 import { UserDelete } from '@/features/app/user/components/delete'
 import { UserDetail } from '@/features/app/user/components/detail'
@@ -8,8 +8,8 @@ import { UserTableColumn } from '@/features/app/user/components/table/column'
 import { UserTableToolbar } from '@/features/app/user/components/table/toolbar'
 import { useUser } from '@/features/app/user/lib/hook'
 import type { UserSchema } from '@/features/app/user/lib/schema'
-import { useDataTable } from '@/hooks/use-data-table'
-import type { DataTableRowAction } from '@/types/data-table'
+import { useDataTable } from '@/hooks/use-datatable'
+import type { DataTableRowAction } from '@/types/datatable'
 import { useMemo, useState } from 'react'
 
 export const UserTable = () => {

@@ -1,16 +1,16 @@
-import { DataTable } from '@/components/table/datatable'
+import { DataTable } from '@/components/table/table'
 import { TableToolbar } from '@/components/table/toolbar'
 import { TaskDelete } from '@/features/app/task/components/delete'
 import { TaskDetail } from '@/features/app/task/components/detail'
 import { TaskEntity } from '@/features/app/task/components/entity'
-import { TaskTableAction } from '@/features/app/task/components/table/action'
-import { TaskTableColumn } from '@/features/app/task/components/table/column'
-import { TaskToolbar } from '@/features/app/task/components/table/toolbar'
 import { useTask } from '@/features/app/task/lib/hook'
 import type { TaskSchema } from '@/features/app/task/lib/schema'
-import { useDataTable } from '@/hooks/use-data-table'
-import { getNumberRange } from '@/libs/filter-fn'
-import type { DataTableRowAction } from '@/types/data-table'
+import { TaskTableAction } from '@/features/app/task/table/action'
+import { TaskTableColumn } from '@/features/app/task/table/column'
+import { TaskTableToolbar } from '@/features/app/task/table/toolbar'
+import { useDataTable } from '@/hooks/use-datatable'
+import { getNumberRange } from '@/libs/filter'
+import type { DataTableRowAction } from '@/types/datatable'
 import { useMemo, useState } from 'react'
 
 export const TaskTable = () => {
@@ -42,7 +42,7 @@ export const TaskTable = () => {
     <>
       <DataTable table={table} actionBar={<TaskTableAction table={table} />}>
         <TableToolbar table={table}>
-          <TaskToolbar table={table} />
+          <TaskTableToolbar table={table} />
         </TableToolbar>
       </DataTable>
       <TaskDetail

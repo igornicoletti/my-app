@@ -8,11 +8,11 @@ import { exportTableToCSV } from '@/libs/export'
 import { DownloadSimpleIcon, SparkleIcon, TrashSimpleIcon } from '@phosphor-icons/react'
 import type { Table } from '@tanstack/react-table'
 
-interface TaskToolbarProps {
+interface TaskTableToolbarProps {
   table: Table<TaskSchema>
 }
 
-export const TaskToolbar = ({ table }: TaskToolbarProps) => {
+export const TaskTableToolbar = ({ table }: TaskTableToolbarProps) => {
   const selectedTasks = table.getFilteredSelectedRowModel().rows.map((row) => row.original)
 
   const onExport = () => {

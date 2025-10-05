@@ -6,17 +6,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuRadioG
 import { useTaskUpdate } from '@/features/app/task/lib/hook'
 import { type TaskSchema, labelList, priorityList, statusList } from '@/features/app/task/lib/schema'
 import { priorityIcons, statusIcons } from '@/features/app/task/lib/util'
-import { dateRangeFilterFn, numberRangeFilterFn } from '@/libs/filter-fn'
+import { dateRangeFilterFn, numberRangeFilterFn } from '@/libs/filter'
 import { formatDate } from '@/libs/format'
-import type { DataTableRowAction } from '@/types/data-table'
+import type { DataTableRowAction } from '@/types/datatable'
 import { ArrowsDownUpIcon, CalendarBlankIcon, CircleDashedIcon, ClockIcon, DotsThreeVerticalIcon, TextAaIcon } from '@phosphor-icons/react'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 import type { Dispatch, SetStateAction } from 'react'
-
-interface TaskTableColumnProps {
-  estimatedHoursRange: [number, number]
-  setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
-}
 
 const TaskRowActions = ({ row, setRowAction }: { row: Row<TaskSchema>, setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>> }) => {
   const updateTaskMutation = useTaskUpdate()
@@ -64,6 +59,11 @@ const TaskRowActions = ({ row, setRowAction }: { row: Row<TaskSchema>, setRowAct
       </DropdownMenuContent>
     </DropdownMenu>
   )
+}
+
+interface TaskTableColumnProps {
+  estimatedHoursRange: [number, number]
+  setRowAction: Dispatch<SetStateAction<DataTableRowAction<TaskSchema> | null>>
 }
 
 export const TaskTableColumn = ({ estimatedHoursRange, setRowAction }: TaskTableColumnProps): ColumnDef<TaskSchema>[] => [
