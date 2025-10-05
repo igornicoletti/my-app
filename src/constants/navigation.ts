@@ -5,20 +5,15 @@ export interface NavigationItem {
   title: string
   url: string
   icon?: ElementType
-  isActive?: boolean
-  items?: {
-    title: string
-    url: string
-    icon?: ElementType
-  }[]
+  items?: NavigationItem[]
 }
 
-export interface Navigation {
+export interface NavigationGroup {
   label?: string
   items: NavigationItem[]
 }
 
-export const navigation: Navigation[] = [
+export const navigation: NavigationGroup[] = [
   {
     label: 'App',
     items: [
@@ -26,19 +21,16 @@ export const navigation: Navigation[] = [
         title: 'Dashboard',
         url: '/dashboard',
         icon: ChartLineUpIcon,
-        items: []
       },
       {
         title: 'Tasks',
         url: '/tasks',
         icon: CheckSquareOffsetIcon,
-        items: []
       },
       {
         title: 'Users',
         url: '/users',
         icon: UsersIcon,
-        items: []
       }
     ]
   },
@@ -47,12 +39,12 @@ export const navigation: Navigation[] = [
     items: [
       {
         title: 'Settings',
-        url: '#2',
+        url: '/settings',
         icon: GearSixIcon,
         items: [
           {
             title: 'Profile',
-            url: '#3',
+            url: '/settings/profile',
             icon: UserIcon
           }
         ]

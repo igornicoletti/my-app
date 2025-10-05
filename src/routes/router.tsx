@@ -1,5 +1,5 @@
+import { appHero, authHero } from '@/constants/heroes'
 import { routeLazy } from '@/routes/lazy'
-import { routeMetadata } from '@/routes/metadata'
 import { createBrowserRouter } from 'react-router-dom'
 
 export const router = createBrowserRouter([
@@ -21,22 +21,22 @@ export const router = createBrowserRouter([
           {
             path: 'login',
             element: <routeLazy.AuthLogin />,
-            handle: routeMetadata.login,
+            handle: authHero.login,
           },
           {
             path: 'register',
             element: <routeLazy.AuthRegister />,
-            handle: routeMetadata.register,
+            handle: authHero.register,
           },
           {
             path: 'forgot-password',
             element: <routeLazy.AuthForgot />,
-            handle: routeMetadata.forgotPassword,
+            handle: authHero['forgot-password'],
           },
           {
             path: 'reset-password',
             element: <routeLazy.AuthReset />,
-            handle: routeMetadata.resetPassword,
+            handle: authHero['reset-password'],
           },
         ],
       },
@@ -46,17 +46,17 @@ export const router = createBrowserRouter([
           {
             path: 'dashboard',
             element: <routeLazy.AppDashboard />,
-            handle: routeMetadata.dashboard,
+            handle: appHero.dashboard,
           },
           {
             path: 'tasks',
             element: <routeLazy.AppTask />,
-            handle: routeMetadata.tasks,
+            handle: appHero.tasks,
           },
           {
             path: 'users',
             element: <routeLazy.AppUser />,
-            handle: routeMetadata.users,
+            handle: appHero.users,
           },
         ],
       },
