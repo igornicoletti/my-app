@@ -4,7 +4,7 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 import { useBreakpoint } from '@/hooks/use-breakpoint'
 import { SpinnerGapIcon } from '@phosphor-icons/react'
 import type { ComponentPropsWithoutRef, ReactNode } from 'react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 interface CommonConfirmProps extends Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'> {
   trigger?: ReactNode
@@ -29,6 +29,7 @@ export const CommonConfirm = ({
   const isDesktop = useBreakpoint('(min-width: 640px)')
   const [internalOpen, setInternalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const cancelButtonRef = useRef<HTMLButtonElement>(null)
 
   const Component = isDesktop ? Dialog : Drawer
   const TriggerComp = isDesktop ? DialogTrigger : DrawerTrigger
@@ -54,17 +55,24 @@ export const CommonConfirm = ({
     }
   }
 
+  const handleOpenAutoFocus = (event: Event) => {
+    event.preventDefault()
+    cancelButtonRef.current?.focus()
+  }
+
   return (
     <Component open={isOpen} onOpenChange={setIsOpen} {...props}>
       {trigger && <TriggerComp asChild>{trigger}</TriggerComp>}
-      <Content>
+      <Content onOpenAutoFocus={handleOpenAutoFocus}>
         <Header>
           <TitleComp>{title}</TitleComp>
           <DescriptionComp>{description}</DescriptionComp>
         </Header>
         <Footer>
           <Close asChild>
-            <Button type='button' variant='outline' disabled={isLoading}>{cancelText}</Button>
+            <Button ref={cancelButtonRef} type='button' variant='outline' disabled={isLoading}>
+              {cancelText}
+            </Button>
           </Close>
           <Button onClick={handleConfirm} disabled={isLoading}>
             {isLoading ? <SpinnerGapIcon className='animate-spin' /> : confirmText}
