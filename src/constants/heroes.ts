@@ -2,7 +2,7 @@ import type { AppHero, AuthHero } from '@/types/hero'
 
 export const authHero = {
   'login': {
-    heading: 'Sign in to your account',
+    heading: 'Sign in to 2Ti',
     subheading: 'Welcome back! Please sign in to continue',
     question: 'Don’t have an account?',
     linkLabel: 'Sign up',
