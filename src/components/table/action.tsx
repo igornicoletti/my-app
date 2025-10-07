@@ -86,10 +86,7 @@ const TableActionButton = ({
     <Button
       variant='secondary'
       size={size}
-      className={cn(
-        'gap-1.5 border border-border bg-popover [&>svg]:size-3.5',
-        size === 'icon' ? 'size-7' : 'h-7', className
-      )}
+      className={cn('gap-1.5 border border-border bg-popover [&>svg]:size-3.5', size === 'icon' ? 'size-7' : 'h-7', className)}
       disabled={disabled || isPending}
       {...props}>
       {isPending ? <SpinnerGapIcon className='animate-spin' /> : children}
@@ -110,9 +107,7 @@ interface TableActionSelectionProps<TData> {
   table: Table<TData>
 }
 
-const TableActionSelection = <TData,>({
-  table,
-}: TableActionSelectionProps<TData>) => {
+const TableActionSelection = <TData,>({ table }: TableActionSelectionProps<TData>) => {
   const onClearSelection = useCallback(() => {
     table.toggleAllRowsSelected(false)
   }, [table])
@@ -125,18 +120,12 @@ const TableActionSelection = <TData,>({
       <Separator orientation='vertical' className='mr-1 ml-2 data-[orientation=vertical]:h-4' />
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button
-            variant='ghost'
-            size='icon'
-            className='size-5'
-            onClick={onClearSelection}>
+          <Button onClick={onClearSelection} variant='ghost' size='icon' className='size-5'>
             <XIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent sideOffset={10}>
-          <div className="flex items-center gap-2">
-            Clear Selection <Kbd>Esc</Kbd>
-          </div>
+        <TooltipContent sideOffset={10} className='flex items-center gap-2'>
+          Clear Selection <Kbd>Esc</Kbd>
         </TooltipContent>
       </Tooltip>
     </div>
