@@ -22,7 +22,7 @@ const AuthContent = () => {
         <div className='w-full max-w-md space-y-6 p-6'>
           <header className='space-y-2 text-center'>
             <FireIcon className='mx-auto size-8 text-primary' />
-            <h1 className='text-2xl font-semibold tracking-tight'>
+            <h1 className='text-xl font-semibold tracking-tight'>
               {authHeroData?.heading}
             </h1>
             <p className='text-sm text-muted-foreground text-balance'>

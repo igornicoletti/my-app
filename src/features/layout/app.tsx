@@ -52,7 +52,7 @@ const AppContent = () => {
         <main className='@container/main flex flex-1 flex-col p-4'>
 
           <div className='max-w-3xl space-y-1 pb-4'>
-            <h1 className='text-2xl font-semibold tracking-tight'>{hero?.heading}</h1>
+            <h1 className='text-xl font-semibold tracking-tight'>{hero?.heading}</h1>
             <p className='text-muted-foreground text-sm text-balance'>{hero?.subheading}</p>
           </div>
 
