@@ -1,6 +1,8 @@
 import { CommonBreadcrumb } from '@/components/common/breadcrumb'
 import { SidebarApp } from '@/components/sidebar/sidebar'
 import { Button } from '@/components/ui/button'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
+import { Kbd } from '@/components/ui/kbd'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { appHero } from '@/constants/heroes'
@@ -35,8 +37,18 @@ const AppContent = () => {
 
             <CommonBreadcrumb />
 
-            <div className='ml-auto flex items-center gap-1'>
-              <Button onClick={openCommand} size='icon' variant='ghost' title='Search (Ctrl+K)'>
+            <div className='ml-auto flex items-center gap-2'>
+              <InputGroup className='h-8 hidden sm:inline-flex' onClick={openCommand}>
+                <InputGroupInput placeholder='Search pages' />
+                <InputGroupAddon>
+                  <MagnifyingGlassIcon />
+                </InputGroupAddon>
+                <InputGroupAddon align='inline-end'>
+                  <Kbd>⌘K</Kbd>
+                </InputGroupAddon>
+              </InputGroup>
+              <Separator orientation='vertical' className='ml-2 data-[orientation=vertical]:h-6' />
+              <Button onClick={openCommand} size='icon' variant='ghost' title='Search (Ctrl+K)' className='sm:hidden'>
                 <MagnifyingGlassIcon />
               </Button>
               <Button onClick={toggleTheme} size='icon' variant='ghost' title='Toggle Theme'>
