@@ -138,7 +138,7 @@ function FacetedBadgeList(props: FacetedBadgeListProps) {
   const {
     options = [],
     max = 2,
-    placeholder = 'Select options...',
+    placeholder = 'Select options',
     className,
     badgeClassName,
     ...badgeListProps
