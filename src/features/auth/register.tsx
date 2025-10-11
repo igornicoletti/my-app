@@ -6,7 +6,7 @@ import { useSubmit } from '@/hooks/use-submit'
 import { useToast } from '@/hooks/use-toast'
 import { ServiceAuth } from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SpinnerGapIcon, UserPlusIcon } from '@phosphor-icons/react'
+import { SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
 export const AuthRegister = () => {
@@ -37,35 +37,34 @@ export const AuthRegister = () => {
           name='displayName'
           placeholder='Username'
           autoComplete='given-name'
-          autoFocus />
+          autoFocus
+        />
         <FormInput
           control={form.control}
           disabled={isLoading}
           type='email'
           name='email'
           placeholder='Email'
-          autoComplete='username' />
+          autoComplete='username'
+        />
         <FormInput
           control={form.control}
           disabled={isLoading}
           type='password'
           name='password'
           placeholder='Password'
-          autoComplete='new-password' />
+          autoComplete='new-password'
+        />
         <FormInput
           control={form.control}
           disabled={isLoading}
           type='password'
           name='confirmPassword'
           placeholder='Confirm password'
-          autoComplete='new-password' />
+          autoComplete='new-password'
+        />
         <Button disabled={isLoading} type='submit'>
-          {isLoading ? (
-            <SpinnerGapIcon className='animate-spin' />
-          ) : (
-            <UserPlusIcon />
-          )}
-          {!isLoading && 'Create Account'}
+          {isLoading ? <SpinnerGapIcon className='animate-spin' /> : 'Create an account'}
         </Button>
       </form>
     </Form>

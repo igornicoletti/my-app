@@ -6,7 +6,7 @@ import { useSubmit } from '@/hooks/use-submit'
 import { useToast } from '@/hooks/use-toast'
 import { ServiceAuth } from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PaperPlaneTiltIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 
 export const AuthForgot = () => {
@@ -34,14 +34,10 @@ export const AuthForgot = () => {
           name='email'
           placeholder='Email'
           autoComplete='email'
-          autoFocus />
+          autoFocus
+        />
         <Button disabled={isLoading} type='submit'>
-          {isLoading ? (
-            <SpinnerGapIcon className='animate-spin' />
-          ) : (
-            <PaperPlaneTiltIcon />
-          )}
-          {!isLoading && 'Send Reset Link'}
+          {isLoading ? <SpinnerGapIcon className='animate-spin' /> : 'Send reset link'}
         </Button>
       </form>
     </Form>

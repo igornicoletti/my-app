@@ -6,7 +6,7 @@ import { useSubmit } from '@/hooks/use-submit'
 import { useToast } from '@/hooks/use-toast'
 import { ServiceAuth } from '@/services/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ShieldStarIcon, SpinnerGapIcon } from '@phosphor-icons/react'
+import { SpinnerGapIcon } from '@phosphor-icons/react'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 
@@ -39,21 +39,18 @@ export const AuthReset = () => {
           name='password'
           placeholder='New password'
           autoComplete='new-password'
-          autoFocus />
+          autoFocus
+        />
         <FormInput
           control={form.control}
           disabled={isLoading}
           type='password'
           name='confirmPassword'
           placeholder='Confirm new password'
-          autoComplete='new-password' />
+          autoComplete='new-password'
+        />
         <Button disabled={isLoading} type='submit'>
-          {isLoading ? (
-            <SpinnerGapIcon className='animate-spin' />
-          ) : (
-            <ShieldStarIcon />
-          )}
-          {isLoading && 'Reset password'}
+          {isLoading ? <SpinnerGapIcon className='animate-spin' /> : 'Set new password'}
         </Button>
       </form>
     </Form>
