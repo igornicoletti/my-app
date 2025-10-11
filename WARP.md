@@ -1,19 +1,22 @@
 # WARP.md
 
-This file provides guidance to WARP (warp.dev) when working with code in this repository.
+This file provides guidance to Warp AI when working with code in this repository. Warp is an Agentic Development Environment designed to help developers ship faster with AI assistance.
 
 ## Project Overview
 
-This is a React + TypeScript application built with Vite. It's a modern web application that uses:
-- React 19 with TypeScript
-- Vite as the build tool
-- Firebase for backend services
-- React Query for data fetching
-- React Router for navigation
-- Radix UI for components
-- Tailwind CSS for styling
-- Vitest for testing
-- JSON Server for development API mocking
+This is a modern React + TypeScript application built with Vite. The application demonstrates best practices for building scalable web applications with:
+
+- **React 19** with TypeScript for the core framework
+- **Vite** as the build tool and development server
+- **Firebase** for backend services and authentication
+- **TanStack Query** (React Query) for server state management
+- **React Router DOM v7** for client-side routing
+- **Radix UI** for accessible component primitives
+- **Tailwind CSS v4** for styling with modern utility-first approach
+- **Vitest** for unit and integration testing
+- **JSON Server** for development API mocking
+- **Motion** for animations and transitions
+- **DND Kit** for drag-and-drop functionality
 
 ## Development Commands
 
@@ -51,9 +54,36 @@ pnpm test --watch
 pnpm test --coverage
 ```
 
+## Warp AI Integration
+
+### Smart Conventional Commits
+This project is configured to work with Warp's Smart Conventional Commits workflow. You can use the following Warp AI command to automatically analyze changes and create conventional commits:
+
+```bash
+# Analyze all git changes and create conventional commits
+warp ai "Analyze all git changes in the repository and:
+1. Group changes by Conventional Commit type (feat, fix, docs, style, refactor, test, chore).
+2. Stage relevant changes and commit as <type>(<scope>): <description>.
+   - Infer <scope> from the most relevant directory or component.
+   - Split into atomic commits if multiple scopes are affected.
+   - Keep descriptions imperative and ≤72 chars.
+3. Push commits to the current branch."
+```
+
+### Development Workflow with Warp
+- Use natural language prompts to have Warp write code, debug issues, or execute commands
+- Warp automatically detects whether you're typing a command or a natural language prompt
+- Multiple agents can run simultaneously with notification management
+- All project documentation and context is available to Warp AI for enhanced assistance
+
 ## Architecture
 
 ### Key Directories
+- `/src/components/ui/` - Base UI components built on Radix UI primitives
+- `/src/components/common/` - Shared application components (breadcrumb, loading, etc.)
+- `/src/components/form/` - Form-specific components (input, select)
+- `/src/components/table/` - Data table components with sorting, filtering, pagination
+- `/src/components/sidebar/` - Navigation and sidebar components
 - `/src/hooks/` - Custom React hooks for shared functionality (auth, data tables, form submission, etc.)
 - `/src/providers/` - React context providers (auth, theme, commands, confirmations)
 - `/src/services/` - Service layer for external API interactions (auth, entity management)
@@ -61,6 +91,7 @@ pnpm test --coverage
 - `/src/routes/` - Application routing configuration
 - `/src/config/` - Configuration files (Firebase setup)
 - `/src/constants/` - Application-wide constants
+- `/src/assets/` - Static assets (fonts, images)
 
 ### Key Architectural Patterns
 1. **Data Management**
