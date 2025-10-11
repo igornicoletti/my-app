@@ -15,33 +15,31 @@ interface UserTableColumnProps {
   setRowAction: Dispatch<SetStateAction<DataTableRowAction<UserSchema> | null>>
 }
 
-const UserRowActions = ({ row, setRowAction }: { row: Row<UserSchema>, setRowAction: Dispatch<SetStateAction<DataTableRowAction<UserSchema> | null>> }) => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size='sm'
-          aria-label='Open menu'
-          variant='ghost'
-          className='data-[state=open]:bg-muted'>
-          <DotsThreeIcon weight='bold' />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-40'>
-        <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'view' })}>
-          Details
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
-          Edit
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
+const UserRowActions = ({ row, setRowAction }: { row: Row<UserSchema>, setRowAction: Dispatch<SetStateAction<DataTableRowAction<UserSchema> | null>> }) => (
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button
+        size='sm'
+        aria-label='Open menu'
+        variant='ghost'
+        className='data-[state=open]:bg-muted'>
+        <DotsThreeIcon weight='bold' />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align='end' className='w-40'>
+      <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'view' })}>
+        Details
+      </DropdownMenuItem>
+      <DropdownMenuItem onSelect={() => setRowAction({ row, variant: 'update' })}>
+        Edit
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem variant='destructive' onSelect={() => setRowAction({ row, variant: 'delete' })}>
+        Delete
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+)
 
 export const UserTableColumn = ({ setRowAction }: UserTableColumnProps): ColumnDef<UserSchema>[] => [
   {
@@ -66,20 +64,19 @@ export const UserTableColumn = ({ setRowAction }: UserTableColumnProps): ColumnD
     accessorKey: 'name',
     header: ({ column }) => <TableSort column={column} title='Name' />,
     cell: ({ row }) => <div className='max-w-md truncate'>{row.getValue('name')}</div>,
-    meta: { label: 'Name', placeholder: 'Search names...', variant: 'text', icon: TextAaIcon }, enableHiding: false,
+    meta: { label: 'Name', placeholder: 'Search names', variant: 'text', icon: TextAaIcon },
+    enableHiding: false,
     enableColumnFilter: true,
   },
   {
     accessorKey: 'email',
     header: ({ column }) => <TableSort column={column} title='Email' />,
     cell: ({ row }) => <div className='max-w-md truncate'>{row.getValue('email')}</div>,
-    enableColumnFilter: false,
   },
   {
     accessorKey: 'phone',
     header: ({ column }) => <TableSort column={column} title='Phone Number' />,
     cell: ({ row }) => row.getValue('phone'),
-    enableColumnFilter: false,
   },
   {
     accessorKey: 'status',

@@ -73,15 +73,13 @@ export const TaskTableColumn = ({ estimatedHoursRange, setRowAction }: TaskTable
       <Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
+        aria-label='Select all' />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
+        aria-label='Select row' />
     ),
     enableSorting: false,
     enableHiding: false,
@@ -101,7 +99,7 @@ export const TaskTableColumn = ({ estimatedHoursRange, setRowAction }: TaskTable
         <span className='max-w-md truncate'>{row.getValue('title')}</span>
       </div>
     ),
-    meta: { label: 'Title', placeholder: 'Search title...', variant: 'text', icon: TextAaIcon },
+    meta: { label: 'Title', placeholder: 'Search titles', variant: 'text', icon: TextAaIcon },
     enableColumnFilter: true,
   },
   {
