@@ -9,7 +9,7 @@ export const CommonCommand = () => {
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder='Type a command or search...' />
+      <CommandInput placeholder='Type a command or search' />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         {navigation.map((group, i) => (

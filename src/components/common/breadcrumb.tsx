@@ -11,12 +11,12 @@ export const CommonBreadcrumb = () => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem className="md:hidden">
+        <BreadcrumbItem className='md:hidden'>
           <BreadcrumbPage>{lastCrumb.name}</BreadcrumbPage>
         </BreadcrumbItem>
         {crumbs.map((crumb, index) => (
           <Fragment key={crumb.name + index}>
-            <BreadcrumbItem className="hidden md:inline-flex">
+            <BreadcrumbItem className='hidden md:inline-flex'>
               {crumb.isCurrent || !crumb.path ? (
                 <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
               ) : (
@@ -26,7 +26,7 @@ export const CommonBreadcrumb = () => {
               )}
             </BreadcrumbItem>
             {index < crumbs.length - 1 && (
-              <BreadcrumbSeparator className="hidden md:inline-flex" />
+              <BreadcrumbSeparator className='hidden md:inline-flex' />
             )}
           </Fragment>
         ))}
