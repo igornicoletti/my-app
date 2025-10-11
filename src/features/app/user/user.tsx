@@ -1,4 +1,4 @@
-import { UserTable } from '@/features/app/user/components/table/table'
+import { UserTable } from '@/features/app/user/table/table'
 
 export const AppUser = () => (
   <UserTable />
