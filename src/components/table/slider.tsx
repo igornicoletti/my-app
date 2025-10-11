@@ -1,11 +1,9 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Field, FieldDescription, FieldTitle } from '@/components/ui/field'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
-import { cn } from '@/libs/utils'
 import { FunnelSimpleIcon, XIcon } from '@phosphor-icons/react'
 import type { Column } from '@tanstack/react-table'
 import { useCallback, useId, useMemo } from 'react'
@@ -75,20 +73,6 @@ export const TableSlider = <TData,>({
     maximumFractionDigits: 0
   }), [])
 
-  const onFromInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const numValue = Number(event.target.value)
-    if (!Number.isNaN(numValue) && numValue >= min && numValue <= range[1]) {
-      column.setFilterValue([numValue, range[1]])
-    }
-  }, [column, min, range])
-
-  const onToInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const numValue = Number(event.target.value)
-    if (!Number.isNaN(numValue) && numValue <= max && numValue >= range[0]) {
-      column.setFilterValue([range[0], numValue])
-    }
-  }, [column, max, range])
-
   const onSliderValueChange = useCallback((value: RangeValue) => {
     if (Array.isArray(value) && value.length === 2) {
       column.setFilterValue(value)
@@ -107,11 +91,7 @@ export const TableSlider = <TData,>({
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='border-dashed'>
           {columnFilterValue ? (
-            <div
-              role='button'
-              aria-label={`Clear ${title} filter`}
-              tabIndex={0}
-              onClick={onReset}>
+            <div role='button' aria-label={`Clear ${title} filter`} tabIndex={0} onClick={onReset}>
               <XIcon />
             </div>
           ) : (
@@ -129,67 +109,23 @@ export const TableSlider = <TData,>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align='start' className='flex w-auto flex-col gap-4'>
-        <div className='flex flex-col gap-4'>
-          <div className='flex items-center gap-4'>
-            <Label htmlFor={`${id}-from`} className='sr-only'>From</Label>
-            <div className='relative'>
-              <Input
-                id={`${id}-from`}
-                type='number'
-                aria-valuemin={min}
-                aria-valuemax={max}
-                inputMode='numeric'
-                pattern='[0-9]*'
-                placeholder={min.toString()}
-                min={min}
-                max={max}
-                value={range[0]?.toString()}
-                onChange={onFromInputChange}
-                className={cn('h-8 w-24', unit && 'pr-8')} />
-              {unit && (
-                <span className='absolute top-0 right-0 bottom-0 flex items-center px-2 text-muted-foreground text-sm'>
-                  {unit}
-                </span>
-              )}
-            </div>
-            <Label htmlFor={`${id}-to`} className='sr-only'>to</Label>
-            <div className='relative'>
-              <Input
-                id={`${id}-to`}
-                type='number'
-                aria-valuemin={min}
-                aria-valuemax={max}
-                inputMode='numeric'
-                pattern='[0-9]*'
-                placeholder={max.toString()}
-                min={min}
-                max={max}
-                value={range[1]?.toString()}
-                onChange={onToInputChange}
-                className={cn('h-8 w-24', unit && 'pr-8')} />
-              {unit && (
-                <span className='absolute top-0 right-0 bottom-0 flex items-center px-2 text-muted-foreground text-sm'>
-                  {unit}
-                </span>
-              )}
-            </div>
-          </div>
-          <Label htmlFor={`${id}-slider`} className='sr-only'>{title} slider</Label>
+      <PopoverContent align='start' className='flex w-auto flex-col gap-6 p-4'>
+        <Field>
+          <FieldTitle>{title} slider</FieldTitle>
+          <FieldDescription>
+            Set your hour range (<span className='font-medium tabular-nums'>{range[0]} - {range[1]}</span>h).
+          </FieldDescription>
           <Slider
-            id={`${id}-slider`}
-            min={min}
-            max={max}
-            step={step}
             value={range}
-            onValueChange={onSliderValueChange} />
-        </div>
+            onValueChange={onSliderValueChange}
+            max={max}
+            min={min}
+            step={step}
+            className='mt-2 w-full'
+            aria-label={`${id}-slider`} />
+        </Field>
         {columnFilterValue && (
-          <Button
-            aria-label={`Clear ${title} filter`}
-            variant='outline'
-            size='sm'
-            onClick={onReset}>
+          <Button onClick={onReset} variant='outline' size='sm'>
             Clear {title} Filter
           </Button>
         )}

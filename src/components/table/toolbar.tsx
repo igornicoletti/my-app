@@ -4,8 +4,9 @@ import { TableSlider } from '@/components/table/slider'
 import { TableView } from '@/components/table/view'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { cn } from '@/libs/utils'
-import { ArrowsClockwiseIcon } from '@phosphor-icons/react'
+import { ArrowsClockwiseIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
 import type { Column, Table } from '@tanstack/react-table'
 import { useCallback, useMemo, type ComponentProps } from 'react'
 
@@ -65,12 +66,16 @@ const TableToolbarFilter = <TData,>({ column }: TableToolbarFilterProps<TData>) 
     switch (columnMeta.variant) {
       case 'text':
         return (
-          <Input
-            id={`${column.id}-text`}
-            placeholder={columnMeta.placeholder ?? columnMeta.label}
-            value={(column.getFilterValue() as string) ?? ''}
-            onChange={event => column.setFilterValue(event.target.value)}
-            className='h-8 min-w-max lg:w-56' />
+          <InputGroup className='h-8 min-w-max lg:w-56'>
+            <InputGroupInput
+              id={`${column.id}-text`}
+              placeholder={columnMeta.placeholder ?? columnMeta.label}
+              value={(column.getFilterValue() as string) ?? ''}
+              onChange={event => column.setFilterValue(event.target.value)} />
+            <InputGroupAddon>
+              <MagnifyingGlassIcon />
+            </InputGroupAddon>
+          </InputGroup>
         )
 
       case 'number':

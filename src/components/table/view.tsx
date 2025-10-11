@@ -31,7 +31,7 @@ export const TableView = <TData,>({
       </PopoverTrigger>
       <PopoverContent align='end' className='w-48 p-0'>
         <Command>
-          <CommandInput placeholder='Columns...' />
+          <CommandInput placeholder='Columns' />
           <CommandList>
             <CommandEmpty>No columns found.</CommandEmpty>
             <CommandGroup>
